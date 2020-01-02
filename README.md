@@ -96,7 +96,7 @@ Beispiel für ein ESP8266 Modul vom Typ D1 mini mit 4MB Flash verbunden mit COM3
 
 	* Eingabeaufforderung öffnen
 
-	* in den Order ./MQTTDevice/build wechseln
+	* in den Order ./Spundomat/build wechseln
 
 		* Firmware aufspielen: ../tools/esptool.exe -ca 0x000000 -cd nodemcu -cp COM3 -cb 921600 -cf Spundomat.ino.bin
 
@@ -112,7 +112,9 @@ Beispiel für ein ESP8266 Modul vom Typ D1 mini mit 4MB Flash verbunden mit COM3
 
 
 * Updates
-	Updates (firmware und SPIFFS) können über das WebIf geladen werden: <IP Adresse ESP Modul>/update
+	Updates (firmware und SPIFFS) können über das WebIf geladen werden: <IP Adresse ESP8266>/update
 
 * Backup and restore der Konfiguration
-    Der FileBrowser ist erreichbar über <IP Adresse ESP Modul>/edit download oder upload config.json 
+    Der FileBrowser ist erreichbar über <IP Adresse ESP8266>/edit download oder upload config.json 
+
+* mDNS: Ein mDNS Name kann anstelle der IP Adresse vom ESP8266 im Webbrowser verwendet werden (http://<mDNSname>). Der Name ist frei wählbar.

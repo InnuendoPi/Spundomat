@@ -118,3 +118,5 @@ Beispiel für ein ESP8266 Modul vom Typ D1 mini mit 4MB Flash verbunden mit COM3
     Der FileBrowser ist erreichbar über <IP Adresse ESP8266>/edit download oder upload config.json 
 
 * mDNS: Ein mDNS Name kann anstelle der IP Adresse vom ESP8266 im Webbrowser verwendet werden (http://<mDNSname>). Der Name ist frei wählbar.
+
+Der Quellcode basiert ursprünglich auf einem snipet von Janick 2017

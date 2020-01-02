@@ -70,6 +70,12 @@ sich Pneumatische Schnellkupplungen hervorragend.
 
 ### Hardware: die Platine zum Projekt
 
+### Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil
+
+1. Möglichkeit: Spunder
+![ov1](/Info/Spunder.jpg)
+2. Möglichkeit: Zwangskarbonisierung
+![ov1](/Info/Zwangskarbonisieren.jpg)
 
 
 ### Wie kann die Firmware geflashed werden ohne den Quellcode zu komplilieren

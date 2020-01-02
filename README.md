@@ -36,18 +36,18 @@ sich Pneumatische Schnellkupplungen hervorragend.
 
 ### Was bietet diese Firmware?
 
-* Ein Web Interface (WebIf) für die Konfiguration
+* Web Interface (WebIf) für die Konfiguration
+* 2004A Display Integration
 * Encoder Unterstützung
 * Sensoren
   * Temperatursensor
   * Drucksensor
-* Aktoren
-  * PIN Auswahl
-  * PINs in Verwendung werden ausgeblendet
-  * Invertierte GPIO
-  * Power Percentage: Es werden Werte zwischen 0 und 100% gesendet. Das ESP8266 "pulses" mit einem Zyklus von 1000ms
-* 2004A Display Integration
+* Magnetventil ausgehend (Spunden)
+* Magnetventil eingehend (Zwangskarbonisieren)
+* Kalibrierung (offsetVolt)
 * mDNS Server Support
+* Backup / Restore der Konfiguration (config.json) über Dateiexplorer
+* Firmware Update über WebIf (Firmware und SPIFFS)
 * Telnet Client Support (putty)
 
 
@@ -71,6 +71,14 @@ sich Pneumatische Schnellkupplungen hervorragend.
 ### Hardware: die Platine zum Projekt
 
 ![ov1](/Info/Layout01.png)
+
+Beschreibung:
+
+Stückliste:
+
+Einrichtung:
+- Trimmer auf 70.5kOhm einstellen
+- MP1584En ausgehend auf 5V einstellen
 
 ### Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil
 

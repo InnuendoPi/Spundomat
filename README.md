@@ -70,6 +70,8 @@ sich Pneumatische Schnellkupplungen hervorragend.
 
 ### Hardware: die Platine zum Projekt
 
+![ov1](/Info/Layout01.png)
+
 ### Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil
 
 1. Möglichkeit: Spunder

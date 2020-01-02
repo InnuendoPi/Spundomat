@@ -46,7 +46,7 @@ sich Pneumatische Schnellkupplungen hervorragend.
   * PINs in Verwendung werden ausgeblendet
   * Invertierte GPIO
   * Power Percentage: Es werden Werte zwischen 0 und 100% gesendet. Das ESP8266 "pulses" mit einem Zyklus von 1000ms
-* OLED display Integration
+* 2004A Display Integration
 * mDNS Server Support
 * Telnet Client Support (putty)
 

@@ -174,11 +174,7 @@ void handleSetMisc()
                 wifiManager.resetSettings();
 
                 unsigned long last = millis();
-                while (millis() < last + PAUSE2SEC)
-                {
-                    // just wait for approx 2sec
-                    yield();
-                }
+                millis2wait(PAUSE2SEC);
 
                 ESP.reset();
             }
@@ -276,15 +272,15 @@ void setMDNS()
     {
         if (!mdns.begin(nameMDNS, WiFi.localIP()))
         {
-            DBG_PRINT("*** SYSINFO: MDNS failed");
+            DBG_PRINT("*** SYSINFO: Fehler mDNS!");
             startMDNS = false;
         }
         else
         {
             mdns.begin(nameMDNS);
-            DBG_PRINT("*** SYSINFO: MDNS started: ");
+            DBG_PRINT("*** SYSINFO: MDNS gestartet als ");
             DBG_PRINT(nameMDNS);
-            DBG_PRINT(" to: ");
+            DBG_PRINT(" verbunden an ");
             IPAddress ip = WiFi.localIP();
             DBG_PRINTLN(ip.toString());
         }

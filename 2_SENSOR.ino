@@ -30,19 +30,6 @@ void readPressure()
 {
 	int sensorValue = analogRead(A0);
 	
-	// Test Start
-	// testSensorVal++;
-	// sensorValue = testSensorVal;
-	// if (testSensorVal>1300)
-	// {
-	// 	testSensorVal = 1100;
-
-	// }
-	//DBG_PRINT("SensorValue: ");
-	//DBG_PRINTLN(sensorValue);
-	//Test Ende
-
-
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
 

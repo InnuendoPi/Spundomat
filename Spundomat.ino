@@ -56,13 +56,10 @@ float setPressure = 2.0;    //  Vorgabe bei Neustart von 2,0 bar
 float setCarbonation = 5.0; //  Vorgabe bei Neustart von 5,0 gr/L
 int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 = Zwangskarbonisierung
 
-// Test
-// int testSensorVal = 1100;
 bool oldValve = false;      // Zwangskarbonisierung default Ventil geschlossen
 bool setDEBUG = false;      // Debug Ausgaben serieller Monitor
 bool startTEL = false;      // Debug Ausgaben an Telnet Client (putty)
 bool startMDNS = false;     // mDNS Dienst
-
 File fsUploadFile; // Datei Object
 
 //Pinbelegung

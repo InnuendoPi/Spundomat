@@ -56,6 +56,8 @@ bool loadConfig()
     startMDNS = miscObj["MDNS"];
   if (miscObj.containsKey("DEBUG"))
     setDEBUG = miscObj["DEBUG"];
+  if (miscObj.containsKey("TEST"))
+    testModus = miscObj["TEST"];
   if (miscObj.containsKey("TELNET"))
     startTEL = miscObj["TELNET"];
     
@@ -107,6 +109,7 @@ bool saveConfig()
   miscObj["NAMEMDNS"] = nameMDNS;
   miscObj["MDNS"] = startMDNS;
   miscObj["DEBUG"] = setDEBUG;
+  miscObj["TEST"] = testModus;
   miscObj["TELNET"] = startTEL;
 
   DBG_PRINT("nameMDNS: ");

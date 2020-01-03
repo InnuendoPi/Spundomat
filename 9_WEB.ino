@@ -76,6 +76,7 @@ void handleRequestMiscSet()
     doc["mdns"] = startMDNS;
     doc["mdns_name"] = nameMDNS;
     doc["debug"] = setDEBUG;
+    doc["test"] = testModus;
     doc["telnet"] = startTEL;
     doc["pressure"] = setPressure;
     doc["carbonation"] = setCarbonation;
@@ -130,6 +131,18 @@ void handleRequestMisc()
     if (request == "debug")
     {
         if (setDEBUG)
+        {
+            message = "1";
+        }
+        else
+        {
+            message = "0";
+        }
+        goto SendMessage;
+    }
+    if (request == "test")
+    {
+        if (testModus)
         {
             message = "1";
         }
@@ -217,6 +230,13 @@ void handleSetMisc()
         {
             if (server.arg(i) == "1")
                 setDEBUG = true;
+            else
+                setDEBUG = false;
+        }
+        if (server.argName(i) == "test")
+        {
+            if (server.arg(i) == "1")
+                testModus = true;
             else
                 setDEBUG = false;
         }

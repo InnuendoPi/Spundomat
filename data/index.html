@@ -95,6 +95,10 @@
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_debug" />
                 <label class="form-check-label" for="modal_misc_debug">Aktiviere Debug Ausgaben</label>
               </div>
+			  <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_test" />
+                <label class="form-check-label" for="modal_misc_test">Aktiviere Testmodus</label>
+              </div>
             </div>
             <div class="tab-pane fade" id="misc3" role="tabpanel" aria-labelledby="misc3-tab">
               <br />
@@ -216,6 +220,7 @@
       var reset;
       var clear;
       var debug;
+	  var test;
       var telnet;
       var pressure;
       var carbonation;
@@ -264,6 +269,16 @@
         cache: false,
         success: function (data) {
           debug = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=test',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          test = data;
         }
       });
       $.ajax({
@@ -356,6 +371,8 @@
       else { modal.find('#modal_misc_telnet').prop("checked", false) }
       if (debug == "1") { modal.find('#modal_misc_debug').prop("checked", true) }
       else { modal.find('#modal_misc_debug').prop("checked", false) }
+	  if (test == "1") { modal.find('#modal_misc_test').prop("checked", true) }
+      else { modal.find('#modal_misc_test').prop("checked", false) }
       modal.find('#modal_misc_reset').prop("checked", false)
       modal.find('#modal_misc_clear').prop("checked", false)
       modal.find('#modal_misc_pressure').val(pressure)
@@ -410,9 +427,17 @@
 	  {
         var debug = "0"
       }
+	  if (modal.find('#modal_misc_test').prop("checked") == true) 
+	  {
+        var test = "1"
+      } 
+	  else 
+	  {
+        var test = "0"
+      }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&telnet=' + telnet + '&debug=' + debug + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&telnet=' + telnet + '&debug=' + debug + '&test=' + test + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode,
         type: 'POST',
         dataType: 'html',
         async: false,

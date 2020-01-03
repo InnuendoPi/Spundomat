@@ -61,9 +61,12 @@ void setup()
   sensors.begin();
 
   // Pin Definitionen
-  pinMode(PIN_MV1, OUTPUT);    // D8
-  pinMode(PIN_MV2, OUTPUT);    // D0
-  pinMode(PIN_BUZZER, OUTPUT); // D4
+  if (startMV1)
+    pinMode(PIN_MV1, OUTPUT);    // D8
+  if (startMV2)
+    pinMode(PIN_MV2, OUTPUT);    // D0
+  if (startBuzzer)
+    pinMode(PIN_BUZZER, OUTPUT); // D4
 
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6

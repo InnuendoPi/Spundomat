@@ -1,7 +1,7 @@
 void handleRoot()
 {
     server.sendHeader("Location", "/index.html", true); //Redirect to our html web page
-    server.send(200, "text/plain", "");
+    server.send(302, "text/plain", "");
 }
 
 void handleWebRequests()
@@ -86,6 +86,9 @@ void handleRequestMiscSet()
     doc["temperatur"] = sTemperature;
     doc["voltage"] = voltage;
     doc["offset"] = offsetVoltage;
+    doc["mv1"] = startMV1;
+    doc["mv2"] = startMV2;
+    doc["buzzer"] = startBuzzer;
 
     String response;
     serializeJson(doc, response);
@@ -164,6 +167,42 @@ void handleRequestMisc()
         }
         goto SendMessage;
     }
+    if (request == "mv1")
+    {
+        if (startMV1)
+        {
+            message = "1";
+        }
+        else
+        {
+            message = "0";
+        }
+        goto SendMessage;
+    }
+    if (request == "mv2")
+    {
+        if (startMV2)
+        {
+            message = "1";
+        }
+        else
+        {
+            message = "0";
+        }
+        goto SendMessage;
+    }
+    if (request == "buzzer")
+    {
+        if (startBuzzer)
+        {
+            message = "1";
+        }
+        else
+        {
+            message = "0";
+        }
+        goto SendMessage;
+    }
     if (request == "firmware")
     {
         message = "Spundomat V ";
@@ -212,11 +251,11 @@ void handleSetMisc()
         }
         if (server.argName(i) == "pressure")
         {
-            setPressure = server.arg(i).toFloat();
+            setPressure = formatDOT(server.arg(i));
         }
         if (server.argName(i) == "carbonation")
         {
-            setCarbonation = server.arg(i).toFloat();
+            setCarbonation = formatDOT(server.arg(i));
         }
         if (server.argName(i) == "mode")
         {
@@ -249,6 +288,45 @@ void handleSetMisc()
                 if (Telnet)
                     Telnet.stop();
                 startTEL = false;
+            }
+        }
+        if (server.argName(i) == "mv1")
+        {
+            if (server.arg(i) == "1")
+            {
+                startMV1 = true;
+                pinMode(PIN_MV1, OUTPUT);    // D8
+            }
+            else
+            {
+                startMV1 = false;
+                pinMode(PIN_MV1, INPUT);    // D8
+            }
+        }
+        if (server.argName(i) == "mv2")
+        {
+            if (server.arg(i) == "1")
+            {
+                startMV2 = true;
+                pinMode(PIN_MV2, OUTPUT);   // D0
+            }
+            else
+            {
+                startMV2 = false;
+                pinMode(PIN_MV2, INPUT);    // D0
+            }
+        }
+        if (server.argName(i) == "buzzer")
+        {
+            if (server.arg(i) == "1")
+            {
+                startBuzzer = true;
+                pinMode(PIN_BUZZER, OUTPUT);    // D4
+            }
+            else
+            {
+                startBuzzer = false;
+                pinMode(PIN_BUZZER, INPUT);    // D4
             }
         }
         yield();

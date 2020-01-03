@@ -41,7 +41,7 @@ sich Pneumatische Schnellkupplungen hervorragend.
 #include <Math.h>
 
 // Definiere Konstanten
-const char Version[6] = "2.02g";
+const char Version[6] = "2.03";
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
 #define PAUSE5SEC 5000
@@ -62,7 +62,10 @@ int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 
 bool setDEBUG = false;  // Debug Ausgaben serieller Monitor
 bool startTEL = false;  // Debug Ausgaben an Telnet Client (putty)
 bool startMDNS = false; // mDNS Dienst
-File fsUploadFile;      // Datei Object
+bool testModus = false; // testModus
+bool startMV1 = false;  // Aktiviere MV1
+bool startMV2 = false;  // Aktiviere MV2
+bool startBuzzer = false;  // Aktiviere Buzzer
 
 //Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
@@ -109,7 +112,7 @@ int edititem = 0;
 int page = 1;
 int encoderOldPos;
 int sensorValueTest;
-bool testModus = false;
+File fsUploadFile;      // Datei Object
 
 boolean up = false;
 boolean down = false;

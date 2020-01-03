@@ -45,7 +45,24 @@ bool loadConfig()
   Serial.println(setMode);
   Serial.println("--------");
 
-  // Misc Settings
+  // Hardware Einstellungen
+  JsonArray hwArray = doc["HARDWARE"];
+  JsonObject hwObj = hwArray[0];
+  if (hwObj.containsKey("MV1"))
+    startMV1 = hwObj["MV1"];
+  if (hwObj.containsKey("MV2"))
+    startMV2 = hwObj["MV2"];
+  if (hwObj.containsKey("BUZZER"))
+    startBuzzer = hwObj["BUZZER"];
+  Serial.print("MV1: ");
+  Serial.println(startMV1);
+  Serial.print("MV2: ");
+  Serial.println(startMV2);
+  Serial.print("Buzzer: ");
+  Serial.println(startBuzzer);
+  Serial.println("--------");
+
+  // System Einstellungen
   JsonArray miscArray = doc["MISC"];
   JsonObject miscObj = miscArray[0];
 
@@ -103,6 +120,21 @@ bool saveConfig()
   DBG_PRINTLN(setMode);
   DBG_PRINTLN("--------");
 
+  // Hardware Einstellungen
+  JsonArray hwArray = doc.createNestedArray("HARDWARE");
+  JsonObject hwObj = hwArray.createNestedObject();
+
+  hwObj["MV1"] = startMV1;
+  hwObj["MV2"] = startMV2;
+  hwObj["BUZZER"] = startBuzzer;
+  DBG_PRINT("MV1: ");
+  DBG_PRINTLN(startMV1);
+  DBG_PRINT("MV2: ");
+  DBG_PRINTLN(startMV2);
+  DBG_PRINT("Buzzer: ");
+  DBG_PRINTLN(startBuzzer);
+
+  // System Einstellungen
   JsonArray miscArray = doc.createNestedArray("MISC");
   JsonObject miscObj = miscArray.createNestedObject();
 

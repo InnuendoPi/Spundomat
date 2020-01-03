@@ -8,6 +8,12 @@ void millis2wait(const int &value)
   }
 }
 
+float formatDOT(String checkComma)
+{
+  checkComma.replace(',', '.');
+  return checkComma.toFloat();
+}
+
 // format bytes
 String formatBytes(size_t bytes)
 {

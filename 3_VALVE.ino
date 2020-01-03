@@ -16,5 +16,5 @@ void buildPressure() // Karbonisieren
 	millis2wait(PAUSE200MS);
 
 	digitalWrite(PIN_MV2, LOW);
-	millis2wait(PAUSE100MS);
+	millis2wait(PAUSE200MS);
 }

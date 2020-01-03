@@ -4,6 +4,11 @@
 
 ## Changelog
 
+Version 2.03
+- Add:      Ersetze bei Zahleneingabe Komma durch Punkt(4,5 -> 4.5)
+- Add:      Hardware kann konfiguriert werden (MV1, MV2 und Buzzer)
+- Fixed:    Webserver Standard index.html
+
 Version 2.02g
 - Add:      Testmodus
 - Fixed:    Typo index.html (offset)

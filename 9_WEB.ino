@@ -238,7 +238,7 @@ void handleSetMisc()
             if (server.arg(i) == "1")
                 testModus = true;
             else
-                setDEBUG = false;
+                testModus = false;
         }
         if (server.argName(i) == "telnet")
         {

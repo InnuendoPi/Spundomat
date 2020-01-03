@@ -72,7 +72,7 @@ const int PIN_ENCODER_A = D5;      // CLK
 const int PIN_ENCODER_B = D6;      // SW
 const int PIN_ENCODER_BUTTON = D7; // DT
 const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
-const int PIN_MV2 = D0;            // Magnetventil eingehend MV2 (Karbonisierer)
+const int PIN_MV2 = D8;    //D0    // Magnetventil eingehend MV2 (Karbonisierer)
 
 //Eulersche Zahl
 const double E = exp(1);

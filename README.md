@@ -4,6 +4,10 @@
 
 ## Changelog
 
+Version 2.02g
+- Add:      Testmodus
+- Fixed:    Typo index.html (offset)
+
 Version 2.02f
 - Reverted: ESP8266 V2.5.2
 - Add:      Display auf 4 Zeilen je 20 Zeichen

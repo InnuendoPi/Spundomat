@@ -49,8 +49,7 @@ void loop()
   case 1: // CO2 Spunden
     if (pressure > calcPressure(setCarbonation, temperature))
     {
-      if (calcPressure(setCarbonation, temperature) != -1)
-        releasePressure();
+      releasePressure();
       readPressure();
     }
     break;

@@ -16,6 +16,8 @@ void setup()
   {
     Serial.println("*** SYSINFO: Konfigurationsdatei config.json vorhanden. Lade Konfiguration ...");
     loadConfig();
+    if (testModus)
+      sensorValueTest = setSensorValueTest(setMode);
   }
   else
     Serial.println("*** SYSINFO: Konfigurationsdatei config.json nicht vorhanden. Setze Standardwerte ...");

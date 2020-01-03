@@ -41,7 +41,7 @@ sich Pneumatische Schnellkupplungen hervorragend.
 #include <Math.h>
 
 // Definiere Konstanten
-const char Version[6] = "2.02f";
+const char Version[6] = "2.02g";
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
 #define PAUSE5SEC 5000
@@ -108,8 +108,8 @@ int menuitem = 0;
 int edititem = 0;
 int page = 1;
 int encoderOldPos;
-// bool oldMV1 = false; // MV1 default Ventil geschlossen / true geöffnet
-// bool oldMV2 = false; // MV2 default Ventil geschlossen / true geöffnet
+int sensorValueTest;
+bool testModus = false;
 
 boolean up = false;
 boolean down = false;

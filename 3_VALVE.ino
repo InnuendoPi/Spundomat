@@ -5,11 +5,9 @@ void releasePressure()
 {
 	digitalWrite(PIN_MV1, HIGH);
 	millis2wait(PAUSE200MS);
-	//delay(200);
 
 	digitalWrite(PIN_MV1, LOW);
 	millis2wait(PAUSE100MS);
-	//delay(100);
 }
 
 void buildPressure() // Karbonisieren

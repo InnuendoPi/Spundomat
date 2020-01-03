@@ -95,7 +95,7 @@ sich Pneumatische Schnellkupplungen hervorragend.
 
 ### Hardware: die Platine zum Projekt
 
-![ov1](/Info/Layout01.png)
+![ov1](/Info/Layout01.png) ![ov1](/Info/Layout02.png)
 
 Beschreibung:
 

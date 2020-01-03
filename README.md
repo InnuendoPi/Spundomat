@@ -74,6 +74,7 @@ sich Pneumatische Schnellkupplungen hervorragend.
 * Firmware Update über WebIf (Firmware und SPIFFS)
 * Telnet Client Support (putty)
 
+![ov1](/Info/Spundomat02.jpg)
 
 ### Voraussetzungen: (2020.01)
 

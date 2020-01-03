@@ -49,24 +49,21 @@ void loop()
   case 1: // CO2 Spunden
     if (pressure > calcPressure(setCarbonation, temperature))
     {
-      if (startMV1)
-        releasePressure();
+      releasePressure();
       readPressure();
     }
     break;
   case 2: // Druck Spunden
     if (pressure > setPressure)
     {
-      if (startMV1)
-        releasePressure();
+      releasePressure();
       readPressure();
     }
     break;
   case 3: // CO2 Karbonisieren
     if (pressure < calcPressure(setCarbonation, temperature))
     {
-      if (startMV2)
-        buildPressure();
+      buildPressure();
       readPressure();
     }
     break;

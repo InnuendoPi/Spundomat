@@ -1,67 +1,74 @@
 void loop()
 {
-    // Webserver (80)
-    server.handleClient();
-    // Telnet
-    if (startTEL)
-        checkTELNET();
-    if (startMDNS)
-        mdns.update();
+  // Webserver (80)
+  server.handleClient();
 
-    button.tick();
-    readEncoder();
+  // Check WiFi status
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    DBG_PRINT("*** SYSINFO: WLAN reconnect status ");
+    DBG_PRINTLN(WiFi.status());
+    DBG_PRINT("*** SYSINFO: WLAN IP ");
+    DBG_PRINTLN(WiFi.localIP().toString());
+    WiFi.mode(WIFI_STA);
+    WiFi.begin();
+  }
 
-    if (TickPressureOccured)
+  // Telnet
+  if (startTEL)
+    checkTELNET();
+  // mDNS
+  if (startMDNS)
+     MDNS.update();
+
+  button.tick();
+  readEncoder();
+
+  if (TickPressureOccured)
+  {
+    readPressure();
+    TickPressureOccured = false;
+  }
+
+  if (TickTempOccured)
+  {
+    readTemparature();
+    TickTempOccured = false;
+  }
+
+  if (reflashLCD)
+  {
+    showLCD();
+  }
+
+  // Betriebsmodi
+  switch (setMode)
+  {
+  case 0: // aus
+    break;
+  case 1: // CO2 Spunden
+    if (pressure > calcPressure(setCarbonation, temperature))
     {
-        readPressure();
-        TickPressureOccured = false;
+      if (calcPressure(setCarbonation, temperature) != -1)
+        releasePressure();
+      readPressure();
     }
-
-    if (TickTempOccured)
+    break;
+  case 2: // Druck Spunden
+    if (pressure > setPressure)
     {
-        readTemparature();
-        TickTempOccured = false;
+      releasePressure();
+      readPressure();
     }
-
-    if (reflashLCD)
+    break;
+  case 3: // CO2 Karbonisieren
+    if (pressure < calcPressure(setCarbonation, temperature))
     {
-        showLCD();
+      buildPressure();
+      readPressure();
     }
-
-    //Betriebsmodi
-    switch (setMode)
-    {
-    case 0: // aus
-        break;
-    case 1: // CO2 Spunden
-        if (pressure > calcPressure(setCarbonation, temperature))
-        {
-            releasePressure();
-            readPressure();
-        }
-        break;
-    case 2: // Druck Spunden
-        if (pressure > setPressure)
-        {
-            releasePressure();
-            readPressure();
-        }
-        break;
-    case 3: // CO2 Zwangskarbonisierung
-        if (pressure < calcPressure(setCarbonation, temperature))
-        {
-            //buildPressure();
-            openValve();
-            readPressure();
-        }
-        else
-        {
-            closeValve();
-            readPressure();
-        }
-        break;
-    }
-
-    up = false;
-    down = false;
+    break;
+  }
+  up = false;
+  down = false;
 }

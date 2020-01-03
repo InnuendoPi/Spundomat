@@ -12,25 +12,27 @@
 **/
 
 // Berechne CO2 gehalt
-double calcCarbonation(float Pressure, float Temparature) 
+double calcCarbonation(float Pressure, float Temparature)
 {
-	double test = (Pressure + 1.013)* pow(E,(-10.73797 + (2617.25 / (Temparature + 273.15)))) * 10;
-	// DBG_PRINT("calcCarbonation:");
-	// DBG_PRINTLN(test);
+	double localCarbonation = (Pressure + 1.013) * pow(E, (-10.73797 + (2617.25 / (Temparature + 273.15)))) * 10;
+	if (isnan(localCarbonation))
+		return -1;
+	else
+		return localCarbonation;
 
 	//return (Pressure + 1.013)* pow(E,(-10.73797 + (2617.25 / (Temparature + 273.15)))) * 10;
-	return test;
 }
 
 // Berechne Solldruck
-double calcPressure(float Carbonation, float Temparature) 
+double calcPressure(float Carbonation, float Temparature)
 {
-	double test = (Carbonation/10) / pow(E,(-10.73797 + (2617.25 / (Temparature + 273.15)))) - 1.013;
-	//DBG_PRINT("calcPressure:");
-	//DBG_PRINTLN(test);
-	
+	double localPressure = (Carbonation / 10) / pow(E, (-10.73797 + (2617.25 / (Temparature + 273.15)))) - 1.013;
+	if (isnan(localPressure))
+		return -1;
+	else
+		return localPressure;
+
 	//return ((Carbonation/10) / pow(E,(-10.73797 + (2617.25 / (Temparature + 273.15)))) - 1.013);
-	return test;
 }
 
 // Lese EEPROM - Kalibrierung

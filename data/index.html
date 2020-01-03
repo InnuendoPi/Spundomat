@@ -136,25 +136,39 @@
         }
         else if (data.mode == 1)
         {
-          miscRender += "CO2 Spunden";
+          miscRender += "Spundomat CO2";
         }
         else if (data.mode == 2)
         {
-          miscRender += "Druck Spunden";
+          miscRender += "Spundomat Druck";
         }
         else
         {
-          miscRender += "CO2 Zwangskarbonisierung";
+          miscRender += "Karbonisierung";
         }
 
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> CO2 <span class='badge badge-light'>";
         miscRender += data.co2 + " g/l";
 
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Druck <span class='badge badge-light'>";
-        miscRender += data.druck + " bar";
+        if (data.druck == -1 )
+		{
+			miscRender += "kein Drucksensor angeschlossen";
+		}
+		else
+		{
+			miscRender += data.druck + " bar";
+		}
 
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Temperatur <span class='badge badge-light'>";
-        miscRender += data.temperatur + " °C";
+        if (data.temperatur == -127 )
+		{
+			miscRender += "kein Temperatursensor angeschlossen";
+		}
+		else
+		{
+			miscRender += data.temperatur + " °C";
+		}
 
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Volt <span class='badge badge-light'>";
         miscRender += data.voltage + " V";

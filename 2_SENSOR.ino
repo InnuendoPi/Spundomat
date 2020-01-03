@@ -29,12 +29,15 @@ void readTemparature()
 void readPressure()
 {
 	int sensorValue = analogRead(A0);
-	
+
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
 
 	// Berechne Druck offsetVoltage = 0.42;
 	pressure = (voltage - offsetVoltage) * 1.36;
+
+	if (isnan(pressure))
+		pressure = -1;
 
 	// Aktualisiere LCD wenn Druck geändert hat
 	if (fabs(pressure - oldPressure) > 0.01)
@@ -45,12 +48,12 @@ void readPressure()
 }
 
 // Timer Objekte
-void timerTempCallback(void *pArg)				// Timer Objekt Temperatur mit Pointer
+void timerTempCallback(void *pArg) // Timer Objekt Temperatur mit Pointer
 {
-	TickTempOccured = true;						// Bei true wird im nächsten loop readTemperature ausgeführt
+	TickTempOccured = true; // Bei true wird im nächsten loop readTemperature ausgeführt
 }
 
-void timerPressureCallback(void *pArg)			// Timer Objekt Temperatur mit Pointer
+void timerPressureCallback(void *pArg) // Timer Objekt Temperatur mit Pointer
 {
-	TickPressureOccured = true;					// Bei true wird im nächsten loop readPressure ausgeführt
+	TickPressureOccured = true; // Bei true wird im nächsten loop readPressure ausgeführt
 }

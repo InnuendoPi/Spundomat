@@ -1,7 +1,7 @@
 void handleRoot()
 {
     server.sendHeader("Location", "/index.html", true); //Redirect to our html web page
-    server.send(302, "text/plain", "");
+    server.send(200, "text/plain", "");
 }
 
 void handleWebRequests()
@@ -172,10 +172,8 @@ void handleSetMisc()
             {
                 WiFi.disconnect();
                 wifiManager.resetSettings();
-
                 unsigned long last = millis();
                 millis2wait(PAUSE2SEC);
-
                 ESP.reset();
             }
         }
@@ -239,12 +237,50 @@ void handleSetMisc()
     reflashLCD = true;
 }
 
-// Some helper functions WebIf
+void kalibrieren()
+{
+    DBG_PRINTLN("*** Kalibrierung");
+    server.send(200, "text/plain", "kalibrieren...");
+    readPressure();
+    offsetVoltage = voltage;
+    writeFloat(0, offsetVoltage);
+    readPressure();
+    //    page = 2;
+    //    menuitem = 0;
+    reflashLCD = true;
+}
+
+void handlereqMode()
+{
+    String message;
+    message += F("<option>");
+    message += modesWeb[setMode];
+    message += F("</option><option disabled>──────────</option>");
+    for (int i = 0; i < sizeOfModes; i++)
+    {
+        if (setMode != i)
+        {
+            message += F("<option>");
+            message += modesWeb[i];
+            message += F("</option>");
+        }
+    }
+    yield();
+    server.send(200, "text/plain", message);
+}
+
 void rebootDevice()
 {
     server.send(200, "text/plain", "rebooting...");
     SPIFFS.end(); // unmount SPIFFS
     ESP.restart();
+}
+
+void setTELNET()
+{
+    TelnetServer.begin();
+    TelnetServer.setNoDelay(true);
+    DBG_PRINTLN("*** SYSINFO: Connect your telnet Client, exit with ^] and 'quit'");
 }
 
 void checkTELNET()
@@ -270,59 +306,12 @@ void setMDNS()
 {
     if (startMDNS && nameMDNS[0] != '\0' && WiFi.status() == WL_CONNECTED)
     {
-        if (!mdns.begin(nameMDNS, WiFi.localIP()))
+        if (MDNS.begin(nameMDNS))
         {
-            DBG_PRINT("*** SYSINFO: Fehler mDNS!");
-            startMDNS = false;
-        }
-        else
-        {
-            mdns.begin(nameMDNS);
-            DBG_PRINT("*** SYSINFO: MDNS gestartet als ");
+            DBG_PRINT("*** SYSINFO: mDNS gestartet als ");
             DBG_PRINT(nameMDNS);
             DBG_PRINT(" verbunden an ");
-            IPAddress ip = WiFi.localIP();
-            DBG_PRINTLN(ip.toString());
+            DBG_PRINTLN(aktIP.toString());
         }
     }
-}
-
-void setTELNET()
-{
-    TelnetServer.begin();
-    TelnetServer.setNoDelay(true);
-    DBG_PRINTLN("*** SYSINFO: Connect your telnet Client, exit with ^] and 'quit'");
-}
-
-void kalibrieren()
-{
-    DBG_PRINTLN("*** Kalibrierung");
-    server.send(200, "text/plain", "kalibrieren...");
-    readPressure();
-    offsetVoltage = voltage;
-    writeFloat(0, offsetVoltage);
-    readPressure();
-//    page = 2;
-//    menuitem = 0;
-    reflashLCD = true;
-}
-
-void handlereqMode()
-{
-    String message;
-    message += F("<option>");
-    message += modesWeb[setMode];
-    message += F("</option><option disabled>──────────</option>");
-    // {"Aus", "CO2 Spund", "Druck Spund", "CO2 Zwang"};
-    for (int i = 0; i < sizeOfModes; i++)
-    {
-        if (setMode != i)
-        {
-            message += F("<option>");
-            message += modesWeb[i];
-            message += F("</option>");
-        }
-    }
-    yield();
-    server.send(200, "text/plain", message);
 }

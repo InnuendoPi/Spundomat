@@ -58,7 +58,7 @@ bool loadConfig()
     setDEBUG = miscObj["DEBUG"];
   if (miscObj.containsKey("TELNET"))
     startTEL = miscObj["TELNET"];
-
+    
   Serial.print("nameMDNS: ");
   Serial.println(nameMDNS);
   Serial.print("startMDNS: ");
@@ -70,16 +70,10 @@ bool loadConfig()
   Serial.println("------ loadConfig finished ------");
   configFile.close();
   size_t len = measureJson(doc);
-  DBG_PRINT("*** SYSINFO: JSON config length: ");
+  DBG_PRINT("*** SYSINFO: JSON Konfiguration Größe: ");
   DBG_PRINTLN(len);
   if (len > 256)
-    Serial.println("*** SYSINFO: Error JSON config too big!");
-  IPAddress aktIP = WiFi.localIP();
-  String Network = WiFi.SSID();
-  Serial.print("*** SYSINFO: ESP8266 device IP Address: ");
-  Serial.println(aktIP.toString());
-  Serial.print("*** SYSINFO: Configured WLAN SSID: ");
-  Serial.println(Network);
+    Serial.println("*** SYSINFO: Fehler JSON Konfiguration zu groß!");
 }
 
 bool saveConfig()
@@ -114,7 +108,7 @@ bool saveConfig()
   miscObj["MDNS"] = startMDNS;
   miscObj["DEBUG"] = setDEBUG;
   miscObj["TELNET"] = startTEL;
-  
+
   DBG_PRINT("nameMDNS: ");
   DBG_PRINTLN(nameMDNS);
   DBG_PRINT("startMDNS: ");

@@ -1,44 +1,22 @@
 // Öffne Ventil
 // Das kleinste Schaltintervall ist 10ms. Kleiner macht das Magnetventil nicht mit.
 //
-void releasePressure() 
+void releasePressure()
 {
-	digitalWrite(PIN_VALVE, HIGH);
+	digitalWrite(PIN_MV1, HIGH);
+	millis2wait(PAUSE200MS);
 	//delay(200);
-	millis2wait(200);
-	
-	digitalWrite(PIN_VALVE, LOW);
+
+	digitalWrite(PIN_MV1, LOW);
+	millis2wait(PAUSE100MS);
 	//delay(100);
-	millis2wait(100);
 }
 
-void buildPressure() // Zwangskarbonisierung
+void buildPressure() // Karbonisieren
 {
-	digitalWrite(PIN_VALVE, HIGH);
-	//delay(200);
-	millis2wait(200);
-	
-	digitalWrite(PIN_VALVE, LOW);
-	//delay(100);
-	millis2wait(100);
-}
+	digitalWrite(PIN_MV2, HIGH);
+	millis2wait(PAUSE200MS);
 
-void openValve()
-{
-	if (!oldValve)
-	{
-		digitalWrite(PIN_VALVE, HIGH);
-		millis2wait(200);
-	}
-	oldValve = true;
-}
-
-void closeValve()
-{
-	if (oldValve)
-	{
-		digitalWrite(PIN_VALVE, LOW);
-		millis2wait(100);
-	}
-	oldValve = false;
+	digitalWrite(PIN_MV2, LOW);
+	millis2wait(PAUSE100MS);
 }

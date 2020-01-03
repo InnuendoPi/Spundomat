@@ -4,6 +4,21 @@
 
 ## Changelog
 
+Version 2.02f
+- Reverted: ESP8266 V2.5.2
+- Add:      Display auf 4 Zeilen je 20 Zeichen
+- Add:      Abfrage not a number bei Berechnung setCarbonation
+- Add:      Abfrage not a number bei Berechnung Pressure
+- Add:      Im AP Mode die Mindestsignalstärke eingefügt
+- Add:      Timeout von 5 Minuten für den AP Mode gesetzt
+- Fixed:    Fehler mDNS behoben
+- Fixed:    Absturz im Startmenü behoben
+- Reworked: Setup und loop überarbeitet
+- Reworked: WiFiManager
+- Reworked: Startdisplay LCD
+- Cleanup:  Testcode entfernt
+
+
 Version 2.01 - 2.02e
 - Update:   Bibliotheken aktualisiert
 - Add:      Dateisystem SPIFFS

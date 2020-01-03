@@ -5,83 +5,84 @@ void setup()
   {
     yield(); // wait for serial port to connect. Needed for native USB port only
   }
+  Serial.println("");
+  Serial.println("*** SYSINFO: Starte Setup Spundomat");
 
-  // Connect WiFi
-  wifiManager.autoConnect("SpundomatAP");
-  
   if (!SPIFFS.begin())
   {
     Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
   }
-  else
+  else if (SPIFFS.exists("/config.json")) // Load configuration
   {
-    DBG_PRINTLN("");
-    Dir dir = SPIFFS.openDir("/");
-    while (dir.next())
-    {
-      String fileName = dir.fileName();
-      size_t fileSize = dir.fileSize();
-      DBG_PRINT("FS File: ");
-      DBG_PRINT(fileName.c_str());
-      DBG_PRINT(" size: ");
-      DBG_PRINTLN(formatBytes(fileSize).c_str());
-    }
-  }
-
-  // Load configuration
-  if (SPIFFS.exists("/config.json"))
+    Serial.println("*** SYSINFO: Konfigurationsdatei config.json vorhanden. Lade Konfiguration ...");
     loadConfig();
+  }
   else
     Serial.println("*** SYSINFO: Konfigurationsdatei config.json nicht vorhanden. Setze Standardwerte ...");
 
-  // Starte Telnet Server
-  if (startTEL)
-    setTELNET();
-  // Starte mDNS Dienst
-  if (startMDNS)
-    setMDNS();
+  // Verbinde WLAN
+  wifiManager.setDebugOutput(false);
+  wifiManager.setMinimumSignalQuality(10);
+  wifiManager.setConfigPortalTimeout(300);
+  wifiManager.setAPCallback(configModeCallback);
+  wifiManager.autoConnect(nameMDNS);
+  WiFi.setSleepMode(WIFI_NONE_SLEEP);
+  WiFi.mode(WIFI_STA);
+  WiFi.setAutoConnect(true);
+  WiFi.setAutoReconnect(true);
+  aktIP = WiFi.localIP();
+  aktWLAN = WiFi.SSID();
+  Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
+  Serial.println(aktWLAN);
 
   // Starte Webserver
   setupServer();
 
-  //Start I2C
+  //Starte mDNS Dienst
+  if (startMDNS)
+    setMDNS();
+  else
+  {
+    Serial.print("*** SYSINFO: ESP8266 IP Addresse: ");
+    Serial.println(aktIP.toString());
+  }
+
+  // Starte Telnet Server
+  if (startTEL)
+    setTELNET();
+
+  // Start I2C
   Wire.begin();
   Wire.beginTransmission(0x27);
 
-  //Start Temperatursensor
+  // Start Temperatursensor
   sensors.begin();
 
-  //Pin Definitionen
-  pinMode(PIN_VALVE, OUTPUT);       // D8
-  pinMode(PIN_BUZZER, OUTPUT);      // D0
+  // Pin Definitionen
+  pinMode(PIN_MV1, OUTPUT);    // D8
+  pinMode(PIN_MV2, OUTPUT);    // D0
+  pinMode(PIN_BUZZER, OUTPUT); // D4
 
-  attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE);  // D5
-  attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE);  // D6
+  attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
+  attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
 
   button.attachClick(click);
 
-  //EEPROM
+  // EEPROM
   EEPROM.begin(512);
-  offsetVoltage = readFloat(0);     // Lese Offset (Kalibrierung)
+  offsetVoltage = readFloat(0); // Lese Offset (Kalibrierung)
 
-  //LCD
-  lcd.begin(16, 2);
-  lcd.setBacklight(255);
-  lcd.print(" Spundomat V ");
-  lcd.print(Version);
-  millis2wait(PAUSE2SEC);
-  lcd.setCursor(0, 1);
-  lcd.print(" 2020 - Innuendo");
-  millis2wait(PAUSE2SEC);
+  // LCD
+  startLCD();
 
   readTemparature();
 
   // Timer Temperatur einlesen
   os_timer_setfn(&TimerTemp, timerTempCallback, NULL);
-  os_timer_arm(&TimerTemp, 30000, true);                // Zeitintervall Temperatursensor 30sek
+  os_timer_arm(&TimerTemp, 30000, true); // Zeitintervall Temperatursensor 30sek
   // Timer Druck einlesen
   os_timer_setfn(&TimerPressure, timerPressureCallback, NULL);
-  os_timer_arm(&TimerPressure, 1000, true);             // Zeitintervall Drucksensor 1sek
+  os_timer_arm(&TimerPressure, 1000, true); // Zeitintervall Drucksensor 1sek
 }
 
 // Webserver

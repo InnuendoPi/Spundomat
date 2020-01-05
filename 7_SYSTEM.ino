@@ -8,10 +8,28 @@ void millis2wait(const int &value)
   }
 }
 
-float formatDOT(String checkComma)
+// Prüfe WebIf Eingaben - ersetze Komma durch Punkt
+float formatDOT(String str)
 {
-  checkComma.replace(',', '.');
-  return checkComma.toFloat();
+  str.replace(',', '.');
+  if (isValidDigit(str))
+    return str.toFloat();
+  else
+    return 0;
+}
+
+// Prüfe WebIf Eingaben
+bool isValidDigit(const String &str)
+{
+  for (int i = 0; i < str.length(); i++)
+  {
+    if (str.charAt(i) == '.')
+      continue;
+    if (isdigit(str.charAt(i)))
+      continue;
+    return false;
+  }
+  return true;
 }
 
 // format bytes

@@ -19,7 +19,8 @@
         <div class="col-md-auto">
           <a href="/edit" class="btn btn-outline-primary" id="btn_edit">Dateiexplorer</a>
           <button type="button" class="btn btn-outline-primary" id="btn_kalibrieren">Kalibrieren</button>
-          <a href="/update" class="btn btn-outline-danger" id="btn_upd">Update</a>
+          <a href="/update" class="btn btn-outline-danger" id="btn_upd">Datei Update</a>
+		  <button type="button" class="btn btn-outline-primary" id="btn_httpupdate">WebUpdate</button>
           <button type="button" class="btn btn-outline-dark" id="btn_reboot">Neustart</button>
         </div>
       </div>
@@ -564,6 +565,17 @@
     $("#btn_kalibrieren").click(function () {
       $.ajax({
         url: '/kalibrieren',
+        type: 'POST',
+        async: false,
+        cache: false
+      }).done(function (msg) {
+        //alert("Device says: " + msg + "\n Page will be reloaded now!");
+        window.location.reload(true);
+      });;
+    });
+	$("#btn_httpupdate").click(function () {
+      $.ajax({
+        url: '/startHTTPUpdate',
         type: 'POST',
         async: false,
         cache: false

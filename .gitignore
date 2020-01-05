@@ -7,6 +7,9 @@
 .DS_Store
 .gitattributes
 .gitignore
+999_HTTPUpdate.ino
+9_WEB.ino
+7_SYSTEM.ino
 data/config.json
 build/core
 build/preproc

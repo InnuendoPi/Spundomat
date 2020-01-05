@@ -77,6 +77,8 @@ void setup()
   EEPROM.begin(512);
   offsetVoltage = readFloat(0); // Lese Offset (Kalibrierung)
 
+  setClock();
+
   // LCD
   startLCD();
 
@@ -88,6 +90,7 @@ void setup()
   // Timer Druck einlesen
   os_timer_setfn(&TimerPressure, timerPressureCallback, NULL);
   os_timer_arm(&TimerPressure, 1000, true); // Zeitintervall Drucksensor 1sek
+
 }
 
 // Webserver
@@ -101,7 +104,8 @@ void setupServer()
   server.on("/setMisc", handleSetMisc);     // Einstellungen ändern
   server.on("/reqMiscSet", handleRequestMiscSet);
   server.on("/reqMode", handlereqMode);
-
+  //server.on("/startHTTPUpdate", startHTTPUpdate);
+  server.on("/startHTTPUpdate", startHTTPUpdate);
   // FSBrowser initialisieren
   server.on("/list", HTTP_GET, handleFileList); // list directory
   server.on("/edit", HTTP_GET, []() {           // load editor

@@ -4,6 +4,11 @@
 
 ## Changelog
 
+Version 2.04
+- Add:      WebUpdate Firmware
+- Add:      NTP Zeit
+- Update:   ESP8266 V2.6.3
+
 Version 2.03
 - Add:      Ersetze bei Zahleneingabe Komma durch Punkt(4,5 -> 4.5)
 - Add:      Hardware kann konfiguriert werden (MV1, MV2 und Buzzer)
@@ -26,7 +31,6 @@ Version 2.02f
 - Reworked: WiFiManager
 - Reworked: Startdisplay LCD
 - Cleanup:  Testcode entfernt
-
 
 Version 2.01 - 2.02e
 - Update:   Bibliotheken aktualisiert

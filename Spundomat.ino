@@ -42,12 +42,12 @@ sich Pneumatische Schnellkupplungen hervorragend.
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
 #include <WiFiClientSecure.h>
+#include <WiFiClientSecureBearSSL.h>
 #include <NTPClient.h>
 #include <stdarg.h>
 #include <time.h>
 #include <CertStoreBearSSL.h>
-#include <WiFiClientSecureBearSSL.h>
-BearSSL::CertStore certStore;
+// BearSSL::CertStore certStore;
 
 extern "C"
 {
@@ -111,7 +111,6 @@ os_timer_t TimerPressure;           // Timer Objekt Druck
 os_timer_t TimerNTP;                // Timer Objekt NTP
 bool TickTempOccured = false;       // Prüfe Zeitintervall Temperatur
 bool TickPressureOccured = false;   // Prüfe Zeitintervall Druck
-bool TickNTPOccured = false;        // Prüfe Zeitintervall NTP
 
 // Deklariere Variablen
 float temperature;

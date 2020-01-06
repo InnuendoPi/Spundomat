@@ -21,7 +21,8 @@ void loop()
 
   button.tick();
   readEncoder();
-
+  timeClient.update();
+  
   if (TickPressureOccured)
   {
     readPressure();
@@ -33,13 +34,7 @@ void loop()
     readTemparature();
     TickTempOccured = false;
   }
-  // if (TickNTPOccured)
-  // {
-  //   DBGPRINT("*** SYSINFO: NTP Update");
-  //   timeClient.update();
-  //   TickNTPOccured = false;
-  // }
-
+  
   if (reflashLCD)
   {
     showLCD();

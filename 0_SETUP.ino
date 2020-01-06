@@ -95,9 +95,6 @@ void setup()
   // Timer Druck einlesen
   os_timer_setfn(&TimerPressure, timerPressureCallback, NULL);
   os_timer_arm(&TimerPressure, 1000, true); // Zeitintervall Drucksensor 1sek
-  // Timer NTP Update
-  // os_timer_setfn(&TimerNTP, timerNTPCallback, NULL);
-  // os_timer_arm(&TimerNTP, 3600000, true); // Zeitintervall NTP Update 1h
 
   // Uhrzeit
   displayClock();

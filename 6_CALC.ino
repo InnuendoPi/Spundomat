@@ -15,12 +15,11 @@
 double calcCarbonation(float Pressure, float Temparature)
 {
 	double localCarbonation = (Pressure + 1.013) * pow(E, (-10.73797 + (2617.25 / (Temparature + 273.15)))) * 10;
+	// isnan = not a number - überprüfen!
 	// if (isnan(localCarbonation))
 	// 	return -1;
 	// else
 	return localCarbonation;
-
-	//return (Pressure + 1.013)* pow(E,(-10.73797 + (2617.25 / (Temparature + 273.15)))) * 10;
 }
 
 // Berechne Solldruck
@@ -31,8 +30,6 @@ double calcPressure(float Carbonation, float Temparature)
 	// 	return -1;
 	// else
 	return localPressure;
-
-	//return ((Carbonation/10) / pow(E,(-10.73797 + (2617.25 / (Temparature + 273.15)))) - 1.013);
 }
 
 // Lese EEPROM - Kalibrierung

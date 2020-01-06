@@ -337,7 +337,7 @@ void handleSetMisc()
 
 void kalibrieren()
 {
-    DBG_PRINTLN("*** Kalibrierung");
+    DBGPRINT("*** Kalibrierung");
     server.send(200, "text/plain", "kalibrieren...");
     readPressure();
     offsetVoltage = voltage;
@@ -378,7 +378,7 @@ void setTELNET()
 {
     TelnetServer.begin();
     TelnetServer.setNoDelay(true);
-    DBG_PRINTLN("*** SYSINFO: Connect your telnet Client, exit with ^] and 'quit'");
+    DBGPRINT("*** SYSINFO: Connect your telnet Client, exit with ^] and 'quit'");
 }
 
 void checkTELNET()
@@ -405,11 +405,6 @@ void setMDNS()
     if (startMDNS && nameMDNS[0] != '\0' && WiFi.status() == WL_CONNECTED)
     {
         if (MDNS.begin(nameMDNS))
-        {
-            DBG_PRINT("*** SYSINFO: mDNS gestartet als ");
-            DBG_PRINT(nameMDNS);
-            DBG_PRINT(" verbunden an ");
-            DBG_PRINTLN(aktIP.toString());
-        }
+            DBGPRINT("*** SYSINFO: mDNS gestartet als %s verbunden an %s", nameMDNS, WiFi.localIP().toString().c_str());
     }
 }

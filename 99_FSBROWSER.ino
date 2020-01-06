@@ -32,7 +32,6 @@ String getContentType(String filename) {
 }
 
 bool handleFileRead(String path) {
-  //  DBG_PRINTLN("handleFileRead: " + path);
   if (path.endsWith("/")) {
     path += "index.html";
   }
@@ -60,13 +59,11 @@ void handleFileUpload() {
     if (!filename.startsWith("/")) {
       filename = "/" + filename;
     }
-    DBG_PRINT("handleFileUpload Name: ");
-    DBG_PRINTLN(filename);
+    DBGPRINT("handleFileUpload Name: %s", filename.c_str());
     fsUploadFile = SPIFFS.open(filename, "w");
     filename = String();
   } else if (upload.status == UPLOAD_FILE_WRITE) {
-    DBG_PRINT("handleFileUpload Data: ");
-    DBG_PRINTLN(upload.currentSize);
+    DBGPRINT("handleFileUpload Data: %d", upload.currentSize);
     if (fsUploadFile) {
       fsUploadFile.write(upload.buf, upload.currentSize);
     }
@@ -74,8 +71,7 @@ void handleFileUpload() {
     if (fsUploadFile) {
       fsUploadFile.close();
     }
-    DBG_PRINT("handleFileUpload Size: ");
-    DBG_PRINTLN(upload.totalSize);
+    DBGPRINT("handleFileUpload Size: %d", upload.totalSize);
     loadConfig();
   }
 }
@@ -85,7 +81,7 @@ void handleFileDelete() {
     return server.send(500, "text/plain", "BAD ARGS");
   }
   String path = server.arg(0);
-  Serial.println("handleFileDelete: " + path);
+  DBGPRINT("handleFileDelete: %s", path.c_str());
   if (path == "/") {
     return server.send(500, "text/plain", "BAD PATH");
   }
@@ -102,7 +98,7 @@ void handleFileCreate() {
     return server.send(500, "text/plain", "BAD ARGS");
   }
   String path = server.arg(0);
-  Serial.println("handleFileCreate: " + path);
+  DBGPRINT("handleFileCreate: %s", path.c_str());
   if (path == "/") {
     return server.send(500, "text/plain", "BAD PATH");
   }
@@ -125,7 +121,6 @@ void handleFileList() {
     return;
   }
   String path = server.arg("dir");
-  //DBG_PRINTLN("handleFileList: " + path);
   Dir dir = SPIFFS.openDir(path);
   path = String();
 

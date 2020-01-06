@@ -10,7 +10,7 @@ bool loadConfig()
   }
 
   size_t size = configFile.size();
-  if (size > 1024)
+  if (size > 512)
   {
     Serial.print("Config file size is too large");
     Serial.println("------ loadConfig aborted -------");
@@ -19,7 +19,7 @@ bool loadConfig()
   std::unique_ptr<char[]> buf(new char[size]);
   configFile.readBytes(buf.get(), size);
 
-  StaticJsonDocument<256> doc;
+  StaticJsonDocument<384> doc;
   DeserializationError error = deserializeJson(doc, buf.get());
   if (error)
   {
@@ -77,33 +77,28 @@ bool loadConfig()
     testModus = miscObj["TEST"];
   if (miscObj.containsKey("TELNET"))
     startTEL = miscObj["TELNET"];
-    
-  Serial.print("nameMDNS: ");
-  Serial.println(nameMDNS);
-  Serial.print("startMDNS: ");
-  Serial.println(startMDNS);
-  Serial.print("setDEBUG: ");
-  Serial.println(setDEBUG);
-  Serial.print("startTelnet: ");
-  Serial.println(startTEL);
+
+  Serial.printf("nameMDNS: %s\n", nameMDNS);
+  Serial.printf("startMDNS: %d\n", startMDNS);
+  Serial.printf("setDEBUG: %d\n", setDEBUG);
+  Serial.printf("startTelnet: %d\n", startTEL);
   Serial.println("------ loadConfig finished ------");
   configFile.close();
   size_t len = measureJson(doc);
-  DBG_PRINT("*** SYSINFO: JSON Konfiguration Größe: ");
-  DBG_PRINTLN(len);
-  if (len > 256)
+  DBGPRINT("*** SYSINFO: JSON Konfiguration Größe: %d", len);
+  if (len > 384)
     Serial.println("*** SYSINFO: Fehler JSON Konfiguration zu groß!");
 }
 
 bool saveConfig()
 {
-  DBG_PRINTLN("------ saveConfig started -------");
-  StaticJsonDocument<256> doc;
+  DBGPRINT("%s", "------ saveConfig started -------");
+  StaticJsonDocument<384> doc;
   File configFile = SPIFFS.open("/config.json", "w");
   if (!configFile)
   {
-    DBG_PRINTLN("Failed to open config file for writing");
-    DBG_PRINTLN("------ saveConfig aborted ------");
+    DBGPRINT("%s", "Failed to open config file for writing");
+    DBGPRINT("%s", "------ saveConfig aborted ------");
     return false;
   }
 
@@ -112,13 +107,10 @@ bool saveConfig()
   spundObj["PRESSURE"] = setPressure;
   spundObj["CARBONATION"] = setCarbonation;
   spundObj["MODE"] = setMode;
-  DBG_PRINT("setPressure: ");
-  DBG_PRINTLN(setPressure);
-  DBG_PRINT("setCarbonation: ");
-  DBG_PRINTLN(setCarbonation);
-  DBG_PRINT("setMode: ");
-  DBG_PRINTLN(setMode);
-  DBG_PRINTLN("--------");
+  DBGPRINT("setPressure: %f", setPressure);
+  DBGPRINT("setCarbonation: %f", setCarbonation);
+  DBGPRINT("setMode: %d", setMode);
+  DBGPRINT("%s", "--------");
 
   // Hardware Einstellungen
   JsonArray hwArray = doc.createNestedArray("HARDWARE");
@@ -127,12 +119,10 @@ bool saveConfig()
   hwObj["MV1"] = startMV1;
   hwObj["MV2"] = startMV2;
   hwObj["BUZZER"] = startBuzzer;
-  DBG_PRINT("MV1: ");
-  DBG_PRINTLN(startMV1);
-  DBG_PRINT("MV2: ");
-  DBG_PRINTLN(startMV2);
-  DBG_PRINT("Buzzer: ");
-  DBG_PRINTLN(startBuzzer);
+  DBGPRINT("MV1: %d", startMV1);
+  DBGPRINT("MV2: %d", startMV2);
+  DBGPRINT("Buzzer: %d", startBuzzer);
+  DBGPRINT("%s", "--------");
 
   // System Einstellungen
   JsonArray miscArray = doc.createNestedArray("MISC");
@@ -144,17 +134,13 @@ bool saveConfig()
   miscObj["TEST"] = testModus;
   miscObj["TELNET"] = startTEL;
 
-  DBG_PRINT("nameMDNS: ");
-  DBG_PRINTLN(nameMDNS);
-  DBG_PRINT("startMDNS: ");
-  DBG_PRINTLN(startMDNS);
-  DBG_PRINT("setMode: ");
-  DBG_PRINTLN(setMode);
-  DBG_PRINT("setDEBUG: ");
-  DBG_PRINTLN(setDEBUG);
-  DBG_PRINT("startTELNET: ");
-  DBG_PRINTLN(startTEL);
+  DBGPRINT("nameMDNS: %s", nameMDNS);
+  DBGPRINT("startMDNS: %d", startMDNS);
+  DBGPRINT("setMode: %d", setMode);
+  DBGPRINT("setDEBUG: %d", setDEBUG);
+  DBGPRINT("Test: %d", testModus);
+  DBGPRINT("startTELNET: %d", startTEL);
   serializeJson(doc, configFile);
   configFile.close();
-  DBG_PRINTLN("------ saveConfig finished ------");
+  DBGPRINT("%s", "------ saveConfig finished ------");
 }

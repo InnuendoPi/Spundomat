@@ -43,12 +43,21 @@ sich Pneumatische Schnellkupplungen hervorragend.
 #include <ESP8266httpUpdate.h>
 #include <WiFiClientSecure.h>
 #include <NTPClient.h>
+#include <stdarg.h>
+#include <time.h>
 #include <CertStoreBearSSL.h>
 #include <WiFiClientSecureBearSSL.h>
-// BearSSL::CertStore certStore;
+BearSSL::CertStore certStore;
+
+extern "C"
+{
+#include "user_interface.h"
+}
 
 // Definiere Konstanten
 const char Version[6] = "2.04";
+#define DBGBUFFER 128 // Buffer zum Zwischenspeichern von Strings
+
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
 #define PAUSE5SEC 5000
@@ -56,10 +65,18 @@ const char Version[6] = "2.04";
 #define PAUSE100MS 100
 #define PAUSE10MS 10
 
-extern "C"
-{
-#include "user_interface.h"
-}
+// Definiere Pinbelegung
+const int PIN_PRESSURE = A0;       // Drucksensor
+const int PIN_BUZZER = D4;         // Buzzer (wird nicht verwendet)
+const int PIN_TEMP = D3;           // DS18B20
+const int PIN_ENCODER_A = D5;      // CLK
+const int PIN_ENCODER_B = D6;      // SW
+const int PIN_ENCODER_BUTTON = D7; // DT
+const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
+const int PIN_MV2 = D8;            //D0    // Magnetventil eingehend MV2 (Karbonisierer)
+
+// Eulersche Zahl
+const double E = exp(1);
 
 // Voreinstellungen
 float setPressure = 2.0;    //  Vorgabe bei Neustart von 2,0 bar
@@ -74,20 +91,7 @@ bool startMV1 = false;    // Aktiviere MV1
 bool startMV2 = false;    // Aktiviere MV2
 bool startBuzzer = false; // Aktiviere Buzzer
 
-//Pinbelegung
-const int PIN_PRESSURE = A0;       // Drucksensor
-const int PIN_BUZZER = D4;         // Buzzer (wird nicht verwendet)
-const int PIN_TEMP = D3;           // DS18B20
-const int PIN_ENCODER_A = D5;      // CLK
-const int PIN_ENCODER_B = D6;      // SW
-const int PIN_ENCODER_BUTTON = D7; // DT
-const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
-const int PIN_MV2 = D8;            //D0    // Magnetventil eingehend MV2 (Karbonisierer)
-
-//Eulersche Zahl
-const double E = exp(1);
-
-//Klassen Initialisierungen
+// Klassen Initialisierungen
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display
 OneWire oneWire(PIN_TEMP);       // DS18B20
 DallasTemperature sensors(&oneWire);
@@ -99,16 +103,17 @@ ESP8266HTTPUpdateServer httpUpdate; // Version mit SPIFFS Update
 WiFiServer TelnetServer(23);        // Telnet Server (putty)
 WiFiClient Telnet;
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60);
+NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
 
-//Timer
-os_timer_t TimerTemp;             // Timer Objekt Temperatur: Wiederhole Aufgaben und lasse den Wemos das Zeitintervall überwachen
-os_timer_t TimerPressure;         // Zeitintervall Druck
-bool TickTempOccured = false;     // Prüfe Zeitintervall Temperatur
-bool TickPressureOccured = false; // Prüfe Zeitintervall Druck
-unsigned long lastToggledTick = 0;
+// Definiere Timer
+os_timer_t TimerTemp;               // Timer Objekt Temperatur: Wiederhole Aufgaben und lasse den Wemos das Zeitintervall überwachen
+os_timer_t TimerPressure;           // Timer Objekt Druck
+os_timer_t TimerNTP;                // Timer Objekt NTP
+bool TickTempOccured = false;       // Prüfe Zeitintervall Temperatur
+bool TickPressureOccured = false;   // Prüfe Zeitintervall Druck
+bool TickNTPOccured = false;        // Prüfe Zeitintervall NTP
 
-//Variablen
+// Deklariere Variablen
 float temperature;
 float oldTemperature;
 char sTemperature[5];
@@ -116,32 +121,32 @@ float voltage;
 float offsetVoltage = 0.42;
 double pressure;
 double oldPressure;
-int menuitem = 0;
-int edititem = 0;
-int page = 1;
 int encoderOldPos;
 int sensorValueTest;
-File fsUploadFile; // Datei Object
 
 boolean up = false;
 boolean down = false;
 boolean buttonPressed;
 
+int menuitem = 0;       // Display
+int edititem = 0;       // Display
+int page = 1;           // Display
 boolean reflashLCD = true;
-
 String Menu1[4]; // Startseite
 String Menu2[5]; // Modus
 String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
+File fsUploadFile; // Datei Object
 #define sizeOfModes 4
-String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb"};
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren"};
+String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb"};                            // ModusNamen im Display
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren"}; // Modus-Namen für WebIf
 
 char nameMDNS[16] = "spundomat"; // http://spundomat/index.html
-IPAddress aktIP;
-String aktWLAN;
+IPAddress aktIP;    // Aktuelle IP Adresse
+String aktWLAN;     // SSID WLAN im STA Modus
 
+// Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)
 {
     Serial.print("*** SYSINFO: Spundomat im AP Mode ");

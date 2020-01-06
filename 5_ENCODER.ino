@@ -1,4 +1,4 @@
-//Lese Encoder ein
+// Lese Encoder
 void readEncoder()
 {
   if (encoder.getPosition() > encoderOldPos)
@@ -14,7 +14,7 @@ void readEncoder()
   encoderOldPos = encoder.getPosition();
 }
 
-//Encoder gedrückt
+// Encoder gedrückt
 void click()
 {
   buttonPressed = true;

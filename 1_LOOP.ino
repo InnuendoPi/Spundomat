@@ -3,13 +3,11 @@ void loop()
   // Webserver (80)
   server.handleClient();
 
-  // Check WiFi status
+  // Prüfe WiFi status
   if (WiFi.status() != WL_CONNECTED)
   {
-    DBG_PRINT("*** SYSINFO: WLAN reconnect status ");
-    DBG_PRINTLN(WiFi.status());
-    DBG_PRINT("*** SYSINFO: WLAN IP ");
-    DBG_PRINTLN(WiFi.localIP().toString());
+    DBGPRINT("*** SYSINFO: WLAN nicht verbunden: %s", WiFi.status());
+    DBGPRINT("*** SYSINFO: WLAN IP %s", WiFi.localIP().toString().c_str());
     WiFi.mode(WIFI_STA);
     WiFi.begin();
   }
@@ -35,6 +33,12 @@ void loop()
     readTemparature();
     TickTempOccured = false;
   }
+  // if (TickNTPOccured)
+  // {
+  //   DBGPRINT("*** SYSINFO: NTP Update");
+  //   timeClient.update();
+  //   TickNTPOccured = false;
+  // }
 
   if (reflashLCD)
   {

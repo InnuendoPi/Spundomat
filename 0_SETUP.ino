@@ -1,10 +1,13 @@
 void setup()
 {
   Serial.begin(115200);
+  //Serial.setDebugOutput(true);
   while (!Serial)
   {
     yield(); // wait for serial port to connect. Needed for native USB port only
   }
+  Serial.println("");
+  Serial.println("");
   Serial.println("");
   Serial.println("*** SYSINFO: Starte Setup Spundomat");
 
@@ -12,7 +15,7 @@ void setup()
   {
     Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
   }
-  else if (SPIFFS.exists("/config.json")) // Load configuration
+  else if (SPIFFS.exists("/config.json")) // Lade Konfigurations config.json
   {
     Serial.println("*** SYSINFO: Konfigurationsdatei config.json vorhanden. Lade Konfiguration ...");
     loadConfig();
@@ -53,18 +56,18 @@ void setup()
   if (startTEL)
     setTELNET();
 
-  // Start I2C
+  // Starte I2C
   Wire.begin();
   Wire.beginTransmission(0x27);
 
-  // Start Temperatursensor
+  // Starte Temperatursensor
   sensors.begin();
 
   // Pin Definitionen
   if (startMV1)
-    pinMode(PIN_MV1, OUTPUT);    // D8
+    pinMode(PIN_MV1, OUTPUT); // D8
   if (startMV2)
-    pinMode(PIN_MV2, OUTPUT);    // D0
+    pinMode(PIN_MV2, OUTPUT); // D0
   if (startBuzzer)
     pinMode(PIN_BUZZER, OUTPUT); // D4
 
@@ -77,11 +80,13 @@ void setup()
   EEPROM.begin(512);
   offsetVoltage = readFloat(0); // Lese Offset (Kalibrierung)
 
-  setClock();
-
+  // Zeitserver via NTP
+  timeClient.begin();
+  
   // LCD
   startLCD();
 
+  // Lese vom DS18B20
   readTemparature();
 
   // Timer Temperatur einlesen
@@ -90,7 +95,12 @@ void setup()
   // Timer Druck einlesen
   os_timer_setfn(&TimerPressure, timerPressureCallback, NULL);
   os_timer_arm(&TimerPressure, 1000, true); // Zeitintervall Drucksensor 1sek
+  // Timer NTP Update
+  // os_timer_setfn(&TimerNTP, timerNTPCallback, NULL);
+  // os_timer_arm(&TimerNTP, 3600000, true); // Zeitintervall NTP Update 1h
 
+  // Uhrzeit
+  displayClock();
 }
 
 // Webserver
@@ -98,14 +108,13 @@ void setupServer()
 {
   server.on("/", handleRoot);
   server.on("/reboot", rebootDevice);     // Spundomat reboot
-  server.on("/kalibrieren", kalibrieren); // Spundomat reboot
+  server.on("/kalibrieren", kalibrieren); // Spundomat Kalibrierung
 
   server.on("/reqMisc", handleRequestMisc); // System Infos für WebConfig
   server.on("/setMisc", handleSetMisc);     // Einstellungen ändern
   server.on("/reqMiscSet", handleRequestMiscSet);
-  server.on("/reqMode", handlereqMode);
-  //server.on("/startHTTPUpdate", startHTTPUpdate);
-  server.on("/startHTTPUpdate", startHTTPUpdate);
+  server.on("/reqMode", handlereqMode);           // WebIf Abfrage Modus
+  server.on("/startHTTPUpdate", startHTTPUpdate); // Firmware ebUpdate
   // FSBrowser initialisieren
   server.on("/list", HTTP_GET, handleFileList); // list directory
   server.on("/edit", HTTP_GET, []() {           // load editor

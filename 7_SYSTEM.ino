@@ -32,207 +32,81 @@ bool isValidDigit(const String &str)
   return true;
 }
 
-// format bytes
-String formatBytes(size_t bytes)
+void DBGPRINT(const char *str, ...)
 {
-  if (bytes < 1024)
+  if (setDEBUG)
   {
-    return String(bytes) + "B";
-  }
-  else if (bytes < (1024 * 1024))
-  {
-    return String(bytes / 1024.0) + "KB";
-  }
-  else if (bytes < (1024 * 1024 * 1024))
-  {
-    return String(bytes / 1024.0 / 1024.0) + "MB";
-  }
-  else
-  {
-    return String(bytes / 1024.0 / 1024.0 / 1024.0) + "GB";
-  }
-}
+    int i, count = 0, j = 0, flag = 0;
+    char temp[DBGBUFFER + 1];
+    va_list argv;
+    va_start(argv, str);
+    for (i = 0, j = 0; str[i] != '\0'; i++) // Iteriere über die Zeichen des Strings
+    {
+      if (str[i] == '%')
+      {
+        // Lösche buffer
+        temp[j] = '\0';
+        if (Telnet.connected())
+          Telnet.print(temp);
+        else
+          Serial.print(temp);
+        j = 0;
+        temp[0] = '\0';
 
-void DBG_PRINT(const String &value)
-{
-  if (setDEBUG)
-  {
+        switch (str[++i])
+        {
+        case 'd': // Integer
+          if (Telnet.connected())
+            Telnet.print(va_arg(argv, int));
+          else
+            Serial.print(va_arg(argv, int));
+          break;
+        case 'l': // Long
+          if (Telnet.connected())
+            Telnet.print(va_arg(argv, long));
+          else
+            Serial.print(va_arg(argv, long));
+          break;
+        case 'f': // Float
+          if (Telnet.connected())
+            Telnet.print(va_arg(argv, double));
+          else
+            Serial.print(va_arg(argv, double));
+          break;
+        case 'c': // Char
+          if (Telnet.connected())
+            Telnet.print((char)va_arg(argv, int));
+          else
+            Serial.print((char)va_arg(argv, int));
+          break;
+        case 's': // String
+          if (Telnet.connected())
+            Telnet.print(va_arg(argv, char *));
+          else
+            Serial.print(va_arg(argv, char *));
+          break;
+        default:;
+        };
+      }
+      else
+      {
+        //Zum buffer hinzufügen
+        temp[j] = str[i];
+        j = (j + 1) % DBGBUFFER;
+        if (j == 0) // Ist der buffer voll dann leere den buffer
+        {
+          temp[DBGBUFFER] = '\0';
+          if (Telnet.connected())
+            Telnet.print(temp);
+          else
+            Serial.print(temp);
+          temp[0] = '\0';
+        }
+      }
+    };
     if (Telnet.connected())
-      Telnet.print(value);
+      Telnet.println(); // Zeilenumbruch am Ende
     else
-      Serial.print(value);
-  }
-}
-void DBG_PRINT(const int &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.print(value);
-    else
-      Serial.print(value);
-  }
-}
-void DBG_PRINT(const unsigned int &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.print(value);
-    else
-      Serial.print(value);
-  }
-}
-void DBG_PRINT(const long unsigned int &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.print(value);
-    else
-      Serial.print(value);
-  }
-}
-void DBG_PRINT(const long &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.print(value);
-    else
-      Serial.print(value);
-  }
-}
-void DBG_PRINTLN(const long &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.println(value);
-    else
-      Serial.println(value);
-  }
-}
-void DBG_PRINT(const float &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.print(value);
-    else
-      Serial.print(value);
-  }
-}
-void DBG_PRINT(const double &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.print(value);
-    else
-      Serial.print(value);
-  }
-}
-void DBG_PRINTHEX(const int &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.print(value, HEX);
-    else
-      Serial.print(value, HEX);
-  }
-}
-void DBG_PRINTLN(const String &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.println(value);
-    else
-      Serial.println(value);
-  }
-}
-void DBG_PRINTLN(const int &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.println(value);
-    else
-      Serial.println(value);
-  }
-}
-void DBG_PRINTLN(const unsigned int &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.println(value);
-    else
-      Serial.println(value);
-  }
-}
-void DBG_PRINTLN(const long unsigned int &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.println(value);
-    else
-      Serial.println(value);
-  }
-}
-void DBG_PRINTLN(const float &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.println(value);
-    else
-      Serial.println(value);
-  }
-}
-void DBG_PRINTLN(const double &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.println(value);
-    else
-      Serial.println(value);
-  }
-}
-void DBG_PRINTLNHEX(const int &value)
-{
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-      Telnet.println(value, HEX);
-    else
-      Serial.println(value, HEX);
-  }
-}
-void DBG_PRINTLNTS(unsigned long value) // Timestamp
-{
-  value = value / 1000;
-  if (setDEBUG)
-  {
-    if (Telnet.connected())
-    {
-      Telnet.print((value / 3600) % 24); // Stunden
-      Telnet.print(":");
-      Telnet.print((value / 60) % 60); // Minuten
-      Telnet.print(":");
-      Telnet.println(value % 60); // Sekunden
-    }
-    else
-    {
-      Serial.print((value / 3600) % 24); // Stunden
-      Serial.print(":");
-      Serial.print((value / 60) % 60); // Minuten
-      Serial.print(":");
-      Serial.println(value % 60); // Sekunden
-    }
+      Serial.println();
   }
 }

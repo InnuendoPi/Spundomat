@@ -20,7 +20,7 @@
           <a href="/edit" class="btn btn-outline-primary" id="btn_edit">Dateiexplorer</a>
           <button type="button" class="btn btn-outline-primary" id="btn_kalibrieren">Kalibrieren</button>
           <a href="/update" class="btn btn-outline-danger" id="btn_upd">Datei Update</a>
-		  <button type="button" class="btn btn-outline-primary" id="btn_httpupdate">WebUpdate</button>
+		      <button type="button" class="btn btn-outline-danger" id="btn_httpupdate">WebUpdate</button>
           <button type="button" class="btn btn-outline-dark" id="btn_reboot">Neustart</button>
         </div>
       </div>
@@ -140,6 +140,22 @@
       </div>
     </div>
   </div>
+  
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">WebUpdate starten?</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" id="modal-btn-yes">Ja</button>
+				<button type="button" class="btn btn-primary" id="modal-btn-no">Abbruch</button>
+			</div>
+		</div>
+	</div>
+</div>
+
   <script src="./jquery-3.4.1.min.js"></script>
   <script src="./bootstrap.bundle.js"></script>
   <script type="text/javascript">
@@ -254,6 +270,37 @@
       });
     }
 	
+	var modalConfirm = function(callback){
+	  
+	  $("#btn_httpupdate").on("click", function(){
+		$("#mi-modal").modal('show');
+	  });
+
+	  $("#modal-btn-yes").on("click", function(){
+		callback(true);
+		$("#mi-modal").modal('hide');
+	  });
+	  
+	  $("#modal-btn-no").on("click", function(){
+		callback(false);
+		$("#mi-modal").modal('hide');
+	  });
+	};
+
+	modalConfirm(function(confirm){
+	  if(confirm){
+		//Yes
+		$.ajax({
+        url: '/startHTTPUpdate',
+        type: 'POST',
+        async: false,
+        cache: false
+      }).done(function (msg) {
+        window.location.reload(true);
+      });;
+	  }
+	});
+		
     $('#misc_modal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
       var mdns;
@@ -569,10 +616,10 @@
         async: false,
         cache: false
       }).done(function (msg) {
-        //alert("Device says: " + msg + "\n Page will be reloaded now!");
         window.location.reload(true);
       });;
     });
+	/*
 	$("#btn_httpupdate").click(function () {
       $.ajax({
         url: '/startHTTPUpdate',
@@ -580,10 +627,9 @@
         async: false,
         cache: false
       }).done(function (msg) {
-        //alert("Device says: " + msg + "\n Page will be reloaded now!");
         window.location.reload(true);
-      });;
-    });
+      });; 
+    });*/
 
     $(function () {
       var firmware;

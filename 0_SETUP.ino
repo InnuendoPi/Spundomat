@@ -10,7 +10,7 @@ void setup()
   Serial.println("");
   Serial.println("");
   Serial.println("*** SYSINFO: Starte Setup Spundomat");
-
+  
   if (!SPIFFS.begin())
   {
     Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
@@ -98,6 +98,8 @@ void setup()
 
   // Uhrzeit
   displayClock();
+  Serial.print("Ende Setup Free Heap: ");
+  Serial.println(ESP.getFreeHeap());
 }
 
 // Webserver

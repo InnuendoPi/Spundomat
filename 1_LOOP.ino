@@ -2,7 +2,6 @@ void loop()
 {
   // Webserver (80)
   server.handleClient();
-
   // Prüfe WiFi status
   if (WiFi.status() != WL_CONNECTED)
   {

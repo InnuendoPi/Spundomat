@@ -347,15 +347,6 @@
                 <label for="modal_misc_tcp_interval">TCP Server update interval (sec)</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_tcp_interval" />
               </div>
-              <br />
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_telnet" />
-                <label class="form-check-label" for="modal_misc_telnet">Enable Telnet</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_debug" />
-                <label class="form-check-label" for="modal_misc_debug">Enable Debug</label>
-              </div>
             </div>
             <div class="tab-pane fade" id="misc2" role="tabpanel" aria-labelledby="misc2-tab">
               <br />
@@ -370,10 +361,6 @@
               <div class="form-group">
                 <label for="modal_misc_upind">Induction update interval (sec)</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_upind" />
-              </div>
-              <div class="form-group">
-                <label for="modal_misc_upsys">Sys update interval (sec)</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_upsys" />
               </div>
             </div>
             <div class="tab-pane fade" id="misc3" role="tabpanel" aria-labelledby="misc3-tab">
@@ -429,19 +416,21 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="myModalLabel">WebUpdate starten?</h4>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" id="modal-btn-yes">Ja</button>
-				<button type="button" class="btn btn-primary" id="modal-btn-no">Abbruch</button>
-			</div>
-		</div>
-	</div>
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+    id="mi-modal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">WebUpdate starten?</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="modal-btn-yes">Ja</button>
+          <button type="button" class="btn btn-primary" id="modal-btn-no">Abbruch</button>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="./jquery-3.4.1.min.js"></script>
   <script src="./bootstrap.bundle.js"></script>
@@ -624,55 +613,42 @@
         else {
           miscRender += " badge-dark'> OFF";
         }
-        miscRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Enable Telnet <span class='badge ";
-        if (data.telnet) {
-          miscRender += " badge-success'> ON";
-        }
-        else {
-          miscRender += " badge-dark'> OFF";
-        }
-        miscRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Debug output serial monitor <span class='badge ";
-        if (data.debug) {
-          miscRender += " badge-success'> ON";
-        }
-        else {
-          miscRender += " badge-dark'> OFF";
-        }
+
         miscRender += " </span> </li>";
         $('#miscSettings').html(miscRender);
       });
     }
-	
-		var modalConfirm = function(callback){
-	  
-	  $("#btn_httpupdate").on("click", function(){
-		$("#mi-modal").modal('show');
-	  });
 
-	  $("#modal-btn-yes").on("click", function(){
-		callback(true);
-		$("#mi-modal").modal('hide');
-	  });
-	  
-	  $("#modal-btn-no").on("click", function(){
-		callback(false);
-		$("#mi-modal").modal('hide');
-	  });
-	};
+    var modalConfirm = function (callback) {
 
-	modalConfirm(function(confirm){
-	  if(confirm){
-		//Yes
-		$.ajax({
-        url: '/startHTTPUpdate',
-        type: 'POST',
-        async: false,
-        cache: false
-      }).done(function (msg) {
-        window.location.reload(true);
-      });;
-	  }
-	});
+      $("#btn_httpupdate").on("click", function () {
+        $("#mi-modal").modal('show');
+      });
+
+      $("#modal-btn-yes").on("click", function () {
+        callback(true);
+        $("#mi-modal").modal('hide');
+      });
+
+      $("#modal-btn-no").on("click", function () {
+        callback(false);
+        $("#mi-modal").modal('hide');
+      });
+    };
+
+    modalConfirm(function (confirm) {
+      if (confirm) {
+        //Yes
+        $.ajax({
+          url: '/startHTTPUpdate',
+          type: 'POST',
+          async: false,
+          cache: false
+        }).done(function (msg) {
+          window.location.reload(true);
+        });;
+      }
+    });
 
     $('#actor_modal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
@@ -1068,12 +1044,9 @@
       var delay_wlan;
       var del_sen_act;
       var del_sen_ind;
-      var debug;
-      var telnet;
       var upsen;
       var upact;
       var upind;
-      var upsys;
       var uptcp;
       var tcphost;
       var tcpport;
@@ -1169,26 +1142,6 @@
         }
       });
       $.ajax({
-        url: '/reqMisc?req=telnet',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          telnet = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=debug',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          debug = data;
-        }
-      });
-      $.ajax({
         url: '/reqMisc?req=upsen',
         type: 'get',
         dataType: 'html',
@@ -1216,16 +1169,6 @@
         cache: false,
         success: function (data) {
           upind = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=upsys',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          upsys = data;
         }
       });
       $.ajax({
@@ -1278,10 +1221,6 @@
       else { modal.find('#modal_misc_onErrorMQTT').prop("checked", false) }
       if (enable_wlan == "1") { modal.find('#modal_misc_onErrorWLAN').prop("checked", true) }
       else { modal.find('#modal_misc_onErrorWLAN').prop("checked", false) }
-      if (telnet == "1") { modal.find('#modal_misc_telnet').prop("checked", true) }
-      else { modal.find('#modal_misc_telnet').prop("checked", false) }
-      if (debug == "1") { modal.find('#modal_misc_debug').prop("checked", true) }
-      else { modal.find('#modal_misc_debug').prop("checked", false) }
       if (tcp == "1") { modal.find('#modal_misc_tcp').prop("checked", true) }
       else { modal.find('#modal_misc_tcp').prop("checked", false) }
       modal.find('#modal_misc_delay_mqtt').val(delay_mqtt)
@@ -1293,7 +1232,6 @@
       modal.find('#modal_misc_upsen').val(upsen)
       modal.find('#modal_misc_upact').val(upact)
       modal.find('#modal_misc_upind').val(upind)
-      modal.find('#modal_misc_upsys').val(upsys)
       modal.find('#modal_misc_tcp_interval').val(uptcp)
       modal.find('#modal_misc_tcp_host').val(tcphost)
       modal.find('#modal_misc_tcp_port').val(tcpport)
@@ -1312,7 +1250,6 @@
       var upsen = modal.find('#modal_misc_upsen').val()
       var upact = modal.find('#modal_misc_upact').val()
       var upind = modal.find('#modal_misc_upind').val()
-      var upsys = modal.find('#modal_misc_upsys').val()
       var uptcp = modal.find('#modal_misc_tcp_interval').val()
       var tcphost = modal.find('#modal_misc_tcp_host').val()
       var tcpport = modal.find('#modal_misc_tcp_port').val()
@@ -1343,23 +1280,14 @@
       } else {
         var clear = "0"
       }
-      if (modal.find('#modal_misc_telnet').prop("checked") == true) {
-        var telnet = "1"
-      } else {
-        var telnet = "0"
-      }
       if (modal.find('#modal_misc_tcp').prop("checked") == true) {
         var tcp = "1"
       } else {
         var tcp = "0"
       }
-      if (modal.find('#modal_misc_debug').prop("checked") == true) {
-        var debug = "1"
-      } else {
-        var debug = "0"
-      }
+
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&MQTTHOST=' + mqttaddress + '&enable_mqtt=' + enable_mqtt + '&delay_mqtt=' + delay_mqtt + '&enable_wlan=' + enable_wlan + '&delay_wlan=' + delay_wlan + '&del_sen_act=' + del_sen_act + '&del_sen_ind=' + del_sen_ind + '&telnet=' + telnet + '&debug=' + debug + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&upsen=' + upsen + '&upact=' + upact + '&upind=' + upind + '&upsys=' + upsys + '&tcp=' + tcp + '&tcphost=' + tcphost + '&tcpport=' + tcpport + '&uptcp=' + uptcp,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&MQTTHOST=' + mqttaddress + '&enable_mqtt=' + enable_mqtt + '&delay_mqtt=' + delay_mqtt + '&enable_wlan=' + enable_wlan + '&delay_wlan=' + delay_wlan + '&del_sen_act=' + del_sen_act + '&del_sen_ind=' + del_sen_ind + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&upsen=' + upsen + '&upact=' + upact + '&upind=' + upind + '&tcp=' + tcp + '&tcphost=' + tcphost + '&tcpport=' + tcpport + '&uptcp=' + uptcp,
         type: 'POST',
         dataType: 'html',
         async: false,
@@ -1379,26 +1307,7 @@
         window.location.reload(true);
       });;
     });
-    
-    $("#btn_ota").click(function () {
-      $.ajax({
-        url: '/OTA',
-        type: 'POST',
-        async: true,
-        cache: false
-      });
-    });
-/*	$("#btn_httpupdate").click(function () {
-      $.ajax({
-        url: '/startHTTPUpdate',
-        type: 'POST',
-        async: false,
-        cache: false
-      }).done(function (msg) {
-        window.location.reload(true);
-      });;
-    });
-*/
+
     $(function () {
       var tcpurl = "";
       var tcp;

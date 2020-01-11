@@ -17,10 +17,10 @@
           <h1 id="firmware" class="text-center"></h1>
         </div>
         <div class="col-md-auto">
-          <a href="/edit" class="btn btn-outline-primary" id="btn_edit">FileBrowser</a>
+          <a href="/edit" class="btn btn-outline-primary" id="btn_edit">Dateiexplorer</a>
           <a href="/update" class="btn btn-outline-danger" id="btn_upd">DateiUpdate</a>
           <button type="button" class="btn btn-outline-danger" id="btn_httpupdate">WebUpdate</button>
-          <button type="button" class="btn btn-outline-danger" id="btn_reboot">Reboot</button>
+          <button type="button" class="btn btn-outline-danger" id="btn_reboot">Neustart</button>
         </div>
       </div>
     </div>
@@ -30,12 +30,12 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">Sensors <a href="" class="badge badge-warning" data-target="#sensor_modal"
-                data-toggle="modal" data-value="-1" style="float:right">Add</a>
+            <div class="card-header">Sensoren <a href="" class="badge badge-warning" data-target="#sensor_modal"
+                data-toggle="modal" data-value="-1" style="float:right">Neu</a>
               <ul class="nav nav-tabs" id="senTab" role="tablist">
                 <li class="nav-item">
                   <a class="nav-link active" id="sen1-tab" data-toggle="tab" href="#sen1" role="tab"
-                    aria-controls="sen1" aria-selected="true">Sensors</a>
+                    aria-controls="sen1" aria-selected="true">Sensoren</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" id="sen2-tab" data-toggle="tab" href="#sen2" role="tab" aria-controls="sen2"
@@ -65,8 +65,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">Actors <a href="" class="badge badge-warning" data-target="#actor_modal"
-                data-toggle="modal" data-value="-1" style="float:right">Add</a></div>
+            <div class="card-header">Aktoren <a href="" class="badge badge-warning" data-target="#actor_modal"
+                data-toggle="modal" data-value="-1" style="float:right">Neu</a></div>
             <div class="card-body">
               <ul class="list-group" id="listActors">
               </ul>
@@ -81,8 +81,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">Induction <a href="" class="badge badge-warning" data-target="#induction_modal"
-                data-toggle="modal" data-value="-1" style="float:right">Edit</a></div>
+            <div class="card-header">Induktion <a href="" class="badge badge-warning" data-target="#induction_modal"
+                data-toggle="modal" data-value="-1" style="float:right">bearbeiten</a></div>
             <div class="card-body">
               <ul class="list-group" id="inductionCooker">
               </ul>
@@ -97,8 +97,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">OLED display <a href="" class="badge badge-warning" data-target="#display_modal"
-                data-toggle="modal" data-value="-1" style="float:right">Edit</a></div>
+            <div class="card-header">OLED Display <a href="" class="badge badge-warning" data-target="#display_modal"
+                data-toggle="modal" data-value="-1" style="float:right">bearbeiten</a></div>
             <div class="card-body">
               <ul class="list-group" id="oledDisplay">
               </ul>
@@ -113,8 +113,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">Misc settings <a href="" class="badge badge-warning" data-target="#misc_modal"
-                data-toggle="modal" data-value="-1" style="float:right">Edit</a></div>
+            <div class="card-header">Einstellungen <a href="" class="badge badge-warning" data-target="#misc_modal"
+                data-toggle="modal" data-value="-1" style="float:right">bearbeiten</a></div>
             <div class="card-body">
               <ul class="list-group" id="miscSettings">
               </ul>
@@ -128,7 +128,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Modify Actor</h5> <button type="button" class="close" data-dismiss="modal">
+          <h5 class="modal-title">Aktor bearbeiten</h5> <button type="button" class="close" data-dismiss="modal">
             <span>×</span>
           </button>
         </div>
@@ -146,7 +146,7 @@
             <select class="form-control" id="modal_actor_pin"></select>
           </div>
           <div class="form-group">
-            <label for="modal_actor_kettleid">TCP Server kettle ID</label>
+            <label for="modal_actor_kettleid">TCP Server Kettle ID</label>
             <input type="text" class="form-control" placeholder="" id="modal_actor_kettleid" />
           </div>
           <div class="form-check">
@@ -155,13 +155,12 @@
           </div>
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="modal_actor_switchable" />
-            <label class="form-check-label" for="modal_actor_switchable">Enable Event handling</label>
+            <label class="form-check-label" for="modal_actor_switchable">Aktiviere Event handling</label>
           </div>
         </div>
-        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_actor_btn_save">Save
-            changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> <button type="button"
-            class="btn btn-danger" id="modal_actor_btn_delete">Delete Actor</button></div>
+        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_actor_btn_save">Speichern</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button> <button type="button"
+            class="btn btn-danger" id="modal_actor_btn_delete">Aktor löschen</button></div>
       </div>
     </div>
   </div>
@@ -169,14 +168,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Modify Sensor</h5> <button type="button" class="close" data-dismiss="modal">
+          <h5 class="modal-title">Sensor bearbeiten</h5> <button type="button" class="close" data-dismiss="modal">
             <span>×</span>
           </button>
         </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <label for="modal_sensor_address">Address</label>
+              <label for="modal_sensor_address">Adresse</label>
               <select class="form-control" id="modal_sensor_address"></select>
               <button type="button" class="btn btn-primary" id="modal_sensor_address_refresh"><i
                   class="fa fa-fw fa-refresh"></i></button>
@@ -194,19 +193,18 @@
               <input type="text" class="form-control" placeholder="" id="modal_sensor_offset" />
             </div>
             <div class="form-group">
-              <label for="modal_sensor_kettleid">TCP Server kettle ID</label>
+              <label for="modal_sensor_kettleid">TCP Server Kettle ID</label>
               <input type="text" class="form-control" placeholder="" id="modal_sensor_kettleid" />
             </div>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="modal_sensor_sw" />
-              <label class="form-check-label" for="modal_sensor_sw">Enable Event handling</label>
+              <label class="form-check-label" for="modal_sensor_sw">Aktiviere Event handling</label>
             </div>
           </form>
         </div>
-        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_sensor_btn_save">Save
-            changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-danger" id="modal_sensor_btn_delete">Delete Sensor</button>
+        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_sensor_btn_save">Speichern</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+          <button type="button" class="btn btn-danger" id="modal_sensor_btn_delete">Sensor löschen</button>
         </div>
       </div>
     </div>
@@ -425,8 +423,11 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
               aria-hidden="true">&times;</span></button>
         </div>
+		<div class="modal-body">
+			<p>BETA! ESP8266 startet mehrfach neu!</p>
+		</div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" id="modal-btn-yes">Ja</button>
+          <button type="button" class="btn btn-default" id="modal-btn-yes">Start</button>
           <button type="button" class="btn btn-primary" id="modal-btn-no">Abbruch</button>
         </div>
       </div>

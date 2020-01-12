@@ -59,11 +59,11 @@ void handleFileUpload() {
     if (!filename.startsWith("/")) {
       filename = "/" + filename;
     }
-    DBGPRINT("handleFileUpload Name: %s", filename.c_str());
+    DEBUG_MSG("handleFileUpload Name: %s\n", filename.c_str());
     fsUploadFile = SPIFFS.open(filename, "w");
     filename = String();
   } else if (upload.status == UPLOAD_FILE_WRITE) {
-    DBGPRINT("handleFileUpload Data: %d", upload.currentSize);
+    DEBUG_MSG("handleFileUpload Data: %d\n", upload.currentSize);
     if (fsUploadFile) {
       fsUploadFile.write(upload.buf, upload.currentSize);
     }
@@ -71,7 +71,7 @@ void handleFileUpload() {
     if (fsUploadFile) {
       fsUploadFile.close();
     }
-    DBGPRINT("handleFileUpload Size: %d", upload.totalSize);
+    DEBUG_MSG("handleFileUpload Size: %d\n", upload.totalSize);
     loadConfig();
   }
 }
@@ -81,7 +81,7 @@ void handleFileDelete() {
     return server.send(500, "text/plain", "BAD ARGS");
   }
   String path = server.arg(0);
-  DBGPRINT("handleFileDelete: %s", path.c_str());
+  DEBUG_MSG("handleFileDelete: %s\n", path.c_str());
   if (path == "/") {
     return server.send(500, "text/plain", "BAD PATH");
   }
@@ -98,7 +98,7 @@ void handleFileCreate() {
     return server.send(500, "text/plain", "BAD ARGS");
   }
   String path = server.arg(0);
-  DBGPRINT("handleFileCreate: %s", path.c_str());
+  DEBUG_MSG("handleFileCreate: %s\n", path.c_str());
   if (path == "/") {
     return server.send(500, "text/plain", "BAD PATH");
   }

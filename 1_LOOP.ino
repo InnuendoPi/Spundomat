@@ -5,15 +5,12 @@ void loop()
   // Prüfe WiFi status
   if (WiFi.status() != WL_CONNECTED)
   {
-    DBGPRINT("*** SYSINFO: WLAN nicht verbunden: %s", WiFi.status());
-    DBGPRINT("*** SYSINFO: WLAN IP %s", WiFi.localIP().toString().c_str());
+    DEBUG_MSG("*** SYSINFO: WLAN nicht verbunden: %s\n", WiFi.status());
+    DEBUG_MSG("*** SYSINFO: WLAN IP %s\n", WiFi.localIP().toString().c_str());
     WiFi.mode(WIFI_STA);
     WiFi.begin();
   }
 
-  // Telnet
-  if (startTEL)
-    checkTELNET();
   // mDNS
   if (startMDNS)
      MDNS.update();

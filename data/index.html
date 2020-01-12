@@ -106,18 +106,6 @@
                 <input type="text" class="form-control" placeholder="" id="modal_misc_mdns_name" />
               </div>
               <br />
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_debug" />
-                <label class="form-check-label" for="modal_misc_debug">Aktiviere Debug Ausgaben</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_telnet" />
-                <label class="form-check-label" for="modal_misc_telnet">Aktiviere Debug Ausgaben über Telnet</label>
-              </div>
-			  <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_test" />
-                <label class="form-check-label" for="modal_misc_test">Aktiviere Testmodus</label>
-              </div>
             </div>
             <div class="tab-pane fade" id="misc4" role="tabpanel" aria-labelledby="misc4-tab">
               <br />
@@ -147,6 +135,9 @@
 			<div class="modal-header">
 				<h4 class="modal-title" id="myModalLabel">WebUpdate starten?</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<p>BETA! Spundomat startet mehrfach neu!</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" id="modal-btn-yes">Ja</button>
@@ -250,21 +241,6 @@
         else {
           miscRender += " badge-dark'> Aus";
         }
-
-        miscRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Aktiviere Telnet <span class='badge ";
-        if (data.telnet) {
-          miscRender += " badge-success'> An";
-        }
-        else {
-          miscRender += " badge-dark'> Aus";
-        }
-        miscRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Debug Ausgabe serieller Monitor <span class='badge ";
-        if (data.debug) {
-          miscRender += " badge-success'> An";
-        }
-        else {
-          miscRender += " badge-dark'> Aus";
-        }
         miscRender += " </span> </li>";
         $('#miscSettings').html(miscRender);
       });
@@ -307,9 +283,6 @@
       var mdns_name;
       var reset;
       var clear;
-      var debug;
-	  var test;
-      var telnet;
       var pressure;
       var carbonation;
       var mode;
@@ -340,36 +313,6 @@
         cache: false,
         success: function (data) {
           mdns_name = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=telnet',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          telnet = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=debug',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          debug = data;
-        }
-      });
-	  $.ajax({
-        url: '/reqMisc?req=test',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          test = data;
         }
       });
       $.ajax({
@@ -488,12 +431,6 @@
       modal.find('#modal_misc_mdns_name').val(mdns_name)
       if (mdns == "1") { modal.find('#modal_misc_mdns').prop("checked", true) }
       else { modal.find('#modal_misc_mdns').prop("checked", false) }
-      if (telnet == "1") { modal.find('#modal_misc_telnet').prop("checked", true) }
-      else { modal.find('#modal_misc_telnet').prop("checked", false) }
-      if (debug == "1") { modal.find('#modal_misc_debug').prop("checked", true) }
-      else { modal.find('#modal_misc_debug').prop("checked", false) }
-	  if (test == "1") { modal.find('#modal_misc_test').prop("checked", true) }
-      else { modal.find('#modal_misc_test').prop("checked", false) }
 	  if (mv1 == "1") { modal.find('#modal_misc_mv1').prop("checked", true) }
       else { modal.find('#modal_misc_mv1').prop("checked", false) }
 	  if (mv2 == "1") { modal.find('#modal_misc_mv2').prop("checked", true) }
@@ -538,30 +475,6 @@
 	  {
         var clear = "0"
       }
-      if (modal.find('#modal_misc_telnet').prop("checked") == true) 
-	  {
-        var telnet = "1"
-      } 
-	  else 
-	  {
-        var telnet = "0"
-      }
-      if (modal.find('#modal_misc_debug').prop("checked") == true) 
-	  {
-        var debug = "1"
-      } 
-	  else 
-	  {
-        var debug = "0"
-      }
-	  if (modal.find('#modal_misc_test').prop("checked") == true) 
-	  {
-        var test = "1"
-      } 
-	  else 
-	  {
-        var test = "0"
-      }
 	  if (modal.find('#modal_misc_mv1').prop("checked") == true) 
 	  {
         var mv1 = "1"
@@ -588,7 +501,7 @@
       }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&telnet=' + telnet + '&debug=' + debug + '&test=' + test + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&mv1=' + mv1 + '&mv2=' + mv2 + '&buzzer=' + buzzer,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&mv1=' + mv1 + '&mv2=' + mv2 + '&buzzer=' + buzzer,
         type: 'POST',
         dataType: 'html',
         async: false,
@@ -619,17 +532,6 @@
         window.location.reload(true);
       });;
     });
-	/*
-	$("#btn_httpupdate").click(function () {
-      $.ajax({
-        url: '/startHTTPUpdate',
-        type: 'POST',
-        async: false,
-        cache: false
-      }).done(function (msg) {
-        window.location.reload(true);
-      });; 
-    });*/
 
     $(function () {
       var firmware;

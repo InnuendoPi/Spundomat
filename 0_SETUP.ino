@@ -1,30 +1,17 @@
 void setup()
 {
   Serial.begin(115200);
-  //Serial.setDebugOutput(true);
+  #ifdef DEBUG_ESP_PORT
+    Serial.setDebugOutput(true);
+  #endif
   while (!Serial)
   {
     yield(); // wait for serial port to connect. Needed for native USB port only
   }
   Serial.println("");
   Serial.println("");
-  Serial.println("");
   Serial.println("*** SYSINFO: Starte Setup Spundomat");
   
-  if (!SPIFFS.begin())
-  {
-    Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
-  }
-  else if (SPIFFS.exists("/config.json")) // Lade Konfigurations config.json
-  {
-    Serial.println("*** SYSINFO: Konfigurationsdatei config.json vorhanden. Lade Konfiguration ...");
-    loadConfig();
-    if (testModus)
-      sensorValueTest = setSensorValueTest(setMode);
-  }
-  else
-    Serial.println("*** SYSINFO: Konfigurationsdatei config.json nicht vorhanden. Setze Standardwerte ...");
-
   // Verbinde WLAN
   wifiManager.setDebugOutput(false);
   wifiManager.setMinimumSignalQuality(10);
@@ -35,6 +22,24 @@ void setup()
   WiFi.mode(WIFI_STA);
   WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
+
+    // Load filesystem
+  if (SPIFFS.begin())
+  {
+    if (SPIFFS.exists("/update.txt")) // Load configuration
+      updateSys();
+    else if (SPIFFS.exists("/config.json")) // Load configuration
+      {
+        loadConfig();
+        if (testModus)
+          sensorValueTest = setSensorValueTest(setMode);
+      }
+    else
+      Serial.println("*** SYSINFO: Konfigurationsdatei config.json nicht vorhanden. Setze Standardwerte ...");
+  }
+  else
+    Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
+  
   aktIP = WiFi.localIP();
   aktWLAN = WiFi.SSID();
   Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
@@ -51,10 +56,6 @@ void setup()
     Serial.print("*** SYSINFO: ESP8266 IP Addresse: ");
     Serial.println(aktIP.toString());
   }
-
-  // Starte Telnet Server
-  if (startTEL)
-    setTELNET();
 
   // Starte I2C
   Wire.begin();
@@ -98,8 +99,7 @@ void setup()
 
   // Uhrzeit
   displayClock();
-  Serial.print("Ende Setup Free Heap: ");
-  Serial.println(ESP.getFreeHeap());
+  checkLog();
 }
 
 // Webserver

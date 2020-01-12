@@ -343,3 +343,19 @@ void startLCD()
   lcd.print(aktWLAN);
   millis2wait(PAUSE5SEC);
 }
+
+// Set time via NTP, as required for x.509 validation
+void displayClock()
+{
+    timeClient.update();
+    millis2wait(PAUSE1SEC);
+    char daysOfTheWeek[7][12] = {"Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"};
+    Serial.print("*** SYSINFO: ");
+    Serial.print(daysOfTheWeek[timeClient.getDay()]);
+    Serial.print(", ");
+    Serial.print(timeClient.getHours());
+    Serial.print(":");
+    Serial.print(timeClient.getMinutes());
+    Serial.print(":");
+    Serial.println(timeClient.getSeconds());
+}

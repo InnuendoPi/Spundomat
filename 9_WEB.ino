@@ -75,9 +75,7 @@ void handleRequestMiscSet()
     StaticJsonDocument<256> doc;
     doc["mdns"] = startMDNS;
     doc["mdns_name"] = nameMDNS;
-    doc["debug"] = setDEBUG;
     doc["test"] = testModus;
-    doc["telnet"] = startTEL;
     doc["pressure"] = setPressure;
     doc["carbonation"] = setCarbonation;
     doc["mode"] = setMode;
@@ -131,33 +129,9 @@ void handleRequestMisc()
         message = setMode;
         goto SendMessage;
     }
-    if (request == "debug")
-    {
-        if (setDEBUG)
-        {
-            message = "1";
-        }
-        else
-        {
-            message = "0";
-        }
-        goto SendMessage;
-    }
     if (request == "test")
     {
         if (testModus)
-        {
-            message = "1";
-        }
-        else
-        {
-            message = "0";
-        }
-        goto SendMessage;
-    }
-    if (request == "telnet")
-    {
-        if (startTEL)
         {
             message = "1";
         }
@@ -265,30 +239,12 @@ void handleSetMisc()
                     setMode = j;
             }
         }
-        if (server.argName(i) == "debug")
-        {
-            if (server.arg(i) == "1")
-                setDEBUG = true;
-            else
-                setDEBUG = false;
-        }
         if (server.argName(i) == "test")
         {
             if (server.arg(i) == "1")
                 testModus = true;
             else
                 testModus = false;
-        }
-        if (server.argName(i) == "telnet")
-        {
-            if (server.arg(i) == "1")
-                startTEL = true;
-            else
-            {
-                if (Telnet)
-                    Telnet.stop();
-                startTEL = false;
-            }
         }
         if (server.argName(i) == "mv1")
         {
@@ -337,7 +293,7 @@ void handleSetMisc()
 
 void kalibrieren()
 {
-    DBGPRINT("*** Kalibrierung");
+    DEBUG_MSG("%s\n", "*** Kalibrierung");
     server.send(200, "text/plain", "kalibrieren...");
     readPressure();
     offsetVoltage = voltage;
@@ -374,37 +330,11 @@ void rebootDevice()
     ESP.restart();
 }
 
-void setTELNET()
-{
-    TelnetServer.begin();
-    TelnetServer.setNoDelay(true);
-    DBGPRINT("*** SYSINFO: Connect your telnet Client, exit with ^] and 'quit'");
-}
-
-void checkTELNET()
-{
-    if (TelnetServer.hasClient())
-    {
-        if (!Telnet || !Telnet.connected())
-        {
-            if (Telnet)
-            {
-                Telnet.stop();
-            }
-            Telnet = TelnetServer.available();
-        }
-        else
-        {
-            TelnetServer.available().stop();
-        }
-    }
-}
-
 void setMDNS()
 {
     if (startMDNS && nameMDNS[0] != '\0' && WiFi.status() == WL_CONNECTED)
     {
         if (MDNS.begin(nameMDNS))
-            DBGPRINT("*** SYSINFO: mDNS gestartet als %s verbunden an %s", nameMDNS, WiFi.localIP().toString().c_str());
+            DEBUG_MSG("*** SYSINFO: mDNS gestartet als %s verbunden an %s\n", nameMDNS, WiFi.localIP().toString().c_str());
     }
 }

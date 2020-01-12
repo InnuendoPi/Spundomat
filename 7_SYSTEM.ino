@@ -31,7 +31,7 @@ bool isValidDigit(const String &str)
   }
   return true;
 }
-
+/*
 void DBGPRINT(const char *str, ...)
 {
   if (setDEBUG)
@@ -110,3 +110,4 @@ void DBGPRINT(const char *str, ...)
       Serial.println();
   }
 }
+*/

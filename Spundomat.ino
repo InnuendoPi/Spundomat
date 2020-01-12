@@ -49,14 +49,19 @@ sich Pneumatische Schnellkupplungen hervorragend.
 #include <CertStoreBearSSL.h>
 // BearSSL::CertStore certStore;
 
+#ifdef DEBUG_ESP_PORT
+#define DEBUG_MSG(...) DEBUG_ESP_PORT.printf( __VA_ARGS__ )
+#else
+#define DEBUG_MSG(...)
+#endif
+
 extern "C"
 {
 #include "user_interface.h"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.04";
-#define DBGBUFFER 128 // Buffer zum Zwischenspeichern von Strings
+const char Version[6] = "2.05";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -83,8 +88,6 @@ float setPressure = 2.0;    //  Vorgabe bei Neustart von 2,0 bar
 float setCarbonation = 5.0; //  Vorgabe bei Neustart von 5,0 gr/L
 int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 = Karbonisieren
 
-bool setDEBUG = false;    // Debug Ausgaben serieller Monitor
-bool startTEL = false;    // Debug Ausgaben an Telnet Client (putty)
 bool startMDNS = false;   // mDNS Dienst
 bool testModus = false;   // testModus
 bool startMV1 = false;    // Aktiviere MV1
@@ -100,15 +103,13 @@ RotaryEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B); // Encoder drehen
 WiFiManager wifiManager;
 ESP8266WebServer server(80);
 ESP8266HTTPUpdateServer httpUpdate; // Version mit SPIFFS Update
-WiFiServer TelnetServer(23);        // Telnet Server (putty)
-WiFiClient Telnet;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
 
 // Definiere Timer
 os_timer_t TimerTemp;               // Timer Objekt Temperatur: Wiederhole Aufgaben und lasse den Wemos das Zeitintervall überwachen
 os_timer_t TimerPressure;           // Timer Objekt Druck
-os_timer_t TimerNTP;                // Timer Objekt NTP
+//os_timer_t TimerNTP;                // Timer Objekt NTP
 bool TickTempOccured = false;       // Prüfe Zeitintervall Temperatur
 bool TickPressureOccured = false;   // Prüfe Zeitintervall Druck
 

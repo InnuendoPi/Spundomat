@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>MQTT Device</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="theme.css" type="text/css">
+</head>
+
+<body onload="setInterval(refresh, 3000)">
+  <div class="py-2">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1 id="firmware" class="text-center"></h1>
+        </div>
+        <div class="col-md-auto">
+          <a href="/edit" class="btn btn-outline-primary" id="btn_edit">Dateiexplorer</a>
+          <a href="/update" class="btn btn-outline-danger" id="btn_upd">DateiUpdate</a>
+          <button type="button" class="btn btn-outline-danger" id="btn_httpupdate">WebUpdate</button>
+          <button type="button" class="btn btn-outline-danger" id="btn_reboot">Neustart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">Sensoren <a href="" class="badge badge-warning" data-target="#sensor_modal"
+                data-toggle="modal" data-value="-1" style="float:right">Neu</a>
+              <ul class="nav nav-tabs" id="senTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="sen1-tab" data-toggle="tab" href="#sen1" role="tab"
+                    aria-controls="sen1" aria-selected="true">Sensoren</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="sen2-tab" data-toggle="tab" href="#sen2" role="tab" aria-controls="sen2"
+                    aria-selected="true">Charts</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="senTabContent">
+                <div class="tab-pane fade show active" id="sen1" role="tabpanel" aria-labelledby="sen1-tab">
+                  <ul class="list-group" id="listSensors"></ul>
+                </div>
+                <div class="tab-pane fade" id="sen2" role="tabpanel" aria-labelledby="sen2-tab">
+                  <div class="embed-responsive">
+                    <ul class="list-group" id="listeSenName"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">Aktoren <a href="" class="badge badge-warning" data-target="#actor_modal"
+                data-toggle="modal" data-value="-1" style="float:right">Neu</a></div>
+            <div class="card-body">
+              <ul class="list-group" id="listActors">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">Induktionskochfeld GGM IDS2 <a href="" class="badge badge-warning" data-target="#induction_modal"
+                data-toggle="modal" data-value="-1" style="float:right">bearbeiten</a></div>
+            <div class="card-body">
+              <ul class="list-group" id="inductionCooker">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">OLED Display <a href="" class="badge badge-warning" data-target="#display_modal"
+                data-toggle="modal" data-value="-1" style="float:right">bearbeiten</a></div>
+            <div class="card-body">
+              <ul class="list-group" id="oledDisplay">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">Einstellungen <a href="" class="badge badge-warning" data-target="#misc_modal"
+                data-toggle="modal" data-value="-1" style="float:right">bearbeiten</a></div>
+            <div class="card-body">
+              <ul class="list-group" id="miscSettings">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" actor_id="" draggable="true" id="actor_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Aktor bearbeiten</h5> <button type="button" class="close" data-dismiss="modal">
+            <span>×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="modal_actor_name">Name</label>
+            <input type="text" class="form-control" placeholder="" id="modal_actor_name" />
+          </div>
+          <div class="form-group">
+            <label for="modal_actor_script">MQTT Topic</label>
+            <input type="text" class="form-control" placeholder="" id="modal_actor_script" />
+          </div>
+          <div class="form-group">
+            <label for="modal_actor_pin">PIN</label>
+            <select class="form-control" id="modal_actor_pin"></select>
+          </div>
+          <div class="form-group">
+            <label for="modal_actor_kettleid">TCP Server Kettle ID</label>
+            <input type="text" class="form-control" placeholder="" id="modal_actor_kettleid" />
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="modal_actor_inverted" />
+            <label class="form-check-label" for="modal_actor_inverted">GPIO invertieren</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="modal_actor_switchable" />
+            <label class="form-check-label" for="modal_actor_switchable">Aktiviere Event handling</label>
+          </div>
+        </div>
+        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_actor_btn_save">Speichern</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button> <button type="button"
+            class="btn btn-danger" id="modal_actor_btn_delete">Aktor löschen</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="sensor_modal" sensor_id="">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sensor bearbeiten</h5> <button type="button" class="close" data-dismiss="modal">
+            <span>×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="modal_sensor_address">Adresse</label>
+              <select class="form-control" id="modal_sensor_address"></select>
+              <button type="button" class="btn btn-primary" id="modal_sensor_address_refresh"><i
+                  class="fa fa-fw fa-refresh"></i></button>
+            </div>
+            <div class="form-group">
+              <label for="modal_sensor_name">Name</label>
+              <input type="text" class="form-control" placeholder="" id="modal_sensor_name" />
+            </div>
+            <div class="form-group">
+              <label for="modal_sensor_script">MQTT Topic</label>
+              <input type="text" class="form-control" placeholder="" id="modal_sensor_script" />
+            </div>
+            <div class="form-group">
+              <label for="modal_sensor_offset">Offset</label>
+              <input type="text" class="form-control" placeholder="" id="modal_sensor_offset" />
+            </div>
+            <div class="form-group">
+              <label for="modal_sensor_kettleid">TCP Server Kettle ID</label>
+              <input type="text" class="form-control" placeholder="" id="modal_sensor_kettleid" />
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="modal_sensor_sw" />
+              <label class="form-check-label" for="modal_sensor_sw">Aktiviere Event handling</label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_sensor_btn_save">Speichern</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+          <button type="button" class="btn btn-danger" id="modal_sensor_btn_delete">Sensor löschen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="induction_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"> Induktionskochfeld bearbeiten</h5> <button type="button" class="close" data-dismiss="modal">
+            <span>×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="modal_induction_enabled" />
+            <label class="form-check-label" for="modal_induction_enabled"> Aktiviere Induktionskochfeld</label>
+          </div>
+          <div class="form-group">
+            <label for="modal_induction_script">MQTT Topic</label>
+            <input type="text" class="form-control" placeholder="" id="modal_induction_script" />
+          </div>
+          <div class="form-group">
+            <label for="modal_induction_pinwhite">PIN Weiß (Relais)</label>
+            <select class="form-control" id="modal_induction_pinwhite"></select>
+          </div>
+          <div class="form-group">
+            <label for="modal_induction_pinyellow">PIN Gelb (Command Channel)</label>
+            <select class="form-control" id="modal_induction_pinyellow"></select>
+          </div>
+          <div class="form-group">
+            <label for="modal_induction_pinblue">PIN Blau (Backchannel)</label>
+            <select class="form-control" id="modal_induction_pinblue"></select>
+          </div>
+          <div class="form-group">
+            <label for="modal_induction_delay">Lüfternachlauf bei Abschaltung (Sek)</label>
+            <input type="text" class="form-control" placeholder="" id="modal_induction_delay" />
+          </div>
+          <div class="form-group">
+            <label for="modal_induction_pl">Event Handling Induktionskochfeld (0 = Induktion aus ... 100 = keine Änderung)</label>
+            <input type="text" class="form-control" placeholder="" id="modal_induction_pl" />
+          </div>
+          <div class="form-group">
+            <label for="modal_induction_kettleid">TCP Server Kettle ID</label>
+            <input type="text" class="form-control" placeholder="" id="modal_induction_kettleid" />
+          </div>
+        </div>
+        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_induction_btn_save">Speichern</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="display_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">OLED Display bearbeiten</h5> <button type="button" class="close" data-dismiss="modal">
+            <span>×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="modal_display_enabled" />
+            <label class="form-check-label" for="modal_display_enabled">Aktiviere OLED display</label>
+          </div>
+          <div class="form-group">
+            <label for="modal_display_address">OLED Display Adresse</label>
+            <select class="form-control" id="modal_display_address"></select>
+          </div>
+          <div class="form-group">
+            <label for="modal_display_update">Display Update Intervall (Sek)</label>
+            <input type="text" class="form-control" placeholder="" id="modal_display_update" />
+          </div>
+        </div>
+        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_display_btn_save">Speichern</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="misc_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Einstellungen</h5> <button type="button" class="close" data-dismiss="modal">
+            <span>×</span></button>
+        </div>
+        <div class="modal-body">
+          <ul class="nav nav-tabs" id="miscTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="misc1-tab" data-toggle="tab" href="#misc1" role="tab" aria-controls="misc1"
+                aria-selected="true">System</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="misc2-tab" data-toggle="tab" href="#misc2" role="tab" aria-controls="misc2"
+                aria-selected="true">Intervalle</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="misc3-tab" data-toggle="tab" href="#misc3" role="tab" aria-controls="misc3"
+                aria-selected="true">EventManager</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="misc4-tab" data-toggle="tab" href="#misc4" role="tab" aria-controls="misc4"
+                aria-selected="true">Restore</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="miscTabContent">
+            <div class="tab-pane fade show active" id="misc1" role="tabpanel" aria-labelledby="misc1-tab">
+              <br />
+              <div class="form-group">
+                <label for="modal_misc_address">IP Adresse MQTT Server (CBPi)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_address" />
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_mdns" />
+                <label class="form-check-label" for="modal_misc_mdns">Aktiviere mDNS</label>
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_mdns_name">mDNS Name</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_mdns_name" />
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_tcp" />
+                <label class="form-check-label" for="modal_misc_tcp">Aktiviere TCP Server</label>
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_tcp_host">TCP Server IP</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_tcp_host" />
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_tcp_port">TCP Server Port</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_tcp_port" />
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_tcp_interval">TCP Server Update Intervall (Sek)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_tcp_interval" />
+              </div>
+            </div>
+            <div class="tab-pane fade" id="misc2" role="tabpanel" aria-labelledby="misc2-tab">
+              <br />
+              <div class="form-group">
+                <label for="modal_misc_upsen">Sensoren Update Intervall (Sek)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_upsen" />
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_upact">Aktoren Update Intervall (Sek)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_upact" />
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_upind">Induktionskochfeld Update Intervall (Sek)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_upind" />
+              </div>
+            </div>
+            <div class="tab-pane fade" id="misc3" role="tabpanel" aria-labelledby="misc3-tab">
+              <br />
+              <div class="form-group">
+                <label for="modal_misc_del_sen_act">Verzögerung für Aktoren bevor Sensoren ein Event auslösen (Sek)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_del_sen_act" />
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_del_sen_ind">Verzögerung für das Induktionskochfeld bevor Sensoren ein Event auslösen (Sek)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_del_sen_ind" />
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_delay_mqtt">Verzögerung zwischen MQTT Verbindungsversuchen (Sek)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_delay_mqtt" />
+              </div>
+              <div class="form-group">
+                <label for="modal_misc_delay_wlan">Verzögerung zwischen WLAN Verbindungsversuchen (Sek)</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_delay_wlan" />
+              </div>
+              <br />
+              <label class="form-check-label">Event handling</label>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_onErrorMQTT" />
+                <label class="form-check-label" for="modal_misc_onErrorMQTT">Aktiviere MQTT Event handling</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_onErrorWLAN" />
+                <label class="form-check-label" for="modal_misc_onErrorWLAN">Aktiviere WLAN Event handling</label>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="misc4" role="tabpanel" aria-labelledby="misc4-tab">
+              <br />
+              <label class="form-check-label">Reset MQTTDevice</label>
+              <br />
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_reset" />
+                <label class="form-check-label" for="modal_misc_reset">Lösche WLAN Einstellungen (Reset to AP Mode)</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_clear" />
+                <label class="form-check-label" for="modal_misc_clear">Lösche alle Einstellungen (Reset to defaults)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"> <button type="button" class="btn btn-primary" id="modal_misc_btn_save">Speichern</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+    id="mi-modal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">WebUpdate starten?</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+        </div>
+		<div class="modal-body">
+			<p>BETA! MQTTDevice startet neu!</p>
+		</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="modal-btn-yes">Start</button>
+          <button type="button" class="btn btn-primary" id="modal-btn-no">Abbruch</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./jquery-3.4.1.min.js"></script>
+  <script src="./bootstrap.bundle.js"></script>
+  <script type="text/javascript">
+
+    function refresh() {
+      $.get("/reqSensors", function (data) {
+        let content = "";
+        data.forEach(function (element, index) {
+          let sensor = "<li class='list-group-item justify-content-between align-items-center d-flex'> ";
+          sensor += element.name;
+          sensor += "<span class='badge";
+          if (element.value == "ERR") {
+            sensor += " badge-danger'>Fehler";
+          }
+          else if (element.value == "CRC") {
+            sensor += " badge-danger'>CRC Fehler";
+          }
+          else if (element.value == "DER") {
+            sensor += " badge-danger'>Gerätefehler";
+          }
+          else if (element.value == "UNP") {
+            sensor += " badge-danger'>nicht verbunden";
+          }
+          else {
+            sensor += " badge-light'>"
+            sensor += element.value + "°C";
+          }
+          sensor += "</span> "
+          sensor += "<span class='badge badge-light'>";
+          sensor += element.offset;
+          sensor += "</span> "
+          if (element.target_temp != "-1") {
+            sensor += "<span class='badge badge-light'>";
+            sensor += element.target_temp + "°C";
+            sensor += "</span> "
+          }
+          sensor += " <span class='badge";
+          if (element.sw == true) {
+            if (element.state == true) {
+              sensor += " badge-success'>Events ok";
+            }
+            else {
+              sensor += " badge-danger'>Event aktiv";
+            }
+          }
+          else {
+            sensor += " badge-dark'>Events deaktiviert";
+          }
+          sensor += "</span> ";
+          sensor += "<span class='badge badge-info'> "
+          sensor += element.mqtt;
+          sensor += " </span> <a href='' class='badge badge-warning' data-toggle='modal' data-target='#sensor_modal' data-value='";
+          sensor += index;
+          sensor += "'> bearbeiten </a> </li>";
+          content += sensor;
+        });
+        $('#listSensors').html(content);
+      });
+      $.get("/reqActors", function (data) {
+        let content = "";
+        data.forEach(function (element, index) {
+          let actor = "<li class='list-group-item justify-content-between align-items-center d-flex'> ";
+          actor += element.name;
+          actor += "<span class='badge";
+          if (element.state != true) {
+            actor += " badge-danger'>OFF ";
+          }
+          else if (element.state == true && element.status == true) {
+            actor += " badge-success'>ON: ";
+            actor += element.power;
+            actor += "%";
+          }
+          else {
+            actor += " badge-dark'>OFF";
+          }
+          actor += "</span><span class='badge badge-light'>PIN";
+          actor += element.pin;
+          actor += "</span> ";
+          actor += " <span class='badge";
+          if (element.sw == true) {
+            if (element.state == true) {
+              actor += " badge-success'>Events ok";
+            }
+            else {
+              actor += " badge-danger'>Event aktiv";
+            }
+          }
+          else {
+            actor += " badge-dark'>Events deaktivert";
+          }
+          actor += "</span> ";
+          actor += "<span class='badge badge-info'>";
+          actor += element.mqtt;
+          actor += "</span><a href='' class='badge badge-warning' data-toggle='modal' data-target='#actor_modal' data-value='";
+          actor += index;
+          actor += "'>bearbeiten</a></li>";
+          content += actor;
+        });
+        $('#listActors').html(content);
+      });
+      $.get("/reqInduction", function (data) {
+        let inductionRender = "<li class='list-group-item d-flex justify-content-between align-items-center'> ";
+        if (data.enabled) {
+          inductionRender += "Relais Status<span class='badge";
+          if (data.state != true && data.relayOn) {
+            inductionRender += " badge-danger'> ON";
+            inductionRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Leistung von CBPi angefordert<span class='badge badge-danger'>";
+            inductionRender += data.power;
+            inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Aktuelle Leistung<span class='badge badge-danger'> P";
+            inductionRender += data.powerLevel;
+			if (data.pl != "100") {
+			inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Event Leistung Reduzierung auf<span class='badge badge-success'> P";
+            inductionRender += data.pl;
+			inductionRender += "%</span> </li>";
+			}
+			else {
+			inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Events<span class='badge badge-dark'> ";
+            inductionRender += "deaktiviert";
+			inductionRender += "</span> </li>";
+			}
+          }
+          else if (data.relayOn && data.state == true) {
+            inductionRender += " badge-success'> ON";
+            inductionRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Leistung von CBPi angefordert<span class='badge badge-success'>";
+            inductionRender += data.power;
+            inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Aktuelle Leistung<span class='badge badge-success'> P";
+            inductionRender += data.powerLevel;
+			if (data.pl != "100") {
+			inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Event Leistung Reduzierung auf<span class='badge badge-success'> P";
+            inductionRender += data.pl;
+			inductionRender += "%</span> </li>";
+			}
+			else {
+			inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Events<span class='badge badge-dark'> ";
+            inductionRender += "deaktiviert";
+			inductionRender += "</span> </li>";
+			}
+          }
+          else {
+            inductionRender += " badge-dark'> OFF";
+            inductionRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Leistung von CBPi angefordert<span class='badge badge-dark'>";
+            inductionRender += data.power;
+            inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Aktuelle Leistung<span class='badge badge-dark'> P";
+            inductionRender += data.powerLevel;
+			if (data.pl != "100") {
+			inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Event Leistung Reduzierung auf<span class='badge badge-success'> P";
+            inductionRender += data.pl;
+			inductionRender += "%</span> </li>";
+			}
+			else {
+			inductionRender += "%</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'>Events<span class='badge badge-dark'> ";
+            inductionRender += "deaktiviert";
+			inductionRender += "</span> </li>";
+			}
+          }
+        }
+        else {
+          inductionRender += "Induktionskochfeld<span class='badge";
+		  inductionRender += " badge-dark'> deaktiviert";
+		  inductionRender += " </span> </li>";
+		  //inductionRender += "Induction Cooker disabled </li>";
+        }
+        $('#inductionCooker').html(inductionRender);
+      });
+
+      $.get("/reqDisplay", function (data) {
+        let displayRender = "<li class='list-group-item d-flex justify-content-between align-items-center'> ";
+        displayRender += "OLED Display Status <span class='badge";
+		if (data.enabled) {
+          
+          if (data.displayOn) {
+            displayRender += " badge-success'> Ein";
+          }
+          else {
+            displayRender += " badge-dark'> Aus";
+          }
+        }
+        else {
+          //displayRender += "Display deaktiviert ";
+		  displayRender += " badge-dark'> deaktiviert";
+        }
+        displayRender += " </span> </li>";
+        $('#oledDisplay').html(displayRender);
+      });
+
+      $.get("/reqMiscSet", function (data) {
+        let miscRender = "<li class='list-group-item d-flex justify-content-between align-items-center'> ";
+        miscRender += " MQTT broker IP <span class='badge'>";
+        miscRender += data.MQTTHOST;
+		miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> MQTT Verbindung <span class='badge";
+		if (data.enable_mqtt) {
+          miscRender += " badge-success'> Events aktiviert";
+        }
+        else {
+          miscRender += " badge-dark'> Events deaktiviert";
+        }
+		miscRender += "</span><span class='badge";
+		if (data.mqtt_state) {
+            miscRender += " badge-success'> Online";
+		}
+        else {
+           miscRender += " badge-danger'> Offline";
+		}
+		miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> WLAN Verbindung <span class='badge ";
+		if (data.enable_wlan) {
+            miscRender += " badge-success'> Events aktiviert";
+        }
+        else {
+          miscRender += " badge-dark'> Events deaktiviert";
+        }
+		miscRender += "</span><span class='badge";
+		if (data.wlan_state) {
+            miscRender += " badge-success'> Online";
+		}
+        else {
+           miscRender += " badge-danger'> Offline";
+        }
+		miscRender += "</span></li>";
+        $('#miscSettings').html(miscRender);
+      });
+    }
+
+    var modalConfirm = function (callback) {
+
+      $("#btn_httpupdate").on("click", function () {
+        $("#mi-modal").modal('show');
+      });
+
+      $("#modal-btn-yes").on("click", function () {
+		onload = setInterval(refresh, 60000);
+        callback(true);
+        $("#mi-modal").modal('hide');
+      });
+
+      $("#modal-btn-no").on("click", function () {
+        callback(false);
+        $("#mi-modal").modal('hide');
+      });
+    };
+
+    modalConfirm(function (confirm) {
+      if (confirm) {
+        //Yes
+        $.ajax({
+          url: '/startHTTPUpdate',
+          type: 'POST',
+          async: false,
+          cache: false
+        }).done(function (msg) {
+          window.location.reload(true);
+        });;
+      }
+    });
+
+    $('#actor_modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var actorid = button.data('value') // Extract info from data-* attributes
+      var actorname;
+      var actorscript;
+      var actorpin;
+      var actorinverted;
+      var actorswitchable;
+      var actorkettleid;
+      $.ajax({
+        url: '/reqActor?id=' + actorid + '&req=name',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          actorname = data;
+        }
+      });
+      $.ajax({
+        url: '/reqActor?id=' + actorid + '&req=script',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          actorscript = data;
+        }
+      });
+      $.ajax({
+        url: '/reqActor?id=' + actorid + '&req=inv',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          actorinverted = data;
+        }
+      });
+      $.ajax({
+        url: '/reqActor?id=' + actorid + '&req=sw',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          actorswitchable = data;
+        }
+      });
+      $.ajax({
+        url: '/reqActor?id=' + actorid + '&req=kettle_id',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          actorkettleid = data;
+        }
+      });
+      var modal = $(this)
+      modal.attr('actor_id', actorid)
+      modal.find('#modal_actor_name').val(actorname)
+      modal.find('#modal_actor_script').val(actorscript)
+      modal.find('#modal_actor_kettleid').val(actorkettleid)
+      $('#modal_actor_pin').load('/reqPins?id=' + actorid)
+      if (actorinverted == "1") { modal.find('#modal_actor_inverted').prop("checked", true) }
+      else { modal.find('#modal_actor_inverted').prop("checked", false) }
+      if (actorswitchable == "1") { modal.find('#modal_actor_switchable').prop("checked", true) }
+      else { modal.find('#modal_actor_switchable').prop("checked", false) }
+    })
+
+    $("#modal_actor_btn_save").click(function () {
+      var modal = $('#actor_modal')
+      var actorname = modal.find('#modal_actor_name').val()
+      var actorscript = modal.find('#modal_actor_script').val()
+      var actorpin = modal.find('#modal_actor_pin').val()
+      var actorkettleid = modal.find('#modal_actor_kettleid').val()
+      if (modal.find('#modal_actor_inverted').prop("checked") == true) {
+        var actorinverted = "1"
+      } else {
+        var actorinverted = "0"
+      }
+      if (modal.find('#modal_actor_switchable').prop("checked") == true) {
+        var actorswitchable = "1"
+      } else {
+        var actorswitchable = "0"
+      }
+      var actorid = modal.attr('actor_id')
+      $.ajax({
+        url: '/setActor?id=' + actorid + '&name=' + actorname + '&script=' + actorscript + '&pin=' + actorpin + '&inv=' + actorinverted + '&sw=' + actorswitchable + '&kettle_id=' + actorkettleid,
+        type: 'POST',
+        dataType: 'html',
+        async: false,
+        cache: false
+      });
+      modal.modal('hide')
+    });
+
+    $("#modal_actor_btn_delete").click(function () {
+      var modal = $('#actor_modal')
+      var actorid = modal.attr('actor_id')
+      $.ajax({
+        url: '/delActor?id=' + actorid,
+        type: 'POST',
+        dataType: 'html',
+        async: false,
+        cache: false
+      });
+      modal.modal('hide')
+    });
+
+    $('#sensor_modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var sensorid = button.data('value') // Extract info from data-* attributes
+      var sensorname;
+      var sensorscript;
+      var sensoroffset;
+      var sensorsw;
+      var sensorkettleid;
+      $.ajax({
+        url: '/reqSensor?id=' + sensorid + '&req=name',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          sensorname = data;
+        }
+      });
+      $.ajax({
+        url: '/reqSensor?id=' + sensorid + '&req=script',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          sensorscript = data;
+        }
+      });
+      $.ajax({
+        url: '/reqSensor?id=' + sensorid + '&req=offset',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          sensoroffset = data;
+        }
+      });
+      $.ajax({
+        url: '/reqSensor?id=' + sensorid + '&req=sw',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          sensorsw = data;
+        }
+      });
+      $.ajax({
+        url: '/reqSensor?id=' + sensorid + '&req=kettle_id',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          sensorkettleid = data;
+        }
+      });
+      $('#modal_sensor_address').load('/reqSearchSensorAdresses?id=' + sensorid);
+      var modal = $(this)
+      modal.find('#modal_sensor_name').val(sensorname)
+      modal.find('#modal_sensor_script').val(sensorscript)
+      modal.find('#modal_sensor_offset').val(sensoroffset)
+      modal.find('#modal_sensor_kettleid').val(sensorkettleid)
+      if (sensorsw == "1") { modal.find('#modal_sensor_sw').prop("checked", true) }
+      else { modal.find('#modal_sensor_sw').prop("checked", false) }
+      modal.attr('sensor_id', sensorid)
+    })
+
+    $("#modal_sensor_btn_save").click(function () {
+      var modal = $('#sensor_modal')
+      var sensorname = modal.find('#modal_sensor_name').val()
+      var sensorscript = modal.find('#modal_sensor_script').val()
+      var sensorid = modal.attr('sensor_id')
+      var sensoraddress = modal.find('#modal_sensor_address').val()
+      var sensoroffset = modal.find('#modal_sensor_offset').val()
+      var sensorkettleid = modal.find('#modal_sensor_kettleid').val()
+      if (modal.find('#modal_sensor_sw').prop("checked") == true) {
+        var sensorsw = "1"
+      } else {
+        var sensorsw = "0"
+      }
+      $.ajax({
+        url: '/setSensor?id=' + sensorid + '&name=' + sensorname + '&topic=' + sensorscript + '&address=' + sensoraddress + '&offset=' + sensoroffset + '&sw=' + sensorsw + '&kettle_id=' + sensorkettleid,
+        type: 'POST',
+        dataType: 'html',
+        async: false,
+        cache: false
+      });
+      modal.modal('hide')
+    });
+
+    $("#modal_sensor_btn_delete").click(function () {
+      var modal = $('#sensor_modal')
+      var sensorid = modal.attr('sensor_id')
+      $.ajax({
+        url: '/delSensor?id=' + sensorid,
+        type: 'POST',
+        dataType: 'html',
+        async: false,
+        cache: false
+      });
+      modal.modal('hide')
+    });
+
+    $("#modal_sensor_address_refresh").click(function () {
+      var sensorid = modal.attr('sensor_id')
+      $('#modal_sensor_address').load('/reqSearchSensorAdresses?id=' + sensor)
+    });
+
+    $('#induction_modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var mqtttopic;
+      var isEnabled;
+      var pin_white;
+      var pin_blue;
+      var pin_yellow;
+      var delay;
+      var pl;
+      var kettleid;
+
+      $.ajax({
+        url: '/reqIndu?req=isEnabled',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          isEnabled = data;
+        }
+      });
+      $.ajax({
+        url: '/reqIndu?req=topic',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mqtttopic = data;
+        }
+      });
+      $.ajax({
+        url: '/reqIndu?req=delay',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          delay = data;
+        }
+      });
+      $.ajax({
+        url: '/reqIndu?req=pl',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          pl = data;
+        }
+      });
+      $.ajax({
+        url: '/reqIndu?req=kettle_id',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          kettleid = data;
+        }
+      });
+
+      $('#modal_induction_pinwhite').load('/reqIndu?req=pins&id=0')
+      $('#modal_induction_pinyellow').load('/reqIndu?req=pins&id=1')
+      $('#modal_induction_pinblue').load('/reqIndu?req=pins&id=2')
+
+
+      var modal = $(this)
+      modal.find('#modal_induction_script').val(mqtttopic)
+      modal.find('#modal_induction_delay').val(delay)
+      modal.find('#modal_induction_pl').val(pl)
+      modal.find('#modal_induction_kettleid').val(kettleid)
+      if (isEnabled == "1") { modal.find('#modal_induction_enabled').prop("checked", true) }
+      else { modal.find('#modal_induction_enabled').prop("checked", false) }
+      var modal = $(this)
+
+    });
+
+    $("#modal_induction_btn_save").click(function () {
+      var modal = $('#induction_modal')
+
+      var mqtttopic = modal.find('#modal_induction_script').val()
+      var pin_white = modal.find('#modal_induction_pinwhite').val()
+      var pin_blue = modal.find('#modal_induction_pinblue').val()
+      var pin_yellow = modal.find('#modal_induction_pinyellow').val()
+      var delay = modal.find('#modal_induction_delay').val()
+      var pl = modal.find('#modal_induction_pl').val()
+      var kettleid = modal.find('#modal_induction_kettleid').val()
+      if (modal.find('#modal_induction_enabled').prop("checked") == true) {
+        var isenabled = "1"
+      } else {
+        var isenabled = "0"
+      }
+      $.ajax({
+        url: '/setIndu?enabled=' + isenabled + '&topic=' + mqtttopic + '&pinwhite=' + pin_white + '&pinyellow=' + pin_yellow + '&pinblue=' + pin_blue + '&delay=' + delay + '&pl=' + pl + '&kettle_id=' + kettleid,
+        type: 'POST',
+        dataType: 'html',
+        async: false,
+        cache: false
+      });
+      modal.modal('hide')
+    });
+
+    $('#display_modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var isEnabled;
+      var address;
+      var updisp;
+
+      $.ajax({
+        url: '/reqDisp?req=isEnabled',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          isEnabled = data;
+        }
+      });
+      $.ajax({
+        url: '/reqDisp?req=updisp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          updisp = data;
+        }
+      });
+
+      var modal = $(this)
+      $('#modal_display_address').load('/reqDisp?req=address')
+      modal.find('#modal_display_update').val(updisp)
+      if (isEnabled == "1") { modal.find('#modal_display_enabled').prop("checked", true) }
+      else { modal.find('#modal_display_enabled').prop("checked", false) }
+
+      var modal = $(this)
+    });
+
+    $("#modal_display_btn_save").click(function () {
+      var modal = $('#display_modal')
+      var address = modal.find('#modal_display_address').val()
+      var updisp = modal.find('#modal_display_update').val()
+
+      if (modal.find('#modal_display_enabled').prop("checked") == true) {
+        var isenabled = "1"
+      } else {
+        var isenabled = "0"
+      }
+
+      $.ajax({
+        url: '/setDisp?enabled=' + isenabled + '&address=' + address + '&updisp=' + updisp,
+        type: 'POST',
+        dataType: 'html',
+        async: false,
+        cache: false
+      });
+      modal.modal('hide')
+    });
+
+    $('#misc_modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var mqttaddress;
+      var mdns;
+      var mdns_name;
+      var reset;
+      var clear;
+      var enable_mqtt;
+	  var mqtt_state;
+      var delay_mqtt;
+      var enable_wlan
+	  var wlan_state;
+      var delay_wlan;
+      var del_sen_act;
+      var del_sen_ind;
+      var upsen;
+      var upact;
+      var upind;
+      var uptcp;
+      var tcphost;
+      var tcpport;
+      var tcp;
+
+      $.ajax({
+        url: '/reqMisc?req=MQTTHOST',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mqttaddress = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=mdns',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mdns = data;
+        }
+      }); $.ajax({
+        url: '/reqMisc?req=mdns_name',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mdns_name = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=enable_mqtt',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          enable_mqtt = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=mqtt_state',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mqtt_state = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=delay_mqtt',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          delay_mqtt = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=enable_wlan',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          enable_wlan = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=wlan_state',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          wlan_state = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=delay_wlan',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          delay_wlan = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=del_sen_act',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          del_sen_act = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=del_sen_ind',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          del_sen_ind = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=upsen',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          upsen = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=upact',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          upact = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=upind',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          upind = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=uptcp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          uptcp = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=tcphost',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          tcphost = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=tcpport',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          tcpport = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=tcp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          tcp = data;
+        }
+      });
+
+      var modal = $(this)
+      modal.find('#modal_misc_address').val(mqttaddress)
+      modal.find('#modal_misc_mdns_name').val(mdns_name)
+      if (mdns == "1") { modal.find('#modal_misc_mdns').prop("checked", true) }
+      else { modal.find('#modal_misc_mdns').prop("checked", false) }
+      if (enable_mqtt == "1") { modal.find('#modal_misc_onErrorMQTT').prop("checked", true) }
+      else { modal.find('#modal_misc_onErrorMQTT').prop("checked", false) }
+      if (enable_wlan == "1") { modal.find('#modal_misc_onErrorWLAN').prop("checked", true) }
+      else { modal.find('#modal_misc_onErrorWLAN').prop("checked", false) }
+      if (tcp == "1") { modal.find('#modal_misc_tcp').prop("checked", true) }
+      else { modal.find('#modal_misc_tcp').prop("checked", false) }
+      modal.find('#modal_misc_delay_mqtt').val(delay_mqtt)
+      modal.find('#modal_misc_delay_wlan').val(delay_wlan)
+      modal.find('#modal_misc_del_sen_act').val(del_sen_act)
+      modal.find('#modal_misc_del_sen_ind').val(del_sen_ind)
+      modal.find('#modal_misc_reset').prop("checked", false)
+      modal.find('#modal_misc_clear').prop("checked", false)
+      modal.find('#modal_misc_upsen').val(upsen)
+      modal.find('#modal_misc_upact').val(upact)
+      modal.find('#modal_misc_upind').val(upind)
+      modal.find('#modal_misc_tcp_interval').val(uptcp)
+      modal.find('#modal_misc_tcp_host').val(tcphost)
+      modal.find('#modal_misc_tcp_port').val(tcpport)
+
+      var modal = $(this)
+    });
+
+    $("#modal_misc_btn_save").click(function () {
+      var modal = $('#misc_modal')
+      var mqttaddress = modal.find('#modal_misc_address').val()
+      var mdns_name = modal.find('#modal_misc_mdns_name').val()
+      var delay_mqtt = modal.find('#modal_misc_delay_mqtt').val()
+      var delay_wlan = modal.find('#modal_misc_delay_wlan').val()
+      var del_sen_act = modal.find('#modal_misc_del_sen_act').val()
+      var del_sen_ind = modal.find('#modal_misc_del_sen_ind').val()
+      var upsen = modal.find('#modal_misc_upsen').val()
+      var upact = modal.find('#modal_misc_upact').val()
+      var upind = modal.find('#modal_misc_upind').val()
+      var uptcp = modal.find('#modal_misc_tcp_interval').val()
+      var tcphost = modal.find('#modal_misc_tcp_host').val()
+      var tcpport = modal.find('#modal_misc_tcp_port').val()
+
+
+      if (modal.find('#modal_misc_mdns').prop("checked") == true) {
+        var mdns = "1"
+      } else {
+        var mdns = "0"
+      }
+      if (modal.find('#modal_misc_onErrorMQTT').prop("checked") == true) {
+        var enable_mqtt = "1"
+      } else {
+        var enable_mqtt = "0"
+      }
+      if (modal.find('#modal_misc_onErrorWLAN').prop("checked") == true) {
+        var enable_wlan = "1"
+      } else {
+        var enable_wlan = "0"
+      }
+      if (modal.find('#modal_misc_reset').prop("checked") == true) {
+        var reset = "1"
+      } else {
+        var reset = "0"
+      }
+      if (modal.find('#modal_misc_clear').prop("checked") == true) {
+        var clear = "1"
+      } else {
+        var clear = "0"
+      }
+      if (modal.find('#modal_misc_tcp').prop("checked") == true) {
+        var tcp = "1"
+      } else {
+        var tcp = "0"
+      }
+
+      $.ajax({
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&MQTTHOST=' + mqttaddress + '&enable_mqtt=' + enable_mqtt + '&delay_mqtt=' + delay_mqtt + '&enable_wlan=' + enable_wlan + '&delay_wlan=' + delay_wlan + '&del_sen_act=' + del_sen_act + '&del_sen_ind=' + del_sen_ind + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&upsen=' + upsen + '&upact=' + upact + '&upind=' + upind + '&tcp=' + tcp + '&tcphost=' + tcphost + '&tcpport=' + tcpport + '&uptcp=' + uptcp,
+        type: 'POST',
+        dataType: 'html',
+        async: false,
+        cache: false
+      });
+      modal.modal('hide')
+    });
+
+    $("#btn_reboot").click(function () {
+      $.ajax({
+        url: '/reboot',
+        type: 'POST',
+        async: false,
+        cache: false
+      }).done(function (msg) {
+        alert("Device says: " + msg + "\n Page will be reloaded now!");
+        window.location.reload(true);
+      });;
+    });
+
+    $(function () {
+      var tcpurl = "";
+      var tcp;
+      var tcpkettle;
+      $.ajax({
+        url: '/reqMisc?req=tcp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          tcp = data;
+        }
+      });
+      if (tcp == 1) {
+        $.ajax({
+          url: '/reqMisc?req=tcphost',
+          type: 'get',
+          dataType: 'html',
+          async: false,
+          cache: false,
+          success: function (data) {
+            tcphost = data;
+          }
+        });
+      }
+      else {
+        testurl = "about:blank";
+      }
+
+      if (tcp == 1) {
+        $.get("/reqSensors", function (data) {
+          let content = "";
+          content += "<div class='list-group'>";
+          data.forEach(function (element, index) {
+            if (element.kettleid != "0") {
+              let tcpurl = "<div class='list-group-item list-group-item-action d-flex align-items-start' style='height: 600px'>";
+              tcpurl += "<iframe class='embed-responsive-item'";
+              tcpurl += " src='http://";
+              tcpurl += tcphost;
+              tcpurl += "/iSpindle/mqttdevice.php?name=";
+              tcpurl += element.name;
+              tcpurl += "&hours=5&reset=true'";
+              tcpurl += " frameborder='0' allowfullscreen>";
+              tcpurl += "</iframe></div>";
+              content += tcpurl;
+            }
+          });
+          content += "</div>";
+          //alert("content: " + content);
+          $('#listeSenName').html(content);
+        });
+      }
+    });
+
+    $(function () {
+      var firmware;
+      $.ajax({
+        url: '/reqMisc?req=firmware',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          firmware = data;
+        }
+      });
+      document.getElementById("firmware").innerHTML = firmware;
+    });
+
+  </script>
+</body>
+
+</html>

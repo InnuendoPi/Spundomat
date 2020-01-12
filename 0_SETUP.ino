@@ -1,9 +1,9 @@
 void setup()
 {
   Serial.begin(115200);
-  #ifdef DEBUG_ESP_PORT
-    Serial.setDebugOutput(true);
-  #endif
+#ifdef DEBUG_ESP_PORT
+  Serial.setDebugOutput(true);
+#endif
   while (!Serial)
   {
     yield(); // wait for serial port to connect. Needed for native USB port only
@@ -11,7 +11,7 @@ void setup()
   Serial.println("");
   Serial.println("");
   Serial.println("*** SYSINFO: Starte Setup Spundomat");
-  
+
   // Verbinde WLAN
   wifiManager.setDebugOutput(false);
   wifiManager.setMinimumSignalQuality(10);
@@ -23,23 +23,23 @@ void setup()
   WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
 
-    // Load filesystem
+  // Load filesystem
   if (SPIFFS.begin())
   {
     if (SPIFFS.exists("/update.txt")) // Load configuration
       updateSys();
     else if (SPIFFS.exists("/config.json")) // Load configuration
-      {
-        loadConfig();
-        if (testModus)
-          sensorValueTest = setSensorValueTest(setMode);
-      }
+    {
+      loadConfig();
+      if (testModus)
+        sensorValueTest = setSensorValueTest(setMode);
+    }
     else
       Serial.println("*** SYSINFO: Konfigurationsdatei config.json nicht vorhanden. Setze Standardwerte ...");
   }
   else
     Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
-  
+
   aktIP = WiFi.localIP();
   aktWLAN = WiFi.SSID();
   Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
@@ -83,7 +83,7 @@ void setup()
 
   // Zeitserver via NTP
   timeClient.begin();
-  
+
   // LCD
   startLCD();
 

@@ -4,7 +4,7 @@ bool loadConfig()
   File configFile = SPIFFS.open("/config.json", "r");
   if (!configFile)
   {
-    Serial.println("Failed to open config file");
+    Serial.println("*** SYSINFO: Fehler beim Laden der Konfiguration");
     Serial.println("------ loadConfig aborted -------");
     return false;
   }
@@ -12,7 +12,7 @@ bool loadConfig()
   size_t size = configFile.size();
   if (size > 512)
   {
-    Serial.print("Config file size is too large");
+    Serial.print("*** SYSINFO: Konfigurationsdatei zu groß");
     Serial.println("------ loadConfig aborted -------");
     return false;
   }

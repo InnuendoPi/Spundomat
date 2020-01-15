@@ -1,7 +1,7 @@
 bool loadConfig()
 {
   Serial.println("------ loadConfig started -------");
-  File configFile = SPIFFS.open("/config.json", "r");
+  File configFile = SPIFFS.open("/config.txt", "r");
   if (!configFile)
   {
     Serial.println("*** SYSINFO: Fehler beim Laden der Konfiguration");
@@ -16,11 +16,9 @@ bool loadConfig()
     Serial.println("------ loadConfig aborted -------");
     return false;
   }
-  std::unique_ptr<char[]> buf(new char[size]);
-  configFile.readBytes(buf.get(), size);
 
   StaticJsonDocument<384> doc;
-  DeserializationError error = deserializeJson(doc, buf.get());
+  DeserializationError error = deserializeJson(doc, configFile);
   if (error)
   {
     Serial.print("Conf: Error Json ");
@@ -88,13 +86,6 @@ bool saveConfig()
 {
   DEBUG_MSG("%s\n", "------ saveConfig started -------");
   StaticJsonDocument<384> doc;
-  File configFile = SPIFFS.open("/config.json", "w");
-  if (!configFile)
-  {
-    DEBUG_MSG("%s\n", "Failed to open config file for writing");
-    DEBUG_MSG("%s\n", "------ saveConfig aborted ------");
-    return false;
-  }
 
   JsonArray spundArray = doc.createNestedArray("SPUNDOMAT");
   JsonObject spundObj = spundArray.createNestedObject();
@@ -129,9 +120,27 @@ bool saveConfig()
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
-  DEBUG_MSG("setDEBUG: %d\n", setDEBUG);
   DEBUG_MSG("Test: %d\n", testModus);
-  DEBUG_MSG("startTELNET: %d\n", startTEL);
+  
+  size_t len = measureJson(doc);
+  int memoryUsed = doc.memoryUsage();
+  if (len > 512 || memoryUsed > 384)
+  {
+    DEBUG_MSG("JSON config length: %d\n", len);
+    DEBUG_MSG("JSON memory usage: %d\n", memoryUsed);
+    DEBUG_MSG("%s\n", "Failed to write config file - config too large");
+    DEBUG_MSG("%s\n", "------ saveConfig aborted ------");
+    return false;
+  }
+
+  File configFile = SPIFFS.open("/config.txt", "w");
+  if (!configFile)
+  {
+    DEBUG_MSG("%s\n", "Failed to open config file for writing");
+    DEBUG_MSG("%s\n", "------ saveConfig aborted ------");
+    return false;
+  }
+
   serializeJson(doc, configFile);
   configFile.close();
   DEBUG_MSG("%s\n", "------ saveConfig finished ------");

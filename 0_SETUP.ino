@@ -17,6 +17,8 @@ void setup()
   wifiManager.setMinimumSignalQuality(10);
   wifiManager.setConfigPortalTimeout(300);
   wifiManager.setAPCallback(configModeCallback);
+  WiFiManagerParameter p_hint("<small>*Sobald der Spundomat im WLAN eingebunden ist, öffne im Browser http://spundomat (mDNS)</small>"); 
+  wifiManager.addParameter(&p_hint);
   wifiManager.autoConnect(nameMDNS);
   WiFi.setSleepMode(WIFI_NONE_SLEEP);
   WiFi.mode(WIFI_STA);
@@ -26,16 +28,15 @@ void setup()
   // Load filesystem
   if (SPIFFS.begin())
   {
-    if (SPIFFS.exists("/update.txt")) // Load configuration
-      updateSys();
-    else if (SPIFFS.exists("/config.json")) // Load configuration
+    updateSys();
+    if (SPIFFS.exists("/config.txt")) // Load configuration
     {
       loadConfig();
       if (testModus)
         sensorValueTest = setSensorValueTest(setMode);
     }
     else
-      Serial.println("*** SYSINFO: Konfigurationsdatei config.json nicht vorhanden. Setze Standardwerte ...");
+      Serial.println("*** SYSINFO: Konfigurationsdatei config.txt nicht vorhanden. Setze Standardwerte ...");
   }
   else
     Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
@@ -98,7 +99,7 @@ void setup()
   os_timer_arm(&TimerPressure, 1000, true); // Zeitintervall Drucksensor 1sek
 
   // Uhrzeit
-  displayClock();
+  Serial.printf("*** SYSINFO: %s\n", timeClient.getFormattedTime().c_str());
   checkLog();
 }
 

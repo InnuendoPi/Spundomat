@@ -3,8 +3,6 @@ Name:		Spundomat.ino
 Erstellt:	2020
 Author:	    Innuendo
 
-Der Quellcode baut auf einem Snippet von Janick 2017 auf.
-
 Spunden https://hobbybrauer.de/forum/wiki/doku.php/lagern:spunden
 
 Unter dem Spunden versteht man Bier in einem druckdicht abgeschlossenen Faß oder Gärbehälter 
@@ -19,6 +17,8 @@ Tanktemperatur (bzw. Raumtemperatur wenn nicht temperaturreguliert) richtig eing
 
 Zum Anschließen, Umkonfigurieren, Carbonisieren und leichten Reinigen der CO2-Schäuche eignen 
 sich Pneumatische Schnellkupplungen hervorragend.
+
+Dieser Quellcode baut auf einem Snippet von Janick 2017 auf.
 */
 
 #include <EEPROM.h>
@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.05";
+const char Version[6] = "2.0";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -109,7 +109,7 @@ NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
 // Definiere Timer
 os_timer_t TimerTemp;               // Timer Objekt Temperatur: Wiederhole Aufgaben und lasse den Wemos das Zeitintervall überwachen
 os_timer_t TimerPressure;           // Timer Objekt Druck
-//os_timer_t TimerNTP;                // Timer Objekt NTP
+
 bool TickTempOccured = false;       // Prüfe Zeitintervall Temperatur
 bool TickPressureOccured = false;   // Prüfe Zeitintervall Druck
 

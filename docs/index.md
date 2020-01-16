@@ -1,6 +1,6 @@
-![Startseite](img/Spundomat01.jpg)
-
 # Spundomat
+
+![Startseite](img/Spundomat01.jpg)
 
 **Was ist Spundomat?**
 
@@ -40,6 +40,8 @@ Zur Konfiguration und Verwendung kann ein Display mit Encoder (Dreh-Drück-Knopf
 * Backup / Restore der Konfiguration (config.json) über Dateiexplorer
 * Firmware Update über WebIf (Firmware und SPIFFS)
 
+Dieses Projekt wurde im hobbybrauer Forum gestartet und dient dem Informationsaustausch.
+
 ![Einstellungen](img/Spundomat02.jpg)
 
 **Voraussetzungen: (2020.01)**
@@ -59,7 +61,19 @@ Zur Konfiguration und Verwendung kann ein Display mit Encoder (Dreh-Drück-Knopf
     * LiquidCrystal_PCF8574.h
     * FS.h
 
-# Hardware: die Platine zum Projekt
+# Die Spundomat Platine
+
+**Wichtiger Hinweis:**
+
+Die Platine ist aus einem Hobby-Projekt entstanden. Eine fertig bestückte Platine wird nicht angeboten. Das Projekt verfolgt keinerlei kommerzielle Absichten. Die hier geteilten Informationen stellen einen Entwicklungszustand dar und dienen der Weiterentwicklung sowie der Überprüfung, Korrektur und Verbesserung. Inhalte aus externen Links (bspw Forum hobbybrauer) und Angaben zu externen Inhalten (bspw. Artikel verschiedener Anbieter) unterliegen den jeweiligen Rechten der Inhaber. Externe Inhalte sind ausschließlich als informative Starthilfe anzusehen.
+
+*Alle Informationen über die Platine sind rein informativ und können falsch sein. Verwendung dieser Informationen auf eigene Gefahr. Jegliche Haftung wird ausgeschlossen.*
+
+In diesem Projekt wurde eine Platine für den Spundomat entwickelt, um mit Klemmschraubblöcken eine einfache Anbindung an Sensoren und Magnetventile zu bieten. Die Platine ist mit nur wenigen Bauteilen bestückt. Die Platine bietet folgende Vorteile:
+
+- der Wemos D1 mini steckt auf einem Sockel und kann jederzeit abgenommen werden.
+- die Stromversorgung vom Wemos kann bei der Verwendung einer GGM IDS2 direkt vom Induktionskochfeld genutzt werden.
+- Temperatursensoren DS18B20 fest an D3 können direkt an die Schraubklemmen angeschlossen werden.
 
 ![Platine-vo](img/Layout01.png)
 

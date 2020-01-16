@@ -1,8 +1,8 @@
-![ov1](/Info/Spundomat01.jpg)
+![Startseite](img/Spundomat01.jpg)
 
 # Spundomat
-## Generelle Informationen
-### Was ist Spundomat?
+
+**Was ist Spundomat?**
 
 Spunden https://hobbybrauer.de/forum/wiki/doku.php/lagern:spunden
 
@@ -19,25 +19,30 @@ Tanktemperatur (bzw. Raumtemperatur wenn nicht temperaturreguliert) richtig eing
 Zum Anschließen, Umkonfigurieren, Carbonisieren und leichten Reinigen der CO2-Schäuche eignen 
 sich Pneumatische Schnellkupplungen hervorragend.
 
-### Was bietet diese Firmware?
+**Was bietet diese Firmware?**
+
+Die Firmware bietet zwei Betriebsmodis:
+1. Spunden (Druck ausgehend vom Keg)
+2. Karbonisieren (CO2 eingehend in das Keg)
+
+Zur Konfiguration und Verwendung kann ein Display mit Encoder (Dreh-Drück-Knopf) oder das Web Interface verwendet werden.
 
 * Web Interface (WebIf) für die Konfiguration
 * 2004A Display Integration
 * Encoder Unterstützung
 * Sensoren
-  * Temperatursensor
+  * Temperatursensoren DS18B20
   * Drucksensor
 * Magnetventil ausgehend (Spunden)
-* Magnetventil eingehend (Zwangskarbonisieren)
+* Magnetventil eingehend (Karbonisieren)
 * Kalibrierung (offsetVolt)
-* mDNS Server Support
+* mDNS Support
 * Backup / Restore der Konfiguration (config.json) über Dateiexplorer
 * Firmware Update über WebIf (Firmware und SPIFFS)
-* Telnet Client Support (putty)
 
-![ov1](/Info/Spundomat02.jpg)
+![Einstellungen](img/Spundomat02.jpg)
 
-### Voraussetzungen: (2020.01)
+**Voraussetzungen: (2020.01)**
 
 * Arduino IDE 1.8.10
 * Optional Microsoft VSCode + Arduino + ESP8266FS
@@ -54,9 +59,11 @@ sich Pneumatische Schnellkupplungen hervorragend.
     * LiquidCrystal_PCF8574.h
     * FS.h
 
-### Hardware: die Platine zum Projekt
+# Hardware: die Platine zum Projekt
 
-![ov1](/Info/Layout01.png) ![ov1](/Info/Layout02.png)
+![Platine-vo](img/Layout01.png)
+
+![Platine-hi](img/Layout02.png)
 
 Beschreibung:
 
@@ -66,39 +73,54 @@ Einrichtung:
 - Trimmer auf 70.5kOhm einstellen
 - MP1584En ausgehend auf 5V einstellen
 
-### Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil
+**Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil
 
 1. Möglichkeit: Spunder
-![ov1](/Info/Spunder.jpg)
+
+![Spunder](img/Spunder.jpg)
+
 2. Möglichkeit: Zwangskarbonisierung
-![ov1](/Info/Zwangskarbonisieren.jpg)
+
+![Karbonisieren](img/Zwangskarbonisieren.jpg)
 
 
-### Wie kann die Firmware geflashed werden ohne den Quellcode zu komplilieren
+# Installation
 
-* Mit Hilfe von esptool.exe (see https://github.com/igrr/esptool-ck/releases ) aus dem Ordner tools kann die Firmware auf das ESP Modul geladen werden
+**Installation ohne den Quellcode zu compilieren**
 
-Beispiel für ein ESP8266 Modul vom Typ D1 mini mit 4MB Flash verbunden mit COM3
+Mit Hilfe von esptool.exe (https://github.com/igrr/esptool-ck/releases ) aus dem Ordner tools kann die Firmware auf das ESP Modul geladen werden. Das ESPTool ist für verschiedene Betriebssysteme verfügbar.
+ESPtool-ck Copyright (C) 2014 Christian Klippel ck@atelier-klippel.de. This code is licensed under GPL v2.
 
-	* Eingabeaufforderung öffnen
+Unter Win10 wird der USB Treiber CH341SER benötigt: http://www.wch.cn/download/CH341SER_ZIP.html
 
-	* in den Order ./Spundomat/build wechseln
+Beispiel für ein ESP8266 Modul vom Typ Wemos D1 mini mit 4MB Flash verbunden mit COM3
 
-		* Firmware aufspielen: ../tools/esptool.exe -ca 0x000000 -cd nodemcu -cp COM3 -cb 921600 -cf Spundomat.ino.bin
+	* Download von github entpacken (komplett)
 
-	* Das ESP8266 Modul resetten
+    * Im Ordner tools das Archiv tools.zip entpacken. Enthalten sind das esptool und das Skript Flashen.cmd
 
-	* Das ESP8266 Modul startet anschließend im Access Point Modus mit der IP Adresse 192.168.4.1
+    * Eingabeaufforderung öffnen
 
-	* Das ESP8266 Modul über einen Webbrowser mit dem WLAN verbinden
+	* in den Order .../Spundomat/tools wechseln und das Skript Flashen.cmd ausführen
+    Das Skript löscht alle Daten aus dem Speicher und spielt die Firmware und das Filesystem SPIFFS auf.
 
-    * Das SPIFFS kann nun über das WebIf ausgespielt werden <ip-address>/update
+    alternativ manuell mit esptool:
 
-    * alternativ mit esptool: ../tools/esptool.exe -ca 0x100000 -cd nodemcu -cp COM3 -cb 921600 -cf Spundomat.spiffs.bin
+		* Wemos D1 mini löschen:
+        esptool.exe -cp COM3 -cd nodemcu -ce 
+        * Flashen:
+        esptool.exe -cp COM3 -cd nodemcu -ca 0x000000 -cf ..\build\Spundomat.ino.bin -ca 0x200000 -cf ..\build\Spundomat.spiffs.bin
 
+	    * Das ESP8266 Modul resetten
+
+	    * Das ESP8266 Modul startet anschließend im Access Point Modus mit der IP Adresse 192.168.4.1
+
+    	* Das ESP8266 Modul über einen Webbrowser mit dem WLAN verbinden
+
+        * Anschließend ist der Spundomat erreichbar über http://Spundomat
 
 * Updates
-	Updates (firmware und SPIFFS) können über das WebIf geladen werden: <IP Adresse ESP8266>/update
+	Updates (firmware und SPIFFS) können über das WebIf geladen werden: http://Spundomat/update
 
 * Backup and restore der Konfiguration
     Der FileBrowser ist erreichbar über <IP Adresse ESP8266>/edit download oder upload config.json 

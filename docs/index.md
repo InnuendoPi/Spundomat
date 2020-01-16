@@ -1,12 +1,10 @@
 # Spundomat
 
-**Spunden & Karbonisieren*
+**Spunden & Karbonisieren**
 
-![Startseite](img/Spundomat01.jpg)
+Das Projekt Spundomat ist aus dem hobbybrauer Forum entstanden. Der Grundgedanke für den Spundomat liegt in der Automatisierung von wiederkehrenden Ausgaben beim Brauen. Je nach Vorliebe setzen Hobbybrauer das Spunden oder das Karbonisieren ein. 
 
-**Was ist Spundomat?**
-
-Spunden https://hobbybrauer.de/forum/wiki/doku.php/lagern:spunden
+**Spunden** https://hobbybrauer.de/forum/wiki/doku.php/lagern:spunden
 
 Unter dem Spunden versteht man Bier in einem druckdicht abgeschlossenen Faß oder Gärbehälter 
 kontrolliert zu Carbonisieren damit Kohlendioxid im Bier gelöst wird. 
@@ -21,7 +19,19 @@ Tanktemperatur (bzw. Raumtemperatur wenn nicht temperaturreguliert) richtig eing
 Zum Anschließen, Umkonfigurieren, Carbonisieren und leichten Reinigen der CO2-Schäuche eignen 
 sich Pneumatische Schnellkupplungen hervorragend.
 
+**Karbonisieren** https://hobbybrauer.de/forum/wiki/doku.php/carbonisieren
+
+*Unter Karbonisieren oder Aufkarbonisieren versteht man das Einbringen einer bestimmten Menge an Kohlendioxid im Bier. Dabei kann man das CO2 natürlich im Rahmen einer Nachgärung durch Nachwürzen erzeugen, oder von aussen mit einer CO2-Gasflasche und Druckminderer zuführen (Zwangscarbonisieren). Jeder Bierstil hat seinen eigenen typischen Bereich für den im Bier gelösten Kohlendioxidgehalt. Eine Tabelle findet man hier.
+Zwangskarbonisieren: Das in einem druckfesten Behälter (Fass, Keg) befindliche nicht mehr gärende Bier mit dem der Temperatur entsprechenden CO2-Druck beaufschlagen und die geöffnete CO2-Flasche so lange dran lassen, bis sich die Manometeranzeige nicht mehr verändert.*
+
+**Was ist Spundomat?**
+
+Der Spundomat automatisiert das Spunden und das Karbonisieren. Zur Automatisierung wird ein Drucksensor und mindestens ein Magnetventil eingesetzt. Die Software öffnet oder schließt das Magnetventil automatisch anhand der Daten vom Drucksensor.
+
+
 **Was bietet diese Firmware?**
+
+![Startseite](img/Spundomat01.jpg)
 
 Die Firmware bietet zwei Betriebsmodis:
 1. Spunden (Druck ausgehend vom Keg)

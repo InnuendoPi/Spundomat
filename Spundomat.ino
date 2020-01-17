@@ -88,7 +88,7 @@ float setPressure = 2.0;    //  Vorgabe bei Neustart von 2,0 bar
 float setCarbonation = 5.0; //  Vorgabe bei Neustart von 5,0 gr/L
 int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 = Karbonisieren
 
-bool startMDNS = false;   // mDNS Dienst
+bool startMDNS = true;   // mDNS Dienst
 bool testModus = false;   // testModus
 bool startMV1 = false;    // Aktiviere MV1
 bool startMV2 = false;    // Aktiviere MV2

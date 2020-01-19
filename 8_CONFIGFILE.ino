@@ -35,6 +35,8 @@ bool loadConfig()
   if (spundObj.containsKey("MODE"))
     setMode = spundObj["MODE"];
 
+  setMode = 0;
+
   Serial.print("setPressure: ");
   Serial.println(setPressure);
   Serial.print("setCarbonation: ");

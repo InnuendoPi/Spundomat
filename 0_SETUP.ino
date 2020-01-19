@@ -84,6 +84,7 @@ void setup()
 
   // Zeitserver via NTP
   timeClient.begin();
+  timeClient.update();
 
   // LCD
   startLCD();

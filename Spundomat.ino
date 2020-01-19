@@ -72,13 +72,13 @@ const char Version[6] = "2.0";
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
-const int PIN_BUZZER = D4;         // Buzzer (wird nicht verwendet)
+const int PIN_BUZZER = D4;         // Buzzer
 const int PIN_TEMP = D3;           // DS18B20
-const int PIN_ENCODER_A = D5;      // CLK
-const int PIN_ENCODER_B = D6;      // SW
-const int PIN_ENCODER_BUTTON = D7; // DT
+const int PIN_ENCODER_A = D6;      // CLK Out A
+const int PIN_ENCODER_B = D5;      // DT Out B
+const int PIN_ENCODER_BUTTON = D7; // SW Button
 const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
-const int PIN_MV2 = D8;            //D0    // Magnetventil eingehend MV2 (Karbonisierer)
+const int PIN_MV2 = D0;            // Magnetventil eingehend MV2 (Karbonisierer)
 
 // Eulersche Zahl
 const double E = exp(1);
@@ -90,9 +90,9 @@ int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 
 
 bool startMDNS = true;   // mDNS Dienst
 bool testModus = false;   // testModus
-bool startMV1 = false;    // Aktiviere MV1
-bool startMV2 = false;    // Aktiviere MV2
-bool startBuzzer = false; // Aktiviere Buzzer
+bool startMV1 = false;    // Aktiviere MV1 an D8
+bool startMV2 = false;    // Aktiviere MV2 an D0
+bool startBuzzer = false; // Aktiviere Buzzer an D4
 
 // Klassen Initialisierungen
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display
@@ -112,7 +112,8 @@ os_timer_t TimerPressure;           // Timer Objekt Druck
 
 bool TickTempOccured = false;       // Prüfe Zeitintervall Temperatur
 bool TickPressureOccured = false;   // Prüfe Zeitintervall Druck
-
+unsigned long lastToggled = 0;  // Timestamp system event
+int UPDATE = 5000;
 // Deklariere Variablen
 float temperature;
 float oldTemperature;

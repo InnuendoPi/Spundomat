@@ -3,7 +3,6 @@ void millis2wait(const int &value)
   unsigned long pause = millis();
   while (millis() < pause + value)
   {
-    //wait approx. [period] ms
     yield();
   }
 }

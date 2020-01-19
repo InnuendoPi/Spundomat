@@ -251,12 +251,12 @@ void handleSetMisc()
             if (server.arg(i) == "1")
             {
                 startMV1 = true;
-                pinMode(PIN_MV1, OUTPUT);    // D8
+                pinMode(PIN_MV1, OUTPUT); // D8
             }
             else
             {
                 startMV1 = false;
-                pinMode(PIN_MV1, INPUT);    // D8
+                pinMode(PIN_MV1, INPUT); // D8
             }
         }
         if (server.argName(i) == "mv2")
@@ -264,12 +264,12 @@ void handleSetMisc()
             if (server.arg(i) == "1")
             {
                 startMV2 = true;
-                pinMode(PIN_MV2, OUTPUT);   // D0
+                pinMode(PIN_MV2, OUTPUT); // D0
             }
             else
             {
                 startMV2 = false;
-                pinMode(PIN_MV2, INPUT);    // D0
+                pinMode(PIN_MV2, INPUT); // D0
             }
         }
         if (server.argName(i) == "buzzer")
@@ -277,12 +277,12 @@ void handleSetMisc()
             if (server.arg(i) == "1")
             {
                 startBuzzer = true;
-                pinMode(PIN_BUZZER, OUTPUT);    // D4
+                pinMode(PIN_BUZZER, OUTPUT); // D4
             }
             else
             {
                 startBuzzer = false;
-                pinMode(PIN_BUZZER, INPUT);    // D4
+                pinMode(PIN_BUZZER, INPUT); // D4
             }
         }
         yield();
@@ -335,6 +335,8 @@ void setMDNS()
     if (startMDNS && nameMDNS[0] != '\0' && WiFi.status() == WL_CONNECTED)
     {
         if (MDNS.begin(nameMDNS))
-            DEBUG_MSG("*** SYSINFO: mDNS gestartet als %s verbunden an %s\n", nameMDNS, WiFi.localIP().toString().c_str());
+            Serial.printf("*** SYSINFO: mDNS gestartet als %s verbunden an %s\n", nameMDNS, WiFi.localIP().toString().c_str());
     }
+    else
+        Serial.printf("*** SYSINFO: Fehler Start mDNS - ESP8266 IP Addresse: ", WiFi.localIP().toString().c_str());
 }

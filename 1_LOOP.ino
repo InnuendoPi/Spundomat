@@ -13,12 +13,12 @@ void loop()
 
   // mDNS
   if (startMDNS)
-     MDNS.update();
+    MDNS.update();
 
   button.tick();
   readEncoder();
   timeClient.update();
-  
+
   if (TickPressureOccured)
   {
     readPressure();
@@ -30,38 +30,42 @@ void loop()
     readTemparature();
     TickTempOccured = false;
   }
-  
+
   if (reflashLCD)
   {
     showLCD();
   }
-
-  // Betriebsmodi
-  switch (setMode)
+  if (millis() > (lastToggled + UPDATE))
   {
-  case 0: // aus
-    break;
-  case 1: // CO2 Spunden
-    if (pressure > calcPressure(setCarbonation, temperature))
+
+    // Betriebsmodi
+    switch (setMode)
     {
-      releasePressure();
-      readPressure();
+    case 0: // aus
+      break;
+    case 1: // CO2 Spunden
+      if (pressure > calcPressure(setCarbonation, temperature))
+      {
+        releasePressure();
+        readPressure();
+      }
+      break;
+    case 2: // Druck Spunden
+      if (pressure > setPressure)
+      {
+        releasePressure();
+        readPressure();
+      }
+      break;
+    case 3: // CO2 Karbonisieren
+      if (pressure < calcPressure(setCarbonation, temperature))
+      {
+        buildPressure();
+        readPressure();
+      }
+      break;
     }
-    break;
-  case 2: // Druck Spunden
-    if (pressure > setPressure)
-    {
-      releasePressure();
-      readPressure();
-    }
-    break;
-  case 3: // CO2 Karbonisieren
-    if (pressure < calcPressure(setCarbonation, temperature))
-    {
-      buildPressure();
-      readPressure();
-    }
-    break;
+    lastToggled = millis();
   }
   up = false;
   down = false;

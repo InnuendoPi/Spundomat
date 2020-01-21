@@ -1,6 +1,6 @@
-![ov1](/Info/Spundomat01.jpg)
-
 # Spundomat
+
+![ov1](/Info/Spundomat01.jpg)
 
 Projekt im Beta Status -> nicht benutzbar!
 
@@ -48,4 +48,4 @@ Version 2.0
 - Add:      Menü Speichern der Konfiguration im Display
 - Removed:  Delay Befehle
 
-Dokumentation unter: https://innuendopi.github.io/Spundomat/
+Dokumentation unter: <https://innuendopi.github.io/Spundomat/>

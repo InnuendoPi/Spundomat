@@ -22,3 +22,8 @@ build/Spundomat.ino.elf
 build/Spundomat.ino.map
 build/includes.cache
 build/local.eagle.app.v6.common.ld
+Info/Flashen-Herbert.cmd
+Info/Flashen-Denis.cmd
+Info/Spundomat.ino.bin
+Info/Spundomat.spiffs.bin
+Info/esptool.exe

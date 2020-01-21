@@ -7,6 +7,17 @@ Projekt im Beta Status -> nicht benutzbar!
 ## Changelog
 
 Version 2.0
+
+- Add:      Bibliothek InnuTicker erstellt
+- Reworked: NTP, readTemperature, readPressure und Encoder als Ticker Objekte eingebunden
+- Reworked: Open/Close Magnetventile MV1 und MV2 als Tickerobjekte mit variablen Intervallen open/close eingebunden (FlipFlop)
+- Fixed:    Langsame/träge Encoder und WebIf Bedienung durch Ticker Objekte behoben
+- Add:      Intervalle Öffne und Schließe Ventil konfigurierbar
+- Add:      Intervall Lese Drucksensor und lese Temperatursensor konfigurierbar
+- Removed:  Ursprüngliches handling releasePressure mit delays (Spunder) durch Ticker Objekte ersetzt
+- New:      der Startmodus ist nun Aus. Der Modus wird gespeichert, aber nicht angewendet. Bei Neustart ist der Modus wieder Aus
+- New:      Überprüfung der Eingabe auf Int Werte (Intervalle Sensoren)
+- New:      Überprüfe Bereich Eingabe (min 20ms bis max 7200000ms (2h))
 - Add:      WebUpdate Firmware
 - Add:      NTP Zeit
 - Update:   ESP8266 V2.6.3

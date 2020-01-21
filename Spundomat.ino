@@ -45,12 +45,12 @@ Dieser Quellcode baut auf einem Snippet von Janick 2017 auf.
 #include <WiFiClientSecureBearSSL.h>
 #include <NTPClient.h>
 #include <stdarg.h>
-#include <time.h>
+#include "InnuTicker.h"
 #include <CertStoreBearSSL.h>
 // BearSSL::CertStore certStore;
 
 #ifdef DEBUG_ESP_PORT
-#define DEBUG_MSG(...) DEBUG_ESP_PORT.printf( __VA_ARGS__ )
+#define DEBUG_MSG(...) DEBUG_ESP_PORT.printf(__VA_ARGS__)
 #else
 #define DEBUG_MSG(...)
 #endif
@@ -69,6 +69,8 @@ const char Version[6] = "2.0";
 #define PAUSE200MS 200
 #define PAUSE100MS 100
 #define PAUSE10MS 10
+#define ENCODER_UPDATE 100
+#define BUTTON_UPDATE 100
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
@@ -88,7 +90,7 @@ float setPressure = 2.0;    //  Vorgabe bei Neustart von 2,0 bar
 float setCarbonation = 5.0; //  Vorgabe bei Neustart von 5,0 gr/L
 int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 = Karbonisieren
 
-bool startMDNS = true;   // mDNS Dienst
+bool startMDNS = true;    // mDNS Dienst
 bool testModus = false;   // testModus
 bool startMV1 = false;    // Aktiviere MV1 an D8
 bool startMV2 = false;    // Aktiviere MV2 an D0
@@ -103,17 +105,22 @@ RotaryEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B); // Encoder drehen
 WiFiManager wifiManager;
 ESP8266WebServer server(80);
 ESP8266HTTPUpdateServer httpUpdate; // Version mit SPIFFS Update
+// Zeitserver Einstellungen
+#define NTP_OFFSET 60 * 60                // NTP in Sekunden
+#define NTP_INTERVAL 60 * 60 * 1000       // NTP in ms
+#define NTP_ADDRESS "europe.pool.ntp.org" // NTP change this to whatever pool is closest (see ntp.org)
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
+NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 
-// Definiere Timer
-os_timer_t TimerTemp;               // Timer Objekt Temperatur: Wiederhole Aufgaben und lasse den Wemos das Zeitintervall überwachen
-os_timer_t TimerPressure;           // Timer Objekt Druck
+// Definiere Ticker Objekte
+InnuTicker TickerTemp;
+InnuTicker TickerPressure;
+InnuTicker TickerMV1;
+InnuTicker TickerMV2;
+InnuTicker TickerNTP;
+InnuTicker TickerEncoder;
+InnuTicker TickerButton;
 
-bool TickTempOccured = false;       // Prüfe Zeitintervall Temperatur
-bool TickPressureOccured = false;   // Prüfe Zeitintervall Druck
-unsigned long lastToggled = 0;  // Timestamp system event
-int UPDATE = 5000;
 // Deklariere Variablen
 float temperature;
 float oldTemperature;
@@ -128,10 +135,18 @@ int sensorValueTest;
 boolean up = false;
 boolean down = false;
 boolean buttonPressed;
+bool statusMV1 = true;  // Status MV1 true:offen, false:geschlossen
+bool statusMV2 = true;  // Status MV2 true:offen, false:geschlossen
+int mv1Open = 1000;    // Öffne Magnetventil 1 in ms (min 10ms)
+int mv1Close = 100;   // Schließe Magnetventil 1 in ms (min 10ms)
+int mv2Open = 1000;    // Öffne Magnetventil 2 in ms (min 10ms)
+int mv2Close = 100;   // Schließe Magnetventil 2 in ms (min 10ms)
+int upTemp = 30000;
+int upPressure = 1000;
 
-int menuitem = 0;       // Display
-int edititem = 0;       // Display
-int page = 1;           // Display
+int menuitem = 0; // Display
+int edititem = 0; // Display
+int page = 1;     // Display
 boolean reflashLCD = true;
 String Menu1[4]; // Startseite
 String Menu2[5]; // Modus
@@ -144,8 +159,8 @@ String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb"};        
 String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren"}; // Modus-Namen für WebIf
 
 char nameMDNS[16] = "spundomat"; // http://spundomat/index.html
-IPAddress aktIP;    // Aktuelle IP Adresse
-String aktWLAN;     // SSID WLAN im STA Modus
+IPAddress aktIP;                 // Aktuelle IP Adresse
+String aktWLAN;                  // SSID WLAN im STA Modus
 
 // Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)

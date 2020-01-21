@@ -28,12 +28,14 @@ void setup()
   // Load filesystem
   if (SPIFFS.begin())
   {
-    updateSys();
+    updateSys(); // WebUpdate
+
     if (SPIFFS.exists("/config.txt")) // Load configuration
     {
       loadConfig();
       if (testModus)
         sensorValueTest = setSensorValueTest(setMode);
+      setTicker();
     }
     else
       Serial.println("*** SYSINFO: Konfigurationsdatei config.txt nicht vorhanden. Setze Standardwerte ...");
@@ -64,7 +66,8 @@ void setup()
 
   // Starte Temperatursensor
   sensors.begin();
-
+  TickerTemp.start();
+  
   // Pin Definitionen
   if (startMV1)
     pinMode(PIN_MV1, OUTPUT); // D8
@@ -82,22 +85,21 @@ void setup()
   EEPROM.begin(512);
   offsetVoltage = readFloat(0); // Lese Offset (Kalibrierung)
 
+  // Lese vom Drucksensor
+  TickerPressure.start();
+  
+  // Starte Encoder
+  TickerEncoder.start();
+  TickerButton.start();
+  
+
   // Zeitserver via NTP
   timeClient.begin();
   timeClient.update();
+  TickerNTP.start();
 
   // LCD
   startLCD();
-
-  // Lese vom DS18B20
-  readTemparature();
-
-  // Timer Temperatur einlesen
-  os_timer_setfn(&TimerTemp, timerTempCallback, NULL);
-  os_timer_arm(&TimerTemp, 30000, true); // Zeitintervall Temperatursensor 30sek
-  // Timer Druck einlesen
-  os_timer_setfn(&TimerPressure, timerPressureCallback, NULL);
-  os_timer_arm(&TimerPressure, 1000, true); // Zeitintervall Drucksensor 1sek
 
   // Uhrzeit
   Serial.printf("*** SYSINFO: %s\n", timeClient.getFormattedTime().c_str());

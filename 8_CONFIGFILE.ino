@@ -17,7 +17,7 @@ bool loadConfig()
     return false;
   }
 
-  StaticJsonDocument<384> doc;
+  StaticJsonDocument<512> doc;
   DeserializationError error = deserializeJson(doc, configFile);
   if (error)
   {
@@ -54,10 +54,27 @@ bool loadConfig()
     startMV2 = hwObj["MV2"];
   if (hwObj.containsKey("BUZZER"))
     startBuzzer = hwObj["BUZZER"];
+  if (hwObj.containsKey("MV1OPEN"))
+    mv1Open = hwObj["MV1OPEN"];
+  if (hwObj.containsKey("MV1CLOSE"))
+    mv1Close = hwObj["MV1CLOSE"];
+  if (hwObj.containsKey("MV2OPEN"))
+    mv2Open = hwObj["MV2OPEN"];
+  if (hwObj.containsKey("MV2CLOSE"))
+    mv2Close = hwObj["MV2CLOSE"];
+
   Serial.print("MV1: ");
-  Serial.println(startMV1);
+  Serial.print(startMV1);
+  Serial.print(" Open: ");
+  Serial.print(mv1Open);
+  Serial.print(" Close: ");
+  Serial.println(mv1Close);
   Serial.print("MV2: ");
-  Serial.println(startMV2);
+  Serial.print(startMV2);
+  Serial.print(" Open: ");
+  Serial.print(mv2Open);
+  Serial.print(" Close: ");
+  Serial.println(mv2Close);
   Serial.print("Buzzer: ");
   Serial.println(startBuzzer);
   Serial.println("--------");
@@ -66,13 +83,17 @@ bool loadConfig()
   JsonArray miscArray = doc["MISC"];
   JsonObject miscObj = miscArray[0];
 
+  if (miscObj.containsKey("UPPRESSURE"))
+    upPressure = miscObj["UPPRESSURE"];
+  if (miscObj.containsKey("UPTEMP"))
+    upTemp = miscObj["UPTEMP"];
+  Serial.printf("Intervall Drucksensor: %d\n", upPressure);
+  Serial.printf("Intervall Temperatursensor: %d\n", upTemp);
   if (miscObj.containsKey("NAMEMDNS"))
     strlcpy(nameMDNS, miscObj["NAMEMDNS"], sizeof(nameMDNS));
 
   if (miscObj.containsKey("MDNS"))
     startMDNS = miscObj["MDNS"];
-  if (miscObj.containsKey("TEST"))
-    testModus = miscObj["TEST"];
 
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
@@ -82,12 +103,15 @@ bool loadConfig()
   DEBUG_MSG("*** SYSINFO: JSON Konfiguration Größe: %d\n", len);
   if (len > 384)
     Serial.println("*** SYSINFO: Fehler JSON Konfiguration zu groß!");
+
+  TickerPressure.interval(upPressure);
+  TickerTemp.interval(upTemp);
 }
 
 bool saveConfig()
 {
   DEBUG_MSG("%s\n", "------ saveConfig started -------");
-  StaticJsonDocument<384> doc;
+  StaticJsonDocument<512> doc;
 
   JsonArray spundArray = doc.createNestedArray("SPUNDOMAT");
   JsonObject spundObj = spundArray.createNestedObject();
@@ -104,10 +128,14 @@ bool saveConfig()
   JsonObject hwObj = hwArray.createNestedObject();
 
   hwObj["MV1"] = startMV1;
+  hwObj["MV1OPEN"] = mv1Open;
+  hwObj["MV1CLOSE"] = mv1Close;
   hwObj["MV2"] = startMV2;
+  hwObj["MV2OPEN"] = mv2Open;
+  hwObj["MV2CLOSE"] = mv2Close;
   hwObj["BUZZER"] = startBuzzer;
-  DEBUG_MSG("MV1: %d\n", startMV1);
-  DEBUG_MSG("MV2: %d\n", startMV2);
+  DEBUG_MSG("MV1: %d Open: %d Close %d\n", startMV1, mv1Open, mv1Close);
+  DEBUG_MSG("MV2: %d Open: %d Close %d\n", startMV2, mv2Open, mv2Close);
   DEBUG_MSG("Buzzer: %d\n", startBuzzer);
   DEBUG_MSG("%s\n", "--------");
 
@@ -117,12 +145,15 @@ bool saveConfig()
 
   miscObj["NAMEMDNS"] = nameMDNS;
   miscObj["MDNS"] = startMDNS;
-  miscObj["TEST"] = testModus;
+  miscObj["UPPRESSURE"] = upPressure;
+  miscObj["UPTEMP"] = upTemp;
+  
+  DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
+  DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
 
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
-  DEBUG_MSG("Test: %d\n", testModus);
   
   size_t len = measureJson(doc);
   int memoryUsed = doc.memoryUsage();
@@ -146,4 +177,34 @@ bool saveConfig()
   serializeJson(doc, configFile);
   configFile.close();
   DEBUG_MSG("%s\n", "------ saveConfig finished ------");
+  
+  TickerPressure.interval(upPressure);
+  TickerTemp.interval(upTemp);
+
+  // TickerMV1.stop();
+  // TickerMV2.stop();
+
+  switch (setMode)
+  {
+  case 0: // aus
+    break;
+  case 1: // CO2 Spunden
+
+    TickerMV1.interval(mv1Open);
+    statusMV1 = true;
+    TickerMV1.start();
+    break;
+  case 2: // Druck Spunden
+    TickerMV1.interval(mv1Open);
+    statusMV1 = true;
+    TickerMV1.start();
+    break;
+  case 3: // CO2 Karbonisieren
+    TickerMV2.interval(mv2Open);
+    statusMV2 = true;
+    TickerMV2.start();
+    break;
+  default:
+    break;
+  }
 }

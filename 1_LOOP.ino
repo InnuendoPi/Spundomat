@@ -2,6 +2,7 @@ void loop()
 {
   // Webserver (80)
   server.handleClient();
+
   // Prüfe WiFi status
   if (WiFi.status() != WL_CONNECTED)
   {
@@ -11,61 +12,40 @@ void loop()
     WiFi.begin();
   }
 
-  // mDNS
+  // Check mDNS
   if (startMDNS)
     MDNS.update();
 
-  button.tick();
-  readEncoder();
-  timeClient.update();
+  // Check NTP Ticker
+  TickerNTP.update();
 
-  if (TickPressureOccured)
-  {
-    readPressure();
-    TickPressureOccured = false;
-  }
+  // Check Encoder Ticker
+  TickerButton.update();
+  TickerEncoder.update();
 
-  if (TickTempOccured)
-  {
-    readTemparature();
-    TickTempOccured = false;
-  }
+  // Check DS18B20 Ticker
+  TickerTemp.update();
+
+  // Check Drucksensor Ticker
+  TickerPressure.update();
 
   if (reflashLCD)
-  {
     showLCD();
-  }
-  if (millis() > (lastToggled + UPDATE))
-  {
 
-    // Betriebsmodi
-    switch (setMode)
-    {
-    case 0: // aus
-      break;
-    case 1: // CO2 Spunden
-      if (pressure > calcPressure(setCarbonation, temperature))
-      {
-        releasePressure();
-        readPressure();
-      }
-      break;
-    case 2: // Druck Spunden
-      if (pressure > setPressure)
-      {
-        releasePressure();
-        readPressure();
-      }
-      break;
-    case 3: // CO2 Karbonisieren
-      if (pressure < calcPressure(setCarbonation, temperature))
-      {
-        buildPressure();
-        readPressure();
-      }
-      break;
-    }
-    lastToggled = millis();
+  // Betriebsmodi
+  switch (setMode)
+  {
+  case 0: // aus
+    break;
+  case 1: // CO2 Spunden
+    TickerMV1.update();
+    break;
+  case 2: // Druck Spunden
+    TickerMV1.update();
+    break;
+  case 3: // CO2 Karbonisieren
+    TickerMV2.update();
+    break;
   }
   up = false;
   down = false;

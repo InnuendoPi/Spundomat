@@ -59,7 +59,8 @@ void readPressure()
 		sensorValue = sensorValueTest;
 	}
 	// !!!Testcode  Ende!!!
-
+	
+	
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
 
@@ -78,15 +79,15 @@ void readPressure()
 }
 
 // Timer Objekte
-void timerTempCallback(void *pArg) // Timer Objekt Temperatur mit Pointer
-{
-	TickTempOccured = true; // Bei true wird im nächsten loop readTemperature ausgeführt
-}
+// void timerTempCallback(void *pArg) // Timer Objekt Temperatur mit Pointer
+// {
+// 	TickTempOccured = true; // Bei true wird im nächsten loop readTemperature ausgeführt
+// }
 
-void timerPressureCallback(void *pArg) // Timer Objekt Temperatur mit Pointer
-{
-	TickPressureOccured = true; // Bei true wird im nächsten loop readPressure ausgeführt
-}
+// void timerPressureCallback(void *pArg) // Timer Objekt Temperatur mit Pointer
+// {
+// 	TickPressureOccured = true; // Bei true wird im nächsten loop readPressure ausgeführt
+// }
 
 // !!!Testcode!!!
 int setSensorValueTest(int value)

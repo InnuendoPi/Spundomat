@@ -75,7 +75,6 @@ void handleRequestMiscSet()
     StaticJsonDocument<256> doc;
     doc["mdns"] = startMDNS;
     doc["mdns_name"] = nameMDNS;
-    doc["test"] = testModus;
     doc["pressure"] = setPressure;
     doc["carbonation"] = setCarbonation;
     doc["mode"] = setMode;
@@ -85,7 +84,13 @@ void handleRequestMiscSet()
     doc["voltage"] = voltage;
     doc["offset"] = offsetVoltage;
     doc["mv1"] = startMV1;
+    // doc["mv1open"] = mv1Open;
+    // doc["mv1close"] = mv1Close;
     doc["mv2"] = startMV2;
+    // doc["mv2open"] = mv2Open;
+    // doc["mv2close"] = mv2Close;
+    // doc["uppressure"] = upPressure;
+    // doc["uptemp"] = upTemp;
     doc["buzzer"] = startBuzzer;
 
     String response;
@@ -129,18 +134,6 @@ void handleRequestMisc()
         message = setMode;
         goto SendMessage;
     }
-    if (request == "test")
-    {
-        if (testModus)
-        {
-            message = "1";
-        }
-        else
-        {
-            message = "0";
-        }
-        goto SendMessage;
-    }
     if (request == "mv1")
     {
         if (startMV1)
@@ -151,6 +144,16 @@ void handleRequestMisc()
         {
             message = "0";
         }
+        goto SendMessage;
+    }
+    if (request == "mv1open")
+    {
+        message = mv1Open;
+        goto SendMessage;
+    }
+    if (request == "mv1close")
+    {
+        message = mv1Close;
         goto SendMessage;
     }
     if (request == "mv2")
@@ -165,6 +168,16 @@ void handleRequestMisc()
         }
         goto SendMessage;
     }
+    if (request == "mv2open")
+    {
+        message = mv2Open;
+        goto SendMessage;
+    }
+    if (request == "mv2close")
+    {
+        message = mv2Close;
+        goto SendMessage;
+    }
     if (request == "buzzer")
     {
         if (startBuzzer)
@@ -175,6 +188,16 @@ void handleRequestMisc()
         {
             message = "0";
         }
+        goto SendMessage;
+    }
+    if (request == "uppressure")
+    {
+        message = upPressure;
+        goto SendMessage;
+    }
+    if (request == "uptemp")
+    {
+        message = upTemp;
         goto SendMessage;
     }
     if (request == "firmware")
@@ -239,13 +262,6 @@ void handleSetMisc()
                     setMode = j;
             }
         }
-        if (server.argName(i) == "test")
-        {
-            if (server.arg(i) == "1")
-                testModus = true;
-            else
-                testModus = false;
-        }
         if (server.argName(i) == "mv1")
         {
             if (server.arg(i) == "1")
@@ -257,6 +273,22 @@ void handleSetMisc()
             {
                 startMV1 = false;
                 pinMode(PIN_MV1, INPUT); // D8
+            }
+        }
+        if (server.argName(i) == "mv1open")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                if (checkRange(server.arg(i)))
+                    mv1Open = server.arg(i).toInt();
+            }
+        }
+        if (server.argName(i) == "mv1close")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                if (checkRange(server.arg(i)))
+                    mv1Close = server.arg(i).toInt();
             }
         }
         if (server.argName(i) == "mv2")
@@ -272,6 +304,22 @@ void handleSetMisc()
                 pinMode(PIN_MV2, INPUT); // D0
             }
         }
+        if (server.argName(i) == "mv2open")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                if (checkRange(server.arg(i)))
+                    mv2Open = server.arg(i).toInt();
+            }
+        }
+        if (server.argName(i) == "mv2close")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                if (checkRange(server.arg(i)))
+                    mv2Close = server.arg(i).toInt();
+            }
+        }
         if (server.argName(i) == "buzzer")
         {
             if (server.arg(i) == "1")
@@ -283,6 +331,22 @@ void handleSetMisc()
             {
                 startBuzzer = false;
                 pinMode(PIN_BUZZER, INPUT); // D4
+            }
+        }
+        if (server.argName(i) == "uppressure")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                if (checkRange(server.arg(i)))
+                    upPressure = server.arg(i).toInt();
+            }
+        }
+        if (server.argName(i) == "uptemp")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                if (checkRange(server.arg(i)))
+                    upTemp = server.arg(i).toInt();
             }
         }
         yield();
@@ -338,5 +402,5 @@ void setMDNS()
             Serial.printf("*** SYSINFO: mDNS gestartet als %s verbunden an %s\n", nameMDNS, WiFi.localIP().toString().c_str());
     }
     else
-        Serial.printf("*** SYSINFO: Fehler Start mDNS - ESP8266 IP Addresse: ", WiFi.localIP().toString().c_str());
+        Serial.printf("%s\n", "*** SYSINFO: Fehler Start mDNS! IP Adresse: %s\n", WiFi.localIP().toString().c_str());
 }

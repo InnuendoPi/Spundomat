@@ -35,14 +35,9 @@ bool loadConfig()
   if (spundObj.containsKey("MODE"))
     setMode = spundObj["MODE"];
 
-  setMode = 0;
-
-  Serial.print("setPressure: ");
-  Serial.println(setPressure);
-  Serial.print("setCarbonation: ");
-  Serial.println(setCarbonation);
-  Serial.print("setMode: ");
-  Serial.println(setMode);
+  Serial.printf("setPressure: %d\n", setPressure);
+  Serial.printf("setCarbonation: %d\n", setCarbonation);
+  Serial.printf("setMode: %d\n", setMode);
   Serial.println("--------");
 
   // Hardware Einstellungen
@@ -63,20 +58,9 @@ bool loadConfig()
   if (hwObj.containsKey("MV2CLOSE"))
     mv2Close = hwObj["MV2CLOSE"];
 
-  Serial.print("MV1: ");
-  Serial.print(startMV1);
-  Serial.print(" Open: ");
-  Serial.print(mv1Open);
-  Serial.print(" Close: ");
-  Serial.println(mv1Close);
-  Serial.print("MV2: ");
-  Serial.print(startMV2);
-  Serial.print(" Open: ");
-  Serial.print(mv2Open);
-  Serial.print(" Close: ");
-  Serial.println(mv2Close);
-  Serial.print("Buzzer: ");
-  Serial.println(startBuzzer);
+  Serial.printf("MV1: %d Open: %d Close: %d\n", startMV1, mv1Open, mv1Close);
+  Serial.printf("MV2: %d Open: %d Close: %d\n", startMV2, mv2Open, mv2Close);
+  Serial.printf("Buzzer: %d\n", startBuzzer);
   Serial.println("--------");
 
   // System Einstellungen
@@ -104,8 +88,22 @@ bool loadConfig()
   if (len > 384)
     Serial.println("*** SYSINFO: Fehler JSON Konfiguration zu groß!");
 
+  // Setze Intervalle für Ticker Objekte
   TickerPressure.interval(upPressure);
   TickerTemp.interval(upTemp);
+
+  // Setze Startmodus auf Aus (obwohl Modus gespeichert ist)
+  setMode = 0;
+  mv1.change(mv1Open, mv1Close, startMV1);
+  mv2.change(mv2Open, mv2Close, startMV2);
+  mv1.switchOff();
+  mv2.switchOff();
+  // if (startBuzzer)
+  // {
+  //   DEBUG_MSG("Config load: Buzzer %d\n", startBuzzer);
+  //   pinMode(PIN_BUZZER, OUTPUT); // D4
+  //   TickerPiezzo.start();
+  // }
 }
 
 bool saveConfig()
@@ -120,8 +118,6 @@ bool saveConfig()
   spundObj["MODE"] = setMode;
   DEBUG_MSG("setPressure: %f\n", setPressure);
   DEBUG_MSG("setCarbonation: %f\n", setCarbonation);
-  DEBUG_MSG("setMode: %d\n", setMode);
-  DEBUG_MSG("%s\n", "--------");
 
   // Hardware Einstellungen
   JsonArray hwArray = doc.createNestedArray("HARDWARE");
@@ -147,14 +143,14 @@ bool saveConfig()
   miscObj["MDNS"] = startMDNS;
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
-  
+
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
 
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
-  
+
   size_t len = measureJson(doc);
   int memoryUsed = doc.memoryUsage();
   if (len > 512 || memoryUsed > 384)
@@ -177,34 +173,31 @@ bool saveConfig()
   serializeJson(doc, configFile);
   configFile.close();
   DEBUG_MSG("%s\n", "------ saveConfig finished ------");
-  
+
   TickerPressure.interval(upPressure);
   TickerTemp.interval(upTemp);
 
-  // TickerMV1.stop();
-  // TickerMV2.stop();
+  mv1.change(mv1Open, mv1Close, startMV1);
+  mv2.change(mv2Open, mv2Close, startMV2);
 
   switch (setMode)
   {
-  case 0: // aus
+  case AUS: // aus
+    mv1.switchOff();
+    mv2.switchOff();
     break;
-  case 1: // CO2 Spunden
-
-    TickerMV1.interval(mv1Open);
-    statusMV1 = true;
-    TickerMV1.start();
+  case SPUNDEN_CO2: // CO2 Spunden
+    mv2.switchOff();
     break;
-  case 2: // Druck Spunden
-    TickerMV1.interval(mv1Open);
-    statusMV1 = true;
-    TickerMV1.start();
+  case SPUNDEN_DRUCK: // Druck Spunden
+    mv2.switchOff();
     break;
-  case 3: // CO2 Karbonisieren
-    TickerMV2.interval(mv2Open);
-    statusMV2 = true;
-    TickerMV2.start();
+  case KARBONISIEREN: // CO2 Karbonisieren
+    mv1.switchOff();
     break;
   default:
+    mv1.switchOff();
+    mv2.switchOff();
     break;
   }
 }

@@ -5,13 +5,12 @@
 
 // InnuTicker Zeitintervall
  
-/** Ticker status
- *
- * @param STOPPED Standard, der Ticker ist gestoppt
- * @param RUNNING Der Ticker läuft
- * @param PAUSED Dder Ticker pausiert
- *
- */
+// Ticker status
+//
+// @param STOPPED Standard, der Ticker ist gestoppt
+// @param RUNNING Der Ticker läuft
+// @param PAUSED Dder Ticker pausiert
+//
 enum status_t {STOPPED, RUNNING, PAUSED};
 
 typedef void (*fptr)();
@@ -20,81 +19,65 @@ class InnuTicker {
 
 public:
 
-	/** Erstelle ein Ticker Object
-	 *
-	 * @param callback Name der Callback Funktion
-	 * @param timer Länge Zeitintervall in ms
-	 * @param repeat Standard ist 0 -> endlos, repeat > 0 -> Anzahl an Wiederholungen
-	 *
-	 */
-	InnuTicker();
+	// Erstelle ein Ticker Object
+	//
+	// @param callback Name der Callback Funktion
+	// @param timer Länge Zeitintervall in ms
+	// @param repeat Standard ist 0 -> endlos, repeat > 0 -> Anzahl an Wiederholungen
+	//
+	//
+	InnuTicker(); // leerer Konstruktor - lese Konfiguration aus config.txt und setze Parameter anschließend
 	InnuTicker(fptr callback, uint32_t timer, uint32_t repeat = 0);
 
-	/** Destructor für das Ticker Object
-	 *
-	 */
+	// Destructor für das Ticker Object
 	~InnuTicker();
 
-	/** Starte Ticker
-	 *
-	 */
+	// Starte Ticker
 	void start();
 
-	/** Resume den Ticker. Wenn der Ticker nicht gestartet ist, wird der Ticker automatisch gestartet
-	 *
-	 */
+	// Resume Ticker. Wenn der Ticker nicht gestartet ist, wird der Ticker automatisch gestartet
 	void resume();
 
-	/** Pausiere den Ticker
-	 *
-	 */
+	// Pausiere den Ticker
 	void pause();
 
-	/** Stoppe den Ticker
-	 *
-	 */
+	// Stoppe den Ticker
 	void stop();
 
-	/** Die Funktion Update muss in der loop aufgerufen werden. Update prüft den Ticker und ruft wenn erforderlich die Callback Funktion auf
-	 *
-	 */
+	// Die Funktion Update muss in der loop aufgerufen werden. Update prüft den Ticker und ruft wenn erforderlich die Callback Funktion auf
 	void update();
-
-	/** Setze Timer und Wiederholung neu
-	 *
-	 */
+	
+	// Setze Timer und Wiederholung neu
 	void config(uint32_t timer, uint32_t repeat = 0);
 
-	/** Setze Timer und Wiederholung neu
-	 *
-	 */
+	// Setze Callback-Funktion, Timer und Wiederholung neu
 	void config(fptr callback, uint32_t timer, uint32_t repeat = 0);
 
-	/**
-	 * 
-	 * @param timer Länge Zeitintervall in ms 
-	 */
+	// Ändere das Zeitintervall
+	//
+	// @param timer Länge Zeitintervall in ms 
+	//
 	void interval(uint32_t timer);
 
-	/** Aktuell verstrichene Zeit
-	 *
-	 * @returns gibt die Zeit seit dem letzten Tick zurück
-	 *
-	 */
+	// Aktuell verstrichene Zeit
+	//
+	// @returns gibt die Zeit seit dem letzten Tick zurück
+	//
 	uint32_t elapsed();
 
-	/** Ticker Status
-	 *
-	 * @returns gibt den aktuellen Status vom Ticker zurück: STOPPED, RUNNING oder PAUSED
-	 */
+	// Ticker Status
+	//
+	// @returns gibt den aktuellen Status vom Ticker zurück: STOPPED, RUNNING oder PAUSED
+	//
 	status_t state();
 
-	/** Anzahl an ausgeführten Wiederholungen
-	 *
-	 * @returns Gibt die Anzahl an ausgeführten Wiederholungen zurück
-	 *
-	 */
+	// Anzahl an ausgeführten Wiederholungen
+	//
+	// @returns Gibt die Anzahl an ausgeführten Wiederholungen zurück
+	//
 	uint32_t counter();
+
+	bool aktiv();
 
 private:
 	bool tick();

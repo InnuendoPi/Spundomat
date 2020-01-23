@@ -47,7 +47,6 @@ Dieser Quellcode baut auf einem Snippet von Janick 2017 auf.
 #include <stdarg.h>
 #include "InnuTicker.h"
 #include <CertStoreBearSSL.h>
-// BearSSL::CertStore certStore;
 
 #ifdef DEBUG_ESP_PORT
 #define DEBUG_MSG(...) DEBUG_ESP_PORT.printf(__VA_ARGS__)
@@ -71,6 +70,13 @@ const char Version[6] = "2.0";
 #define PAUSE10MS 10
 #define ENCODER_UPDATE 100
 #define BUTTON_UPDATE 100
+#define PIEZZO_UPDATE 5000
+#define AUS 0
+#define SPUNDEN_CO2 1
+#define SPUNDEN_DRUCK 2
+#define KARBONISIEREN 3
+#define DEFAULT_OPEN 2000
+#define DEFAULT_CLOSE 1000
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
@@ -91,7 +97,7 @@ float setCarbonation = 5.0; //  Vorgabe bei Neustart von 5,0 gr/L
 int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 = Karbonisieren
 
 bool startMDNS = true;    // mDNS Dienst
-bool testModus = false;   // testModus
+bool testModus = false;   // testModus - ignorieren!
 bool startMV1 = false;    // Aktiviere MV1 an D8
 bool startMV2 = false;    // Aktiviere MV2 an D0
 bool startBuzzer = false; // Aktiviere Buzzer an D4
@@ -115,11 +121,9 @@ NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 // Definiere Ticker Objekte
 InnuTicker TickerTemp;
 InnuTicker TickerPressure;
-InnuTicker TickerMV1;
-InnuTicker TickerMV2;
-InnuTicker TickerNTP;
 InnuTicker TickerEncoder;
 InnuTicker TickerButton;
+// InnuTicker TickerPiezzo;
 
 // Deklariere Variablen
 float temperature;
@@ -130,19 +134,17 @@ float offsetVoltage = 0.42;
 double pressure;
 double oldPressure;
 int encoderOldPos;
-int sensorValueTest;
+int sensorValueTest;    // Ignorieren!
 
 boolean up = false;
 boolean down = false;
 boolean buttonPressed;
-bool statusMV1 = true;  // Status MV1 true:offen, false:geschlossen
-bool statusMV2 = true;  // Status MV2 true:offen, false:geschlossen
-int mv1Open = 1000;    // Öffne Magnetventil 1 in ms (min 10ms)
-int mv1Close = 100;   // Schließe Magnetventil 1 in ms (min 10ms)
-int mv2Open = 1000;    // Öffne Magnetventil 2 in ms (min 10ms)
-int mv2Close = 100;   // Schließe Magnetventil 2 in ms (min 10ms)
-int upTemp = 30000;
-int upPressure = 1000;
+long mv1Open = DEFAULT_OPEN;    // Default Öffne Magnetventil 1 in ms (min 20ms)
+long mv1Close = DEFAULT_CLOSE;   // Default Schließe Magnetventil 1 in ms (min 20ms)
+long mv2Open = DEFAULT_OPEN;    // Default Öffne Magnetventil 2 in ms (min 20ms)
+long mv2Close = DEFAULT_CLOSE;   // Default Schließe Magnetventil 2 in ms (min 20ms)
+int upTemp = 30000;     // Default Update temperatur
+int upPressure = 1000;  // Default Update Drucksensor
 
 int menuitem = 0; // Display
 int edititem = 0; // Display
@@ -157,10 +159,17 @@ File fsUploadFile; // Datei Object
 #define sizeOfModes 4
 String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb"};                            // ModusNamen im Display
 String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren"}; // Modus-Namen für WebIf
-
 char nameMDNS[16] = "spundomat"; // http://spundomat/index.html
-IPAddress aktIP;                 // Aktuelle IP Adresse
-String aktWLAN;                  // SSID WLAN im STA Modus
+
+// Ablaufplan
+struct Ablaufplan
+{
+    float zieldruckMV2;
+    int intervallMV2;
+    int pause;
+    float zieldruckMV1;
+    int intervallMV1;
+};
 
 // Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)

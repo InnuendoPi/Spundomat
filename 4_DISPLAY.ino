@@ -71,15 +71,13 @@ void showLCD()
     }
     else
     {
-      aktIP = WiFi.localIP();
-      aktWLAN = WiFi.SSID();
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("IP   ");
-      lcd.print(aktIP.toString());
+      lcd.print(WiFi.localIP().toString());
       lcd.setCursor(0, 1);
       lcd.print("SSID ");
-      lcd.print(aktWLAN);
+      lcd.print(WiFi.SSID());
     }
     break;
 
@@ -337,9 +335,9 @@ void startLCD()
   lcd.print(Version);
   lcd.setCursor(0, 2);
   lcd.print("IP   ");
-  lcd.print(aktIP.toString());
+  lcd.print(WiFi.localIP().toString());
   lcd.setCursor(0, 3);
   lcd.print("WLAN ");
-  lcd.print(aktWLAN);
+  lcd.print(WiFi.SSID());
   millis2wait(PAUSE5SEC);
 }

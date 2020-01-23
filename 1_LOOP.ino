@@ -16,8 +16,8 @@ void loop()
   if (startMDNS)
     MDNS.update();
 
-  // Check NTP Ticker
-  TickerNTP.update();
+  // Check NTP
+  timeClient.update();
 
   // Check Encoder Ticker
   TickerButton.update();
@@ -29,22 +29,26 @@ void loop()
   // Check Drucksensor Ticker
   TickerPressure.update();
 
+  // Check Piezzo Ticker
+  // if (startBuzzer)
+  //   TickerPiezzo.update();
+
   if (reflashLCD)
     showLCD();
 
   // Betriebsmodi
   switch (setMode)
   {
-  case 0: // aus
+  case AUS: // aus
     break;
-  case 1: // CO2 Spunden
-    TickerMV1.update();
+  case SPUNDEN_CO2: // CO2 Spunden
+    updateMV1();
     break;
-  case 2: // Druck Spunden
-    TickerMV1.update();
+  case SPUNDEN_DRUCK: // Druck Spunden
+    updateMV1();
     break;
-  case 3: // CO2 Karbonisieren
-    TickerMV2.update();
+  case KARBONISIEREN: // CO2 Karbonisieren
+    updateMV2();
     break;
   }
   up = false;

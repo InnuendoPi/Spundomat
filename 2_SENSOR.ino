@@ -14,6 +14,10 @@ void readTemparature()
 	sensors.requestTemperatures();
 	temperature = sensors.getTempCByIndex(0);
 
+	// Test
+	// temperature = 20;
+	
+
 	// Kommastelle für Ausgabe entfernen (Konvertiere float in char array)
 	dtostrf(temperature, 5, 1, sTemperature);
 
@@ -58,9 +62,9 @@ void readPressure()
 		}
 		sensorValue = sensorValueTest;
 	}
+	// sensorValue = 500;
 	// !!!Testcode  Ende!!!
-	
-	
+
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
 
@@ -77,17 +81,6 @@ void readPressure()
 		oldPressure = pressure;
 	}
 }
-
-// Timer Objekte
-// void timerTempCallback(void *pArg) // Timer Objekt Temperatur mit Pointer
-// {
-// 	TickTempOccured = true; // Bei true wird im nächsten loop readTemperature ausgeführt
-// }
-
-// void timerPressureCallback(void *pArg) // Timer Objekt Temperatur mit Pointer
-// {
-// 	TickPressureOccured = true; // Bei true wird im nächsten loop readPressure ausgeführt
-// }
 
 // !!!Testcode!!!
 int setSensorValueTest(int value)

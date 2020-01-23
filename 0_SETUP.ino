@@ -17,7 +17,7 @@ void setup()
   wifiManager.setMinimumSignalQuality(10);
   wifiManager.setConfigPortalTimeout(300);
   wifiManager.setAPCallback(configModeCallback);
-  WiFiManagerParameter p_hint("<small>*Sobald der Spundomat im WLAN eingebunden ist, öffne im Browser http://spundomat (mDNS)</small>"); 
+  WiFiManagerParameter p_hint("<small>*Sobald der Spundomat im WLAN eingebunden ist, öffne im Browser http://spundomat (mDNS)</small>");
   wifiManager.addParameter(&p_hint);
   wifiManager.autoConnect(nameMDNS);
   WiFi.setSleepMode(WIFI_NONE_SLEEP);
@@ -33,7 +33,7 @@ void setup()
     if (SPIFFS.exists("/config.txt")) // Load configuration
     {
       loadConfig();
-      if (testModus)
+      if (testModus) // Ignorieren!!!
         sensorValueTest = setSensorValueTest(setMode);
       setTicker();
     }
@@ -43,10 +43,8 @@ void setup()
   else
     Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
 
-  aktIP = WiFi.localIP();
-  aktWLAN = WiFi.SSID();
   Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
-  Serial.println(aktWLAN);
+  Serial.println(WiFi.SSID());
 
   // Starte Webserver
   setupServer();
@@ -57,7 +55,7 @@ void setup()
   else
   {
     Serial.print("*** SYSINFO: ESP8266 IP Addresse: ");
-    Serial.println(aktIP.toString());
+    Serial.println(WiFi.localIP().toString());
   }
 
   // Starte I2C
@@ -67,15 +65,13 @@ void setup()
   // Starte Temperatursensor
   sensors.begin();
   TickerTemp.start();
-  
+
   // Pin Definitionen
   if (startMV1)
     pinMode(PIN_MV1, OUTPUT); // D8
   if (startMV2)
     pinMode(PIN_MV2, OUTPUT); // D0
-  if (startBuzzer)
-    pinMode(PIN_BUZZER, OUTPUT); // D4
-
+    
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
 
@@ -87,17 +83,15 @@ void setup()
 
   // Lese vom Drucksensor
   TickerPressure.start();
-  
+
   // Starte Encoder
   TickerEncoder.start();
   TickerButton.start();
-  
 
   // Zeitserver via NTP
   timeClient.begin();
-  timeClient.update();
-  TickerNTP.start();
-
+  // timeClient.update();
+  
   // LCD
   startLCD();
 

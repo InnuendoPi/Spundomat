@@ -84,15 +84,8 @@ void handleRequestMiscSet()
     doc["voltage"] = voltage;
     doc["offset"] = offsetVoltage;
     doc["mv1"] = startMV1;
-    // doc["mv1open"] = mv1Open;
-    // doc["mv1close"] = mv1Close;
     doc["mv2"] = startMV2;
-    // doc["mv2open"] = mv2Open;
-    // doc["mv2close"] = mv2Close;
-    // doc["uppressure"] = upPressure;
-    // doc["uptemp"] = upTemp;
     doc["buzzer"] = startBuzzer;
-
     String response;
     serializeJson(doc, response);
     server.send(200, "application/json", response);
@@ -110,13 +103,9 @@ void handleRequestMisc()
     if (request == "mdns")
     {
         if (startMDNS)
-        {
             message = "1";
-        }
         else
-        {
             message = "0";
-        }
         goto SendMessage;
     }
     if (request == "pressure")
@@ -137,13 +126,9 @@ void handleRequestMisc()
     if (request == "mv1")
     {
         if (startMV1)
-        {
             message = "1";
-        }
         else
-        {
             message = "0";
-        }
         goto SendMessage;
     }
     if (request == "mv1open")
@@ -159,13 +144,9 @@ void handleRequestMisc()
     if (request == "mv2")
     {
         if (startMV2)
-        {
             message = "1";
-        }
         else
-        {
             message = "0";
-        }
         goto SendMessage;
     }
     if (request == "mv2open")
@@ -181,13 +162,9 @@ void handleRequestMisc()
     if (request == "buzzer")
     {
         if (startBuzzer)
-        {
             message = "1";
-        }
         else
-        {
             message = "0";
-        }
         goto SendMessage;
     }
     if (request == "uppressure")
@@ -230,7 +207,7 @@ void handleSetMisc()
         {
             if (server.arg(i) == "1")
             {
-                SPIFFS.remove("/config.json");
+                SPIFFS.remove("/config.txt");
                 WiFi.disconnect();
                 wifiManager.resetSettings();
                 millis2wait(PAUSE2SEC);
@@ -267,12 +244,12 @@ void handleSetMisc()
             if (server.arg(i) == "1")
             {
                 startMV1 = true;
-                pinMode(PIN_MV1, OUTPUT); // D8
+                pinMode(PIN_MV1, OUTPUT);
             }
             else
             {
                 startMV1 = false;
-                pinMode(PIN_MV1, INPUT); // D8
+                pinMode(PIN_MV1, INPUT);
             }
         }
         if (server.argName(i) == "mv1open")
@@ -296,12 +273,12 @@ void handleSetMisc()
             if (server.arg(i) == "1")
             {
                 startMV2 = true;
-                pinMode(PIN_MV2, OUTPUT); // D0
+                pinMode(PIN_MV2, OUTPUT);
             }
             else
             {
                 startMV2 = false;
-                pinMode(PIN_MV2, INPUT); // D0
+                pinMode(PIN_MV2, INPUT);
             }
         }
         if (server.argName(i) == "mv2open")
@@ -325,12 +302,12 @@ void handleSetMisc()
             if (server.arg(i) == "1")
             {
                 startBuzzer = true;
-                pinMode(PIN_BUZZER, OUTPUT); // D4
+                pinMode(PIN_BUZZER, OUTPUT);
             }
             else
             {
                 startBuzzer = false;
-                pinMode(PIN_BUZZER, INPUT); // D4
+                pinMode(PIN_BUZZER, INPUT);
             }
         }
         if (server.argName(i) == "uppressure")

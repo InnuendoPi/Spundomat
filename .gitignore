@@ -8,10 +8,9 @@
 .gitattributes
 .gitignore
 999_HTTPUpdate.ino
-9_WEB.ino
-7_SYSTEM.ino
-index - Kopie.html
+992_Ablaeufe.ino
 data/config.json
+data/certs.ar
 build/core
 build/preproc
 build/sketch

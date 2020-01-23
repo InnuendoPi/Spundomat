@@ -1,11 +1,8 @@
 #include "InnuTicker.h"
 
-InnuTicker::InnuTicker()
-{
+InnuTicker::InnuTicker() {} // Konstruktor
 
-}
-
-InnuTicker::InnuTicker(fptr callback, uint32_t timer, uint32_t repeat)
+InnuTicker::InnuTicker(fptr callback, uint32_t timer, uint32_t repeat) // Konstruktor
 {
 	this->timer = timer;
 	this->repeat = repeat;
@@ -15,7 +12,7 @@ InnuTicker::InnuTicker(fptr callback, uint32_t timer, uint32_t repeat)
 	counts = 0;
 }
 
-InnuTicker::~InnuTicker() {}
+InnuTicker::~InnuTicker() {} // Destruktor
 
 void InnuTicker::start()
 {

@@ -19,15 +19,15 @@ void loop()
   // Check NTP
   timeClient.update();
 
-  // Check Encoder Ticker
-  TickerButton.update();
-  TickerEncoder.update();
-
   // Check DS18B20 Ticker
   TickerTemp.update();
 
   // Check Drucksensor Ticker
   TickerPressure.update();
+  
+  // Check Encoder Ticker
+  TickerButton.update();
+  TickerEncoder.update();
 
   // Check Piezzo Ticker
   // if (startBuzzer)

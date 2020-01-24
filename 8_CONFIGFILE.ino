@@ -47,8 +47,9 @@ bool loadConfig()
     startMV1 = hwObj["MV1"];
   if (hwObj.containsKey("MV2"))
     startMV2 = hwObj["MV2"];
-  if (hwObj.containsKey("BUZZER"))
-    startBuzzer = hwObj["BUZZER"];
+  // Piezo deaktiviert
+  // if (hwObj.containsKey("BUZZER"))
+  //   startBuzzer = hwObj["BUZZER"];
   if (hwObj.containsKey("MV1OPEN"))
     mv1Open = hwObj["MV1OPEN"];
   if (hwObj.containsKey("MV1CLOSE"))
@@ -60,7 +61,7 @@ bool loadConfig()
 
   Serial.printf("MV1: %d Open: %d Close: %d\n", startMV1, mv1Open, mv1Close);
   Serial.printf("MV2: %d Open: %d Close: %d\n", startMV2, mv2Open, mv2Close);
-  Serial.printf("Buzzer: %d\n", startBuzzer);
+  // Serial.printf("Buzzer: %d\n", startBuzzer);
   Serial.println("--------");
 
   // System Einstellungen
@@ -132,7 +133,7 @@ bool saveConfig()
   hwObj["BUZZER"] = startBuzzer;
   DEBUG_MSG("MV1: %d Open: %d Close %d\n", startMV1, mv1Open, mv1Close);
   DEBUG_MSG("MV2: %d Open: %d Close %d\n", startMV2, mv2Open, mv2Close);
-  DEBUG_MSG("Buzzer: %d\n", startBuzzer);
+  // DEBUG_MSG("Buzzer: %d\n", startBuzzer);
   DEBUG_MSG("%s\n", "--------");
 
   // System Einstellungen
@@ -174,7 +175,7 @@ bool saveConfig()
   configFile.close();
   DEBUG_MSG("%s\n", "------ saveConfig finished ------");
 
-  TickerPressure.interval(upPressure);
+  // Setze Intervall Temperatur Ticker
   TickerTemp.interval(upTemp);
 
   mv1.change(mv1Open, mv1Close, startMV1);
@@ -185,19 +186,28 @@ bool saveConfig()
   case AUS: // aus
     mv1.switchOff();
     mv2.switchOff();
+    // Setze Intervall Drucksensor Ticker
+    TickerPressure.interval(upPressure);
     break;
   case SPUNDEN_CO2: // CO2 Spunden
     mv2.switchOff();
+    // Ändere Intervall Temperatur Ticker
+    TickerPressure.interval((mv1Open + mv1Close));
     break;
   case SPUNDEN_DRUCK: // Druck Spunden
     mv2.switchOff();
+    // Ändere Intervall Temperatur Ticker
+    TickerPressure.interval((mv1Open + mv1Close));
     break;
   case KARBONISIEREN: // CO2 Karbonisieren
     mv1.switchOff();
+    // Ändere Intervall Temperatur Ticker
+    TickerPressure.interval((mv2Open + mv2Close));
     break;
   default:
     mv1.switchOff();
     mv2.switchOff();
+    TickerPressure.interval(upPressure);
     break;
   }
 }

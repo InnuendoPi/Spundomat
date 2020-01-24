@@ -45,7 +45,7 @@ bool isValidInt(const String &str)
 bool checkRange(const String &str)
 {
   int check = str.toInt();
-  if (check > 100 && check < 7200000) //20ms bis 2 Stunden
+  if (check >= 20 && check <= 7200000) //20ms bis 2 Stunden
     return true;
   else
     return false;

@@ -33,8 +33,8 @@ void setup()
     if (SPIFFS.exists("/config.txt")) // Load configuration
     {
       loadConfig();
-      if (testModus) // Ignorieren!!!
-        sensorValueTest = setSensorValueTest(setMode);
+      // if (testModus) // Ignorieren!!!
+      //   sensorValueTest = setSensorValueTest(setMode);
       setTicker();
     }
     else
@@ -64,6 +64,7 @@ void setup()
 
   // Starte Temperatursensor
   sensors.begin();
+  readTemparature();
   TickerTemp.start();
 
   // Pin Definitionen
@@ -71,7 +72,12 @@ void setup()
     pinMode(PIN_MV1, OUTPUT); // D8
   if (startMV2)
     pinMode(PIN_MV2, OUTPUT); // D0
-    
+  // if (startBuzzer)
+  // {
+  //   pinMode(PIN_BUZZER, OUTPUT); // D0
+  //   pinMode(PIN_BUZZER, HIGH);  
+  // }
+
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
 

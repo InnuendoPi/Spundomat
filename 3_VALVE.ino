@@ -17,14 +17,14 @@ class Magnetventil
 public:
 	Magnetventil(int pin, long newOpen, long newClose, bool newEnabled) // Konstruktor
 	{
-		mvPin = pin;				// GPIO
-		pinMode(mvPin, OUTPUT);		// Setze GPIO auf OUTPUT
-		openInterval = newOpen;   	// Intervall aus config.txt
-		closeInterval = newClose; 	// Intervall aus config.txt
-		mvState = LOW;			  	// Magnetventil ist geschlossen
-		prevMVState = LOW;			// Default Status
-		previousMillis = 0;			// Default Zeitstempel
-		enabled = newEnabled;		// Aus der config.txt wird startMV1/2 auf die Klassenvar enabled übertragen 
+		mvPin = pin;			  // GPIO
+		pinMode(mvPin, OUTPUT);   // Setze GPIO auf OUTPUT
+		openInterval = newOpen;   // Intervall aus config.txt
+		closeInterval = newClose; // Intervall aus config.txt
+		mvState = LOW;			  // Magnetventil ist geschlossen
+		prevMVState = LOW;		  // Default Status
+		previousMillis = 0;		  // Default Zeitstempel
+		enabled = newEnabled;	 // Aus der config.txt wird startMV1/2 auf die Klassenvar enabled übertragen
 	}
 
 	Magnetventil(int pin) // Konstrukttor
@@ -74,7 +74,7 @@ public:
 
 	void releasePressureDruck() // MV1 Modus Spunden Druck
 	{
-		if (!enabled)			// MV1 aktiviert?
+		if (!enabled) // MV1 aktiviert?
 			return;
 		if (pressure > setPressure)
 		{
@@ -105,9 +105,9 @@ public:
 		}
 	}
 
-	void buildPressure()		// MV2 Modus Karbonisieren
+	void buildPressure() // MV2 Modus Karbonisieren
 	{
-		if (!enabled)			// MV2 aktiviert?
+		if (!enabled) // MV2 aktiviert?
 			return;
 		if (pressure < calcPressure(setCarbonation, temperature))
 		{
@@ -146,13 +146,13 @@ public:
 		previousMillis = 0;
 		DEBUG_MSG("Change PIN: %s open: %ld close: %ld\n", PinToString(mvPin).c_str(), openInterval, closeInterval);
 	}
-	void switchOff()	// Zusätzlicher Ausschalter
+	void switchOff() // Zusätzlicher Ausschalter
 	{
 		mvState = LOW;
 		digitalWrite(mvPin, mvState);
 		DEBUG_MSG("Switched off PIN: %s status: %d\n", PinToString(mvPin).c_str(), mvState);
 	}
-	bool getState()		// Gibt den aktuellen Status HIGH/LOW von MV zurück
+	bool getState() // Gibt den aktuellen Status HIGH/LOW von MV zurück
 	{
 		return mvState;
 	}

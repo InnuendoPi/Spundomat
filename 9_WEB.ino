@@ -78,11 +78,20 @@ void handleRequestMiscSet()
     doc["pressure"] = setPressure;
     doc["carbonation"] = setCarbonation;
     doc["mode"] = setMode;
-    doc["co2"] = calcCarbonation(pressure, temperature);
-    doc["druck"] = pressure;
-    doc["temperatur"] = sTemperature;
-    doc["voltage"] = voltage;
-    doc["offset"] = offsetVoltage;
+    // char sPressure[5];
+    // char sCalcCarb[5];
+    // dtostrf(pressure, 5, 1, sPressure);
+    // dtostrf(calcCarbonation(pressure, temperature), 5, 1, sCalcCarb);
+    // doc["co2"] = calcCarbonation(pressure, temperature);
+    // doc["druck"] = pressure;
+    // doc["co2"] = sCalcCarb;
+    // doc["druck"] = sPressure;
+
+    doc["co2"] = (int)(calcCarbonation(pressure, temperature) * 100) / 100.0;
+    doc["druck"] = (int)(pressure * 100) / 100.0;
+    doc["temperatur"] = (int)(temperature * 10) / 10.0;
+    doc["voltage"] = (int)(voltage * 100) / 100.0;
+    doc["offset"] = (int)(offsetVoltage * 100) / 100.0;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
     doc["buzzer"] = startBuzzer;
@@ -167,6 +176,14 @@ void handleRequestMisc()
             message = "0";
         goto SendMessage;
     }
+    if (request == "testmode")
+    {
+        if (testModus)
+            message = "1";
+        else
+            message = "0";
+        goto SendMessage;
+    }
     if (request == "uppressure")
     {
         message = upPressure;
@@ -192,6 +209,13 @@ void handleSetMisc()
 {
     for (int i = 0; i < server.args(); i++)
     {
+        if (server.argName(i) == "eeprom")
+        {
+            if (server.arg(i) == "1")
+            {
+                eraseEeprom();
+            }
+        }
         if (server.argName(i) == "reset")
         {
             if (server.arg(i) == "1")
@@ -310,6 +334,14 @@ void handleSetMisc()
                 pinMode(PIN_BUZZER, INPUT);
             }
         }
+        if (server.argName(i) == "testmode")
+        {
+            if (server.arg(i) == "1")
+                testModus = true;
+
+            else
+                testModus = false;
+        }
         if (server.argName(i) == "uppressure")
         {
             if (isValidInt(server.arg(i)))
@@ -332,12 +364,18 @@ void handleSetMisc()
     reflashLCD = true;
 }
 
+void eraseEeprom()
+{
+    writeFloat(0, 0.00);
+}
+
 void kalibrieren()
 {
     DEBUG_MSG("%s\n", "*** Kalibrierung");
     server.send(200, "text/plain", "kalibrieren...");
     readPressure();
     offsetVoltage = voltage;
+    //offsetVoltage = (0.5 - voltage);
     writeFloat(0, offsetVoltage);
     readPressure();
     //    page = 2;

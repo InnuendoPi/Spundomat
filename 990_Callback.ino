@@ -17,8 +17,3 @@ void tickerButtonCallback() // Timer Objekt Druck
 {
   button.tick();
 }
-
-// void tickerPiezzoCallback() // Timer Objekt Druck
-// {
-//   sendAlarm();
-// }

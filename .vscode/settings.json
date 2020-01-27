@@ -42,7 +42,10 @@
         "rope": "cpp",
         "slist": "cpp",
         "regex": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "bitset": "cpp",
+        "chrono": "cpp",
+        "algorithm": "cpp"
     },
     "terminal.integrated.windowsEnableConpty": false,
     "esp8266fs.espota.esp.port": 8266,

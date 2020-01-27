@@ -8,10 +8,14 @@ Projekt im Beta Status -> nicht benutzbar!
 
 Version 2.0
 
+- Fixed:    Kalibrierung
+- Add:      Lösche Kalibrierung
+- Add:      Ablaufpläne Plan1: Entlüften, Plan2: QuickCarbonation, Plan3: CO2-Wäsche (Test!)
+- Fixed:    Abruf Drucksensor (Lese Daten nach Schließen)
+- Fixed:    Anzeige LCD
 - Fixed:    Fehler in der Überprüfung der Zeitintervalle 20ms bis 7200000 (2h) behoben
 - Fixed:    Lese Temperatur bei Neustart war verzögert
-- Removed:  TestCode deaktiviert
-- Changed:  Update Intervall Drucksensor wird in den Modis Spunden/Karbonisieren auf Öffne+Schließe MV gesetzt
+- Changed:  Update Intervall Drucksensor
 - Add:      Bibliothek InnuTicker erstellt
 - Add:      Klasse Magnetventil erstellt
 - Reworked: NTP, readTemperature, readPressure und Encoder als Ticker Objekte eingebunden

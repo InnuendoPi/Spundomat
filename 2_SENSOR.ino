@@ -32,20 +32,29 @@ void readTemparature()
 void readPressure()
 {
 	int sensorValue = analogRead(A0);
-
-	// !!!Testcode!!! Ignorieren!
-	// if (testModus)
-	// 	sensorvalue = checkTestMode();
-
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
-
+	
 	// Berechne Druck offsetVoltage = 0.42;
-	pressure = (voltage - offsetVoltage) * 1.36;
+	// pressure = (voltage - offsetVoltage) * 1.36;
 
 	// if (isnan(pressure))
 	// 	pressure = -1;
 
+	//Pbar=(VALadc*1/(1023*D)-Offset)*Vbar
+	//(%value%*0.004889-0.5)*1.724
+
+	pressure = (sensorValue * 0.004889 - offsetVoltage) * 1.724;
+	//pressure = (sensorValue * 0.004889 - 0.5 + offsetVoltage) * 1.724;
+	//pressure = (sensorValue * 0.004889 - 0.5) * 1.724;
+
+	// if (isnan(pressure) || pressure < 0)
+	// 	pressure = 0.0;
+
+	// Testmodus - Ignorieren!
+	if (testModus)
+		checkTestMode();
+	
 	// Aktualisiere LCD wenn Druck geändert hat
 	if (fabs(pressure - oldPressure) > 0.01)
 	{
@@ -55,51 +64,48 @@ void readPressure()
 }
 
 // !!!Testcode!!! Ignorieren!
-// int checkTestMode()
-// {
-// 	switch (setMode)
-// 	{
-// 	case 0: // aus
-// 		break;
-// 	case 1: // CO2 Spunden
-// 		if (pressure > calcPressure(setCarbonation, temperature))
-// 		{
-// 			sensorValueTest--;
-// 		}
-// 		break;
-// 	case 2: // Druck Spunden
-// 		if (pressure > setPressure)
-// 		{
-// 			sensorValueTest--;
-// 		}
-// 		break;
-// 	case 3: // Karbonisieren
-// 		if (pressure < calcPressure(setCarbonation, temperature))
-// 		{
-// 			sensorValueTest++;
-// 		}
-// 		break;
-// 	}
-// 	return sensorValueTest;
-// // sensorValue = 500;
-// }
+void checkTestMode()
+{
+	switch (setMode)
+	{
+	case AUS:
+		break;
+	case SPUNDEN_CO2: // CO2 Spunden
+		if (pressure > calcPressure(setCarbonation, temperature))
+		{
+			pressure = oldPressure - 0.015;
+		}
+		break;
+	case SPUNDEN_DRUCK: // Druck Spunden
+		if (pressure > setPressure)
+		{
+			pressure = oldPressure - 0.015;
+		}
+		break;
+	case KARBONISIEREN: // Karbonisieren
+		if (pressure < calcPressure(setCarbonation, temperature))
+		{
+			pressure = oldPressure + 0.015;
+		}
+		break;
+	case PLAN1: // Karbonisieren
+		if (!stepA)
+			pressure = oldPressure - 0.015;
+		else
+			pressure = oldPressure + 0.015;
+		break;
 
-// int setSensorValueTest(int value)
-// {
-// 	if (value)
-// 	{
-// 		switch (setMode)
-// 		{
-// 		case 0: // aus
-// 			return 0;
-// 			break;
-// 		case 1: // CO2 Spunden
-// 		case 2: // Druck Spunden
-// 			return 350;
-// 			break;
-// 		case 3: // Karbonisieren
-// 			return 100;
-// 			break;
-// 		}
-// 	}
-// }
+	case PLAN2: // Karbonisieren
+		if (!stepA)
+			pressure = oldPressure - 0.015;
+		else
+			pressure = oldPressure + 0.015;
+		break;
+	case PLAN3: // Karbonisieren
+		if (!stepA)
+			pressure = oldPressure - 0.015;
+		else
+			pressure = oldPressure + 0.015;
+		break;
+	}
+}

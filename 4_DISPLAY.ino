@@ -8,12 +8,13 @@ void showLCD()
     Menu1[0] = "CO2:   ";
     Menu1[0] += calcCarbonation(pressure, temperature);
     Menu1[0] += "g/l ";
-    if (setMode == 0)
+    if (setMode == AUS)
       Menu1[0] += "Aus";
-    else if (setMode == 1)
+    else if (setMode == SPUNDEN_CO2)
       Menu1[0] += "Spund";
-    else if (setMode == 3)
+    else if (setMode == KARBONISIEREN)
       Menu1[0] += " Karb";
+    
     Menu1[1] = "Druck: ";
     if (pressure == -1)
       Menu1[1] += "-       ";
@@ -22,15 +23,39 @@ void showLCD()
       Menu1[1] += pressure;
       Menu1[1] += "bar ";
     }
-    if (setMode == 2)
+    if (setMode == SPUNDEN_DRUCK)
       Menu1[1] += "Spund";
+    else if (setMode == PLAN1)
+      Menu1[1] += " Plan";
+    else if (setMode == PLAN2)
+      Menu1[1] += " Plan";
+    else if (setMode == PLAN3)
+      Menu1[1] += " Plan";
+    
     Menu1[2] = "Temp: ";
     Menu1[2] += sTemperature;
     Menu1[2] += "\337C"; // °C
-    Menu1[3] = "Volt:  ";
-    Menu1[3] += voltage;
-    Menu1[3] += "V";
-
+    if (setMode == PLAN1)
+    {
+      Menu1[3] = "Plan: #";
+      Menu1[3] += counterPlan+1;
+      if (!stepA)
+      {
+        Menu1[3] += " MV1 ";
+      }
+      else
+      {
+          Menu1[3] += " MV2 ";
+      }
+      Menu1[3] += displayPressure;
+      Menu1[3] += "bar";
+    }
+    else
+    {
+      Menu1[3] = "Volt:  ";
+      Menu1[3] += voltage;
+      Menu1[3] += "V";
+    }
     // Navigation
     if (up)
     {
@@ -259,6 +284,7 @@ void showLCD()
       case 1: // Auswahl Ja - Kalibrierung
         readPressure();
         offsetVoltage = voltage;
+        //offsetVoltage = (0.5 - voltage);
         writeFloat(0, offsetVoltage);
         readPressure();
         page = 2;
@@ -340,4 +366,49 @@ void startLCD()
   lcd.print("WLAN ");
   lcd.print(WiFi.SSID());
   millis2wait(PAUSE5SEC);
+}
+
+void updateLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print("Starte WebUpdate ...");
+}
+void upSSLLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(" Update SSL");
+}
+void upIndexLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(" Update Index");
+}
+void upFirmLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(" Update Firmware");
 }

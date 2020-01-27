@@ -51,7 +51,7 @@ bool checkRange(const String &str)
     return false;
 }
 
-String PinToString(unsigned char pinbyte)
+String PinToString(unsigned char &pinbyte)
 {
   const unsigned char numberOfPins = 9;
   const unsigned char pins[numberOfPins] = {D0, D1, D2, D3, D4, D5, D6, D7, D8};
@@ -67,16 +67,46 @@ String PinToString(unsigned char pinbyte)
   return "NaN";
 }
 
-// void sendAlarm()
-// {
-//   DEBUG_MSG("Starte Alarm %d\n", PIEZZO_UPDATE);
-//   analogWrite(PIN_BUZZER, 20); // 0-255
-//   delay(50);
-//   analogWrite(PIN_BUZZER, 0); // 0-255
-//   //tone(PIN_BUZZER, 440, 50);
-//   delay(50);
-//   //noTone(PIN_BUZZER);
-// }
+void sendAlarm(const uint8_t &setAlarm)
+{
+  if (!startBuzzer)
+    return;
+  switch (setAlarm)
+  {
+  case ALARM_ON:
+    tone(PIN_BUZZER, 440, 50);
+    delay(50);
+    tone(PIN_BUZZER, 880, 50);
+    delay(50);
+    break;
+  case ALARM_OFF:
+    tone(PIN_BUZZER, 880, 50);
+    delay(50);
+    tone(PIN_BUZZER, 440, 50);
+    delay(50);
+    break;
+  case ALARM_OK:
+    tone(PIN_BUZZER, 880, 50);
+    delay(50);
+    break;
+  case ALARM_ERROR:
+    tone(PIN_BUZZER, 220, 500);
+    delay(500);
+    break;
+  case ALARM_PANIC:
+    for (byte count2 = 0; count2 != 3; count2++)
+    {
+      for (byte count = 0; count != 250; count++)
+      {
+        tone(PIN_BUZZER, 200 + 10 * count, 10);
+        delay(1);
+      }
+    }
+    break;
+  default:
+    break;
+  }
+}
 
 void setTicker() // Ticker Objekte deklarieren
 {
@@ -84,5 +114,4 @@ void setTicker() // Ticker Objekte deklarieren
   TickerPressure.config(tickerPressureCallback, upPressure, 0);
   TickerEncoder.config(tickerEncoderCallback, ENCODER_UPDATE, 0);
   TickerButton.config(tickerButtonCallback, BUTTON_UPDATE, 0);
-  // TickerPiezzo.config(tickerPiezzoCallback, PIEZZO_UPDATE, 3);
 }

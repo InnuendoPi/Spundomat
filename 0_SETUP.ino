@@ -69,15 +69,18 @@ void setup()
 
   // Pin Definitionen
   if (startMV1)
+  {
+    digitalWrite(PIN_MV1, LOW);
     pinMode(PIN_MV1, OUTPUT); // D8
+  }
   if (startMV2)
+  {
+    digitalWrite(PIN_MV2, LOW);
     pinMode(PIN_MV2, OUTPUT); // D0
-  // if (startBuzzer)
-  // {
-  //   pinMode(PIN_BUZZER, OUTPUT); // D0
-  //   pinMode(PIN_BUZZER, HIGH);  
-  // }
-
+  }
+  if (startBuzzer)
+    pinMode(PIN_BUZZER, OUTPUT); // D0
+  
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
 
@@ -96,13 +99,15 @@ void setup()
 
   // Zeitserver via NTP
   timeClient.begin();
-  // timeClient.update();
+  timeClient.update();
   
   // LCD
   startLCD();
 
   // Uhrzeit
   Serial.printf("*** SYSINFO: %s\n", timeClient.getFormattedTime().c_str());
+  if (startBuzzer)
+    sendAlarm(ALARM_ON);
   checkLog();
 }
 

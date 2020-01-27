@@ -68,15 +68,15 @@
             <div class="tab-pane fade show active" id="misc1" role="tabpanel" aria-labelledby="misc1-tab">
               <br />
               <div class="form-group">
-                <label for="modal_misc_modus">setMode</label>
+                <label for="modal_misc_modus">Betriebsmodus</label>
                 <select class="form-control" id="modal_misc_modus"></select>
               </div>
               <div class="form-group">
-                <label for="modal_misc_pressure">setPressure</label>
+                <label for="modal_misc_pressure">Zielwert Druck (bar)</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_pressure" />
               </div>
               <div class="form-group">
-                <label for="modal_misc_carbonation">setCarbonation</label>
+                <label for="modal_misc_carbonation">Zielwert CO2 Gehalt (gr/l)</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_carbonation" />
               </div>
             </div>
@@ -133,12 +133,20 @@
                 <label for="modal_misc_mdns_name">Eindeutiger mDNS Name</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_mdns_name" />
               </div>
+			  <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_testmode" />
+                <label class="form-check-label" for="modal_misc_testmode">Aktiviere Testmodus (debug)</label>
+              </div>
               <br />
             </div>
             <div class="tab-pane fade" id="misc4" role="tabpanel" aria-labelledby="misc4-tab">
               <br />
               <label class="form-check-label">Reset Spundomat</label>
               <br />
+			  <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_eeprom" />
+                <label class="form-check-label" for="modal_misc_eeprom">Lösche Kalibrierung</label>
+              </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_reset" />
                 <label class="form-check-label" for="modal_misc_reset">Lösche WiFi (Reset to AP Mode)</label>
@@ -182,12 +190,7 @@
     
 	function refresh() {
       $.get("/reqMiscSet", function (data) {
-        let miscRender = "<li class='list-group-item d-flex justify-content-between align-items-center'> setPressure <span class='badge badge-info'>";
-     
-        miscRender += data.pressure + " bar";
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> setCarbonation <span class='badge badge-info'>";
-        miscRender += data.carbonation + " g/l";
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> setModus <span class='badge badge-info'>";
+        let miscRender = "<li class='list-group-item d-flex justify-content-between align-items-center'>Aktueller Betriebsmodus<span class='badge badge-info'>";
         if (data.mode == 0 )
         {
           miscRender += "Aus";  
@@ -200,15 +203,23 @@
         {
           miscRender += "Spundomat Druck";
         }
+		else if (data.mode == 3)
+        {
+          miscRender += "Karbonisieren";
+        }
         else
         {
-          miscRender += "Karbonisierung";
+          miscRender += "Ablaufplan";
         }
 
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> CO2 <span class='badge badge-light'>";
+        miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
+        miscRender += data.pressure + " bar";
+        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
+        miscRender += data.carbonation + " g/l";
+        miscRender += "</span></li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller CO2 Gehalt<span class='badge badge-light'>";
         miscRender += data.co2 + " g/l";
 
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Druck <span class='badge badge-light'>";
+        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller Druck<span class='badge badge-light'>";
         if (data.druck == -1 )
 		{
 			miscRender += "kein Drucksensor angeschlossen";
@@ -218,7 +229,7 @@
 			miscRender += data.druck + " bar";
 		}
 
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Temperatur <span class='badge badge-light'>";
+        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Aktuelle Temperatur<span class='badge badge-light'>";
         if (data.temperatur == -127 )
 		{
 			miscRender += "kein Temperatursensor angeschlossen";
@@ -228,10 +239,10 @@
 			miscRender += data.temperatur + " °C";
 		}
 
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Volt <span class='badge badge-light'>";
+        miscRender += "</span></li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'>Spannung am Drucksensor<span class='badge badge-light'>";
         miscRender += data.voltage + " V";
 
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Volt Offset <span class='badge badge-light'>";
+        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Spannung Offset <span class='badge badge-light'>";
         if (data.offset == "nan")
         {
           miscRender += "Kalibrierung ausführen!";
@@ -312,6 +323,7 @@
       var mdns_name;
       var reset;
       var clear;
+	  var eeprom;
       var pressure;
       var carbonation;
       var mode;
@@ -329,6 +341,7 @@
 	  var uppressure;
 	  var uptemp;
 	  var buzzer;
+	  var testmode;
 
       $.ajax({
         url: '/reqMisc?req=mdns',
@@ -520,6 +533,16 @@
           buzzer = data;
         }
       });
+	  $.ajax({
+        url: '/reqMisc?req=testmode',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          testmode = data;
+        }
+      });
 
       var modal = $(this)
       $('#modal_misc_modus').load('/reqMode')
@@ -532,8 +555,11 @@
       else { modal.find('#modal_misc_mv2').prop("checked", false) }
 	  if (buzzer == "1") { modal.find('#modal_misc_buzzer').prop("checked", true) }
       else { modal.find('#modal_misc_buzzer').prop("checked", false) }
+	  if (testmode == "1") { modal.find('#modal_misc_testmode').prop("checked", true) }
+      else { modal.find('#modal_misc_testmode').prop("checked", false) }
       modal.find('#modal_misc_reset').prop("checked", false)
       modal.find('#modal_misc_clear').prop("checked", false)
+	  modal.find('#modal_misc_eeprom').prop("checked", false)
       modal.find('#modal_misc_pressure').val(pressure)
       modal.find('#modal_misc_carbonation').val(carbonation)
 	  modal.find('#modal_misc_mv1open').val(mv1open)
@@ -564,6 +590,14 @@
 	  else 
 	  {
         var mdns = "0"
+      }
+	  if (modal.find('#modal_misc_eeprom').prop("checked") == true) 
+	  {
+        var eeprom = "1"
+      } 
+	  else 
+	  {
+        var eeprom = "0"
       }
       if (modal.find('#modal_misc_reset').prop("checked") == true) 
 	  {
@@ -605,9 +639,17 @@
 	  {
         var buzzer = "0"
       }
+	  if (modal.find('#modal_misc_testmode').prop("checked") == true) 
+	  {
+        var testmode = "1"
+      } 
+	  else 
+	  {
+        var testmode = "0"
+      }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode,
         type: 'POST',
         dataType: 'html',
         async: false,

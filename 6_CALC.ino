@@ -12,23 +12,43 @@
 **/
 
 // Berechne CO2 gehalt
-double calcCarbonation(float Pressure, float Temparature)
+float calcCarbonation(float Pressure, float Temperature)
 {
-	double localCarbonation = (Pressure + 1.013) * pow(E, (-10.73797 + (2617.25 / (Temparature + 273.15)))) * 10;
+	float localCarbonation;
+	// if (fabs(pressure < 0.05) || pressure < 0.0)
+	// 	localCarbonation = 0.0;
+	// else
+		localCarbonation = (Pressure + 1.013) * pow(E, (-10.73797 + (2617.25 / (Temperature + 273.15)))) * 10;
+
 	// isnan = not a number - überprüfen!
 	// if (isnan(localCarbonation))
-	// 	return -1;
+	// 	{
+	// 		setMode = 0; 	// Prüfen!
+	// 		return -1;		// Muss ausgewertet werden
+	// 	}
 	// else
 	return localCarbonation;
 }
 
 // Berechne Solldruck
-double calcPressure(float Carbonation, float Temparature)
+float calcPressure(float Carbonation, float Temperature)
 {
-	double localPressure = (Carbonation / 10) / pow(E, (-10.73797 + (2617.25 / (Temparature + 273.15)))) - 1.013;
-	// if (isnan(localPressure))
-	// 	return -1;
+	float localPressure;
+	// if (Carbonation == 0)
+	// 	localPressure = 0.0;
 	// else
+		localPressure = (Carbonation / 10) / pow(E, (-10.73797 + (2617.25 / (Temperature + 273.15)))) - 1.013;
+
+	// if (isnan(localPressure))
+	// {
+	// 	setMode = 0; 	// prüfen! Swtich off
+	// 	return -1; 		// Muss ausgewertet werden!
+	// }
+	// else
+	// {
+	// if (fabs(localPressure < 0.05))
+	// 	localPressure = 0.0;
+	// }
 	return localPressure;
 }
 

@@ -75,8 +75,16 @@ const char Version[6] = "2.0";
 #define SPUNDEN_CO2 1
 #define SPUNDEN_DRUCK 2
 #define KARBONISIEREN 3
-#define DEFAULT_OPEN 2000
+#define PLAN1 4
+#define PLAN2 5
+#define PLAN3 6
+#define DEFAULT_OPEN 1000
 #define DEFAULT_CLOSE 1000
+#define ALARM_ON 1
+#define ALARM_OFF 2
+#define ALARM_OK 3
+#define ALARM_ERROR 4
+#define ALARM_PANIC 5
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
@@ -96,11 +104,11 @@ float setPressure = 2.0;    //  Vorgabe bei Neustart von 2,0 bar
 float setCarbonation = 5.0; //  Vorgabe bei Neustart von 5,0 gr/L
 int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 = Karbonisieren
 
-bool startMDNS = true;    // mDNS Dienst
-bool testModus = false;   // testModus - ignorieren!
-bool startMV1 = false;    // Aktiviere MV1 an D8
-bool startMV2 = false;    // Aktiviere MV2 an D0
-bool startBuzzer = false; // Aktiviere Buzzer an D4
+bool startMDNS = true;      // mDNS Dienst
+bool testModus = false;      // testModus - ignorieren!
+bool startMV1 = false;      // Aktiviere MV1 an D8
+bool startMV2 = false;      // Aktiviere MV2 an D0
+bool startBuzzer = false;   // Aktiviere Buzzer an D4
 
 // Klassen Initialisierungen
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display
@@ -123,18 +131,18 @@ InnuTicker TickerTemp;
 InnuTicker TickerPressure;
 InnuTicker TickerEncoder;
 InnuTicker TickerButton;
-// InnuTicker TickerPiezzo;
 
 // Deklariere Variablen
 float temperature;
 float oldTemperature;
 char sTemperature[5];
 float voltage;
-float offsetVoltage = 0.42;
-double pressure;
-double oldPressure;
+//float offsetVoltage = 0.42;
+float offsetVoltage = 0.0; // Standard Vadc bei 0bar an A0
+float pressure = 0.0;
+float oldPressure = 0.0;
+float displayPressure = 0.0;
 int encoderOldPos;
-int sensorValueTest;    // Ignorieren!
 
 boolean up = false;
 boolean down = false;
@@ -156,20 +164,24 @@ String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
-#define sizeOfModes 4
-String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb"};                            // ModusNamen im Display
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren"}; // Modus-Namen für WebIf
+#define sizeOfModes 7
+String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb", "PLAN 1", "Plan 2", "Plan 3"};                      // ModusNamen im Display
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren", "Plan 1: Entlüften", "Plan 2: QuickCarb", "Plan 3: CO2-Wäsche"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat"; // http://spundomat/index.html
 
 // Ablaufplan
 struct Ablaufplan
 {
-    float zieldruckMV2;
-    int intervallMV2;
-    int pause;
     float zieldruckMV1;
-    int intervallMV1;
+    long intervallMV1Open;
+    long intervallMV1Close;
+    float zieldruckMV2;
+    long intervallMV2Open;
+    long intervallMV2Close;
 };
+int counterPlan = 0;
+bool stepA = false;
+bool stepB = false;
 
 // Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)
@@ -191,3 +203,4 @@ void configModeCallback(WiFiManager *myWiFiManager)
     lcd.print("AP-Mode: ");
     lcd.print(WiFi.softAPIP());
 }
+

@@ -22,16 +22,9 @@ void loop()
   // Check DS18B20 Ticker
   TickerTemp.update();
 
-  // Check Drucksensor Ticker
-  TickerPressure.update();
-  
   // Check Encoder Ticker
   TickerButton.update();
   TickerEncoder.update();
-
-  // Check Piezzo Ticker
-  // if (startBuzzer)
-  //   TickerPiezzo.update();
 
   if (reflashLCD)
     showLCD();
@@ -40,6 +33,8 @@ void loop()
   switch (setMode)
   {
   case AUS: // aus
+    // Check Drucksensor Ticker
+    TickerPressure.update();
     break;
   case SPUNDEN_CO2: // CO2 Spunden
     updateMV1();
@@ -49,6 +44,15 @@ void loop()
     break;
   case KARBONISIEREN: // CO2 Karbonisieren
     updateMV2();
+    break;
+  case PLAN1:
+    entlueften();
+    break;
+  case PLAN2:
+    quickCarb();
+    break;
+  case PLAN3:
+    co2Washer();
     break;
   }
   up = false;

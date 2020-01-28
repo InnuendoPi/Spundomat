@@ -34,7 +34,7 @@ void readPressure()
 	int sensorValue = analogRead(A0);
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
-	
+
 	// Berechne Druck offsetVoltage = 0.42;
 	// pressure = (voltage - offsetVoltage) * 1.36;
 
@@ -54,14 +54,26 @@ void readPressure()
 	// Testmodus - Ignorieren!
 	if (testModus)
 		checkTestMode();
-	
+
 	// Aktualisiere LCD wenn Druck geändert hat
-	if (fabs(pressure - oldPressure) > 0.01)
+	if (setMode != PLAN1)
+	{
+		if (fabs(pressure - oldPressure) > 0.01)
+		{
+			reflashLCD = true;
+			oldPressure = pressure;
+		}
+	}
+	else
 	{
 		reflashLCD = true;
-		oldPressure = pressure;
 	}
+	if (pressure < 0.0)
+		pressure = 0.0;
+	// DEBUG_MSG("readPressure: %f\n", pressure);
 }
+
+// Lese Druck
 
 // !!!Testcode!!! Ignorieren!
 void checkTestMode()

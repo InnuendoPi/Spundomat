@@ -9,12 +9,26 @@ void showLCD()
     Menu1[0] += calcCarbonation(pressure, temperature);
     Menu1[0] += "g/l ";
     if (setMode == AUS)
-      Menu1[0] += "Aus";
+    {
+      Menu1[3] = "Volt:  ";
+      Menu1[3] += voltage;
+      Menu1[3] += "V";
+      Menu1[3] += " ";
+      Menu1[3] += offsetVoltage;
+      Menu1[3] += "V";
+    }
     else if (setMode == SPUNDEN_CO2)
-      Menu1[0] += "Spund";
+    {
+      Menu1[3] = "Spunden: ";
+      Menu1[3] += setCarbonation;
+      Menu1[3] += "g/l";
+    }
     else if (setMode == KARBONISIEREN)
-      Menu1[0] += " Karb";
-    
+    {
+      Menu1[3] = "Karbonisiere:";
+      Menu1[3] += setCarbonation;
+      Menu1[3] += "g/l";
+    }
     Menu1[1] = "Druck: ";
     if (pressure == -1)
       Menu1[1] += "-       ";
@@ -24,38 +38,31 @@ void showLCD()
       Menu1[1] += "bar ";
     }
     if (setMode == SPUNDEN_DRUCK)
-      Menu1[1] += "Spund";
-    else if (setMode == PLAN1)
-      Menu1[1] += " Plan";
-    else if (setMode == PLAN2)
-      Menu1[1] += " Plan";
-    else if (setMode == PLAN3)
-      Menu1[1] += " Plan";
-    
-    Menu1[2] = "Temp: ";
-    Menu1[2] += sTemperature;
-    Menu1[2] += "\337C"; // °C
-    if (setMode == PLAN1)
+    {
+      //Menu1[1] += "Spund";
+      Menu1[3] = "Spunden: ";
+      Menu1[3] += setPressure;
+      Menu1[3] += "bar";
+    }
+    if (setMode == PLAN1 || setMode == PLAN2 || setMode == PLAN3)
     {
       Menu1[3] = "Plan: #";
-      Menu1[3] += counterPlan+1;
+      Menu1[3] += counterPlan + 1;
       if (!stepA)
       {
         Menu1[3] += " MV1 ";
       }
       else
       {
-          Menu1[3] += " MV2 ";
+        Menu1[3] += " MV2 ";
       }
       Menu1[3] += displayPressure;
       Menu1[3] += "bar";
     }
-    else
-    {
-      Menu1[3] = "Volt:  ";
-      Menu1[3] += voltage;
-      Menu1[3] += "V";
-    }
+   
+    Menu1[2] = "Temp: ";
+    Menu1[2] += sTemperature;
+    Menu1[2] += "\337C"; // °C
     // Navigation
     if (up)
     {

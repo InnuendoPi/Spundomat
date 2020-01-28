@@ -13,7 +13,7 @@ class Magnetventil
 	int prevMVState;			  // vorheriger MV Status
 	unsigned long previousMillis; // letztes Update MV
 	bool enabled;
-
+	
 public:
 	Magnetventil(int pin, long newOpen, long newClose, bool newEnabled) // Konstruktor
 	{
@@ -53,10 +53,11 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Spunden-CO2-1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", prevMVState, mvState, currentMillis, previousMillis, closeInterval);
-				readPressure();
+				// readPressure();
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
+				readPressure();
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
@@ -67,7 +68,7 @@ public:
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
 			mvState = LOW;
-			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
+			millis2wait(200); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
 			DEBUG_MSG("Magnetventil Modus Spunden-CO2-3 Status: %d \n", mvState);
 			if (currentMillis - previousMillis >= openInterval)
@@ -92,10 +93,10 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Spunden-Druck1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", prevMVState, mvState, currentMillis, previousMillis, closeInterval);
-				readPressure();
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
+				readPressure();
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
@@ -106,7 +107,7 @@ public:
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
 			mvState = LOW;
-			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
+			millis2wait(200); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
 			DEBUG_MSG("Magnetventil Modus Spunden-Druck3 Status: %d \n", mvState);
 			if (currentMillis - previousMillis >= openInterval)
@@ -131,10 +132,10 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Karbonisieren1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", prevMVState, mvState, currentMillis, previousMillis, closeInterval);
-				readPressure();
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
+				readPressure();
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Magnetventil
@@ -145,7 +146,7 @@ public:
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
 			mvState = LOW;
-			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
+			millis2wait(200); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
 			DEBUG_MSG("Magnetventil Modus Karbonisieren3 Status: %d \n", mvState);
 			if (currentMillis - previousMillis >= openInterval)
@@ -164,7 +165,7 @@ public:
 			return true;
 		}
 		unsigned long currentMillis = millis();
-		if (pressure < newPressure && newPressure != 0.0)
+		if (pressure < newPressure && newPressure > 0.0)
 		{
 			if ((mvState == HIGH) && (currentMillis - previousMillis >= openInterval)) // wenn MV offen ist, dann schließe es nach openInterval ms
 			{
@@ -173,10 +174,10 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", mvPin, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
-				readPressure();
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
+				readPressure();
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Magnetventil
@@ -191,22 +192,18 @@ public:
 			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
 			DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress3 Status: %d \n", mvPin, mvState);
-			if (currentMillis - previousMillis >= openInterval)
-			{
-				readPressure();
-				previousMillis = currentMillis;
-			}
 			return true;
 		}
 	}
 
 	bool planRelPress(float newPressure) // MV1 Modus Spunden Druck
 	{
-		if (!enabled) // MV2 aktiviert?
-		{
-			setMode = 0;
-			return true;
-		}
+		// if (!enabled) // MV2 aktiviert?
+		// {
+		// 	setMode = 0;
+		// 	return true;
+		// }
+		//readPressure();
 		unsigned long currentMillis = millis();
 		if (pressure > newPressure)
 		{
@@ -217,10 +214,10 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, prevMVState, mvState, currentMillis, previousMillis, closeInterval, newPressure);
-				readPressure();
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
+				readPressure(); // Lese Drucksensor, bevor MV geöffnet wird
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
@@ -232,18 +229,13 @@ public:
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
 			mvState = LOW;
-			millis2wait(100);
+			millis2wait(200); // Schutz Magnetventil
 			digitalWrite(mvPin, mvState);
 			DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress3 Status: %d newPressure: %f Pressure: %f\n", mvPin, mvState, newPressure, pressure);
-			if (currentMillis - previousMillis >= openInterval)
-			{
-				readPressure();
-				previousMillis = currentMillis;
-			}
 			return true;
 		}
 	}
-	
+
 	void change(long newOpen, long newClose, bool newEnabled) // Aufruf aus configfile
 	{
 		openInterval = newOpen;
@@ -285,9 +277,15 @@ void updateMV2()
 		mv2.buildPressure();
 }
 
+void setPlanPause()
+{
+	DEBUG_MSG("setPlanPause: %d\n", PAUSE1SEC);
+	millis2wait(PAUSE1SEC);
+}
+
 void startPlan(int count, Ablaufplan *newPlan)
 {
-	if (counterPlan == -1)
+	if (counterPlan == -1) // Start Ablaufplan
 	{
 		counterPlan = 0; // Starte Ablaufplan
 		readPressure();
@@ -297,30 +295,37 @@ void startPlan(int count, Ablaufplan *newPlan)
 	}
 	if (!stepA) // true: MV1 aktiv | false: MV1 inaktiv
 	{
+		// DEBUG_MSG("startPlan StepA #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, newPlan[counterPlan].zieldruckMV1, pressure);
 		stepA = mv1.planRelPress(newPlan[counterPlan].zieldruckMV1);
 		displayPressure = newPlan[counterPlan].zieldruckMV1;
-		//DEBUG_MSG("startPlan StepB #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, newPlan[counterPlan].zieldruckMV1, pressure);
+		if (stepA)
+			millis2wait(newPlan[counterPlan].intervallMV1Close);
 		return;
 	}
-	if (!stepB) // true: MV2 aktiv | false: MV2 inaktiv
+	else if (!stepB && stepA) // true: MV2 aktiv | false: MV2 inaktiv
 	{
+		// DEBUG_MSG("startPlan StepB #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, newPlan[counterPlan].zieldruckMV2, pressure);
 		stepB = mv2.planBuildPress(newPlan[counterPlan].zieldruckMV2);
 		displayPressure = newPlan[counterPlan].zieldruckMV2;
-		//DEBUG_MSG("startPlan StepA #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, newPlan[counterPlan].zieldruckMV2, pressure);
+		if (stepB)
+			millis2wait(newPlan[counterPlan].intervallMV2Close);
 		return;
 	}
-	counterPlan++; // Nächster Schritt im Plan
-	if (counterPlan == count)
+	else if (stepA && stepB)
 	{
-		setMode = 0;
-		DEBUG_MSG("Counterplan Ende %d: #%d/%d\n", count, counterPlan, count);
-		return;
+		counterPlan++; // Nächster Schritt im Plan
+		if (counterPlan == count)
+		{
+			setMode = 0;
+			DEBUG_MSG("Counterplan Ende %d: #%d/%d\n", count, counterPlan, count);
+			return;
+		}
+		stepA = false; // Setze StepA aktiv
+		stepB = false; // Setze StepB aktiv
+		setPlanPause(); // StepA und StepB abgeschlossen -> kurze Pause
+		DEBUG_MSG("Counterplan: #%d/%d\n", counterPlan, count);
+		// Setze Intervalle für den nächsten Schritt
+		mv1.change(newPlan[counterPlan].intervallMV1Open, newPlan[counterPlan].intervallMV1Close, true);
+		mv2.change(newPlan[counterPlan].intervallMV2Open, newPlan[counterPlan].intervallMV2Close, true);
 	}
-	stepA = false; // Setze StepA aktiv
-	stepB = false; // Setze StepB aktiv
-	readPressure();
-	DEBUG_MSG("Counterplan: #%d/%d\n", counterPlan, count);
-	// Setze Intervalle für den nächsten Schritt
-	mv1.change(newPlan[counterPlan].intervallMV1Open, newPlan[counterPlan].intervallMV1Close, true);
-	mv2.change(newPlan[counterPlan].intervallMV2Open, newPlan[counterPlan].intervallMV2Close, true);
 }

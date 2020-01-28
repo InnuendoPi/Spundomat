@@ -8,6 +8,8 @@ Projekt im Beta Status -> nicht benutzbar!
 
 Version 2.0
 
+- Fixed:    Fehlerhafte Sensorauswertung in Ablaufplänen
+- Reworked: LCD Display
 - Fixed:    Kalibrierung
 - Add:      Lösche Kalibrierung
 - Add:      Ablaufpläne Plan1: Entlüften, Plan2: QuickCarbonation, Plan3: CO2-Wäsche (Test!)

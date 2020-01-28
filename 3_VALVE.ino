@@ -260,7 +260,7 @@ public:
 Magnetventil mv1 = Magnetventil(PIN_MV1);
 Magnetventil mv2 = Magnetventil(PIN_MV2);
 
-void updateMV1()
+void updateMV1() // Modus Spunden
 {
 	if (setMode == SPUNDEN_CO2)
 		mv1.releasePressureCO2();
@@ -269,7 +269,8 @@ void updateMV1()
 	else
 		mv1.switchOff();
 }
-void updateMV2()
+
+void updateMV2() // Modus Karbonisieren
 {
 	if (setMode != KARBONISIEREN)
 		mv2.switchOff();
@@ -279,15 +280,15 @@ void updateMV2()
 
 void setPlanPause()
 {
-	DEBUG_MSG("setPlanPause: %d\n", PAUSE1SEC);
+	DEBUG_MSG("setPlanPause: %d\n", PAUSE1SEC); 
 	millis2wait(PAUSE1SEC);
 }
 
-void startPlan(int count, Ablaufplan *newPlan)
+void startPlan(int count, Ablaufplan *newPlan) // Modus Ablaufplan
 {
-	if (counterPlan == -1) // Start Ablaufplan
+	if (counterPlan == -1) // Start Ablaufplan (-1 ist der Startindikator)
 	{
-		counterPlan = 0; // Starte Ablaufplan
+		counterPlan = 0; // Setze auf erstes Element im Struct Array Ablaufplan
 		readPressure();
 		DEBUG_MSG("Counterplan 0: #%d/%d\n", counterPlan, count);
 		mv2.change(newPlan[counterPlan].intervallMV2Open, newPlan[counterPlan].intervallMV2Close, true);

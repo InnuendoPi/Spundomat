@@ -284,19 +284,24 @@ void setPlanPause()
 	millis2wait(PAUSE1SEC);
 }
 
-void startPlan(int count, Ablaufplan *newPlan) // Modus Ablaufplan
+void startPlan(Ablaufplan *newPlan) // Modus Ablaufplan
 {
 	if (counterPlan == -1) // Start Ablaufplan (-1 ist der Startindikator)
 	{
 		counterPlan = 0; // Setze auf erstes Element im Struct Array Ablaufplan
 		readPressure();
-		DEBUG_MSG("Counterplan 0: #%d/%d\n", counterPlan, count);
+		DEBUG_MSG("Counterplan 0: #%d\n", counterPlan);
 		mv2.change(newPlan[counterPlan].intervallMV2Open, newPlan[counterPlan].intervallMV2Close, true);
 		mv1.change(newPlan[counterPlan].intervallMV1Open, newPlan[counterPlan].intervallMV1Close, true);
 	}
 	if (!stepA) // true: MV1 aktiv | false: MV1 inaktiv
 	{
 		// DEBUG_MSG("startPlan StepA #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, newPlan[counterPlan].zieldruckMV1, pressure);
+		if (newPlan[counterPlan].zieldruckMV1 == 0.0)
+		{
+			stepA = true;
+			return;
+		}
 		stepA = mv1.planRelPress(newPlan[counterPlan].zieldruckMV1);
 		displayPressure = newPlan[counterPlan].zieldruckMV1;
 		if (stepA)
@@ -306,6 +311,11 @@ void startPlan(int count, Ablaufplan *newPlan) // Modus Ablaufplan
 	else if (!stepB && stepA) // true: MV2 aktiv | false: MV2 inaktiv
 	{
 		// DEBUG_MSG("startPlan StepB #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, newPlan[counterPlan].zieldruckMV2, pressure);
+		if (newPlan[counterPlan].zieldruckMV2 == 0.0)
+		{
+			stepB = true;
+			return;
+		}
 		stepB = mv2.planBuildPress(newPlan[counterPlan].zieldruckMV2);
 		displayPressure = newPlan[counterPlan].zieldruckMV2;
 		if (stepB)
@@ -315,16 +325,16 @@ void startPlan(int count, Ablaufplan *newPlan) // Modus Ablaufplan
 	else if (stepA && stepB)
 	{
 		counterPlan++; // Nächster Schritt im Plan
-		if (counterPlan == count)
+		if (counterPlan == maxSchritte)
 		{
 			setMode = 0;
-			DEBUG_MSG("Counterplan Ende %d: #%d/%d\n", count, counterPlan, count);
+			DEBUG_MSG("Counterplan Ende %d\n", counterPlan);
 			return;
 		}
 		stepA = false; // Setze StepA aktiv
 		stepB = false; // Setze StepB aktiv
 		setPlanPause(); // StepA und StepB abgeschlossen -> kurze Pause
-		DEBUG_MSG("Counterplan: #%d/%d\n", counterPlan, count);
+		DEBUG_MSG("Counterplan: #%d\n", counterPlan);
 		// Setze Intervalle für den nächsten Schritt
 		mv1.change(newPlan[counterPlan].intervallMV1Open, newPlan[counterPlan].intervallMV1Close, true);
 		mv2.change(newPlan[counterPlan].intervallMV2Open, newPlan[counterPlan].intervallMV2Close, true);

@@ -51,6 +51,23 @@ bool checkRange(const String &str)
     return false;
 }
 
+char *removeLeerzeichen(char *input)
+{
+  char *output = input;
+  int j = 0;
+  for (int i = 0; i < strlen(input); i++)
+  {
+    if (input[i] != ' ' && input[i] != '\n' && input[i] != '\r')
+      output[j] = input[i];
+    else
+      j--;
+
+    j++;
+  }
+  output[j] = '\0';
+  return output;
+}
+
 String PinToString(unsigned char &pinbyte)
 {
   const unsigned char numberOfPins = 9;

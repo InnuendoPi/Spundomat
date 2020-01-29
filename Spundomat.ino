@@ -164,9 +164,10 @@ String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
+File file;
 #define sizeOfModes 7
 String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb", "PLAN 1", "Plan 2", "Plan 3"};                      // ModusNamen im Display
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren", "Plan 1: Entlüften", "Plan 2: QuickCarb", "Plan 3: CO2-Wäsche"}; // Modus-Namen für WebIf
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat"; // http://spundomat/index.html
 
 // Ablaufplan
@@ -179,9 +180,13 @@ struct Ablaufplan
     long intervallMV2Open;
     long intervallMV2Close;
 };
+struct Ablaufplan structPlan1[20];
+struct Ablaufplan structPlan2[20];
+struct Ablaufplan structPlan3[20];
 int counterPlan = 0;
 bool stepA = false;
 bool stepB = false;
+#define maxSchritte 20
 
 // Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)

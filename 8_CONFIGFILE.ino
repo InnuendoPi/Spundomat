@@ -84,7 +84,6 @@ bool loadConfig()
   if (miscObj.containsKey("TESTMODE"))
     testModus = miscObj["TESTMODE"];
 
-
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
   Serial.printf("Testmodus: %d\n", testModus);
@@ -103,6 +102,15 @@ bool loadConfig()
   mv2.change(mv2Open, mv2Close, startMV2);
   mv1.switchOff();
   mv2.switchOff();
+  
+  // Ablaufpläne
+  initPlan(); // Initialisiere Strukturen
+  if (SPIFFS.exists("/ablaufplan.txt")) // Lade Ablaufpläne
+  {
+    file = SPIFFS.open("/ablaufplan.txt", "r");
+    readLine(file);
+    file.close();
+  }
 }
 
 bool saveConfig()
@@ -143,7 +151,7 @@ bool saveConfig()
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
   miscObj["TESTMODE"] = testModus;
-  
+
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
 
@@ -182,7 +190,15 @@ bool saveConfig()
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);
   DEBUG_MSG("%s\n", "------------");
-  
+
+  // Ablaufpläne
+  if (SPIFFS.exists("/ablaufplan.txt"))
+  {
+    file = SPIFFS.open("/ablaufplan.txt", "r");
+    readLine(file);
+    file.close();
+  }
+
   switch (setMode)
   {
   case AUS: // aus
@@ -202,6 +218,10 @@ bool saveConfig()
     counterPlan = -1;
     stepA = false;
     stepB = false;
+    // for (int test = 0; test < 20; test++)
+    // {
+    //   DEBUG_MSG("Line %d: x1: %f y1: %d z1: %d x2: %f y2: %d z2: %d\n", test, structPlan1[test].zieldruckMV1, structPlan1[test].intervallMV1Open, structPlan1[test].intervallMV1Close, structPlan1[test].zieldruckMV2, structPlan1[test].intervallMV2Open, structPlan1[test].intervallMV2Close);
+    // }
     break;
   case PLAN2:
     counterPlan = -1;

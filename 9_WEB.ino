@@ -257,11 +257,7 @@ void handleSetMisc()
         }
         if (server.argName(i) == "mode")
         {
-            for (int j = 0; j < sizeOfModes; j++)
-            {
-                if (server.arg(i) == modesWeb[j])
-                    setMode = j;
-            }
+            setMode = server.arg(i).toInt();
         }
         if (server.argName(i) == "mv1")
         {
@@ -393,7 +389,9 @@ void handlereqMode()
     {
         if (setMode != i)
         {
-            message += F("<option>");
+            message += F("<option value=\"");
+            message += i;
+            message += "\">";
             message += modesWeb[i];
             message += F("</option>");
         }

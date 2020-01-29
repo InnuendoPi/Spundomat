@@ -46,13 +46,13 @@ void loop()
     updateMV2();
     break;
   case PLAN1:
-    entlueften();
+    startPlan(structPlan1);
     break;
   case PLAN2:
-    quickCarb();
+    startPlan(structPlan2);
     break;
   case PLAN3:
-    co2Washer();
+    startPlan(structPlan3);
     break;
   }
   up = false;

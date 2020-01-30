@@ -51,13 +51,13 @@ bool checkRange(const String &str)
     return false;
 }
 
-char *removeLeerzeichen(char *input)
+char *checkChars(char *input)
 {
   char *output = input;
   int j = 0;
   for (int i = 0; i < strlen(input); i++)
   {
-    if (input[i] != ' ' && input[i] != '\n' && input[i] != '\r')
+    if (input[i] != ' ' && input[i] != '\n' && input[i] != '\r') // Suche nach Leerzeichen und CR LF
       output[j] = input[i];
     else
       j--;

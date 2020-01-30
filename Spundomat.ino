@@ -70,7 +70,8 @@ const char Version[6] = "2.0";
 #define PAUSE10MS 10
 #define ENCODER_UPDATE 100
 #define BUTTON_UPDATE 100
-#define PIEZZO_UPDATE 5000
+#define TEMPERATUR_UPDATE 30000
+#define PRESSURE_UPDATE 1000
 #define AUS 0
 #define SPUNDEN_CO2 1
 #define SPUNDEN_DRUCK 2
@@ -78,8 +79,8 @@ const char Version[6] = "2.0";
 #define PLAN1 4
 #define PLAN2 5
 #define PLAN3 6
-#define DEFAULT_OPEN 1000
-#define DEFAULT_CLOSE 1000
+#define DEFAULT_OPEN 300
+#define DEFAULT_CLOSE 2000
 #define ALARM_ON 1
 #define ALARM_OFF 2
 #define ALARM_OK 3
@@ -104,11 +105,11 @@ float setPressure = 2.0;    //  Vorgabe bei Neustart von 2,0 bar
 float setCarbonation = 5.0; //  Vorgabe bei Neustart von 5,0 gr/L
 int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 = Karbonisieren
 
-bool startMDNS = true;      // mDNS Dienst
-bool testModus = false;      // testModus - ignorieren!
-bool startMV1 = false;      // Aktiviere MV1 an D8
-bool startMV2 = false;      // Aktiviere MV2 an D0
-bool startBuzzer = false;   // Aktiviere Buzzer an D4
+bool startMDNS = true;    // mDNS Dienst
+bool testModus = false;   // testModus - ignorieren!
+bool startMV1 = false;    // Aktiviere MV1 an D8
+bool startMV2 = false;    // Aktiviere MV2 an D0
+bool startBuzzer = false; // Aktiviere Buzzer an D4
 
 // Klassen Initialisierungen
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display
@@ -147,12 +148,12 @@ int encoderOldPos;
 boolean up = false;
 boolean down = false;
 boolean buttonPressed;
-long mv1Open = DEFAULT_OPEN;    // Default Öffne Magnetventil 1 in ms (min 20ms)
-long mv1Close = DEFAULT_CLOSE;   // Default Schließe Magnetventil 1 in ms (min 20ms)
-long mv2Open = DEFAULT_OPEN;    // Default Öffne Magnetventil 2 in ms (min 20ms)
-long mv2Close = DEFAULT_CLOSE;   // Default Schließe Magnetventil 2 in ms (min 20ms)
-int upTemp = 30000;     // Default Update temperatur
-int upPressure = 1000;  // Default Update Drucksensor
+long mv1Open = DEFAULT_OPEN;      // Default Öffne Magnetventil 1 in ms (min 20ms)
+long mv1Close = DEFAULT_CLOSE;    // Default Schließe Magnetventil 1 in ms (min 20ms)
+long mv2Open = DEFAULT_OPEN;      // Default Öffne Magnetventil 2 in ms (min 20ms)
+long mv2Close = DEFAULT_CLOSE;    // Default Schließe Magnetventil 2 in ms (min 20ms)
+int upTemp = TEMPERATUR_UPDATE;   // Default Update temperatur
+int upPressure = PRESSURE_UPDATE; // Default Update Drucksensor
 
 int menuitem = 0; // Display
 int edititem = 0; // Display
@@ -164,13 +165,14 @@ String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
-File file;
 #define sizeOfModes 7
-String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb", "PLAN 1", "Plan 2", "Plan 3"};                      // ModusNamen im Display
+String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
 String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
-char nameMDNS[16] = "spundomat"; // http://spundomat/index.html
+char nameMDNS[16] = "spundomat";                                                                                                  // http://spundomat/index.html
 
 // Ablaufplan
+#define maxSchritte 20
+File file;      // Datei Objekt ablaufplan.txt
 struct Ablaufplan
 {
     float zieldruckMV1;
@@ -180,13 +182,10 @@ struct Ablaufplan
     long intervallMV2Open;
     long intervallMV2Close;
 };
-struct Ablaufplan structPlan1[20];
-struct Ablaufplan structPlan2[20];
-struct Ablaufplan structPlan3[20];
-int counterPlan = 0;
-bool stepA = false;
-bool stepB = false;
-#define maxSchritte 20
+struct Ablaufplan structPlan[maxSchritte];
+int counterPlan = 0; // Aktueller Schritt im Ablaufplan
+bool stepA = false;  // Step MV1 je Schritt
+bool stepB = false;  // Step MV2 je Schritt
 
 // Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)
@@ -208,4 +207,3 @@ void configModeCallback(WiFiManager *myWiFiManager)
     lcd.print("AP-Mode: ");
     lcd.print(WiFi.softAPIP());
 }
-

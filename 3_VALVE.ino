@@ -13,7 +13,7 @@ class Magnetventil
 	int prevMVState;			  // vorheriger MV Status
 	unsigned long previousMillis; // letztes Update MV
 	bool enabled;
-	
+
 public:
 	Magnetventil(int pin, long newOpen, long newClose, bool newEnabled) // Konstruktor
 	{
@@ -53,7 +53,6 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Spunden-CO2-1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", prevMVState, mvState, currentMillis, previousMillis, closeInterval);
-				// readPressure();
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -203,7 +202,6 @@ public:
 		// 	setMode = 0;
 		// 	return true;
 		// }
-		//readPressure();
 		unsigned long currentMillis = millis();
 		if (pressure > newPressure)
 		{
@@ -280,46 +278,46 @@ void updateMV2() // Modus Karbonisieren
 
 void setPlanPause()
 {
-	DEBUG_MSG("setPlanPause: %d\n", PAUSE1SEC); 
+	DEBUG_MSG("setPlanPause: %d\n", PAUSE1SEC);
 	millis2wait(PAUSE1SEC);
 }
 
-void startPlan(Ablaufplan *newPlan) // Modus Ablaufplan
+void startPlan() // Modus Ablaufplan
 {
 	if (counterPlan == -1) // Start Ablaufplan (-1 ist der Startindikator)
 	{
 		counterPlan = 0; // Setze auf erstes Element im Struct Array Ablaufplan
 		readPressure();
 		DEBUG_MSG("Counterplan 0: #%d\n", counterPlan);
-		mv2.change(newPlan[counterPlan].intervallMV2Open, newPlan[counterPlan].intervallMV2Close, true);
-		mv1.change(newPlan[counterPlan].intervallMV1Open, newPlan[counterPlan].intervallMV1Close, true);
+		mv2.change(structPlan[counterPlan].intervallMV2Open, structPlan[counterPlan].intervallMV2Close, true);
+		mv1.change(structPlan[counterPlan].intervallMV1Open, structPlan[counterPlan].intervallMV1Close, true);
 	}
 	if (!stepA) // true: MV1 aktiv | false: MV1 inaktiv
 	{
-		// DEBUG_MSG("startPlan StepA #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, newPlan[counterPlan].zieldruckMV1, pressure);
-		if (newPlan[counterPlan].zieldruckMV1 == 0.0)
+		// DEBUG_MSG("startPlan StepA #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, structPlan[counterPlan].zieldruckMV1, pressure);
+		if (structPlan[counterPlan].zieldruckMV1 == 0.0)
 		{
 			stepA = true;
 			return;
 		}
-		stepA = mv1.planRelPress(newPlan[counterPlan].zieldruckMV1);
-		displayPressure = newPlan[counterPlan].zieldruckMV1;
+		stepA = mv1.planRelPress(structPlan[counterPlan].zieldruckMV1);
+		displayPressure = structPlan[counterPlan].zieldruckMV1;
 		if (stepA)
-			millis2wait(newPlan[counterPlan].intervallMV1Close);
+			millis2wait(structPlan[counterPlan].intervallMV1Close);
 		return;
 	}
 	else if (!stepB && stepA) // true: MV2 aktiv | false: MV2 inaktiv
 	{
-		// DEBUG_MSG("startPlan StepB #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, newPlan[counterPlan].zieldruckMV2, pressure);
-		if (newPlan[counterPlan].zieldruckMV2 == 0.0)
+		// DEBUG_MSG("startPlan StepB #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, structPlan[counterPlan].zieldruckMV2, pressure);
+		if (structPlan[counterPlan].zieldruckMV2 == 0.0)
 		{
 			stepB = true;
 			return;
 		}
-		stepB = mv2.planBuildPress(newPlan[counterPlan].zieldruckMV2);
-		displayPressure = newPlan[counterPlan].zieldruckMV2;
+		stepB = mv2.planBuildPress(structPlan[counterPlan].zieldruckMV2);
+		displayPressure = structPlan[counterPlan].zieldruckMV2;
 		if (stepB)
-			millis2wait(newPlan[counterPlan].intervallMV2Close);
+			millis2wait(structPlan[counterPlan].intervallMV2Close);
 		return;
 	}
 	else if (stepA && stepB)
@@ -331,12 +329,12 @@ void startPlan(Ablaufplan *newPlan) // Modus Ablaufplan
 			DEBUG_MSG("Counterplan Ende %d\n", counterPlan);
 			return;
 		}
-		stepA = false; // Setze StepA aktiv
-		stepB = false; // Setze StepB aktiv
+		stepA = false;  // Setze StepA aktiv
+		stepB = false;  // Setze StepB aktiv
 		setPlanPause(); // StepA und StepB abgeschlossen -> kurze Pause
 		DEBUG_MSG("Counterplan: #%d\n", counterPlan);
 		// Setze Intervalle für den nächsten Schritt
-		mv1.change(newPlan[counterPlan].intervallMV1Open, newPlan[counterPlan].intervallMV1Close, true);
-		mv2.change(newPlan[counterPlan].intervallMV2Open, newPlan[counterPlan].intervallMV2Close, true);
+		mv1.change(structPlan[counterPlan].intervallMV1Open, structPlan[counterPlan].intervallMV1Close, true);
+		mv2.change(structPlan[counterPlan].intervallMV2Open, structPlan[counterPlan].intervallMV2Close, true);
 	}
 }

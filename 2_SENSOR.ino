@@ -13,10 +13,6 @@ void readTemparature()
 	sensors.requestTemperatures();
 	temperature = sensors.getTempCByIndex(0);
 
-	// !!!Testcode!!! Ignorieren!
-	// if (testModus)
-	// temperature = 20;
-
 	// Kommastelle für Ausgabe entfernen (Konvertiere float in char array)
 	dtostrf(temperature, 5, 1, sTemperature);
 
@@ -56,21 +52,20 @@ void readPressure()
 		checkTestMode();
 
 	// Aktualisiere LCD wenn Druck geändert hat
-	if (setMode != PLAN1)
+	if (setMode != PLAN1) // AUS
 	{
-		if (fabs(pressure - oldPressure) > 0.01)
+		if (fabs(pressure - oldPressure) > 0.01) // Absolute Änderung
 		{
 			reflashLCD = true;
 			oldPressure = pressure;
 		}
 	}
 	else
-	{
 		reflashLCD = true;
-	}
+
+	// Negativer Druck
 	if (pressure < 0.0)
 		pressure = 0.0;
-	// DEBUG_MSG("readPressure: %f\n", pressure);
 }
 
 // Lese Druck
@@ -100,20 +95,10 @@ void checkTestMode()
 			pressure = oldPressure + 0.015;
 		}
 		break;
-	case PLAN1: // Karbonisieren
-		if (!stepA)
-			pressure = oldPressure - 0.015;
-		else
-			pressure = oldPressure + 0.015;
-		break;
-
-	case PLAN2: // Karbonisieren
-		if (!stepA)
-			pressure = oldPressure - 0.015;
-		else
-			pressure = oldPressure + 0.015;
-		break;
-	case PLAN3: // Karbonisieren
+	// Nicht getestet!
+	case PLAN1:
+	case PLAN2:
+	case PLAN3:
 		if (!stepA)
 			pressure = oldPressure - 0.015;
 		else

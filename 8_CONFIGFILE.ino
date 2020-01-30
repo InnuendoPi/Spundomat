@@ -102,7 +102,7 @@ bool loadConfig()
   mv2.change(mv2Open, mv2Close, startMV2);
   mv1.switchOff();
   mv2.switchOff();
-  
+
   // Ablaufpläne
   initPlan(); // Initialisiere Strukturen
   if (SPIFFS.exists("/ablaufplan.txt")) // Lade Ablaufpläne
@@ -192,12 +192,6 @@ bool saveConfig()
   DEBUG_MSG("%s\n", "------------");
 
   // Ablaufpläne
-  if (SPIFFS.exists("/ablaufplan.txt"))
-  {
-    file = SPIFFS.open("/ablaufplan.txt", "r");
-    readLine(file);
-    file.close();
-  }
 
   switch (setMode)
   {
@@ -215,20 +209,19 @@ bool saveConfig()
     mv1.switchOff();
     break;
   case PLAN1:
-    counterPlan = -1;
-    stepA = false;
-    stepB = false;
     // for (int test = 0; test < 20; test++)
     // {
     //   DEBUG_MSG("Line %d: x1: %f y1: %d z1: %d x2: %f y2: %d z2: %d\n", test, structPlan1[test].zieldruckMV1, structPlan1[test].intervallMV1Open, structPlan1[test].intervallMV1Close, structPlan1[test].zieldruckMV2, structPlan1[test].intervallMV2Open, structPlan1[test].intervallMV2Close);
     // }
-    break;
   case PLAN2:
-    counterPlan = -1;
-    stepA = false;
-    stepB = false;
-    break;
   case PLAN3:
+    initPlan();
+    if (SPIFFS.exists("/ablaufplan.txt"))
+    {
+      file = SPIFFS.open("/ablaufplan.txt", "r");
+      readLine(file);
+      file.close();
+    }
     counterPlan = -1;
     stepA = false;
     stepB = false;

@@ -46,13 +46,9 @@ void loop()
     updateMV2();
     break;
   case PLAN1:
-    startPlan(structPlan1);
-    break;
   case PLAN2:
-    startPlan(structPlan2);
-    break;
   case PLAN3:
-    startPlan(structPlan3);
+    startPlan();
     break;
   }
   up = false;

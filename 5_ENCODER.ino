@@ -14,6 +14,7 @@ void readEncoder()
   encoderOldPos = encoder.getPosition();
 }
 
+
 // Encoder gedrückt
 void click()
 {

@@ -29,6 +29,12 @@ void showLCD()
       Menu1[3] += setCarbonation;
       Menu1[3] += "g/l";
     }
+    else if (setMode == KOMBIMODUS)
+    {
+      Menu1[3] = "Kombi: ";
+      Menu1[3] += setCarbonation;
+      Menu1[3] += "g/l";
+    }
     Menu1[1] = "Druck: ";
     if (pressure == -1)
       Menu1[1] += "-       ";

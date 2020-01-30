@@ -76,9 +76,10 @@ const char Version[6] = "2.0";
 #define SPUNDEN_CO2 1
 #define SPUNDEN_DRUCK 2
 #define KARBONISIEREN 3
-#define PLAN1 4
-#define PLAN2 5
-#define PLAN3 6
+#define KOMBIMODUS 4
+#define PLAN1 5
+#define PLAN2 6
+#define PLAN3 7
 #define DEFAULT_OPEN 300
 #define DEFAULT_CLOSE 2000
 #define ALARM_ON 1
@@ -165,9 +166,9 @@ String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
-#define sizeOfModes 7
-String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
+#define sizeOfModes 8
+String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb", "Kombi", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren", "Kombi-Modus", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat";                                                                                                  // http://spundomat/index.html
 
 // Ablaufplan

@@ -26,16 +26,17 @@ Zwangskarbonisieren: Das in einem druckfesten Behälter (Fass, Keg) befindliche 
 
 **Was ist Spundomat?**
 
-Der Spundomat automatisiert das Spunden und das Karbonisieren. Zur Automatisierung wird ein Drucksensor und mindestens ein Magnetventil eingesetzt. Die Software öffnet oder schließt das Magnetventil automatisch anhand der Daten vom Drucksensor.
+Der Spundomat automatisiert das Spunden und das Karbonisieren. Zur Automatisierung werden ein Drucksensor und zwei Magnetventile eingesetzt. Die Software öffnet oder schließt das Magnetventil automatisch anhand der Daten vom Drucksensor. Der Spundomat bietet eine Kombination aus Spunden und Karbonisieren.
 
 **Was bietet diese Firmware?**
 
 ![Startseite](img/Spundomat01.jpg)
 
-Die Firmware bietet zwei Betriebsmodis:
+Die Firmware bietet drei Betriebsmodis:
 
 1. Spunden (Druck ausgehend vom Keg)
 2. Karbonisieren (CO2 eingehend in das Keg)
+3. Die Kombination aus Spunden und Karbonisieren
 
 Zusätzlich bietet die Firmware Ablaufpläne.
 
@@ -167,8 +168,8 @@ Auf dem Markt erhältlich sind Drucksensoren mit einem Spannungsbereich von 0,5 
 Über den Button "Bearbeiten" können die Grundeinstellungen von Spundomat konfiguriert werden.
 Im Tab Hardware können das Magnetventil 1 (Spunder) und das Magnetventil 2 (Karbonisierer) aktiviert werden. Zu beiden Magnetventilen können die Standardzeiten für das Öffnen und Schließen in Millisekunden konfiguriert werden. In der Grundeinstellung sind 300ms für das Öffnen und 2000ms für das Schließen der Magnetventile vorgegeben.
 
-Der Spundomat kann mit nur einem Magnetventil betrieben werden, wahlweise nur zum Spunden oder nur zum Karbonisieren. Alle Funktionen der Firmware sind nur mit zwei Magnetventile nutzbar. In der Version 2.0 zum Zeitpunkt 02.2020 blendet keine Funktionen aus, die nicht genutzt werden können. 
-Ablaufpläne können nur genutzt werden, wenn zwei Magnetventile angeschlossen sind.
+Der Spundomat kann mit nur einem Magnetventil betrieben werden, wahlweise nur zum Spunden oder nur zum Karbonisieren. Alle Funktionen der Firmware sind nur mit zwei Magnetventilen nutzbar. In der Version 2.0 zum Zeitpunkt 02.2020 blendet keine Funktionen aus, die nicht genutzt werden können.
+Der Kombi-Modus und die Ablaufpläne können nur genutzt werden, wenn zwei Magnetventile angeschlossen und aktiviert sind.
 
 **Piezo Buzzer**
 
@@ -201,7 +202,7 @@ Das Menü für die Grundeinstellung bietet Funktionen, um Einstellungen und KOnf
 
 **Spunden**
 
-Der Betriebsmodus Spunden ist für Brauer geeignet, die mit Spiese, Zucker und/oder Grünschlauchen arbeiten. Der Modus "Spundomat CO2-Gehalt" stellt die Hautpanwendung des Spundomaten dar. In diesem Modus wird auf Basis der gemessenen Temperatur und dem eingestellten Zielwert CO2-Gehalt in gr/l der maximale Druck im Keg berechnet. Das Spunden ist ein automatisiertes Ablassen von Druck aus dem Keg oberhalb des gewünschten CO2-Gehalts. Ändert sich die Temperatur während der Bierreifung ermittelt der Spundomat automatisch den korrekten Druck.
+Der Betriebsmodus Spunden ist für Brauer geeignet, die mit Spiese, Zucker und/oder Grünschlauchen arbeiten. Im Modus "Spundomat CO2-Gehalt" wird auf Basis der gemessenen Temperatur und dem eingestellten Zielwert CO2-Gehalt in gr/l der erforderliche Druck im Keg berechnet. Das Spunden ist ein automatisiertes Ablassen von Druck aus dem Keg oberhalb des gewünschten CO2-Gehalts. Ändert sich die Temperatur während der Bierreifung ermittelt der Spundomat automatisch den korrekten Druck.
 
 Ein eher seltener genutzer Modus ist das Spunden auf Basis Druck in bar. Der Prozess Druck ablassen basiert in diesem Modus auf dem gemessenen Wert vom Drucksensor.
 
@@ -209,9 +210,10 @@ Ein eher seltener genutzer Modus ist das Spunden auf Basis Druck in bar. Der Pro
 
 Der Betriebsmodus Karbonisieren ist für Brauer geeignet, die ein endvergorenes Jungbier ins Keg schlauchen und das Keg mit COS2 auf einen bestimmten Druck zur Reifung einstellen. Der Druck wird meist aus einer Tabelle in Abhängigkeit der Temoeratur ermittelt. Der Spundomat ermittelt den benötigten Druck automatisch und führt CO2 in das Keg. Ändert sich die Temperatur während der Bierreifung ermittelt der Spundomat automatisch den korrekten Druck.
 
-Geplante Funktion Gärführung:
-Bereits in Planung, aber in der Version 2.0 zum Zeitpunkt 02.2020 noch nicht umgesetzt ist das Zusammenführen von Spunden und Karbonisieren während der Gärung. Dieser geplante Modus kann während der Reifung bei Temperaturänderung wahlweise erhöhten Druck ablassen oder CO2 nachfüllen.
-Ebenfalls noch in der Umsetzung befindet sich die Anbindung an den TCPServer iSpindel (Tozzi Server) für eine Visualisierung der Gärung.
+**Kombi-Modus**
+
+Der Kombi-Modus fügt die zwei Betriebsmodis Spunden CO2-Gehalt und Karbonisieren zusammen. Dieser Modus basiert auf dem Zielwert CO2-Gehalt. Druck im Keg oberhalb wird automatisch abgelassen. Druck unterhlab führt automatisch zum zuführen von CO2. Dieser Modus ermittelt während der Nachgärung und Reifung Temperaturänderung und korrigiert entsprechend den erforderlichen Druck im Keg, wahlweise durch erhöhten Druck ablassen oder CO2 nachfüllen.
+Noch in der Umsetzung befindet sich die Anbindung an den TCPServer iSpindel (Tozzi Server) für eine Visualisierung der Gärung und Reifung.
 
 # Ablaufpläne
 
@@ -226,6 +228,13 @@ Ein Ablaufplan ist eine automatisierte zeitliche Abfolge von Öffnen und Schlie�
 * CO2 Wäsche
 
 der Firmware beigefügt. Alle Ablaufpläne müssen auf die individuelle Umgebung angepasst werden.
+
+**Unterschied Betriebmodis vs. Ablaufplan**
+
+Ein Betriebsmodus wie bspw. der Kombi-Modus läuft bis zum manuellen Beenden mit konstanten Parametern für Zieldruck und Intervallen der Magnetventile.
+EIn Ablaufplan hat maximal 20 Wiederholungen und kann in jeder Wiederholung mit anderen Parameter durchgeführt werden.
+
+Ablaufpläne sollen definierte Aufgaben durchführen. Betriebmodis sollen über einen längeren Zeitraum bspw. 2-4 Wochen die Nachgärung und damit den CO2-Gehalt im Jungbier kontrolliert auf den gewünschten CO2-Gehalt bringen. Im Idealfall ohne regelmäßige Eingriffe durch den Hobbybrauer.
 
 **Aufbau der Ablaufpläne**
 

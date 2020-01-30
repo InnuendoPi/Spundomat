@@ -208,6 +208,8 @@ bool saveConfig()
   case KARBONISIEREN: // CO2 Karbonisieren
     mv1.switchOff();
     break;
+  case KOMBIMODUS: // Spunden und Karbonisieren
+    break;
   case PLAN1:
     // for (int test = 0; test < 20; test++)
     // {

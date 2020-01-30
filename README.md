@@ -8,6 +8,7 @@ Projekt im Beta Status -> nicht benutzbar!
 
 Version 2.0
 
+- Add:      Kombi-Modus
 - Reworked  Ablaufpläne Speicherhandling verbessert
 - Fixed:    Fehlerhafte Sensorauswertung in Ablaufplänen
 - Reworked: LCD Display

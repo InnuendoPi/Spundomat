@@ -147,7 +147,7 @@ public:
 			mvState = LOW;
 			millis2wait(200); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
-			DEBUG_MSG("Magnetventil Modus Karbonisieren3 Status: %d \n", mvState);
+			DEBUG_MSG("Magnetventil Modus Karbonisieren3 Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
 			if (currentMillis - previousMillis >= openInterval)
 			{
 				readPressure();
@@ -197,11 +197,11 @@ public:
 
 	bool planRelPress(float newPressure) // MV1 Modus Spunden Druck
 	{
-		// if (!enabled) // MV2 aktiviert?
-		// {
-		// 	setMode = 0;
-		// 	return true;
-		// }
+		if (!enabled) // MV1 aktiviert?
+		{
+			setMode = 0;
+			return true;
+		}
 		unsigned long currentMillis = millis();
 		if (pressure > newPressure)
 		{
@@ -246,7 +246,7 @@ public:
 	{
 		mvState = LOW;
 		digitalWrite(mvPin, mvState);
-		DEBUG_MSG("Switched off %d status: %d\n", mvPin, mvState);
+		//DEBUG_MSG("Switched off %d status: %d\n", mvPin, mvState);
 	}
 	bool getState() // Gibt den aktuellen Status HIGH/LOW von MV zurück
 	{
@@ -264,22 +264,55 @@ void updateMV1() // Modus Spunden
 		mv1.releasePressureCO2();
 	else if (setMode == SPUNDEN_DRUCK)
 		mv1.releasePressureDruck();
+	else if (setMode == KOMBIMODUS)
+	{
+		mv1.releasePressureCO2();
+	}
 	else
 		mv1.switchOff();
 }
 
 void updateMV2() // Modus Karbonisieren
 {
-	if (setMode != KARBONISIEREN)
-		mv2.switchOff();
-	else
+	if (setMode == KARBONISIEREN)
 		mv2.buildPressure();
+	else if (setMode == KOMBIMODUS)
+	{
+		mv2.buildPressure();
+	}
+	else
+		mv2.switchOff();
 }
 
-void setPlanPause()
+void updateKombi()
 {
-	DEBUG_MSG("setPlanPause: %d\n", PAUSE1SEC);
-	millis2wait(PAUSE1SEC);
+	if (!stepA) // true: MV1 aktiv | false: MV1 inaktiv
+	{
+		DEBUG_MSG("Kombimodus MV1 Zieldruck: %f Ist-Druck: %f\n", calcPressure(setCarbonation, temperature), pressure);
+		stepA = mv1.planRelPress(calcPressure(setCarbonation, temperature));
+		if (stepA)
+			millis2wait(mv1Close);
+		return;
+	}
+	else if (!stepB && stepA) // true: MV2 aktiv | false: MV2 inaktiv
+	{
+		DEBUG_MSG("Kombimodus MV2 Zieldruck: %f Ist-Druck: %f\n", calcPressure(setCarbonation, temperature), pressure);
+		stepB = mv2.planBuildPress(calcPressure(setCarbonation, temperature));
+		if (stepB) // Pause, wenn der Zieldruck erreicht ist
+			millis2wait(mv2Close);
+		return;
+	}
+	else if (stepA && stepB)
+	{
+		stepA = false;  // Setze StepA aktiv
+		stepB = false;  // Setze StepB aktiv
+		setPause(PAUSE5SEC); // StepA und StepB abgeschlossen -> kurze Pause
+	}
+}
+void setPause(int msPause)
+{
+	DEBUG_MSG("setPause: %d\n", msPause);
+	millis2wait(msPause);
 }
 
 void startPlan() // Modus Ablaufplan
@@ -331,7 +364,7 @@ void startPlan() // Modus Ablaufplan
 		}
 		stepA = false;  // Setze StepA aktiv
 		stepB = false;  // Setze StepB aktiv
-		setPlanPause(); // StepA und StepB abgeschlossen -> kurze Pause
+		setPause(PAUSE2SEC); // StepA und StepB abgeschlossen -> kurze Pause
 		DEBUG_MSG("Counterplan: #%d\n", counterPlan);
 		// Setze Intervalle für den nächsten Schritt
 		mv1.change(structPlan[counterPlan].intervallMV1Open, structPlan[counterPlan].intervallMV1Close, true);

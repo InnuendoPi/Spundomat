@@ -79,6 +79,12 @@
                 <label for="modal_misc_carbonation">Zielwert CO2 Gehalt (gr/l)</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_carbonation" />
               </div>
+			  <div class="form-group">
+                <label for="modal_misc_kombi">Verzögerung Karbonisieren im Kombi-Modus</label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_kombi" />
+				<label for="modal_misc_kombi_auswahl">Einheit</label>
+                <select class="form-control" id="modal_misc_kombi_auswahl"></select>
+              </div>
             </div>
 			<div class="tab-pane fade" id="misc2" role="tabpanel" aria-labelledby="misc2-tab">
                 <br />
@@ -331,6 +337,8 @@
       var pressure;
       var carbonation;
       var mode;
+	  var kombi;
+	  var einheit;
       var druck;
       var voltage;
       var temperatur;
@@ -395,6 +403,26 @@
         cache: false,
         success: function (data) {
           mode = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=verzkombi',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          kombi = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=einheit',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          einheit = data;
         }
       });
       $.ajax({
@@ -550,6 +578,7 @@
 
       var modal = $(this)
       $('#modal_misc_modus').load('/reqMode')
+	  $('#modal_misc_kombi_auswahl').load('/reqEinheit')
       modal.find('#modal_misc_mdns_name').val(mdns_name)
       if (mdns == "1") { modal.find('#modal_misc_mdns').prop("checked", true) }
       else { modal.find('#modal_misc_mdns').prop("checked", false) }
@@ -572,6 +601,7 @@
 	  modal.find('#modal_misc_mv2close').val(mv2close)
 	  modal.find('#modal_misc_interval_pressure').val(uppressure)
 	  modal.find('#modal_misc_interval_temp').val(uptemp)
+	  modal.find('#modal_misc_kombi').val(kombi)
       var modal = $(this)
     });
 
@@ -581,6 +611,8 @@
       var pressure = modal.find('#modal_misc_pressure').val()
       var carbonation = modal.find('#modal_misc_carbonation').val()
 	  var mode = modal.find('#modal_misc_modus').val()
+	  var einheit = modal.find('#modal_misc_kombi_auswahl').val()
+	  var kombi = modal.find('#modal_misc_kombi').val()
       var mv1open = modal.find('#modal_misc_mv1open').val()
 	  var mv1close = modal.find('#modal_misc_mv1close').val()
 	  var mv2open = modal.find('#modal_misc_mv2open').val()
@@ -653,7 +685,7 @@
       }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + kombi + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode,
         type: 'POST',
         dataType: 'html',
         async: false,

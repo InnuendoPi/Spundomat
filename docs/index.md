@@ -200,19 +200,41 @@ Das Menü für die Grundeinstellung bietet Funktionen, um Einstellungen und KOnf
 * Spunden
 * Karbonisieren
 
-**Spunden**
+**Spunden:**
 
-Der Betriebsmodus Spunden ist für Brauer geeignet, die mit Spiese, Zucker und/oder Grünschlauchen arbeiten. Im Modus "Spundomat CO2-Gehalt" wird auf Basis der gemessenen Temperatur und dem eingestellten Zielwert CO2-Gehalt in gr/l der erforderliche Druck im Keg berechnet. Das Spunden ist ein automatisiertes Ablassen von Druck aus dem Keg oberhalb des gewünschten CO2-Gehalts. Ändert sich die Temperatur während der Bierreifung ermittelt der Spundomat automatisch den korrekten Druck.
+Der Betriebsmodus Spunden ist für Brauer geeignet, die mit Speise, Zucker oder Grünschlauchen für eine Nachgärung im Keg arbeiten. Im Modus "Spundomat CO2-Gehalt" wird auf Basis der gemessenen Temperatur und dem eingestellten Zielwert CO2-Gehalt in gr/l der erforderliche Druck im Keg berechnet. Das Spunden CO2-Gehalt ist ein automatisiertes Ablassen von Druck aus dem Keg oberhalb des Drucks für den gewünschten CO2-Gehalt. Ändert sich die Temperatur während der Nachgärung oder Reifung ermittelt der Spundomat automatisch den korrekten Druck.
 
 Ein eher seltener genutzer Modus ist das Spunden auf Basis Druck in bar. Der Prozess Druck ablassen basiert in diesem Modus auf dem gemessenen Wert vom Drucksensor.
 
-**Karbonisieren**
+**Karbonisieren:**
 
-Der Betriebsmodus Karbonisieren ist für Brauer geeignet, die ein endvergorenes Jungbier ins Keg schlauchen und das Keg mit COS2 auf einen bestimmten Druck zur Reifung einstellen. Der Druck wird meist aus einer Tabelle in Abhängigkeit der Temoeratur ermittelt. Der Spundomat ermittelt den benötigten Druck automatisch und führt CO2 in das Keg. Ändert sich die Temperatur während der Bierreifung ermittelt der Spundomat automatisch den korrekten Druck.
+Der Betriebsmodus Karbonisieren ist für Brauer geeignet, die ein endvergorenes Jungbier ins Keg schlauchen und das Keg mit COS2 auf einen bestimmten Druck zur Reifung einstellen. Der Druck wird meist aus einer Tabelle in Abhängigkeit von der Temperatur ermittelt. Der Spundomat ermittelt den benötigten Druck automatisch und führt CO2 in das Keg. Ändert sich die Temperatur während der Bierreifung ermittelt der Spundomat automatisch den korrekten Druck.
 
-**Kombi-Modus**
+**Kombi-Modus:**
 
-Der Kombi-Modus fügt die zwei Betriebsmodis Spunden CO2-Gehalt und Karbonisieren zusammen. Dieser Modus basiert auf dem Zielwert CO2-Gehalt. Druck im Keg oberhalb wird automatisch abgelassen. Druck unterhlab führt automatisch zum zuführen von CO2. Dieser Modus ermittelt während der Nachgärung und Reifung Temperaturänderung und korrigiert entsprechend den erforderlichen Druck im Keg, wahlweise durch erhöhten Druck ablassen oder CO2 nachfüllen.
+Der Kombi-Modus fügt die zwei Betriebsmodis Spunden CO2-Gehalt und Karbonisieren zusammen. Dieser Modus basiert auf dem Zielwert CO2-Gehalt. Druck im Keg oberhalb wird automatisch abgelassen. Druck unterhalb führt automatisch zum Zuführen von CO2. Dieser Modus ermittelt während der Nachgärung und Reifung Temperaturänderung und berechnet den erforderlichen Druck im Keg neu.
+
+**Vorgehensweise Betriebsmodus:**
+
+Wird Nachgärung im Keg eingesetzt kann je nach Präferenz mit dem Modus Spunden-CO2 oder im Kombi-Modus gestartet werden. Manche Hobbybrauer möchten in den ersten Tagen Nachgärung im Keg den Druck langsam aufbauen. Bei dieser Anforderung wird im Spunden-CO2 Modus gestartet und bei Bedarf manuell in den Kombi-Modus gewechselt.
+Viele Hobbybrauer bevorzugen eine Nachgärung unter Druck. In diesem Fall ist der Kombi-Modus die richtige Wahl.
+
+Wird ein endvergörenes Jungsbier ins Keg geschlaucht, ist der Kombi-Modus die beste Wahl. In diesem Modus startet die Reifung mit dem Zieldruck. Überschüssiger Druck, bspw. durch geringe Nachgärung, wird automatisch abgelassen. Zu geringer Druck wird automatisch zugeführt.
+
+**Zeitintervalle für die Magnetventile:**
+
+Alle drei Betriebsmodus haben gemeinsam, dass die einstellbaren Zeitintervalle darüber entscheiden, ob der Spundomat sehr schnell oder sehr träge auf Druckänderung reagiert. Grundsätzlich ist der Prozess Nachgärung und Reifung ein über viele Tage laufender Prozess. Eine Druckänderung im Keg wird sich ebenfalls über viele Stunden und Tage herstellen und nicht binnen Sekunden oder Minuten. Dementsprechend ist ein permantes schnelles Öffnen und Schließen der Ventile nicht notwendig.
+
+Für jedes Magnetventil wird ein Zeitintervall Öffnen und ein Zeitintervall Schließen konfiguriert. Die Zeitangabe ist in Millisekunden. Während der Nachgärung und Reifung sind beispielhaft folgende Zeitintervalle geeignet:
+
+* Öffne Magnetventil 1 (Spunden) für 500ms, wenn der vorhandene Druck über dem Zieldruck liegt
+* Schließe nach dem Öffnen Magnetventil 1 für 360000ms (1 Minute)
+
+Diese Zeitintervalle bewirken nun, dass bei überschüssigen Druck im Keg 1x pro Minute für 500ms Druck abgelassen wird. Während das Ventil geschlossen ist, wird der aktuelle Druck am Sensor abgelesen. Ist weiterhin überschüssiger Druck vorhanden, wiederholt sich das Öffnen für 500ms und das Schließen für 1 Minute. Ist der Druck geringer oder gleich dem Zielwert, öffnet sich Ventil 1 nicht.
+
+Im Kombi-Modus wechseln sich Magnetventil 1 (Spunder) und Magnetventil 2 (Karbonisierer) ab. Es beginnt Ventil 1 mit der Überprüfung, ob überschüssiger Druck vorliegt. Falls ja findet der oben beschriebene Prozess Öffnen-Schließen statt. Anschließend prüft Ventil 2, ob zu geringer Druck vorliegt. Falls ja findet wieder der oben beschriebene Prozess Öffnen-Schließen statt, aber dieses Mal am Magnetventil vor der CO2-Flasche.
+Die Zeitintervalle, insbesondere die Werte für Ventile geschlossen, entscheiden nun über die Häufigkeit der Überprüfung.
+
 Noch in der Umsetzung befindet sich die Anbindung an den TCPServer iSpindel (Tozzi Server) für eine Visualisierung der Gärung und Reifung.
 
 # Ablaufpläne
@@ -227,7 +249,7 @@ Ein Ablaufplan ist eine automatisierte zeitliche Abfolge von Öffnen und Schlie�
 * Schnelles Zwangskarbonisieren
 * CO2 Wäsche
 
-der Firmware beigefügt. Alle Ablaufpläne müssen auf die individuelle Umgebung angepasst werden.
+der Firmware beigefügt. Alle Ablaufpläne müssen auf die individuelle Umgebung und Anforderungen angepasst werden.
 
 **Unterschied Betriebmodis vs. Ablaufplan**
 

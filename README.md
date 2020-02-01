@@ -2,9 +2,16 @@
 
 ![ov1](/Info/Spundomat01.jpg)
 
-Projekt im Beta Status -> nicht benutzbar!
+Projekt im Beta Status
 
 ## Changelog
+
+Version 2.0b1
+
+- Add:      mDNS Name in der LCD Anzeige
+- Add:      Eingabe mDNS Name: Leerzeichen werden automatisch entfernt
+- Reworked: Kombi-Modus als serielle Abfolge MVV1, MV2
+- Add:      Verzögerung Kombi-Modus (Minuten/Stunden)
 
 Version 2.0
 

@@ -29,7 +29,6 @@ void setup()
   if (SPIFFS.begin())
   {
     updateSys(); // WebUpdate
-
     if (SPIFFS.exists("/config.txt")) // Load configuration
     {
       loadConfig();
@@ -90,9 +89,6 @@ void setup()
   EEPROM.begin(512);
   offsetVoltage = readFloat(0); // Lese Offset (Kalibrierung)
 
-  // Lese vom Drucksensor
-  TickerPressure.start();
-
   // Starte Encoder
   TickerEncoder.start();
   TickerButton.start();
@@ -122,6 +118,7 @@ void setupServer()
   server.on("/setMisc", handleSetMisc);     // Einstellungen ändern
   server.on("/reqMiscSet", handleRequestMiscSet);
   server.on("/reqMode", handlereqMode);           // WebIf Abfrage Modus
+  server.on("/reqEinheit", handlereqEinheit);     // WebIf Abfrage Einheit Zeiteingabe
   server.on("/startHTTPUpdate", startHTTPUpdate); // Firmware ebUpdate
   // FSBrowser initialisieren
   server.on("/list", HTTP_GET, handleFileList); // list directory

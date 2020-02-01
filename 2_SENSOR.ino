@@ -13,6 +13,9 @@ void readTemparature()
 	sensors.requestTemperatures();
 	temperature = sensors.getTempCByIndex(0);
 
+	if (testModus)
+		temperature = 20.0;
+
 	// Kommastelle für Ausgabe entfernen (Konvertiere float in char array)
 	dtostrf(temperature, 5, 1, sTemperature);
 
@@ -49,19 +52,23 @@ void readPressure()
 
 	// Testmodus - Ignorieren!
 	if (testModus)
+	{
+		oldPressDisp = pressure;
 		checkTestMode();
+		return;
+	}
 
 	// Aktualisiere LCD wenn Druck geändert hat
-	if (setMode != PLAN1) // AUS
+	// if (setMode != PLAN1) // AUS
+	// {
+	if (fabs(pressure - oldPressDisp) > DELTA) // Absolute Änderung
 	{
-		if (fabs(pressure - oldPressure) > 0.01) // Absolute Änderung
-		{
-			reflashLCD = true;
-			oldPressure = pressure;
-		}
-	}
-	else
 		reflashLCD = true;
+		oldPressDisp = pressure;
+	}
+	// }
+	// else
+	// 	reflashLCD = true;
 
 	// Negativer Druck
 	if (pressure < 0.0)
@@ -80,19 +87,33 @@ void checkTestMode()
 	case SPUNDEN_CO2: // CO2 Spunden
 		if (pressure > calcPressure(setCarbonation, temperature))
 		{
-			pressure = oldPressure - 0.015;
+			pressure = oldPressDisp - 0.015;
 		}
 		break;
 	case SPUNDEN_DRUCK: // Druck Spunden
 		if (pressure > setPressure)
 		{
-			pressure = oldPressure - 0.015;
+			pressure = oldPressDisp - 0.015;
 		}
 		break;
 	case KARBONISIEREN: // Karbonisieren
 		if (pressure < calcPressure(setCarbonation, temperature))
 		{
-			pressure = oldPressure + 0.015;
+			pressure = oldPressDisp + 0.015;
+		}
+		break;
+	case KOMBIMODUS: // CO2 Spunden & Karbonisieren
+		//if (pressure > calcPressure(setCarbonation, temperature))
+		if (!stepA)
+		{
+			pressure = oldPressDisp - 0.015;
+			DEBUG_MSG("%s", "minus\n");
+		}
+		//if (pressure < calcPressure(setCarbonation, temperature))
+		if (!stepB)
+		{
+			pressure = oldPressDisp + 0.015;
+			DEBUG_MSG("%s", "plus\n");
 		}
 		break;
 	// Nicht getestet!
@@ -100,9 +121,9 @@ void checkTestMode()
 	case PLAN2:
 	case PLAN3:
 		if (!stepA)
-			pressure = oldPressure - 0.015;
+			pressure = oldPressDisp - 0.015;
 		else
-			pressure = oldPressure + 0.015;
+			pressure = oldPressDisp + 0.015;
 		break;
 	}
 }

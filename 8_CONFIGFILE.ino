@@ -10,14 +10,14 @@ bool loadConfig()
   }
 
   size_t size = configFile.size();
-  if (size > 512)
+  if (size > 768)
   {
     Serial.print("*** SYSINFO: Konfigurationsdatei zu groß");
     Serial.println("------ loadConfig aborted -------");
     return false;
   }
 
-  StaticJsonDocument<512> doc;
+  StaticJsonDocument<768> doc;
   DeserializationError error = deserializeJson(doc, configFile);
   if (error)
   {
@@ -34,14 +34,22 @@ bool loadConfig()
     setCarbonation = spundObj["CARBONATION"];
   if (spundObj.containsKey("MODE"))
     setMode = spundObj["MODE"];
-
+  if (spundObj.containsKey("VERZKOMBI"))
+    verzKombi = spundObj["VERZKOMBI"];
+  if (spundObj.containsKey("EINHEIT"))
+    setEinheit = spundObj["EINHEIT"];
   // Setze Startmodus auf Aus (obwohl Modus gespeichert ist)
   setMode = 0;
 
   Serial.printf("setPressure: %d\n", setPressure);
   Serial.printf("setCarbonation: %d\n", setCarbonation);
   Serial.printf("setMode: %d\n", setMode);
+  Serial.printf("verzKombi: %d\n", verzKombi);
+  Serial.printf("setEinheit: %d\n", setEinheit);
   Serial.println("--------");
+
+  // Berechne Verzögerung Karbonisierung im Kombi-Modus
+  calcVerzKombi();
 
   // Hardware Einstellungen
   JsonArray hwArray = doc["HARDWARE"];
@@ -86,17 +94,28 @@ bool loadConfig()
 
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
-  Serial.printf("Testmodus: %d\n", testModus);
+  Serial.printf("T7estmodus: %d\n", testModus);
   Serial.println("------ loadConfig finished ------");
   configFile.close();
   size_t len = measureJson(doc);
   DEBUG_MSG("*** SYSINFO: JSON Konfiguration Größe: %d\n", len);
-  if (len > 384)
+  if (len > 768)
     Serial.println("*** SYSINFO: Fehler JSON Konfiguration zu groß!");
 
   // Setze Intervalle für Ticker Objekte
   TickerPressure.interval(upPressure);
   TickerTemp.interval(upTemp);
+  TickerKombi.interval(KOMBI_UPDATE);
+
+  if (setMode == AUS)
+    TickerPressure.start();
+  else
+    TickerPressure.pause();
+
+  if (setMode == KOMBIMODUS)
+    TickerKombi.start();
+  else
+    TickerKombi.stop();
 
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);
@@ -104,7 +123,7 @@ bool loadConfig()
   mv2.switchOff();
 
   // Ablaufpläne
-  initPlan(); // Initialisiere Strukturen
+  initPlan();                           // Initialisiere Strukturen
   if (SPIFFS.exists("/ablaufplan.txt")) // Lade Ablaufpläne
   {
     file = SPIFFS.open("/ablaufplan.txt", "r");
@@ -116,16 +135,20 @@ bool loadConfig()
 bool saveConfig()
 {
   DEBUG_MSG("%s\n", "------ saveConfig started -------");
-  StaticJsonDocument<512> doc;
+  StaticJsonDocument<768> doc;
   // Spundomat Einstellungen
   JsonArray spundArray = doc.createNestedArray("SPUNDOMAT");
   JsonObject spundObj = spundArray.createNestedObject();
   spundObj["PRESSURE"] = setPressure;
   spundObj["CARBONATION"] = setCarbonation;
   spundObj["MODE"] = setMode;
+  spundObj["VERZKOMBI"] = verzKombi;
+  spundObj["EINHEIT"] = setEinheit;
   DEBUG_MSG("setPressure: %f\n", setPressure);
   DEBUG_MSG("setCarbonation: %f\n", setCarbonation);
-
+  DEBUG_MSG("verzKombi: %d\n", verzKombi);
+  DEBUG_MSG("Einheit: %d\n", setEinheit);
+  
   // Hardware Einstellungen
   JsonArray hwArray = doc.createNestedArray("HARDWARE");
   JsonObject hwObj = hwArray.createNestedObject();
@@ -146,7 +169,7 @@ bool saveConfig()
   JsonArray miscArray = doc.createNestedArray("MISC");
   JsonObject miscObj = miscArray.createNestedObject();
 
-  miscObj["NAMEMDNS"] = nameMDNS;
+  miscObj["NAMEMDNS"] = checkChars(nameMDNS);
   miscObj["MDNS"] = startMDNS;
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
@@ -161,7 +184,7 @@ bool saveConfig()
 
   size_t len = measureJson(doc);
   int memoryUsed = doc.memoryUsage();
-  if (len > 512 || memoryUsed > 384)
+  if (len > 768 || memoryUsed > 768)
   {
     DEBUG_MSG("JSON config length: %d\n", len);
     DEBUG_MSG("JSON memory usage: %d\n", memoryUsed);
@@ -186,6 +209,17 @@ bool saveConfig()
   TickerTemp.interval(upTemp);
   // Setze Intervall Drucksensor Ticker
   TickerPressure.interval(upPressure);
+
+  if (setMode != KOMBIMODUS)
+    TickerKombi.stop();
+  else
+    TickerKombi.start();
+
+  if (setMode == AUS)
+    TickerPressure.start();
+  else
+    TickerPressure.pause();
+
   // Setze Open/Close Standard für MV1/MV2
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);
@@ -208,7 +242,9 @@ bool saveConfig()
   case KARBONISIEREN: // CO2 Karbonisieren
     mv1.switchOff();
     break;
-  case KOMBIMODUS: // Spunden und Karbonisieren
+  case KOMBIMODUS:          // Spunden und Karbonisieren
+    calcVerzKombi();        // Berechne Verzögerung Karbonisierung im Kombi-Modus
+    prevMillis = millis();  // Zeitstempel
     break;
   case PLAN1:
     // for (int test = 0; test < 20; test++)

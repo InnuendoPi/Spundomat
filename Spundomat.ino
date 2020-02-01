@@ -60,7 +60,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0";
+const char Version[6] = "2.0b1";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -68,10 +68,12 @@ const char Version[6] = "2.0";
 #define PAUSE200MS 200
 #define PAUSE100MS 100
 #define PAUSE10MS 10
+#define DELTA 0.01
 #define ENCODER_UPDATE 100
 #define BUTTON_UPDATE 100
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
+#define KOMBI_UPDATE 1000
 #define AUS 0
 #define SPUNDEN_CO2 1
 #define SPUNDEN_DRUCK 2
@@ -133,6 +135,7 @@ InnuTicker TickerTemp;
 InnuTicker TickerPressure;
 InnuTicker TickerEncoder;
 InnuTicker TickerButton;
+InnuTicker TickerKombi;
 
 // Deklariere Variablen
 float temperature;
@@ -142,7 +145,7 @@ float voltage;
 //float offsetVoltage = 0.42;
 float offsetVoltage = 0.0; // Standard Vadc bei 0bar an A0
 float pressure = 0.0;
-float oldPressure = 0.0;
+float oldPressDisp = 0.0;
 float displayPressure = 0.0;
 int encoderOldPos;
 
@@ -170,6 +173,13 @@ File fsUploadFile; // Datei Object
 String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb", "Kombi", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
 String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren", "Kombi-Modus", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat";                                                                                                  // http://spundomat/index.html
+
+#define anzAuswahl 2
+String einheit[anzAuswahl] = {"Minuten", "Stunden"};
+int setEinheit = 1;
+int verzKombi = 0;
+unsigned long verzKarbonisierung = 0;
+unsigned long prevMillis;
 
 // Ablaufplan
 #define maxSchritte 20

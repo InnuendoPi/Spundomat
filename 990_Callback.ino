@@ -17,3 +17,7 @@ void tickerButtonCallback() // Timer Objekt Druck
 {
   button.tick();
 }
+void tickerKombiCallback() // Timer Objekt Kombi-Modus
+{
+  updateKombi();
+}

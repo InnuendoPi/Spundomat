@@ -125,10 +125,19 @@ void sendAlarm(const uint8_t &setAlarm)
   }
 }
 
+void calcVerzKombi()
+{
+  if (setEinheit == 0)
+    verzKarbonisierung = verzKombi * 1000 * 60;
+  else
+    verzKarbonisierung = verzKombi * 1000 * 60 *60;
+}
+
 void setTicker() // Ticker Objekte deklarieren
 {
   TickerTemp.config(tickerTempCallback, upTemp, 0);
   TickerPressure.config(tickerPressureCallback, upPressure, 0);
   TickerEncoder.config(tickerEncoderCallback, ENCODER_UPDATE, 0);
   TickerButton.config(tickerButtonCallback, BUTTON_UPDATE, 0);
+  TickerKombi.config(tickerKombiCallback, KOMBI_UPDATE, 0);
 }

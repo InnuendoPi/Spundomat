@@ -65,7 +65,7 @@ void showLCD()
       Menu1[3] += displayPressure;
       Menu1[3] += "bar";
     }
-   
+
     Menu1[2] = "Temp: ";
     Menu1[2] += sTemperature;
     Menu1[2] += "\337C"; // °C
@@ -116,6 +116,12 @@ void showLCD()
       lcd.setCursor(0, 1);
       lcd.print("SSID ");
       lcd.print(WiFi.SSID());
+      lcd.setCursor(0, 2);
+      if (startMDNS)
+      {
+        lcd.print("mDNS ");
+        lcd.print(nameMDNS);
+      }
     }
     break;
 

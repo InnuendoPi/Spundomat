@@ -194,6 +194,16 @@ void handleRequestMisc()
         message = upTemp;
         goto SendMessage;
     }
+    if (request == "verzkombi")
+    {
+        message = verzKombi;
+        goto SendMessage;
+    }
+    if (request == "einheit")
+    {
+        message = setEinheit;
+        goto SendMessage;
+    }
     if (request == "firmware")
     {
         message = "Spundomat V ";
@@ -354,6 +364,22 @@ void handleSetMisc()
                     upTemp = server.arg(i).toInt();
             }
         }
+        
+        if (server.argName(i) == "verzkombi")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                //verzKombi = server.arg(i).to_ullong
+                //verzKombi = strtoul(server.arg(i).c_str(), NULL, 10);
+                verzKombi = server.arg(i).toInt();
+            }
+        }
+        if (server.argName(i) == "einheit")
+        {
+            DEBUG_MSG("setEinheit: %s\n", server.arg(i).c_str());
+            setEinheit = server.arg(i).toInt();
+            DEBUG_MSG("setEinheit: %d\n", setEinheit);
+        }
         yield();
     }
     saveConfig();
@@ -393,6 +419,27 @@ void handlereqMode()
             message += i;
             message += "\">";
             message += modesWeb[i];
+            message += F("</option>");
+        }
+    }
+    yield();
+    server.send(200, "text/plain", message);
+}
+
+void handlereqEinheit()
+{
+    String message;
+    message += F("<option>");
+    message += einheit[setEinheit];
+    message += F("</option><option disabled>──────────</option>");
+    for (int i = 0; i < anzAuswahl; i++)
+    {
+        if (setEinheit != i)
+        {
+            message += F("<option value=\"");
+            message += i;
+            message += "\">";
+            message += einheit[i];
             message += F("</option>");
         }
     }

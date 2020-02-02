@@ -9,10 +9,13 @@ Projekt im Beta Status
 Version 2.0b2
 
 - Renamed:  Kombi-Modus in Spundomat Modus umbenannt
+- Renamed:  Spundomat CO2 in Spunden CO2 umbenannt
+- Renamed:  Spundomat Druck in Spunden Druck umbenannt
 - Add:      Betriebsmodus Karbonisieren Druck hinzugefügrt
 - Reorg:    Betriebmodis neu angeordnet
 - Add:      Verzögerung Mindest-CO2-Gehalt im Spundomat Modus
 - Add:      mDNS in StartDisplay LCD
+- Add:      2-Punkte Kalibrierung - 0bar und 2bar (einstellbar)
 - Fixed:    Überprüfung der Eingaben im Web Interface (int, float, char)
 - Removed:  setPause in Ablaufpläne (millis2wait)
 - Fixed:    Ticker ReadPressure wurde nicht autmatisch gestartet

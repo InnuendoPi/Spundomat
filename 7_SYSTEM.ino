@@ -125,12 +125,17 @@ void sendAlarm(const uint8_t &setAlarm)
   }
 }
 
-void calcVerzKombi()
+void calcVerzSpundomat()
 {
   if (setEinheit == 0)
     verzKarbonisierung = verzKombi * 1000 * 60;
-  else
+  else if (setEinheit == 1)
     verzKarbonisierung = verzKombi * 1000 * 60 *60;
+  else if (setEinheit == 2)
+    {
+      verzKarbonisierung = 0;
+      minKarbonisierung = verzKombi;
+    }
 }
 
 void setTicker() // Ticker Objekte deklarieren
@@ -139,5 +144,5 @@ void setTicker() // Ticker Objekte deklarieren
   TickerPressure.config(tickerPressureCallback, upPressure, 0);
   TickerEncoder.config(tickerEncoderCallback, ENCODER_UPDATE, 0);
   TickerButton.config(tickerButtonCallback, BUTTON_UPDATE, 0);
-  TickerKombi.config(tickerKombiCallback, KOMBI_UPDATE, 0);
+  TickerSpundomat.config(tickerSpundomatCallback, SPUNDOMAT_UPDATE, 0);
 }

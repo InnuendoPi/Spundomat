@@ -3,11 +3,13 @@ void readEncoder()
 {
   if (encoder.getPosition() > encoderOldPos)
   {
+    Serial.println("up");
     up = true;
     reflashLCD = true;
   }
   else if (encoder.getPosition() < encoderOldPos)
   {
+    Serial.println("down");
     down = true;
     reflashLCD = true;
   }

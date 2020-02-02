@@ -23,9 +23,9 @@ void loop()
   TickerTemp.update();
 
   // Check Encoder Ticker
-  TickerButton.update();
   TickerEncoder.update();
-
+  TickerButton.update();
+  
   if (reflashLCD)
     showLCD();
 
@@ -44,16 +44,16 @@ void loop()
     // TickerPressure.pause();
     updateMV1();
     break;
-  case KARBONISIEREN: // CO2 Karbonisieren
+  case KARBONISIEREN_CO2: // CO2 Karbonisieren
     // TickerPressure.pause();
     updateMV2();
     break;
-  case KOMBIMODUS: // CO2 Spunden & Karbonisieren
+  case KARBONISIEREN_DRUCK: // CO2 Karbonisieren
     // TickerPressure.pause();
-    TickerKombi.update();
-    // updateMV1();
-    // updateMV2();
-    //updateKombi();
+    updateMV2();
+    break;
+  case SPUNDOMAT: // CO2 Spunden & Karbonisieren
+    TickerSpundomat.update();
     break;
   case PLAN1:
   case PLAN2:

@@ -6,6 +6,17 @@ Projekt im Beta Status
 
 ## Changelog
 
+Version 2.0b2
+
+- Renamed:  Kombi-Modus in Spundomat Modus umbenannt
+- Add:      Betriebsmodus Karbonisieren Druck hinzugefügrt
+- Reorg:    Betriebmodis neu angeordnet
+- Add:      Verzögerung Mindest-CO2-Gehalt im Spundomat Modus
+- Add:      mDNS in StartDisplay LCD
+- Fixed:    Überprüfung der Eingaben im Web Interface (int, float, char)
+- Removed:  setPause in Ablaufpläne (millis2wait)
+- Fixed:    Ticker ReadPressure wurde nicht autmatisch gestartet
+
 Version 2.0b1
 
 - Add:      mDNS Name in der LCD Anzeige

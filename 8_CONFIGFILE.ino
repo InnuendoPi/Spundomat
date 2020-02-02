@@ -39,7 +39,6 @@ bool loadConfig()
   if (spundObj.containsKey("EINHEIT"))
     setEinheit = spundObj["EINHEIT"];
   // Setze Startmodus auf Aus (obwohl Modus gespeichert ist)
-  setMode = 0;
 
   Serial.printf("setPressure: %d\n", setPressure);
   Serial.printf("setCarbonation: %d\n", setCarbonation);
@@ -49,7 +48,7 @@ bool loadConfig()
   Serial.println("--------");
 
   // Berechne Verzögerung Karbonisierung im Kombi-Modus
-  calcVerzKombi();
+  calcVerzSpundomat();
 
   // Hardware Einstellungen
   JsonArray hwArray = doc["HARDWARE"];
@@ -91,31 +90,22 @@ bool loadConfig()
     startMDNS = miscObj["MDNS"];
   if (miscObj.containsKey("TESTMODE"))
     testModus = miscObj["TESTMODE"];
+  if (miscObj.containsKey("OFFSET2"))  
+    offset2 = miscObj["OFFSET2"];
+  if (miscObj.containsKey("PRESSOFFSET2"))  
+    pressureOffset2 = miscObj["PRESSOFFSET2"];
 
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
-  Serial.printf("T7estmodus: %d\n", testModus);
+  Serial.printf("Testmodus: %d\n", testModus);
+  Serial.printf("Offset2: %d bei %f\n", offset2, pressureOffset2);
+
   Serial.println("------ loadConfig finished ------");
   configFile.close();
   size_t len = measureJson(doc);
   DEBUG_MSG("*** SYSINFO: JSON Konfiguration Größe: %d\n", len);
   if (len > 768)
     Serial.println("*** SYSINFO: Fehler JSON Konfiguration zu groß!");
-
-  // Setze Intervalle für Ticker Objekte
-  TickerPressure.interval(upPressure);
-  TickerTemp.interval(upTemp);
-  TickerKombi.interval(KOMBI_UPDATE);
-
-  if (setMode == AUS)
-    TickerPressure.start();
-  else
-    TickerPressure.pause();
-
-  if (setMode == KOMBIMODUS)
-    TickerKombi.start();
-  else
-    TickerKombi.stop();
 
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);
@@ -130,6 +120,14 @@ bool loadConfig()
     readLine(file);
     file.close();
   }
+
+  setMode = AUS;
+
+  // Setze Intervalle für Ticker Objekte
+  TickerPressure.interval(upPressure);
+  TickerTemp.interval(upTemp);
+  TickerSpundomat.interval(SPUNDOMAT_UPDATE);
+  TickerSpundomat.stop();
 }
 
 bool saveConfig()
@@ -169,15 +167,18 @@ bool saveConfig()
   JsonArray miscArray = doc.createNestedArray("MISC");
   JsonObject miscObj = miscArray.createNestedObject();
 
-  miscObj["NAMEMDNS"] = checkChars(nameMDNS);
+  miscObj["NAMEMDNS"] = nameMDNS;
   miscObj["MDNS"] = startMDNS;
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
   miscObj["TESTMODE"] = testModus;
-
+  miscObj["OFFSET2"] = offset2;
+  miscObj["PRESSOFFSET2"] = pressureOffset2;
+  
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
-
+  DEBUG_MSG("Offset2: %d bei %f\n", offset2, pressureOffset2);
+  
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
@@ -210,10 +211,10 @@ bool saveConfig()
   // Setze Intervall Drucksensor Ticker
   TickerPressure.interval(upPressure);
 
-  if (setMode != KOMBIMODUS)
-    TickerKombi.stop();
+  if (setMode != SPUNDOMAT)
+    TickerSpundomat.stop();
   else
-    TickerKombi.start();
+    TickerSpundomat.start();
 
   if (setMode == AUS)
     TickerPressure.start();
@@ -239,11 +240,14 @@ bool saveConfig()
   case SPUNDEN_DRUCK: // Druck Spunden
     mv2.switchOff();
     break;
-  case KARBONISIEREN: // CO2 Karbonisieren
+  case KARBONISIEREN_CO2: // CO2 Karbonisieren
     mv1.switchOff();
     break;
-  case KOMBIMODUS:          // Spunden und Karbonisieren
-    calcVerzKombi();        // Berechne Verzögerung Karbonisierung im Kombi-Modus
+  case KARBONISIEREN_DRUCK: // CO2 Karbonisieren
+    mv1.switchOff();
+    break;
+  case SPUNDOMAT:          // Spunden und Karbonisieren
+    calcVerzSpundomat();        // Berechne Verzögerung Karbonisierung im Kombi-Modus
     prevMillis = millis();  // Zeitstempel
     break;
   case PLAN1:

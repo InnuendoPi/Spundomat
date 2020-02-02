@@ -78,20 +78,13 @@ void handleRequestMiscSet()
     doc["pressure"] = setPressure;
     doc["carbonation"] = setCarbonation;
     doc["mode"] = setMode;
-    // char sPressure[5];
-    // char sCalcCarb[5];
-    // dtostrf(pressure, 5, 1, sPressure);
-    // dtostrf(calcCarbonation(pressure, temperature), 5, 1, sCalcCarb);
-    // doc["co2"] = calcCarbonation(pressure, temperature);
-    // doc["druck"] = pressure;
-    // doc["co2"] = sCalcCarb;
-    // doc["druck"] = sPressure;
-
     doc["co2"] = (int)(calcCarbonation(pressure, temperature) * 100) / 100.0;
     doc["druck"] = (int)(pressure * 100) / 100.0;
     doc["temperatur"] = (int)(temperature * 10) / 10.0;
     doc["voltage"] = (int)(voltage * 100) / 100.0;
-    doc["offset"] = (int)(offsetVoltage * 100) / 100.0;
+    doc["offset"] = offset0;
+    doc["offset2"] = offset2;
+    doc["pressoffset2"] = pressureOffset2;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
     doc["buzzer"] = startBuzzer;
@@ -204,9 +197,25 @@ void handleRequestMisc()
         message = setEinheit;
         goto SendMessage;
     }
+    if (request == "offset2")
+    {
+        message = offset2;
+        goto SendMessage;
+    }
+    if (request == "pressoffset2")
+    {
+        message = pressureOffset2;
+        goto SendMessage;
+    }
     if (request == "firmware")
     {
-        message = "Spundomat V ";
+        if (startMDNS)
+        {
+            message = nameMDNS;
+            message += " V";
+        }
+        else
+            message = "Spundomat V ";
         message += Version;
         goto SendMessage;
     }
@@ -249,7 +258,10 @@ void handleSetMisc()
             }
         }
         if (server.argName(i) == "mdns_name")
-            server.arg(i).toCharArray(nameMDNS, 16);
+        {
+            if (server.argName(i).length() > 0)
+                server.arg(i).toCharArray(checkChars(nameMDNS), 16);
+        }
         if (server.argName(i) == "mdns")
         {
             if (server.arg(i) == "1")
@@ -277,10 +289,7 @@ void handleSetMisc()
                 pinMode(PIN_MV1, OUTPUT);
             }
             else
-            {
                 startMV1 = false;
-                pinMode(PIN_MV1, INPUT);
-            }
         }
         if (server.argName(i) == "mv1open")
         {
@@ -306,10 +315,7 @@ void handleSetMisc()
                 pinMode(PIN_MV2, OUTPUT);
             }
             else
-            {
                 startMV2 = false;
-                pinMode(PIN_MV2, INPUT);
-            }
         }
         if (server.argName(i) == "mv2open")
         {
@@ -364,21 +370,44 @@ void handleSetMisc()
                     upTemp = server.arg(i).toInt();
             }
         }
-        
-        if (server.argName(i) == "verzkombi")
-        {
-            if (isValidInt(server.arg(i)))
-            {
-                //verzKombi = server.arg(i).to_ullong
-                //verzKombi = strtoul(server.arg(i).c_str(), NULL, 10);
-                verzKombi = server.arg(i).toInt();
-            }
-        }
         if (server.argName(i) == "einheit")
         {
-            DEBUG_MSG("setEinheit: %s\n", server.arg(i).c_str());
             setEinheit = server.arg(i).toInt();
-            DEBUG_MSG("setEinheit: %d\n", setEinheit);
+        }
+
+        if (server.argName(i) == "verzkombi")
+        {
+            if (setEinheit == 0)
+            {
+                if (isValidInt(server.arg(i)))
+                {
+                    verzKombi = server.arg(i).toInt();
+                    verzKarbonisierung = verzKombi * 1000 * 60;
+                }
+            }
+            else if (setEinheit == 1)
+            {
+                if (isValidInt(server.arg(i)))
+                {
+                    verzKombi = server.arg(i).toInt();
+                    verzKarbonisierung = verzKombi * 1000 * 60 * 60;
+                }
+            }
+            else if (setEinheit == 2)
+            {
+                verzKombi = formatDOT(server.arg(i));
+                verzKarbonisierung = 0;
+                minKarbonisierung = verzKombi;
+            }
+        }
+        if (server.argName(i) == "offset2")
+        {
+            if (isValidInt(server.arg(i)))
+                offset2 = server.arg(i).toInt();
+        }
+        if (server.argName(i) == "pressoffset2")
+        {
+            pressureOffset2 = formatDOT(server.arg(i));
         }
         yield();
     }
@@ -388,7 +417,10 @@ void handleSetMisc()
 
 void eraseEeprom()
 {
-    writeFloat(0, 0.00);
+    offset0 = 0;
+    offset2 = 0;
+    writeFloat(0, 0);
+    saveConfig();
 }
 
 void kalibrieren()
@@ -396,10 +428,21 @@ void kalibrieren()
     DEBUG_MSG("%s\n", "*** Kalibrierung");
     server.send(200, "text/plain", "kalibrieren...");
     readPressure();
-    offsetVoltage = voltage;
-    //offsetVoltage = (0.5 - voltage);
-    writeFloat(0, offsetVoltage);
+    if (offset0 == 0) // Keine Kalibrierung bei 0 bar
+    {
+        offset0 = readSensor();
+        writeFloat(0, offset0);
+    }
+    else if (offset0 > 0 && readSensor() < 200)
+    {
+        offset0 = readSensor();
+        writeFloat(0, offset0);
+    }
+    else if (offset0 > 0 && readSensor() > 200) // 2bar ca. 330
+        offset2 = readSensor();
+
     readPressure();
+    saveConfig();
     //    page = 2;
     //    menuitem = 0;
     reflashLCD = true;

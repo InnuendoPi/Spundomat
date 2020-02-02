@@ -130,6 +130,10 @@
                 <label for="modal_misc_intervall_temp">Intervall lese Temperatursensor in ms</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_interval_temp" />
               </div>
+			  <div class="form-group">
+                <label for="modal_misc_press_offset2">2. Kalibrierung bei (bar) </label>
+                <input type="text" class="form-control" placeholder="" id="modal_misc_press_offset2" />
+              </div>
 				<br />
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_mdns" />
@@ -203,19 +207,23 @@
         }
         else if (data.mode == 1)
         {
-          miscRender += "Spundomat CO2";
+          miscRender += "Spundomat";
         }
         else if (data.mode == 2)
         {
-          miscRender += "Spundomat Druck";
+          miscRender += "Spunden CO2-Gehalt";
         }
 		else if (data.mode == 3)
         {
-          miscRender += "Karbonisieren";
+          miscRender += "Spunden Druck";
         }
 		else if (data.mode == 4)
         {
-          miscRender += "Kombi-Modus";
+          miscRender += "Karbonisieren CO2-Gehalt";
+        }
+		else if (data.mode == 5)
+        {
+          miscRender += "Karbonisieren Druck";
         }
         else
         {
@@ -252,15 +260,24 @@
         miscRender += "</span></li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'>Spannung am Drucksensor<span class='badge badge-light'>";
         miscRender += data.voltage + " V";
 
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Spannung Offset <span class='badge badge-light'>";
-        if (data.offset == "nan")
+        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>1. Kalibrierung bei 0 bar <span class='badge ";
+        if (data.offset == "0")
         {
-          miscRender += "Kalibrierung ausführen!";
+          miscRender += " badge-danger'> Kalibrierung ausführen!";
         }
         else {
-          miscRender += data.offset + " V";
+          miscRender += " badge-success'> ok";
         }
-		
+		miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>2. Kalibrierung bei ";
+		miscRender += data.pressoffset2;
+		miscRender += " bar <span class='badge >";
+        if (data.offset2 == "0")
+        {
+          miscRender += " badge-danger'> Kalibrierung ausführen!";
+        }
+        else {
+          miscRender += " badge-success'> ok";
+        }
 		miscRender += "</span> </li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'> Magnetventil MV1 <span class='badge ";
         if (data.mv1) {
           miscRender += " badge-success'> An";
@@ -354,6 +371,8 @@
 	  var uptemp;
 	  var buzzer;
 	  var testmode;
+	  var offset2
+	  var pressoffset2
 
       $.ajax({
         url: '/reqMisc?req=mdns',
@@ -473,6 +492,26 @@
         cache: false,
         success: function (data) {
           offset = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=offset2',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          offset2 = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=pressoffset2',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          pressoffset2 = data;
         }
       });
 	  $.ajax({
@@ -602,6 +641,8 @@
 	  modal.find('#modal_misc_interval_pressure').val(uppressure)
 	  modal.find('#modal_misc_interval_temp').val(uptemp)
 	  modal.find('#modal_misc_kombi').val(kombi)
+	  modal.find('#modal_misc_offset2').val(offset2)
+	  modal.find('#modal_misc_press_offset2').val(pressoffset2)
       var modal = $(this)
     });
 
@@ -619,6 +660,7 @@
 	  var mv2close = modal.find('#modal_misc_mv2close').val()
 	  var uppressure = modal.find('#modal_misc_interval_pressure').val()
 	  var uptemp = modal.find('#modal_misc_interval_temp').val()
+	  var pressoffset2 = modal.find('#modal_misc_press_offset2').val()
       if (modal.find('#modal_misc_mdns').prop("checked") == true)
 	  {
         var mdns = "1"
@@ -685,7 +727,7 @@
       }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + kombi + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + kombi + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode + '&pressoffset2=' + pressoffset2,
         type: 'POST',
         dataType: 'html',
         async: false,

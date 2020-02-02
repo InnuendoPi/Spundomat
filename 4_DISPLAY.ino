@@ -13,9 +13,12 @@ void showLCD()
       Menu1[3] = "Volt:  ";
       Menu1[3] += voltage;
       Menu1[3] += "V";
-      Menu1[3] += " ";
-      Menu1[3] += offsetVoltage;
-      Menu1[3] += "V";
+      // Menu1[3] += " ";
+      // Menu1[3] += offset0;
+      // Menu1[3] += "V";
+      // Menu1[3] += " ";
+      // Menu1[3] += offset2;
+      // Menu1[3] += "V";
     }
     else if (setMode == SPUNDEN_CO2)
     {
@@ -23,15 +26,15 @@ void showLCD()
       Menu1[3] += setCarbonation;
       Menu1[3] += "g/l";
     }
-    else if (setMode == KARBONISIEREN)
+    else if (setMode == KARBONISIEREN_CO2)
     {
       Menu1[3] = "Karbonisiere:";
       Menu1[3] += setCarbonation;
       Menu1[3] += "g/l";
     }
-    else if (setMode == KOMBIMODUS)
+    else if (setMode == SPUNDOMAT)
     {
-      Menu1[3] = "Kombi: ";
+      Menu1[3] = "Spundomat: ";
       Menu1[3] += setCarbonation;
       Menu1[3] += "g/l";
     }
@@ -49,6 +52,13 @@ void showLCD()
       Menu1[3] = "Spunden: ";
       Menu1[3] += setPressure;
       Menu1[3] += "bar";
+    }
+    if (setMode == KARBONISIEREN_DRUCK)
+    {
+      //Menu1[1] += "Spund";
+      Menu1[3] = "Karbonisiere: ";
+      Menu1[3] += setPressure;
+      Menu1[3] += "b";
     }
     if (setMode == PLAN1 || setMode == PLAN2 || setMode == PLAN3)
     {
@@ -302,10 +312,21 @@ void showLCD()
         break;
       case 1: // Auswahl Ja - Kalibrierung
         readPressure();
-        offsetVoltage = voltage;
-        //offsetVoltage = (0.5 - voltage);
-        writeFloat(0, offsetVoltage);
+        if (offset0 == 0) // Keine Kalibrierung bei 0 bar
+        {
+          offset0 = readSensor();
+          writeFloat(0, offset0);
+        }
+        else if (offset0 > 0 && readSensor() < 200)
+        {
+          offset0 = readSensor();
+          writeFloat(0, offset0);
+        }
+        else if (offset0 > 0 && readSensor() > 200) // 2bar ca. 330
+          offset2 = readSensor();
+
         readPressure();
+        saveConfig();
         page = 2;
         menuitem = 0;
         reflashLCD = true;
@@ -376,14 +397,20 @@ void startLCD()
   lcd.begin(16, 2);
   lcd.setBacklight(255);
   lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.print("Spundomat V");
   lcd.print(Version);
-  lcd.setCursor(0, 2);
+  lcd.setCursor(0, 1);
   lcd.print("IP   ");
   lcd.print(WiFi.localIP().toString());
-  lcd.setCursor(0, 3);
+  lcd.setCursor(0, 2);
   lcd.print("WLAN ");
   lcd.print(WiFi.SSID());
+  if (startMDNS)
+  {
+    lcd.setCursor(0, 3);
+    lcd.print("mDNS ");
+    lcd.print(nameMDNS);
+  }
   millis2wait(PAUSE5SEC);
 }
 

@@ -4,10 +4,7 @@ void setup()
 #ifdef DEBUG_ESP_PORT
   Serial.setDebugOutput(true);
 #endif
-  while (!Serial)
-  {
-    yield(); // wait for serial port to connect. Needed for native USB port only
-  }
+
   Serial.println("");
   Serial.println("");
   Serial.println("*** SYSINFO: Starte Setup Spundomat");
@@ -28,13 +25,10 @@ void setup()
   // Load filesystem
   if (SPIFFS.begin())
   {
-    updateSys(); // WebUpdate
+    updateSys();                      // WebUpdate
     if (SPIFFS.exists("/config.txt")) // Load configuration
     {
       loadConfig();
-      // if (testModus) // Ignorieren!!!
-      //   sensorValueTest = setSensorValueTest(setMode);
-      setTicker();
     }
     else
       Serial.println("*** SYSINFO: Konfigurationsdatei config.txt nicht vorhanden. Setze Standardwerte ...");
@@ -44,6 +38,9 @@ void setup()
 
   Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
   Serial.println(WiFi.SSID());
+  
+  // Erstelle Ticker
+  setTicker();
 
   // Starte Webserver
   setupServer();
@@ -79,7 +76,7 @@ void setup()
   }
   if (startBuzzer)
     pinMode(PIN_BUZZER, OUTPUT); // D4
-  
+
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
 
@@ -87,16 +84,20 @@ void setup()
 
   // EEPROM
   EEPROM.begin(512);
-  offsetVoltage = readFloat(0); // Lese Offset (Kalibrierung)
+  offset0 = readFloat(0); // Lese Offset (Kalibrierung)
 
   // Starte Encoder
   TickerEncoder.start();
   TickerButton.start();
 
+  // Starte Drucksensor
+  readPressure();
+  TickerPressure.start();
+
   // Zeitserver via NTP
   timeClient.begin();
   timeClient.update();
-  
+
   // LCD
   startLCD();
 

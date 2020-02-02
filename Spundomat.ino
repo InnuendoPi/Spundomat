@@ -60,7 +60,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0b1";
+const char Version[6] = "2.0b2";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -73,15 +73,16 @@ const char Version[6] = "2.0b1";
 #define BUTTON_UPDATE 100
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
-#define KOMBI_UPDATE 1000
+#define SPUNDOMAT_UPDATE 1000
 #define AUS 0
-#define SPUNDEN_CO2 1
-#define SPUNDEN_DRUCK 2
-#define KARBONISIEREN 3
-#define KOMBIMODUS 4
-#define PLAN1 5
-#define PLAN2 6
-#define PLAN3 7
+#define SPUNDOMAT 1
+#define SPUNDEN_CO2 2
+#define SPUNDEN_DRUCK 3
+#define KARBONISIEREN_CO2 4
+#define KARBONISIEREN_DRUCK 5
+#define PLAN1 6
+#define PLAN2 7
+#define PLAN3 8
 #define DEFAULT_OPEN 300
 #define DEFAULT_CLOSE 2000
 #define ALARM_ON 1
@@ -135,7 +136,7 @@ InnuTicker TickerTemp;
 InnuTicker TickerPressure;
 InnuTicker TickerEncoder;
 InnuTicker TickerButton;
-InnuTicker TickerKombi;
+InnuTicker TickerSpundomat;
 
 // Deklariere Variablen
 float temperature;
@@ -143,7 +144,9 @@ float oldTemperature;
 char sTemperature[5];
 float voltage;
 //float offsetVoltage = 0.42;
-float offsetVoltage = 0.0; // Standard Vadc bei 0bar an A0
+int offset0 = 0; // Standard Vadc bei 0bar an A0
+int offset2 = 0; // Vadc bei 2bar an A0
+float pressureOffset2 = 2.0;
 float pressure = 0.0;
 float oldPressDisp = 0.0;
 float displayPressure = 0.0;
@@ -169,15 +172,17 @@ String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
-#define sizeOfModes 8
-String modes[sizeOfModes] = {"Aus", "CO2 Spund", "Druck Spund", "Karb", "Kombi", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat CO2 Gehalt", "Spundomat Druck", "Karbonisieren", "Kombi-Modus", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
+#define sizeOfModes 9
+String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat";                                                                                                  // http://spundomat/index.html
 
-#define anzAuswahl 2
-String einheit[anzAuswahl] = {"Minuten", "Stunden"};
-int setEinheit = 1;
-int verzKombi = 0;
+// Verzögerung Spundomat
+#define anzAuswahl 3
+String einheit[anzAuswahl] = {"Minuten", "Stunden", "CO2-Gehalt gr/l"};
+int setEinheit = 0;
+float verzKombi = 0.0;
+float minKarbonisierung = 0.0;
 unsigned long verzKarbonisierung = 0;
 unsigned long prevMillis;
 

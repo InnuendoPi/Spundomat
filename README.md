@@ -19,6 +19,7 @@ Version 2.0b2
 - Fixed:    Überprüfung der Eingaben im Web Interface (int, float, char)
 - Removed:  setPause in Ablaufpläne (millis2wait)
 - Fixed:    Ticker ReadPressure wurde nicht autmatisch gestartet
+- Fixed:    Überprüfung Eingabe mDNS Name war fehlerhaft
 
 Version 2.0b1
 

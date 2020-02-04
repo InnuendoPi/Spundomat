@@ -259,8 +259,8 @@ void handleSetMisc()
         }
         if (server.argName(i) == "mdns_name")
         {
-            if (server.argName(i).length() > 0)
-                server.arg(i).toCharArray(checkChars(nameMDNS), 16);
+            server.arg(i).toCharArray(nameMDNS, 16);
+            checkChars2(nameMDNS);
         }
         if (server.argName(i) == "mdns")
         {

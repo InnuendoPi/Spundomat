@@ -36,7 +36,7 @@ Die Firmware bietet drei Betriebsmodis:
 
 1. Spunden (Druck ausgehend vom Keg)
 2. Karbonisieren (CO2 eingehend in das Keg)
-3. Die Kombination aus Spunden und Karbonisieren
+3. Spundomat: die Kombination aus Spunden und Karbonisieren
 
 Zusätzlich bietet die Firmware Ablaufpläne.
 
@@ -59,7 +59,7 @@ Dieses Projekt wurde im hobbybrauer Forum gestartet und dient dem Informationsau
 
 ![Einstellungen](img/Spundomat02.jpg)
 
-**Voraussetzungen: (2020.01)**
+**Voraussetzungen: (2020.01):**
 
 * Arduino IDE 1.8.10
 * Optional Microsoft VSCode + Arduino + ESP8266FS
@@ -78,7 +78,7 @@ Dieses Projekt wurde im hobbybrauer Forum gestartet und dient dem Informationsau
 
 # Installation
 
-**Installation ohne den Quellcode zu compilieren**
+**Installation ohne den Quellcode zu compilieren:**
 
 Mit Hilfe von esptool.exe (<https://github.com/igrr/esptool-ck/releases>) aus dem Ordner tools kann die Firmware auf das ESP Modul geladen werden. Das ESPTool ist für verschiedene Betriebssysteme verfügbar.
 ESPtool-ck Copyright (C) 2014 Christian Klippel ck@atelier-klippel.de. This code is licensed under GPL v2.
@@ -112,7 +112,7 @@ Beispiel für ein ESP8266 Modul vom Typ Wemos D1 mini mit 4MB Flash verbunden mi
         * Anschließend ist das MQTTDevice erreichbar über <http://spundomat>
         je nach Netzwerkumgebung kann es 20-30 Sekunden dauern, bis der mDNS Name aufgelöst wird
 
-**Updates**
+**Updates:**
 
 Die Firmware bietet zwei Möglichkeiten, um Updates sehr einfach einspielen zu können.
 
@@ -126,7 +126,7 @@ Die Firmware bietet zwei Möglichkeiten, um Updates sehr einfach einspielen zu k
     Im Webbrowser die URL <http://spundomat> aufrufen und die Funktion "WebUpdate" aufrufen.
     WebUpdate aktualisiert die Firmware, die index Datei und Zertifikate. Durch WebUpdate wird die Konfigurationsdatei nicht überschrieben.
 
-**Backup and Restore der Konfiguration**
+**Backup and Restore der Konfiguration:**
 
 Der Dateiexplorer ist erreichbar über den Webbrowser <http://spundomat/edit>
 
@@ -138,9 +138,9 @@ Der Dateiexplorer ist erreichbar über den Webbrowser <http://spundomat/edit>
 
     Auf "Datei auswählen" klicken, die config.txt auswählen und Upload auswählen.
 
-**mDNS**
+**mDNS:**
 
-Ein mDNS Name kann anstelle der IP Adresse vom ESP8266 im Webbrowser verwendet werden (<http://mDNSname>). Der Name ist frei wählbar.
+Ein mDNS Name kann anstelle der IP Adresse vom ESP8266 im Webbrowser verwendet werden (<http://mDNSname>). Der Name ist frei wählbar. Der mDNS Name muss im Netzwerk eindeutig sein und darf keine Leer- oder Sonderzeichen enthalten.
 
 # Das Dashboard
 
@@ -153,39 +153,40 @@ Datei- und WebUpdate sind ausschließlich über das Web interface verfügbar.
 
 Über das Web Interface ist eine Grundeinrichtung vorzunehmen. Hierunter fällt das Aktivieren der verwendeten Magnetventile und die Kalibrierung.
 
-**Kalibrierung**
+**Kalibrierung:**
 
 Der Drucksensor vom Spundomat muss vor seiner ersten Verwendung kalibriert werden. Weil es unterschiedliche Drucksensoren und geringfügige Abweichungen bei der Spannungsversorgung gibt, ist eine Kalibrierung obligatorisch.
+Der SPundomat funktioniert bereits mit nur einer Kalibrierung bei 0bar. Es wird eine 2-Punkte Kalibrierung empfohlen.
 
 Vorgehensweise Kalibrierung:
 
 Das komplette System muss drucklos sein. Eine CO2 Falsche, ein Keg oder Rückschlagventile sind vom Drucksensor zu trennen. Die Kalibrierung misst die Spannung am analogen Port des Wemos D1 mini bei 0bar. Diese Spannung (Offset) wird im Eeprom des Wemos gespeichert und wird bei der Berechung Druck verwendet.
 
-Auf dem Markt erhältlich sind Drucksensoren mit einem Spannungsbereich von 0,5 bis 4.5V (bis ca. 7bar) und Drucksensoren mit einem Spannungsbereich von 0 bis 5V (bis ca. 14bar). Das Offset bestimmt den Messbereich des Drucksensors. Ohne Kalibrierung ist eine Druckmessung sinnlos, da keine brauchbaren Daten aus den Sensorwerten berechnet werden können.
+Eine 2. Kalibrierung bei 2bar vorgenommen. Der Wert für die 2. Kalibrierung ist in den EInstellung auf dem Tab System einstellbar. Eine 2. Kalibrierung unter 2bar wird nicht empfohlen.
 
-**Aktivieren der Magnetventile**
+**Aktivieren der Magnetventile:**
 
 Über den Button "Bearbeiten" können die Grundeinstellungen von Spundomat konfiguriert werden.
 Im Tab Hardware können das Magnetventil 1 (Spunder) und das Magnetventil 2 (Karbonisierer) aktiviert werden. Zu beiden Magnetventilen können die Standardzeiten für das Öffnen und Schließen in Millisekunden konfiguriert werden. In der Grundeinstellung sind 300ms für das Öffnen und 2000ms für das Schließen der Magnetventile vorgegeben.
 
 Der Spundomat kann mit nur einem Magnetventil betrieben werden, wahlweise nur zum Spunden oder nur zum Karbonisieren. Alle Funktionen der Firmware sind nur mit zwei Magnetventilen nutzbar. In der Version 2.0 zum Zeitpunkt 02.2020 blendet keine Funktionen aus, die nicht genutzt werden können.
-Der Kombi-Modus und die Ablaufpläne können nur genutzt werden, wenn zwei Magnetventile angeschlossen und aktiviert sind.
+Der Modus Spundomat und die Ablaufpläne können nur genutzt werden, wenn zwei Magnetventile angeschlossen und aktiviert sind.
 
-**Piezo Buzzer**
+**Piezo Buzzer:**
 
 Optional kann ein Piezzo Buzzer aktiviert werden. Die Firmware bietet verschiedene Signaltöne. Mit Version 2.0 zum Zeitpunkt 02.2020 sind die Signaltöne implementiert, jedoch noch nicht an allen möglichen Stellen für ein Warnsignal aktiviert.
 
-**mDNS aktivieren**
+**mDNS aktivieren:**
 
 mDNS ist eine einfache Möglichkeit, um den Spundomat mit einem beliebigen Namen anzusprechen. In der Standardkonfiguration ist der Spundomat im Webbrowser über <http://spundomat> erreichbar. In den Grundeinstellungen im Tab System kann mDNS aktiviert und konfiguriert werden. Zu beachten gilt, dass mDNS Namen im Netzwerk eindeutig sein müssen.
 
-**Zeitintervalle für Sensoren**
+**Zeitintervalle für Sensoren:**
 
 Ebenfalls un den Grundeinstellungen im Tab System können die Zeitintervall zum Datenabruf der Sensoren Druck und Temperatur konfiguriert werden. Der Abruf vom Temperatursensor ist als kontinuierlicher Task (Ticker) in der Firmware implementiert. Standardwert ist alle 30 Sekunden.
 
 Das Zeitintervall für das Lesen vom Drucksensor ist lediglich eine Grundeinstellung. Je nach Anforderung und Betriebsmodus werden Daten bei Bedarf und nicht nach Ablauf eines Zeitintervalls abgefragt. In Ablaufplänen wird das Abfrageintervall für den Durcksensor deaktiviert und nach den konfigurierten Zeiten für das Öffenen und Schließen der Magnetventile der Durcksensor abgefragt. Der Standardwert lautet 1000ms.
 
-**Restore**
+**Restore:**
 
 Das Menü für die Grundeinstellung bietet Funktionen, um Einstellungen und KOnfigurationen vom Wemos D1 mini zu löschen. Zur Auswahl stehen
 
@@ -210,16 +211,21 @@ Ein eher seltener genutzer Modus ist das Spunden auf Basis Druck in bar. Der Pro
 
 Der Betriebsmodus Karbonisieren ist für Brauer geeignet, die ein endvergorenes Jungbier ins Keg schlauchen und das Keg mit COS2 auf einen bestimmten Druck zur Reifung einstellen. Der Druck wird meist aus einer Tabelle in Abhängigkeit von der Temperatur ermittelt. Der Spundomat ermittelt den benötigten Druck automatisch und führt CO2 in das Keg. Ändert sich die Temperatur während der Bierreifung ermittelt der Spundomat automatisch den korrekten Druck.
 
-**Kombi-Modus:**
+Ebenfalls ein eher seltener genutzer Modus ist das Karbonisieren auf Basis Druck in bar. Der Prozess Karbonisieren basiert in diesem Modus auf dem gemessenen Wert vom Drucksensor.
 
-Der Kombi-Modus fügt die zwei Betriebsmodis Spunden CO2-Gehalt und Karbonisieren zusammen. Dieser Modus basiert auf dem Zielwert CO2-Gehalt. Druck im Keg oberhalb wird automatisch abgelassen. Druck unterhalb führt automatisch zum Zuführen von CO2. Dieser Modus ermittelt während der Nachgärung und Reifung Temperaturänderung und berechnet den erforderlichen Druck im Keg neu.
+**Der Spundomat Modus:**
+
+Der Modus Spundomat fügt die zwei Betriebsmodis Spunden und Karbonisieren auf Basis CO2-Gehalt zusammen. Dieser Modus basiert auf dem Zielwert CO2-Gehalt. Druck im Keg oberhalb wird automatisch abgelassen. Druck unterhalb führt automatisch zum Zuführen von CO2. Dieser Modus ermittelt während der Nachgärung und Reifung Temperaturänderung und berechnet den erforderlichen Druck im Keg neu.
+
+Zusätzlich bietet die Firmware eine Verzögerung für die Karbonisierung. In einfachen Worten: starte die Nachgärung im Keg und baue Druck langsam auf. Nach einer einstellabren Zeit bspw. nach 2-3 Tagen oder ab einem durch Nachgärung aufgebautem Druck starte die Karbonisierung.
+
+Für eine Verzögerung der Karbonisierung kann als Parameter die Zeit (in Minuten oder Stunden) oder Parameter vorhandener Mindest-CO2 Gehalt gennutzt werden. Beide Verzögerungen für die Karbonisierung bieten der Hefe Zeit für die Nachgärung. Die Verzögerung wird meist dann angewendet, wenn sehr früh im Gärungsprozess geschlaucht werden soll.
 
 **Vorgehensweise Betriebsmodus:**
 
-Wird Nachgärung im Keg eingesetzt kann je nach Präferenz mit dem Modus Spunden-CO2 oder im Kombi-Modus gestartet werden. Manche Hobbybrauer möchten in den ersten Tagen Nachgärung im Keg den Druck langsam aufbauen. Bei dieser Anforderung wird im Spunden-CO2 Modus gestartet und bei Bedarf manuell in den Kombi-Modus gewechselt.
-Viele Hobbybrauer bevorzugen eine Nachgärung unter Druck. In diesem Fall ist der Kombi-Modus die richtige Wahl.
+Wird Nachgärung im Keg eingesetzt kann je nach Präferenz mit dem Modus Spunden-CO2 oder im Modus Spundomat gestartet werden. Manche Hobbybrauer möchten in den ersten Tagen Nachgärung im Keg den Druck langsam aufbauen. Bei dieser Anforderung wird im Spunden-CO2 Modus gestartet. Alternativ kann der Spundomat Modus mit Verzögerung für das Karbonisieren genutzt werden.
 
-Wird ein endvergörenes Jungsbier ins Keg geschlaucht, ist der Kombi-Modus die beste Wahl. In diesem Modus startet die Reifung mit dem Zieldruck. Überschüssiger Druck, bspw. durch geringe Nachgärung, wird automatisch abgelassen. Zu geringer Druck wird automatisch zugeführt.
+Wird ein endvergörenes Jungsbier ins Keg geschlaucht, ist der Spundomat Modus die beste Wahl. In diesem Modus startet die Reifung mit dem Zieldruck. Überschüssiger Druck, bspw. durch geringe Nachgärung, wird automatisch abgelassen. Zu geringer Druck wird automatisch zugeführt.
 
 **Zeitintervalle für die Magnetventile:**
 
@@ -232,7 +238,7 @@ Für jedes Magnetventil wird ein Zeitintervall Öffnen und ein Zeitintervall Sch
 
 Diese Zeitintervalle bewirken nun, dass bei überschüssigen Druck im Keg 1x pro Minute für 500ms Druck abgelassen wird. Während das Ventil geschlossen ist, wird der aktuelle Druck am Sensor abgelesen. Ist weiterhin überschüssiger Druck vorhanden, wiederholt sich das Öffnen für 500ms und das Schließen für 1 Minute. Ist der Druck geringer oder gleich dem Zielwert, öffnet sich Ventil 1 nicht.
 
-Im Kombi-Modus wechseln sich Magnetventil 1 (Spunder) und Magnetventil 2 (Karbonisierer) ab. Es beginnt Ventil 1 mit der Überprüfung, ob überschüssiger Druck vorliegt. Falls ja findet der oben beschriebene Prozess Öffnen-Schließen statt. Anschließend prüft Ventil 2, ob zu geringer Druck vorliegt. Falls ja findet wieder der oben beschriebene Prozess Öffnen-Schließen statt, aber dieses Mal am Magnetventil vor der CO2-Flasche.
+Im Modus Spundomat wechseln sich Magnetventil 1 (Spunder) und Magnetventil 2 (Karbonisierer) ab. Es beginnt Ventil 1 mit der Überprüfung, ob überschüssiger Druck vorliegt. Falls ja findet der oben beschriebene Prozess Öffnen-Schließen statt. Anschließend prüft Ventil 2, ob zu geringer Druck vorliegt. Falls ja findet wieder der oben beschriebene Prozess Öffnen-Schließen statt, aber dieses Mal am Magnetventil vor der CO2-Flasche.
 Die Zeitintervalle, insbesondere die Werte für Ventile geschlossen, entscheiden nun über die Häufigkeit der Überprüfung.
 
 Noch in der Umsetzung befindet sich die Anbindung an den TCPServer iSpindel (Tozzi Server) für eine Visualisierung der Gärung und Reifung.
@@ -251,14 +257,14 @@ Ein Ablaufplan ist eine automatisierte zeitliche Abfolge von Öffnen und Schlie�
 
 der Firmware beigefügt. Alle Ablaufpläne müssen auf die individuelle Umgebung und Anforderungen angepasst werden.
 
-**Unterschied Betriebmodis vs. Ablaufplan**
+**Unterschied Betriebmodis vs. Ablaufplan:**
 
-Ein Betriebsmodus wie bspw. der Kombi-Modus läuft bis zum manuellen Beenden mit konstanten Parametern für Zieldruck und Intervallen der Magnetventile.
+Ein Betriebsmodus wie bspw. der Spundomat Modus läuft bis zum manuellen Beenden mit konstanten Parametern für Zieldruck und Intervallen der Magnetventile.
 EIn Ablaufplan hat maximal 20 Wiederholungen und kann in jeder Wiederholung mit anderen Parameter durchgeführt werden.
 
 Ablaufpläne sollen definierte Aufgaben durchführen. Betriebmodis sollen über einen längeren Zeitraum bspw. 2-4 Wochen die Nachgärung und damit den CO2-Gehalt im Jungbier kontrolliert auf den gewünschten CO2-Gehalt bringen. Im Idealfall ohne regelmäßige Eingriffe durch den Hobbybrauer.
 
-**Aufbau der Ablaufpläne**
+**Aufbau der Ablaufpläne:**
 
 Ablaufpläne werden in der Textdatei ablaufplan.txt definiert. Über den Dateiexplorer im Web Interface kann die Textdatei editiert werden. Zum Speichern wird im Dateiexplorer die Tastenkombination CTRL + S verwendet.
 
@@ -354,7 +360,7 @@ Diese Einstellungen müsen vorab durchgeführt werden! Ohne diese Einstellung ka
 
 1. Möglichkeit: Spunder
 
-![Spunder](img/Spunder.jpg)
+    ![Spunder](img/Spunder.jpg)
 
 2. Möglichkeit: Zwangskarbonisierung
 

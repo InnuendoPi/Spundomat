@@ -6,7 +6,7 @@ Projekt im Beta Status
 
 ## Changelog
 
-Version 2.0b2
+Version 2.0b3
 
 - Added:    Ablaufpläne.txt mit Testwerten gefüllt
 - Added:    Alarmfunktion

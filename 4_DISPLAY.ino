@@ -137,12 +137,12 @@ void showLCD()
     Menu2[1] += modes[setMode];
     Menu2[2] = "Soll: ";
 
-    if (setMode <= 1 || setMode == 3) // Aus oder CO2 oder Karbonisierung
+    if (setMode == AUS || setMode == SPUNDOMAT || setMode == SPUNDEN_CO2 || setMode == KARBONISIEREN_CO2)  // CO2 
     {
       Menu2[2] += setCarbonation;
       Menu2[2] += " g/l";
     }
-    else // Druck
+    else if (setMode == SPUNDEN_DRUCK || setMode == KARBONISIEREN_DRUCK)  // Druck
     {
       Menu2[2] += setPressure;
       Menu2[2] += " bar";
@@ -236,22 +236,22 @@ void showLCD()
     case 2: // Sollwert
       lcd.setCursor(7, 0);
       lcd.blink();
-      if (up && (setMode <= 1 || setMode == 3)) // Aus oder CO2 oder Karbonisieren
+      if (up && (setMode == AUS || setMode == SPUNDOMAT || setMode == SPUNDEN_CO2 || setMode == KARBONISIEREN_CO2)) // Aus oder CO2
       {
         setCarbonation += 0.05;
         reflashLCD = true;
       }
-      else if (down && (setMode <= 1 || setMode == 3))
+      else if (down && (setMode == AUS || setMode == SPUNDOMAT || setMode == SPUNDEN_CO2 || setMode == KARBONISIEREN_CO2)) // Aus oder CO2
       {
         setCarbonation -= 0.05;
         reflashLCD = true;
       }
-      else if (up && setMode == 2) // Druck
+      else if (up && (setMode == SPUNDEN_DRUCK || setMode == KARBONISIEREN_DRUCK)) // Druck
       {
         setPressure += 0.05;
         reflashLCD = true;
       }
-      else if (down && setMode == 2) // Druck
+      else if (down && (setMode == SPUNDEN_DRUCK || setMode == KARBONISIEREN_DRUCK)) // Druck
       {
         setPressure -= 0.05;
         reflashLCD = true;

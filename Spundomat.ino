@@ -60,7 +60,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0b2";
+const char Version[6] = "2.0b3";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000

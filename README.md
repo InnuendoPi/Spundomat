@@ -8,6 +8,11 @@ Projekt im Beta Status
 
 Version 2.0b2
 
+- Added:    Ablaufpläne.txt mit Testwerten gefüllt
+- Added:    Alarmfunktion
+
+Version 2.0b2
+
 - Renamed:  Kombi-Modus in Spundomat Modus umbenannt
 - Renamed:  Spundomat CO2 in Spunden CO2 umbenannt
 - Renamed:  Spundomat Druck in Spunden Druck umbenannt

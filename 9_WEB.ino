@@ -271,11 +271,13 @@ void handleSetMisc()
         }
         if (server.argName(i) == "pressure")
         {
-            setPressure = formatDOT(server.arg(i));
+            if (checkRangeDruck(server.arg(i)))
+                setPressure = formatDOT(server.arg(i));
         }
         if (server.argName(i) == "carbonation")
         {
-            setCarbonation = formatDOT(server.arg(i));
+            if (checkRangeCO2(server.arg(i)))
+                setCarbonation = formatDOT(server.arg(i));
         }
         if (server.argName(i) == "mode")
         {
@@ -395,9 +397,12 @@ void handleSetMisc()
             }
             else if (setEinheit == 2)
             {
-                verzKombi = formatDOT(server.arg(i));
-                verzKarbonisierung = 0;
-                minKarbonisierung = verzKombi;
+                if (checkRangeCO2(server.arg(i)))
+                {
+                    verzKombi = formatDOT(server.arg(i));
+                    verzKarbonisierung = 0;
+                    minKarbonisierung = verzKombi;
+                }
             }
         }
         if (server.argName(i) == "offset2")
@@ -407,7 +412,8 @@ void handleSetMisc()
         }
         if (server.argName(i) == "pressoffset2")
         {
-            pressureOffset2 = formatDOT(server.arg(i));
+            if (checkRangeDruck(server.arg(i)))
+                pressureOffset2 = formatDOT(server.arg(i));
         }
         yield();
     }

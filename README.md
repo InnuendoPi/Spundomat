@@ -10,6 +10,9 @@ Version 2.0b3
 
 - Added:    Ablaufpläne.txt mit Testwerten gefüllt
 - Added:    Alarmfunktion
+- Added:    Überprüfung Eingabe Web Interface Kalibrierung (0.0 bis 3.5)
+- Added:    Überprüfung Eingabe Web Interface CO2 Gehalt (0.0 bis 8.0)
+- Fixed:    LCD Anzeige Karbonisieren und Spunden CO2 Gehalt statt Druck
 
 Version 2.0b2
 

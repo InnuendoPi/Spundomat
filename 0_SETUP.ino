@@ -4,7 +4,6 @@ void setup()
 #ifdef DEBUG_ESP_PORT
   Serial.setDebugOutput(true);
 #endif
-
   Serial.println("");
   Serial.println("");
   Serial.println("*** SYSINFO: Starte Setup Spundomat");
@@ -66,17 +65,20 @@ void setup()
   // Pin Definitionen
   if (startMV1)
   {
-    digitalWrite(PIN_MV1, LOW);
     pinMode(PIN_MV1, OUTPUT); // D8
+    digitalWrite(PIN_MV1, LOW);
   }
   if (startMV2)
   {
-    digitalWrite(PIN_MV2, LOW);
     pinMode(PIN_MV2, OUTPUT); // D0
+    digitalWrite(PIN_MV2, LOW);
   }
   if (startBuzzer)
+  {
     pinMode(PIN_BUZZER, OUTPUT); // D4
-
+    digitalWrite(PIN_BUZZER, LOW); 
+  }
+  // Encoder
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
 

@@ -51,6 +51,22 @@ bool checkRange(const String &str)
     return false;
 }
 
+bool checkRangeDruck(const String &str)
+{
+  int check = str.toInt();
+  if (check >= 0.0 && check <= 3.5) //20ms bis 2 Stunden
+    return true;
+  else
+    return false;
+}
+bool checkRangeCO2(const String &str)
+{
+  int check = str.toInt();
+  if (check >= 0.0 && check <= 8.0) //20ms bis 2 Stunden
+    return true;
+  else
+    return false;
+}
 char *checkChars(char *input)
 {
   char *output = input;

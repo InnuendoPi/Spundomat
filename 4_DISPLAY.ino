@@ -13,24 +13,6 @@ void showLCD()
       Menu1[3] = "Volt:  ";
       Menu1[3] += voltage;
       Menu1[3] += "V";
-      // Menu1[3] += " ";
-      // Menu1[3] += offset0;
-      // Menu1[3] += "V";
-      // Menu1[3] += " ";
-      // Menu1[3] += offset2;
-      // Menu1[3] += "V";
-    }
-    else if (setMode == SPUNDEN_CO2)
-    {
-      Menu1[3] = "Spunden: ";
-      Menu1[3] += setCarbonation;
-      Menu1[3] += "g/l";
-    }
-    else if (setMode == KARBONISIEREN_CO2)
-    {
-      Menu1[3] = "Karbonisiere:";
-      Menu1[3] += setCarbonation;
-      Menu1[3] += "g/l";
     }
     else if (setMode == SPUNDOMAT)
     {
@@ -38,29 +20,33 @@ void showLCD()
       Menu1[3] += setCarbonation;
       Menu1[3] += "g/l";
     }
-    Menu1[1] = "Druck: ";
-    if (pressure == -1)
-      Menu1[1] += "-       ";
-    else
+    else if (setMode == SPUNDEN_CO2)
     {
-      Menu1[1] += pressure;
-      Menu1[1] += "bar ";
+      Menu1[3] = "Spunden: ";
+      Menu1[3] += setCarbonation;
+      Menu1[3] += "g/l";
     }
-    if (setMode == SPUNDEN_DRUCK)
+    else if (setMode == SPUNDEN_DRUCK)
     {
       //Menu1[1] += "Spund";
       Menu1[3] = "Spunden: ";
       Menu1[3] += setPressure;
       Menu1[3] += "bar";
     }
-    if (setMode == KARBONISIEREN_DRUCK)
+    else if (setMode == KARBONISIEREN_CO2)
+    {
+      Menu1[3] = "Karbonisiere:";
+      Menu1[3] += setCarbonation;
+      Menu1[3] += "g/l";
+    }
+    else if (setMode == KARBONISIEREN_DRUCK)
     {
       //Menu1[1] += "Spund";
       Menu1[3] = "Karbonisiere: ";
       Menu1[3] += setPressure;
       Menu1[3] += "b";
     }
-    if (setMode == PLAN1 || setMode == PLAN2 || setMode == PLAN3)
+    else if (setMode == PLAN1 || setMode == PLAN2 || setMode == PLAN3)
     {
       Menu1[3] = "Plan: #";
       Menu1[3] += counterPlan + 1;
@@ -75,6 +61,16 @@ void showLCD()
       Menu1[3] += displayPressure;
       Menu1[3] += "bar";
     }
+
+    Menu1[1] = "Druck: ";
+    if (pressure == -1)
+      Menu1[1] += "-       ";
+    else
+    {
+      Menu1[1] += pressure;
+      Menu1[1] += "bar ";
+    }
+    
 
     Menu1[2] = "Temp: ";
     Menu1[2] += sTemperature;

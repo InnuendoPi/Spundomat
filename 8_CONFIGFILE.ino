@@ -14,6 +14,8 @@ bool loadConfig()
   {
     Serial.print("*** SYSINFO: Konfigurationsdatei zu groß");
     Serial.println("------ loadConfig aborted -------");
+    if (startBuzzer)
+      sendAlarm(ALARM_ERROR);
     return false;
   }
 
@@ -23,6 +25,8 @@ bool loadConfig()
   {
     Serial.print("Conf: Error Json ");
     Serial.println(error.c_str());
+    if (startBuzzer)
+      sendAlarm(ALARM_PANIC);
     return false;
   }
   // Spundomat Einstellungen
@@ -90,9 +94,9 @@ bool loadConfig()
     startMDNS = miscObj["MDNS"];
   if (miscObj.containsKey("TESTMODE"))
     testModus = miscObj["TESTMODE"];
-  if (miscObj.containsKey("OFFSET2"))  
+  if (miscObj.containsKey("OFFSET2"))
     offset2 = miscObj["OFFSET2"];
-  if (miscObj.containsKey("PRESSOFFSET2"))  
+  if (miscObj.containsKey("PRESSOFFSET2"))
     pressureOffset2 = miscObj["PRESSOFFSET2"];
 
   Serial.printf("nameMDNS: %s\n", nameMDNS);
@@ -128,6 +132,8 @@ bool loadConfig()
   TickerTemp.interval(upTemp);
   TickerSpundomat.interval(SPUNDOMAT_UPDATE);
   TickerSpundomat.stop();
+  if (startBuzzer)
+    sendAlarm(ALARM_OK);
 }
 
 bool saveConfig()
@@ -146,7 +152,7 @@ bool saveConfig()
   DEBUG_MSG("setCarbonation: %f\n", setCarbonation);
   DEBUG_MSG("verzKombi: %d\n", verzKombi);
   DEBUG_MSG("Einheit: %d\n", setEinheit);
-  
+
   // Hardware Einstellungen
   JsonArray hwArray = doc.createNestedArray("HARDWARE");
   JsonObject hwObj = hwArray.createNestedObject();
@@ -174,11 +180,11 @@ bool saveConfig()
   miscObj["TESTMODE"] = testModus;
   miscObj["OFFSET2"] = offset2;
   miscObj["PRESSOFFSET2"] = pressureOffset2;
-  
+
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
   DEBUG_MSG("Offset2: %d bei %f\n", offset2, pressureOffset2);
-  
+
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
@@ -199,6 +205,8 @@ bool saveConfig()
   {
     DEBUG_MSG("%s\n", "Failed to open config file for writing");
     DEBUG_MSG("%s\n", "------ saveConfig aborted ------");
+    if (startBuzzer)
+      sendAlarm(ALARM_ERROR);
     return false;
   }
 
@@ -227,6 +235,8 @@ bool saveConfig()
   DEBUG_MSG("%s\n", "------------");
 
   // Ablaufpläne
+  if (startBuzzer)
+    sendAlarm(ALARM_OK);
 
   switch (setMode)
   {
@@ -247,8 +257,8 @@ bool saveConfig()
     mv1.switchOff();
     break;
   case SPUNDOMAT:          // Spunden und Karbonisieren
-    calcVerzSpundomat();        // Berechne Verzögerung Karbonisierung im Kombi-Modus
-    prevMillis = millis();  // Zeitstempel
+    calcVerzSpundomat();   // Berechne Verzögerung Karbonisierung im Kombi-Modus
+    prevMillis = millis(); // Zeitstempel
     break;
   case PLAN1:
     // for (int test = 0; test < 20; test++)

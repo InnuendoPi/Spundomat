@@ -38,6 +38,12 @@ void setup()
   Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
   Serial.println(WiFi.SSID());
   
+  // Konfiguriere Pinmode PCF8574
+  // pcf8574.pinMode(PIN_ENCODER_A, OUTPUT); // Encoder
+  // pcf8574.pinMode(PIN_ENCODER_B, OUTPUT); // Encoder
+  // pcf8574.pinMode(PIN_ENCODER_BUTTON, OUTPUT); // Encoder
+  // pcf8574.pinMode(PIN_BUZZER, OUTPUT); // Buzzer
+
   // Erstelle Ticker
   setTicker();
 
@@ -78,10 +84,10 @@ void setup()
     pinMode(PIN_BUZZER, OUTPUT); // D4
     digitalWrite(PIN_BUZZER, LOW); 
   }
-  // Encoder
+ 
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
-
+  
   button.attachClick(click);
 
   // EEPROM

@@ -25,7 +25,7 @@ void loop()
   // Check Encoder Ticker
   TickerEncoder.update();
   TickerButton.update();
-  
+
   if (reflashLCD)
     showLCD();
 

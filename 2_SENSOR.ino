@@ -36,7 +36,7 @@ void readPressure()
 	int sensorValue = analogRead(A0);
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
-	if (offset2 > 0 && offset0 > 0 && sensorValue > offset0)
+	if (offset2 > 0 && offset0 > 0 && sensorValue > offset0) // 2-Punkte-Kalibrierung
 	{
 		float m = (pressureOffset2 - 0.0) / (offset2 - offset0);
 		float b = pressureOffset2 - m * offset2;
@@ -45,11 +45,16 @@ void readPressure()
 		pressure = m * sensorValue + b;
 		DEBUG_MSG("Senor: %d P: %f offset0: %d offset2: %d m: %f b: %f\n", sensorValue, pressure, offset0, offset2, m, b);
 	}
-	else
+	else if (offset0 != 0 && offset2 == 0.0) // 1-Punkt-Kalibrierung
 	{
 		pressure = (sensorValue * 0.004889 - offset0 * 5.0 / 1023.0) * 1.724;
 		DEBUG_MSG("Senor: %d P: %f offset0: %d \n", sensorValue, pressure, offset0);
 	}
+	else	// keine Kalibrierung
+	{
+		pressure = 0.0;
+	}
+	
 
 	// if (isnan(pressure) || pressure < 0)
 	// 	pressure = 0.0;
@@ -62,17 +67,11 @@ void readPressure()
 		return;
 	}
 
-	// Aktualisiere LCD wenn Druck geändert hat
-	// if (setMode != PLAN1) // AUS
-	// {
 	if (fabs(pressure - oldPressDisp) > DELTA) // Absolute Änderung
 	{
 		reflashLCD = true;
 		oldPressDisp = pressure;
 	}
-	// Negativer Druck
-	// if (pressure < 0.0)
-	// 	pressure = 0.0;
 }
 
 // !!!Testcode!!! Ignorieren!

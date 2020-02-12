@@ -60,7 +60,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0b3";
+const char Version[6] = "2.0b4";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -74,6 +74,7 @@ const char Version[6] = "2.0b3";
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
 #define SPUNDOMAT_UPDATE 1000
+#define TCP_UPDATE 60000
 #define AUS 0
 #define SPUNDOMAT 1
 #define SPUNDEN_CO2 2
@@ -91,15 +92,27 @@ const char Version[6] = "2.0b3";
 #define ALARM_ERROR 4
 #define ALARM_PANIC 5
 
+
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
-const int PIN_BUZZER = D4;         // Buzzer
+
+// Neue PIN Belegung 20200212
+const int PIN_BUZZER = D6;         // Buzzer
 const int PIN_TEMP = D3;           // DS18B20
-const int PIN_ENCODER_A = D6;      // CLK Out A
+const int PIN_ENCODER_A = D4;      // CLK Out A
 const int PIN_ENCODER_B = D5;      // DT Out B
-const int PIN_ENCODER_BUTTON = D7; // SW Button
+const int PIN_ENCODER_BUTTON = D0; // SW Button
 const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
-const int PIN_MV2 = D0;            // Magnetventil eingehend MV2 (Karbonisierer)
+const int PIN_MV2 = D7;            // Magnetventi2 eingehend MV2 (Karbonisieren)
+
+// Alte PIN Belegung
+// const int PIN_BUZZER = D4;         // Buzzer
+// const int PIN_TEMP = D3;           // DS18B20
+// const int PIN_ENCODER_A = D6;      // CLK Out A
+// const int PIN_ENCODER_B = D5;      // DT Out B
+// const int PIN_ENCODER_BUTTON = D7; // SW Button
+// const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
+// const int PIN_MV2 = D0;            // Magnetventil eingehend MV2 (Karbonisierer)
 
 // Eulersche Zahl
 const double E = exp(1);
@@ -130,6 +143,7 @@ ESP8266HTTPUpdateServer httpUpdate; // Version mit SPIFFS Update
 #define NTP_ADDRESS "europe.pool.ntp.org" // NTP change this to whatever pool is closest (see ntp.org)
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
+WiFiClient tcpClient;
 
 // Definiere Ticker Objekte
 InnuTicker TickerTemp;
@@ -176,6 +190,10 @@ File fsUploadFile; // Datei Object
 String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
 String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat";                                                                                                  // http://spundomat/index.html
+
+// TCP Server (optional)
+int tcpPort = 9501; // TCP server Port
+char tcpHost[16] = "192.168.100.30";   // TCP server IP
 
 // Verzögerung Spundomat
 #define anzAuswahl 3

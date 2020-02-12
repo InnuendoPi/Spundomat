@@ -221,12 +221,12 @@ void showLCD()
     case 1: // Modus einstellen
       lcd.setCursor(8, 0);
       lcd.blink();
-      if (up && setMode < sizeOfModes - 1) // Aus oder CO2
+      if (up && setMode < sizeOfModes - 1)
       {
         setMode++;
         reflashLCD = true;
       }
-      else if (down && setMode > 0) // CO2 oder Druck
+      else if (down && setMode > 0)
       {
         setMode--;
         reflashLCD = true;
@@ -265,6 +265,7 @@ void showLCD()
     break;
 
   case 3: // Switch(page) Kalibrierung
+    reflashLCD = false;
     Menu3[0] = "Kalibrieren?";
     Menu3[1] = "Nein          Ja";
 
@@ -332,6 +333,7 @@ void showLCD()
     }
     break;
   case 4: // Switch(page) Speichern
+    reflashLCD = false;
     Menu4[0] = "Speichern?";
     Menu4[1] = "Nein          Ja";
 

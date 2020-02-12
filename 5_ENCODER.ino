@@ -1,30 +1,32 @@
 // Lese Encoder
+
 void readEncoder()
 {
   if (encoder.getPosition() > encoderOldPos)
   {
-    Serial.println("up");
+    // DEBUG_MSG("%s", "up\n");
     up = true;
     reflashLCD = true;
   }
   else if (encoder.getPosition() < encoderOldPos)
   {
-    Serial.println("down");
+    // DEBUG_MSG("%s", "down\n");
     down = true;
     reflashLCD = true;
   }
   encoderOldPos = encoder.getPosition();
 }
 
-
 // Encoder gedrückt
 void click()
 {
   buttonPressed = true;
   reflashLCD = true;
+  // DEBUG_MSG("%s", "pressed\n");
 }
 
 ICACHE_RAM_ATTR void tick()
 {
   encoder.tick();
+  // DEBUG_MSG("%s", "tick\n");
 }

@@ -2,17 +2,27 @@
 
 ![ov1](/Info/Spundomat01.jpg)
 
-Projekt im Beta Status
+Projekt Spundomat:
+
+Firmware:   Beta Status
+Platine:    Entwicklungsphase
 
 ## Changelog
 
+Version 2.0b4
+
+- Changed:  Pinmap angepasst (Encoder, MV2 Piezo)
+- Removed:  I/O Expander I2C PCF8574
+
 Version 2.0b3
 
+- Test:     I/O Expander I2C PCF8574
 - Added:    Ablaufpläne.txt mit Testwerten gefüllt
 - Added:    Alarmfunktion
 - Added:    Überprüfung Eingabe Web Interface Kalibrierung (0.0 bis 3.5)
 - Added:    Überprüfung Eingabe Web Interface CO2 Gehalt (0.0 bis 8.0)
 - Fixed:    LCD Anzeige Karbonisieren und Spunden CO2 Gehalt statt Druck
+- Fixed:    Reflash LCD in Menüs Einstellungen
 
 Version 2.0b2
 

@@ -9,8 +9,9 @@ Platine:    Entwicklungsphase
 
 ## Changelog
 
-Version 2.0b4
+Version 2.0b5
 
+- Fixed:    Kalibrierung Datentyp
 - Changed:  Pinmap angepasst (Encoder, MV2 Piezo)
 - Removed:  I/O Expander I2C PCF8574
 

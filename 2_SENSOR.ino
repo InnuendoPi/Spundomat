@@ -36,7 +36,15 @@ void readPressure()
 	int sensorValue = analogRead(A0);
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
-	if (offset2 > 0 && offset0 > 0 && sensorValue > offset0) // 2-Punkte-Kalibrierung
+	DEBUG_MSG("offset0 %f offset2 %f\n", offset0, offset2);
+	if (offset0 == 0.0 && offset2 == 0.0)	// keine Kalibrierung
+	{
+		pressure = 0.0;
+		oldPressDisp = pressure;
+		reflashLCD = false;
+		return;
+	}
+	else if (offset2 > 0 && offset0 > 0 && sensorValue > offset0) // 2-Punkte-Kalibrierung
 	{
 		float m = (pressureOffset2 - 0.0) / (offset2 - offset0);
 		float b = pressureOffset2 - m * offset2;
@@ -45,15 +53,12 @@ void readPressure()
 		pressure = m * sensorValue + b;
 		DEBUG_MSG("Senor: %d P: %f offset0: %d offset2: %d m: %f b: %f\n", sensorValue, pressure, offset0, offset2, m, b);
 	}
-	else if (offset0 != 0 && offset2 == 0.0) // 1-Punkt-Kalibrierung
+	else if (offset0 != 0.0 && offset2 == 0.0) // 1-Punkt-Kalibrierung
 	{
 		pressure = (sensorValue * 0.004889 - offset0 * 5.0 / 1023.0) * 1.724;
 		DEBUG_MSG("Senor: %d P: %f offset0: %d \n", sensorValue, pressure, offset0);
 	}
-	else	// keine Kalibrierung
-	{
-		pressure = 0.0;
-	}
+	
 	
 
 	// if (isnan(pressure) || pressure < 0)

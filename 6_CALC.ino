@@ -18,6 +18,9 @@ float calcCarbonation(float Pressure, float Temperature)
 	// if (fabs(pressure < 0.05) || pressure < 0.0)
 	// 	localCarbonation = 0.0;
 	// else
+	// if (Pressure == 0.0)
+	// 	localCarbonation = 0.0;
+	// else
 	localCarbonation = (Pressure + 1.013) * pow(E, (-10.73797 + (2617.25 / (Temperature + 273.15)))) * 10;
 
 	// isnan = not a number - überprüfen!

@@ -407,8 +407,7 @@ void handleSetMisc()
         }
         if (server.argName(i) == "offset2")
         {
-            if (isValidInt(server.arg(i)))
-                offset2 = server.arg(i).toInt();
+            offset2 = formatDOT(server.arg(i));
         }
         if (server.argName(i) == "pressoffset2")
         {

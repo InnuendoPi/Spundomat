@@ -60,7 +60,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0b4";
+const char Version[6] = "2.0b5";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -158,8 +158,8 @@ float oldTemperature;
 char sTemperature[5];
 float voltage;
 //float offsetVoltage = 0.42;
-int offset0 = 0; // Standard Vadc bei 0bar an A0
-int offset2 = 0; // Vadc bei 2bar an A0
+float offset0 = 0.0; // Standard Vadc bei 0bar an A0
+float offset2 = 0.0; // Vadc bei 2bar an A0
 float pressureOffset2 = 2.0;
 float pressure = 0.0;
 float oldPressDisp = 0.0;

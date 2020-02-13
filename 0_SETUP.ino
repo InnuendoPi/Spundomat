@@ -37,7 +37,7 @@ void setup()
 
   Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
   Serial.println(WiFi.SSID());
-  
+
   // Konfiguriere Pinmode PCF8574
   // pcf8574.pinMode(PIN_ENCODER_A, OUTPUT); // Encoder
   // pcf8574.pinMode(PIN_ENCODER_B, OUTPUT); // Encoder
@@ -82,12 +82,12 @@ void setup()
   if (startBuzzer)
   {
     pinMode(PIN_BUZZER, OUTPUT); // D4
-    digitalWrite(PIN_BUZZER, LOW); 
+    digitalWrite(PIN_BUZZER, LOW);
   }
- 
+
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
   attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
-  
+
   button.attachClick(click);
 
   // EEPROM
@@ -114,6 +114,15 @@ void setup()
   if (startBuzzer)
     sendAlarm(ALARM_ON);
   checkLog();
+
+  // Influx Datenbank
+  if (startDB)
+  {
+    setInfluxDB();
+    TickerInfluxDB.start();
+    //checkDBConnect();
+  }
+  
 }
 
 // Webserver

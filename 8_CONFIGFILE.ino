@@ -54,6 +54,30 @@ bool loadConfig()
   // Berechne Verzögerung Karbonisierung im Kombi-Modus
   calcVerzSpundomat();
 
+  // InfluxDB Einstellungen
+  JsonArray databaseArray = doc["DATABASE"];
+  JsonObject databaseObj = databaseArray[0];
+  if (databaseObj.containsKey("STARTDB"))
+    startDB = databaseObj["STARTDB"];
+  if (databaseObj.containsKey("DBSERVER"))
+    strlcpy(dbServer, databaseObj["DBSERVER"], sizeof(dbServer));
+  if (databaseObj.containsKey("DB"))
+    strlcpy(dbDatabase, databaseObj["DB"], sizeof(dbDatabase));
+  if (databaseObj.containsKey("DBUSER"))
+    strlcpy(dbUser, databaseObj["DBUSER"], sizeof(dbUser));
+  if (databaseObj.containsKey("DBPASS"))
+    strlcpy(dbPass, databaseObj["DBPASS"], sizeof(dbPass));
+  if (databaseObj.containsKey("DBUP"))
+    upInflux = databaseObj["DBUP"];
+
+  Serial.printf("Database aktiviert: %d\n", startDB);
+  Serial.printf("DB Server: %s\n", dbServer);
+  Serial.printf("DB: %s\n", dbDatabase);
+  Serial.printf("DB User: %s\n", dbUser);
+  Serial.printf("DB Pass: %s\n", dbPass);
+  Serial.printf("DB Update: %d\n", upInflux); // in Minuten
+  Serial.println("--------");
+
   // Hardware Einstellungen
   JsonArray hwArray = doc["HARDWARE"];
   JsonObject hwObj = hwArray[0];
@@ -152,23 +176,25 @@ bool saveConfig()
   DEBUG_MSG("setCarbonation: %f\n", setCarbonation);
   DEBUG_MSG("verzKombi: %d\n", verzKombi);
   DEBUG_MSG("Einheit: %d\n", setEinheit);
-
-  // Hardware Einstellungen
-  JsonArray hwArray = doc.createNestedArray("HARDWARE");
-  JsonObject hwObj = hwArray.createNestedObject();
-
-  hwObj["MV1"] = startMV1;
-  hwObj["MV1OPEN"] = mv1Open;
-  hwObj["MV1CLOSE"] = mv1Close;
-  hwObj["MV2"] = startMV2;
-  hwObj["MV2OPEN"] = mv2Open;
-  hwObj["MV2CLOSE"] = mv2Close;
-  hwObj["BUZZER"] = startBuzzer;
-  DEBUG_MSG("MV1: %d Open: %d Close %d\n", startMV1, mv1Open, mv1Close);
-  DEBUG_MSG("MV2: %d Open: %d Close %d\n", startMV2, mv2Open, mv2Close);
-  DEBUG_MSG("Buzzer: %d\n", startBuzzer);
   DEBUG_MSG("%s\n", "--------");
 
+  // Datenbank Einstellungen
+  JsonArray databaseArray = doc.createNestedArray("DATABASE");
+  JsonObject databaseObj = databaseArray.createNestedObject();
+  databaseObj["STARTDB"] = startDB;
+  databaseObj["DBSERVER"] = dbServer;
+  databaseObj["DB"] = dbDatabase;
+  databaseObj["DBUSER"] = dbUser;
+  databaseObj["DBPASS"] = dbPass;
+  databaseObj["DBUP"] = upInflux;
+  DEBUG_MSG("Database aktiviert: %d\n", startDB);
+  DEBUG_MSG("DB Server: %s\n", dbServer);
+  DEBUG_MSG("DB: %s\n", dbDatabase);
+  DEBUG_MSG("DB User: %s\n", dbUser);
+  DEBUG_MSG("DB Pass: %s\n", dbPass);
+  DEBUG_MSG("DB Update: %d\n", upInflux);
+  DEBUG_MSG("%s\n", "--------");
+  
   // System Einstellungen
   JsonArray miscArray = doc.createNestedArray("MISC");
   JsonObject miscObj = miscArray.createNestedObject();
@@ -284,3 +310,4 @@ bool saveConfig()
     break;
   }
 }
+

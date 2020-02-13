@@ -179,4 +179,5 @@ void setTicker() // Ticker Objekte deklarieren
   TickerEncoder.config(tickerEncoderCallback, ENCODER_UPDATE, 0);
   TickerButton.config(tickerButtonCallback, BUTTON_UPDATE, 0);
   TickerSpundomat.config(tickerSpundomatCallback, SPUNDOMAT_UPDATE, 0);
+  TickerInfluxDB.config(tickerInfluxDBCallback, upInflux, 0);
 }

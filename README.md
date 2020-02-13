@@ -9,6 +9,10 @@ Platine:    Entwicklungsphase
 
 ## Changelog
 
+Version 2.0b6
+
+- Added:    InfluxDB für Grafana implementiert
+
 Version 2.0b5
 
 - Fixed:    Kalibrierung Datentyp

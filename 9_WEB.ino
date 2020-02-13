@@ -219,6 +219,39 @@ void handleRequestMisc()
         message += Version;
         goto SendMessage;
     }
+    if (request == "dbserver")
+    {
+        message = dbServer;
+        goto SendMessage;
+    }
+    if (request == "startdb")
+    {
+        if (startDB)
+            message = "1";
+        else
+            message = "0";
+        goto SendMessage;
+    }
+    if (request == "dbdatabase")
+    {
+        message = dbDatabase;
+        goto SendMessage;
+    }
+    if (request == "dbuser")
+    {
+        message = dbUser;
+        goto SendMessage;
+    }
+    if (request == "dbpass")
+    {
+        message = dbPass;
+        goto SendMessage;
+    }
+    if (request == "dbup")
+    {
+        message = (upInflux / (1000 * 60));
+        goto SendMessage;
+    }
 
 SendMessage:
     server.send(200, "text/plain", message);
@@ -413,6 +446,42 @@ void handleSetMisc()
         {
             if (checkRangeDruck(server.arg(i)))
                 pressureOffset2 = formatDOT(server.arg(i));
+        }
+
+        if (server.argName(i) == "dbserver")
+        {
+            server.arg(i).toCharArray(dbServer, 30);
+            checkChars2(dbServer);
+        }
+        if (server.argName(i) == "startdb")
+        {
+            if (server.arg(i) == "1")
+                startDB = true;
+            else
+                startDB = false;
+        }
+        if (server.argName(i) == "dbdatabase")
+        {
+            server.arg(i).toCharArray(dbDatabase, 15);
+            checkChars2(dbDatabase);
+        }
+        if (server.argName(i) == "dbuser")
+        {
+            server.arg(i).toCharArray(dbUser, 15);
+            checkChars2(dbUser);
+        }
+        if (server.argName(i) == "dbpass")
+        {
+            server.arg(i).toCharArray(dbPass, 15);
+            checkChars2(dbPass);
+        }
+
+        if (server.argName(i) == "dbup")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                upInflux = server.arg(i).toInt() * 1000 * 60;
+            }
         }
         yield();
     }

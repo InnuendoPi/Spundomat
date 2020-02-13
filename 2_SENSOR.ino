@@ -36,7 +36,7 @@ void readPressure()
 	int sensorValue = analogRead(A0);
 	// Skaliere Analogwert auf 5V
 	voltage = (sensorValue * 5.0) / 1023.0;
-	DEBUG_MSG("offset0 %f offset2 %f\n", offset0, offset2);
+	
 	if (offset0 == 0.0 && offset2 == 0.0)	// keine Kalibrierung
 	{
 		pressure = 0.0;

@@ -26,6 +26,9 @@ void loop()
   TickerEncoder.update();
   TickerButton.update();
 
+  // InfluxDB Ticker
+  TickerInfluxDB.update();
+
   if (reflashLCD)
     showLCD();
 

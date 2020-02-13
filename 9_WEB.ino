@@ -284,6 +284,7 @@ void handleSetMisc()
             if (server.arg(i) == "1")
             {
                 SPIFFS.remove("/config.txt");
+                eraseEeprom();
                 WiFi.disconnect();
                 wifiManager.resetSettings();
                 millis2wait(PAUSE2SEC);

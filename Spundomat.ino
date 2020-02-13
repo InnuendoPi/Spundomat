@@ -108,8 +108,8 @@ const int PIN_MV2 = D7;            // Magnetventi2 eingehend MV2 (Karbonisieren)
 // Alte PIN Belegung
 // const int PIN_BUZZER = D4;         // Buzzer
 // const int PIN_TEMP = D3;           // DS18B20
-// const int PIN_ENCODER_A = D6;      // CLK Out A
-// const int PIN_ENCODER_B = D5;      // DT Out B
+// const int PIN_ENCODER_A = D5;      // CLK Out A
+// const int PIN_ENCODER_B = D6;      // DT Out B
 // const int PIN_ENCODER_BUTTON = D7; // SW Button
 // const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
 // const int PIN_MV2 = D0;            // Magnetventil eingehend MV2 (Karbonisierer)

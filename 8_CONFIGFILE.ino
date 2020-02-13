@@ -178,6 +178,21 @@ bool saveConfig()
   DEBUG_MSG("Einheit: %d\n", setEinheit);
   DEBUG_MSG("%s\n", "--------");
 
+  // Hardware Einstellungen
+  JsonArray hwArray = doc.createNestedArray("HARDWARE");
+  JsonObject hwObj = hwArray.createNestedObject();
+  hwObj["MV1"] = startMV1;
+  hwObj["MV1OPEN"] = mv1Open;
+  hwObj["MV1CLOSE"] = mv1Close;
+  hwObj["MV2"] = startMV2;
+  hwObj["MV2OPEN"] = mv2Open;
+  hwObj["MV2CLOSE"] = mv2Close;
+  hwObj["BUZZER"] = startBuzzer;
+  DEBUG_MSG("MV1: %d Open: %d Close %d\n", startMV1, mv1Open, mv1Close);
+  DEBUG_MSG("MV2: %d Open: %d Close %d\n", startMV2, mv2Open, mv2Close);
+  DEBUG_MSG("Buzzer: %d\n", startBuzzer);
+  DEBUG_MSG("%s\n", "--------");
+
   // Datenbank Einstellungen
   JsonArray databaseArray = doc.createNestedArray("DATABASE");
   JsonObject databaseObj = databaseArray.createNestedObject();

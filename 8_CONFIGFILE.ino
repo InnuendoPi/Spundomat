@@ -149,7 +149,7 @@ bool loadConfig()
     file.close();
   }
 
-  setMode = AUS;
+  //setMode = AUS;
 
   // Setze Intervalle für Ticker Objekte
   TickerPressure.interval(upPressure);

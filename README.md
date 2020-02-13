@@ -12,6 +12,8 @@ Platine:    Entwicklungsphase
 Version 2.0b6
 
 - Added:    InfluxDB für Grafana implementiert
+- Changed:  DT und CLK getauscht
+- Changed:  Der Betriebsmodus wird nun beim Neustart wieder hergestellt
 
 Version 2.0b5
 

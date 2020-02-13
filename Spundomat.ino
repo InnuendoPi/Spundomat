@@ -99,8 +99,8 @@ const int PIN_PRESSURE = A0;       // Drucksensor
 // Neue PIN Belegung 20200212
 const int PIN_BUZZER = D6;         // Buzzer
 const int PIN_TEMP = D3;           // DS18B20
-const int PIN_ENCODER_A = D0;      // CLK Out A
-const int PIN_ENCODER_B = D5;      // DT Out B
+const int PIN_ENCODER_A = D5;      // CLK Out A
+const int PIN_ENCODER_B = D0;      // DT Out B
 const int PIN_ENCODER_BUTTON = D4; // SW Button
 const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
 const int PIN_MV2 = D7;            // Magnetventi2 eingehend MV2 (Karbonisieren)

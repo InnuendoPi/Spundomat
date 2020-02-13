@@ -10,7 +10,7 @@ bool loadConfig()
   }
 
   size_t size = configFile.size();
-  if (size > 768)
+  if (size > 1024)
   {
     Serial.print("*** SYSINFO: Konfigurationsdatei zu groß");
     Serial.println("------ loadConfig aborted -------");
@@ -19,7 +19,7 @@ bool loadConfig()
     return false;
   }
 
-  StaticJsonDocument<768> doc;
+  StaticJsonDocument<1024> doc;
   DeserializationError error = deserializeJson(doc, configFile);
   if (error)
   {
@@ -132,7 +132,7 @@ bool loadConfig()
   configFile.close();
   size_t len = measureJson(doc);
   DEBUG_MSG("*** SYSINFO: JSON Konfiguration Größe: %d\n", len);
-  if (len > 768)
+  if (len > 1024)
     Serial.println("*** SYSINFO: Fehler JSON Konfiguration zu groß!");
 
   mv1.change(mv1Open, mv1Close, startMV1);
@@ -163,7 +163,7 @@ bool loadConfig()
 bool saveConfig()
 {
   DEBUG_MSG("%s\n", "------ saveConfig started -------");
-  StaticJsonDocument<768> doc;
+  StaticJsonDocument<1024> doc;
   // Spundomat Einstellungen
   JsonArray spundArray = doc.createNestedArray("SPUNDOMAT");
   JsonObject spundObj = spundArray.createNestedObject();
@@ -232,7 +232,7 @@ bool saveConfig()
 
   size_t len = measureJson(doc);
   int memoryUsed = doc.memoryUsage();
-  if (len > 768 || memoryUsed > 768)
+  if (len > 1024 || memoryUsed > 1024)
   {
     DEBUG_MSG("JSON config length: %d\n", len);
     DEBUG_MSG("JSON memory usage: %d\n", memoryUsed);

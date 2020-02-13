@@ -96,7 +96,7 @@ const char Version[6] = "2.0b6";
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
 
-// Neue PIN Belegung 20200212
+// Neue PIN Belegung 20200213
 const int PIN_BUZZER = D6;         // Buzzer
 const int PIN_TEMP = D3;           // DS18B20
 const int PIN_ENCODER_A = D5;      // CLK Out A

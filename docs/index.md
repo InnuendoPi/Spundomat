@@ -387,6 +387,14 @@ Der Spundomat unterstützt die Visualisierung mit der OpenSource Grafana. Zum ak
 
 ![Grafana](img/grafana.png)
 
+**Vor der Installation:**
+
+Vor der Installation sollte der Raspberry aktualisiert werden:
+
+* sudo apt-get update
+* sudo apt-get upgrade
+* sudo reboot
+
 **Installation Datenbank:**
 
 Installation der Datenbank InfluxDB:

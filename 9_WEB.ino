@@ -88,6 +88,7 @@ void handleRequestMiscSet()
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
     doc["buzzer"] = startBuzzer;
+    doc["startdb"] = startDB;
     String response;
     serializeJson(doc, response);
     server.send(200, "application/json", response);

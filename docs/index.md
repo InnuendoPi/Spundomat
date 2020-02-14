@@ -186,13 +186,28 @@ Ebenfalls un den Grundeinstellungen im Tab System können die Zeitintervall zum 
 
 Das Zeitintervall für das Lesen vom Drucksensor ist lediglich eine Grundeinstellung. Je nach Anforderung und Betriebsmodus werden Daten bei Bedarf und nicht nach Ablauf eines Zeitintervalls abgefragt. In Ablaufplänen wird das Abfrageintervall für den Durcksensor deaktiviert und nach den konfigurierten Zeiten für das Öffenen und Schließen der Magnetventile der Durcksensor abgefragt. Der Standardwert lautet 1000ms.
 
+**Grafana:**
+
+Der Spundomat unterstützt die Visualisierung mit der OpenSource Software Grafana. Der Spundomat schreibt direkt in die Datenbank InfluxDB. Es wird aktuell nur die lokale Installation unterstützt. Folgende Parameter sind erforderlich:
+
+* Influx Datenbank Server: <http://raspberrypi_IP:8086>
+
+  Die URL besteht aus der IP Adresse vom RaspberryPI und dem Port getrennt durch ein Doppelpunkt besteht. Der Standard-Port ist 8086.
+* Datenbank Name: hier muss der Name der Datenbank in Influx eingetragen werden. Standard: spundomat (siehe Installation und Konfiguration Datenbank)
+* Benutzername und Password (optional - siehe Installation und Konfiguration Datenbank)
+* Update Intervall: Zeitintervall in Minuten. Default: 5 Minuten
+
+  Das Update Intervall gibt an, wie häufig der Spundomat seine Sensordaten in die Datenbank schreibt.
+
+Wenn die Option Grafana erstmalig aktiviert wird, muss der Spundomat einmal neu gestartet werden.
+
 **Restore:**
 
 Das Menü für die Grundeinstellung bietet Funktionen, um Einstellungen und KOnfigurationen vom Wemos D1 mini zu löschen. Zur Auswahl stehen
 
-* lösche Kalibrierung. Hiermit wird der im Eeprom gespeicherte Offset für den Durcksensor gelöscht
+* lösche Kalibrierung. Hiermit wird der im Eeprom gespeicherte Offset und die Kalibrierung bei 2bar aus der Konfiguration für den Durcksensor gelöscht.
 * Lösche WiFi
-* Reset to defaults (Lösche WiFi und die Spundomat Konfigruation)
+* Reset to defaults (Lösche WiFi, lösche 0bar Kalibrierung aus dem Eeprom und lösche die Spundomat Konfigruation)
 
 # Der Spundomat im Betrieb
 
@@ -365,3 +380,77 @@ Diese Einstellungen müsen vorab durchgeführt werden! Ohne diese Einstellung ka
 2. Möglichkeit: Zwangskarbonisierung
 
 ![Karbonisieren](img/Zwangskarbonisieren.jpg)
+
+# Visualisierung
+
+Der Spundomat unterstützt die Visualisierung mit der OpenSource Grafana. Zum aktuellen Zeitpunkt wird nur die lokalen Version unterstützt. In dieser Anleitung wird die Installation und Konfiguration auf einem RaspberryPi beschrieben.
+
+![Grafana](img/grafana.png)
+
+**Installation Datenbank:**
+
+Installation der Datenbank InfluxDB:
+
+Mit shh (bspw. Putty) anmelden und die folgenden Befehle ausführen
+
+1. wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+  
+2. Wenn auf dem RaspberryPi die OS Version "stretch" installiert ist
+  echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+  
+  oder wenn auf dem RaspberryPi die OS Version "buster" installiert ist
+  
+  echo "deb https://repos.influxdata.com/debian buster stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+3. sudo apt update
+4. sudo apt install influxdb
+5. sudo systemctl unmask influxdb
+6. sudo systemctl enable influxdb
+
+Die Datenbank InfluxDB ist mit diesen 6 Schritten installiert und startet automatisch bei jedem Neustart vom RaspberryPi
+
+**Konfiguration Datenbank:**
+
+Datenbank und Benutzer einrichten:
+
+Mit shh (bspw. Putty) anmelden und den folgenden Befehl ausführen
+
+* Influxdb
+
+Die folgenden Datenbank Befehle der Reihe nach eingeben. Das Password xxx durch ein eigenes Password ersetzen. Die Anführungstriche müssen bleiben!
+
+* CREATE DATABASE spundomat
+* CREATE USER pi WITH PASSWORD 'xxx' WITH ALL PRIVILEGES
+
+Zugriff auf die Datenbank einrichten:
+
+* sudo nano /etc/influxdb/influxdb.conf
+  Mit der Tastenkombination Strg+W nach HTTP suchen. In diesem Abschnitt muss mindestens aktiviert werden:
+
+* enabled = true
+* bind-address = ":8086"
+
+Diese zwei Einträge sind das Minimum. Es wird dringend empfohlen, eine Benutzer und Password Abfrage zu aktivieren.
+Die Änderung wird mit der Tastenkombination Strg+O gespeichert. Den Editor beenden mit Strg+X.
+
+Abschließend muss die Datenbank neu gestartet werden:
+
+* sudo systemctl restart influxdb
+
+**Installation Grafana:**
+
+Vor der Eingabe der Befehle die aktuelle Version Grafana überprüfen und in Schritt 1 und 2 die Versionsnummer 6.6.1 ersetzen.
+
+1. wget https://dl.grafana.com/oss/release/grafana_6.6.1_armhf.deb
+2. sudo dpkg -i grafana_6.6.1_armhf.deb
+3. sudo systemctl enable grafana-server
+4. sudo systemctl start grafana-server
+
+Im Grafana Web Interface muss nun abschließend nur noch die DataSource InfluxDB hinzugefügt werden.
+
+* URL: <http://ip_rasberrypi:8086>
+* Database: spundomat
+* User: pi
+* Password: xxx
+* HTTP Method: POST
+
+Mit "Save & Test" wird die Verbindung gespeichert und überprüft. Nun kann entweder das Beispiel-Dashboard Spundomat (Datei Spundomat Dashboard.json) aus dem Ordner Info in Grafana importiert oder ein eigenes Dashboard erstellt werden.

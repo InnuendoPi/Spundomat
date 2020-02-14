@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0b6";
+const char Version[6] = "2.0b7";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -148,13 +148,12 @@ NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 InfluxDBClient client;
 Point sensor("spundomat_status");
 bool startDB = true;
-//char dbServer[30] = "http://192.168.100.30:8086";     // InfluxDB Server IP
-char dbServer[30] = "http://172.22.100.22:8086";     // InfluxDB Server IP
+char dbServer[30] = "http://192.168.100.30:8086";     // InfluxDB Server IP
+//char dbServer[30] = "http://172.22.100.22:8086";     // InfluxDB Server IP
 char dbUser[15] = "";
 char dbPass[15] = "";
 char dbDatabase[15] = "spundomat";
 unsigned long upInflux = 30000;
-
 
 // Definiere Ticker Objekte
 InnuTicker TickerTemp;

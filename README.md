@@ -7,7 +7,19 @@ Projekt Spundomat:
 Firmware:   Beta Status
 Platine:    Entwicklungsphase
 
+Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
+
 ## Changelog
+
+Version 2.0b7
+
+- Fixed:    loadConfig korrigiert (JSON Hardware Block versehentlich entfernt)
+- Fixed:    JSON doc size
+- Changed:  Dashboard Datenbank Verbindung hinzugefügt
+- Added:    Ticker Objekt für den Datenbankzugriff
+- Fixed:    Reset to defaults beinhaltet nun auch lösche Kalibrierung aus Eeprom
+- Removed:  TCPServer Unterstützung gelöscht. Das Projekt Tozzi Server wird vorerst nicht weiter verfolgt
+- Changed:  PIN Mapping (Herberts Enocder li/re)
 
 Version 2.0b6
 
@@ -108,5 +120,3 @@ Version 2.0
 - Add:      Anzeige IP und WLAN im Display
 - Add:      Menü Speichern der Konfiguration im Display
 - Removed:  Delay Befehle
-
-Dokumentation unter: <https://innuendopi.github.io/Spundomat/>

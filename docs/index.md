@@ -393,18 +393,18 @@ Installation der Datenbank InfluxDB:
 
 Mit shh (bspw. Putty) anmelden und die folgenden Befehle ausführen
 
-1. wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+* wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
   
-2. Wenn auf dem RaspberryPi die OS Version "stretch" installiert ist
+* Wenn auf dem RaspberryPi die OS Version "stretch" installiert ist
   echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
   
   oder wenn auf dem RaspberryPi die OS Version "buster" installiert ist
   
   echo "deb https://repos.influxdata.com/debian buster stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-3. sudo apt update
-4. sudo apt install influxdb
-5. sudo systemctl unmask influxdb
-6. sudo systemctl enable influxdb
+* sudo apt update
+* sudo apt install influxdb
+* sudo systemctl unmask influxdb
+* sudo systemctl enable influxdb
 
 Die Datenbank InfluxDB ist mit diesen 6 Schritten installiert und startet automatisch bei jedem Neustart vom RaspberryPi
 

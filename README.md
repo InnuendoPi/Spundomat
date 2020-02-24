@@ -13,6 +13,12 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 Version 2.0b7
 
+- Changed:  Pinbelegung
+- Changed:  Alarme
+- Fixed:    Update Log
+
+Version 2.0b7
+
 - Fixed:    loadConfig korrigiert (JSON Hardware Block versehentlich entfernt)
 - Fixed:    JSON doc size
 - Changed:  Dashboard Datenbank Verbindung hinzugefügt

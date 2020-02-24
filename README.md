@@ -11,7 +11,7 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.0b7
+Version 2.0b8
 
 - Changed:  Pinbelegung
 - Changed:  Alarme

@@ -449,7 +449,6 @@ void handleSetMisc()
             if (checkRangeDruck(server.arg(i)))
                 pressureOffset2 = formatDOT(server.arg(i));
         }
-
         if (server.argName(i) == "dbserver")
         {
             server.arg(i).toCharArray(dbServer, 30);

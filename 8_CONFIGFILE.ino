@@ -26,7 +26,7 @@ bool loadConfig()
     Serial.print("Conf: Error Json ");
     Serial.println(error.c_str());
     if (startBuzzer)
-      sendAlarm(ALARM_PANIC);
+      sendAlarm(ALARM_ERROR);
     return false;
   }
   // Spundomat Einstellungen
@@ -156,8 +156,10 @@ bool loadConfig()
   TickerTemp.interval(upTemp);
   TickerSpundomat.interval(SPUNDOMAT_UPDATE);
   TickerSpundomat.stop();
-  if (startBuzzer)
+  if (startBuzzer && setMode == AUS)
     sendAlarm(ALARM_OK);
+  else if (startBuzzer)
+    sendAlarm(ALARM_ON);
 }
 
 bool saveConfig()
@@ -209,7 +211,7 @@ bool saveConfig()
   DEBUG_MSG("DB Pass: %s\n", dbPass);
   DEBUG_MSG("DB Update: %d\n", upInflux);
   DEBUG_MSG("%s\n", "--------");
-  
+
   // System Einstellungen
   JsonArray miscArray = doc.createNestedArray("MISC");
   JsonObject miscObj = miscArray.createNestedObject();
@@ -238,6 +240,8 @@ bool saveConfig()
     DEBUG_MSG("JSON memory usage: %d\n", memoryUsed);
     DEBUG_MSG("%s\n", "Failed to write config file - config too large");
     DEBUG_MSG("%s\n", "------ saveConfig aborted ------");
+    if (startBuzzer)
+      sendAlarm(ALARM_ERROR);
     return false;
   }
 
@@ -274,16 +278,16 @@ bool saveConfig()
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);
   DEBUG_MSG("%s\n", "------------");
-
-  // Ablaufpläne
-  if (startBuzzer)
-    sendAlarm(ALARM_OK);
+  if (setMode != AUS && startBuzzer)
+    sendAlarm(ALARM_ON);
 
   switch (setMode)
   {
   case AUS: // aus
     mv1.switchOff();
     mv2.switchOff();
+    if (startBuzzer)
+      sendAlarm(ALARM_OFF);
     break;
   case SPUNDEN_CO2: // CO2 Spunden
     mv2.switchOff();
@@ -325,4 +329,3 @@ bool saveConfig()
     break;
   }
 }
-

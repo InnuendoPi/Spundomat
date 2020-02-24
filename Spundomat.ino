@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0b7";
+const char Version[6] = "2.0b8";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -90,29 +90,19 @@ const char Version[6] = "2.0b7";
 #define ALARM_OFF 2
 #define ALARM_OK 3
 #define ALARM_ERROR 4
-#define ALARM_PANIC 5
 
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
 
 // Neue PIN Belegung 20200213
-const int PIN_BUZZER = D6;         // Buzzer
+const int PIN_BUZZER = D7;         // Buzzer
 const int PIN_TEMP = D3;           // DS18B20
-const int PIN_ENCODER_A = D5;      // CLK Out A
-const int PIN_ENCODER_B = D0;      // DT Out B
+const int PIN_ENCODER_A = D6;      // CLK Out A
+const int PIN_ENCODER_B = D5;      // DT Out B
 const int PIN_ENCODER_BUTTON = D4; // SW Button
 const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
-const int PIN_MV2 = D7;            // Magnetventi2 eingehend MV2 (Karbonisieren)
-
-// Alte PIN Belegung
-// const int PIN_BUZZER = D4;         // Buzzer
-// const int PIN_TEMP = D3;           // DS18B20
-// const int PIN_ENCODER_A = D5;      // CLK Out A
-// const int PIN_ENCODER_B = D6;      // DT Out B
-// const int PIN_ENCODER_BUTTON = D7; // SW Button
-// const int PIN_MV1 = D8;            // Magnetventil ausgehend MV1 (Spunder)
-// const int PIN_MV2 = D0;            // Magnetventil eingehend MV2 (Karbonisierer)
+const int PIN_MV2 = D0;            // Magnetventi2 eingehend MV2 (Karbonisieren)
 
 // Eulersche Zahl
 const double E = exp(1);
@@ -147,7 +137,7 @@ NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 // Influx Server (optional)
 InfluxDBClient client;
 Point sensor("spundomat_status");
-bool startDB = true;
+bool startDB = false;
 char dbServer[30] = "http://192.168.100.30:8086";     // InfluxDB Server IP
 //char dbServer[30] = "http://172.22.100.22:8086";     // InfluxDB Server IP
 char dbUser[15] = "";

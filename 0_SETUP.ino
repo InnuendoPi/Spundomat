@@ -38,12 +38,6 @@ void setup()
   Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
   Serial.println(WiFi.SSID());
 
-  // Konfiguriere Pinmode PCF8574
-  // pcf8574.pinMode(PIN_ENCODER_A, OUTPUT); // Encoder
-  // pcf8574.pinMode(PIN_ENCODER_B, OUTPUT); // Encoder
-  // pcf8574.pinMode(PIN_ENCODER_BUTTON, OUTPUT); // Encoder
-  // pcf8574.pinMode(PIN_BUZZER, OUTPUT); // Buzzer
-
   // Erstelle Ticker
   setTicker();
 
@@ -85,8 +79,8 @@ void setup()
     digitalWrite(PIN_BUZZER, LOW);
   }
 
-  attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D5
-  attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D6
+  attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), tick, CHANGE); // D0
+  attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), tick, CHANGE); // D5
 
   button.attachClick(click);
 
@@ -111,8 +105,6 @@ void setup()
 
   // Uhrzeit
   Serial.printf("*** SYSINFO: %s\n", timeClient.getFormattedTime().c_str());
-  if (startBuzzer)
-    sendAlarm(ALARM_ON);
   checkLog();
 
   // Influx Datenbank
@@ -122,7 +114,6 @@ void setup()
     TickerInfluxDB.start();
     //checkDBConnect();
   }
-  
 }
 
 // Webserver

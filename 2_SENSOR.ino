@@ -51,12 +51,12 @@ void readPressure()
 
 		//pressure = m * sensorValue * 5.0 / 1023.0 + b;
 		pressure = m * sensorValue + b;
-		DEBUG_MSG("Senor: %d P: %f offset0: %d offset2: %d m: %f b: %f\n", sensorValue, pressure, offset0, offset2, m, b);
+		//DEBUG_MSG("Sensor: %d P: %f offset0: %d offset2: %d m: %f b: %f\n", sensorValue, pressure, offset0, offset2, m, b);
 	}
 	else if (offset0 != 0.0 && offset2 == 0.0) // 1-Punkt-Kalibrierung
 	{
 		pressure = (sensorValue * 0.004889 - offset0 * 5.0 / 1023.0) * 1.724;
-		DEBUG_MSG("Senor: %d P: %f offset0: %d \n", sensorValue, pressure, offset0);
+		//DEBUG_MSG("Senor: %d P: %f offset0: %d \n", sensorValue, pressure, offset0);
 	}
 	
 	

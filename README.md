@@ -13,6 +13,10 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 Version 2.0b8
 
+- Changed:  2. Kalibrierung nun fest auf 2bar (Konfig entfernt)
+- Fixed:    NaN wenn 1. Kalibrierung nicht ausgeführt wurde
+- Reworked: WebIf
+- Fixed:    Korrektur Standardwerte wenn keine config.txt vorhanden ist
 - Changed:  Pinbelegung
 - Changed:  Alarme
 - Fixed:    Update Log

@@ -198,14 +198,14 @@ void handleRequestMisc()
         message = setEinheit;
         goto SendMessage;
     }
+    if (request == "offset")
+    {
+        message = offset0;
+        goto SendMessage;
+    }
     if (request == "offset2")
     {
         message = offset2;
-        goto SendMessage;
-    }
-    if (request == "pressoffset2")
-    {
-        message = pressureOffset2;
         goto SendMessage;
     }
     if (request == "firmware")
@@ -250,7 +250,7 @@ void handleRequestMisc()
     }
     if (request == "dbup")
     {
-        message = (upInflux / (1000 * 60));
+        message = (upInflux / 1000);
         goto SendMessage;
     }
 
@@ -444,11 +444,6 @@ void handleSetMisc()
         {
             offset2 = formatDOT(server.arg(i));
         }
-        if (server.argName(i) == "pressoffset2")
-        {
-            if (checkRangeDruck(server.arg(i)))
-                pressureOffset2 = formatDOT(server.arg(i));
-        }
         if (server.argName(i) == "dbserver")
         {
             server.arg(i).toCharArray(dbServer, 30);
@@ -481,7 +476,7 @@ void handleSetMisc()
         {
             if (isValidInt(server.arg(i)))
             {
-                upInflux = server.arg(i).toInt() * 1000 * 60;
+                upInflux = server.arg(i).toInt() * 1000;
             }
         }
         yield();

@@ -134,10 +134,6 @@
                 <label for="modal_misc_intervall_temp">Intervall lese Temperatursensor in ms</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_interval_temp" />
               </div>
-			  <div class="form-group">
-                <label for="modal_misc_press_offset2">2. Kalibrierung bei (bar) </label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_press_offset2" />
-              </div>
 				<br />
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_mdns" />
@@ -155,22 +151,22 @@
             </div>
 			<div class="tab-pane fade" id="misc5" role="tabpanel" aria-labelledby="misc5-tab">
               <br />
-              <label class="form-check-label">Visualisierung mit Grafana und InfluxDB</label>
+              <label class="form-check-label">Visualisierung Spundomat Daten</label>
               <br />
 			  <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_db_enable" />
                 <label class="form-check-label" for="modal_misc_db_enable">Aktiviere Grafana (Spundomat Neustart erforderlich!)</label>
               </div>
 			  <div class="form-group">
-                <label for="modal_misc_db_server">Influx Datenbank Server IP (http://192.168.1.10:8086)</label>
+                <label for="modal_misc_db_server">Influx Datenbank Server IP:Port (http://192.168.1.10:8086)</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_db_server" />
               </div>
 			  <div class="form-group">
-                <label for="modal_misc_db_database">Datenbank Name (spundomat)</label>
+                <label for="modal_misc_db_database">Datenbank Name</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_db_database" />
               </div>
 			  <div class="form-group">
-                <label for="modal_misc_db_user">Datenbank Benutzer (pi)</label>
+                <label for="modal_misc_db_user">Datenbank Benutzer</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_db_user" />
               </div>
 			  <div class="form-group">
@@ -178,7 +174,7 @@
                 <input type="text" class="form-control" placeholder="" id="modal_misc_db_pass" />
               </div>
 			  <div class="form-group">
-                <label for="modal_misc_db_up">Update Intervall Datenbank (min)</label>
+                <label for="modal_misc_db_up">Update Intervall Datenbank (sek)</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_db_up" />
               </div>
             </div>
@@ -296,17 +292,16 @@
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>1. Kalibrierung bei 0 bar <span class='badge ";
         if (data.offset == "0")
         {
-          miscRender += " badge-danger'> 1. Kalibrierung ausführen";
+          miscRender += " badge-danger'>Kalibrierung bei 0bar ausführen";
         }
         else {
           miscRender += " badge-success'> ok";
         }
-		miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>2. Kalibrierung bei ";
-		miscRender += data.pressoffset2;
-		miscRender += " bar <span class='badge >";
+		miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>2. Kalibrierung bei 2bar";
+		miscRender += "<span class='badge >";
         if (data.offset2 == "0")
         {
-          miscRender += " badge-danger'> 2. Kalibrierung ausführen";
+          miscRender += " badge-danger'>Kalibrierung bei 2bar ausführen";
         }
         else {
           miscRender += " badge-success'> ok";
@@ -340,7 +335,7 @@
         else {
           miscRender += " badge-dark'> Deaktiviert";
         }
-        miscRender += " </span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Datenbankverbindung InfluxDB (Grafana) <span class='badge ";
+        miscRender += " </span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Visualisierung InfluxDB (Grafana) <span class='badge ";
         if (data.startdb) {
           miscRender += " badge-success'> Aktiviert";
         }
@@ -413,7 +408,6 @@
 	  var buzzer;
 	  var testmode;
 	  var offset2;
-	  var pressoffset2;
 	  var startdb;
 	  var dbserver;
 	  var dbdatabase;
@@ -549,16 +543,6 @@
         cache: false,
         success: function (data) {
           offset2 = data;
-        }
-      });
-	  $.ajax({
-        url: '/reqMisc?req=pressoffset2',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          pressoffset2 = data;
         }
       });
 	  $.ajax({
@@ -750,8 +734,8 @@
 	  modal.find('#modal_misc_interval_pressure').val(uppressure)
 	  modal.find('#modal_misc_interval_temp').val(uptemp)
 	  modal.find('#modal_misc_kombi').val(kombi)
+	  modal.find('#modal_misc_offset').val(offset)
 	  modal.find('#modal_misc_offset2').val(offset2)
-	  modal.find('#modal_misc_press_offset2').val(pressoffset2)
 	  modal.find('#modal_misc_db_server').val(dbserver)
 	  modal.find('#modal_misc_db_database').val(dbdatabase)
 	  modal.find('#modal_misc_db_user').val(dbuser)
@@ -774,7 +758,6 @@
 	  var mv2close = modal.find('#modal_misc_mv2close').val()
 	  var uppressure = modal.find('#modal_misc_interval_pressure').val()
 	  var uptemp = modal.find('#modal_misc_interval_temp').val()
-	  var pressoffset2 = modal.find('#modal_misc_press_offset2').val()
 	  var dbserver = modal.find('#modal_misc_db_server').val()
 	  var dbdatabase = modal.find('#modal_misc_db_database').val()
 	  var dbuser = modal.find('#modal_misc_db_user').val()
@@ -854,7 +837,7 @@
       }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + kombi + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode + '&pressoffset2=' + pressoffset2 + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + kombi + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup,
         type: 'POST',
         dataType: 'html',
         async: false,

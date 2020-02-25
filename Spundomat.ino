@@ -75,6 +75,7 @@ const char Version[6] = "2.0b8";
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
 #define SPUNDOMAT_UPDATE 1000
+#define DB_UPDATE 30000
 #define AUS 0
 #define SPUNDOMAT 1
 #define SPUNDEN_CO2 2
@@ -143,7 +144,7 @@ char dbServer[30] = "http://192.168.100.30:8086";     // InfluxDB Server IP
 char dbUser[15] = "";
 char dbPass[15] = "";
 char dbDatabase[15] = "spundomat";
-unsigned long upInflux = 30000;
+unsigned long upInflux = DB_UPDATE;
 
 // Definiere Ticker Objekte
 InnuTicker TickerTemp;
@@ -161,7 +162,7 @@ float voltage;
 //float offsetVoltage = 0.42;
 float offset0 = 0.0; // Standard Vadc bei 0bar an A0
 float offset2 = 0.0; // Vadc bei 2bar an A0
-float pressureOffset2 = 2.0;
+#define pressureOffset2 2.0
 float pressure = 0.0;
 float oldPressDisp = 0.0;
 float displayPressure = 0.0;

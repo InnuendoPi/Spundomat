@@ -42,21 +42,23 @@ void readPressure()
 		pressure = 0.0;
 		oldPressDisp = pressure;
 		reflashLCD = false;
+		DEBUG_MSG("Keine Kalibrierung Sensor: %d P: %f\n", sensorValue, pressure);
 		return;
 	}
-	else if (offset2 > 0 && offset0 > 0 && sensorValue > offset0) // 2-Punkte-Kalibrierung
+	//else if (offset2 > 0 && offset0 > 0 && sensorValue > offset0) // 2-Punkte-Kalibrierung
+	else if (offset2 > 0 && offset0 > 0) // 2-Punkte-Kalibrierung
 	{
 		float m = (pressureOffset2 - 0.0) / (offset2 - offset0);
 		float b = pressureOffset2 - m * offset2;
 
 		//pressure = m * sensorValue * 5.0 / 1023.0 + b;
 		pressure = m * sensorValue + b;
-		//DEBUG_MSG("Sensor: %d P: %f offset0: %d offset2: %d m: %f b: %f\n", sensorValue, pressure, offset0, offset2, m, b);
+		DEBUG_MSG("2-Punkte Kalibrierung Sensor: %d P: %f offset0: %d offset2: %d m: %f b: %f\n", sensorValue, pressure, offset0, offset2, m, b);
 	}
 	else if (offset0 != 0.0 && offset2 == 0.0) // 1-Punkt-Kalibrierung
 	{
 		pressure = (sensorValue * 0.004889 - offset0 * 5.0 / 1023.0) * 1.724;
-		//DEBUG_MSG("Senor: %d P: %f offset0: %d \n", sensorValue, pressure, offset0);
+		DEBUG_MSG("1-Punkt Kalibrierung Senor: %d P: %f offset0: %d \n", sensorValue, pressure, offset0);
 	}
 	
 	

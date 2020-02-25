@@ -152,13 +152,13 @@ void sendAlarm(const uint8_t &setAlarm)
     // digitalWrite(PIN_BUZZER, HIGH);
     // delay(500);
     // digitalWrite(PIN_BUZZER, LOW);
-    DEBUG_MSG("%s\n", "Alarm OFF");
+    // DEBUG_MSG("%s\n", "Alarm OFF");
     break;
   case ALARM_OK:
     digitalWrite(PIN_BUZZER, HIGH);
     delay(200);
     digitalWrite(PIN_BUZZER, LOW);
-    DEBUG_MSG("%s\n", "Alarm OK");
+    // DEBUG_MSG("%s\n", "Alarm OK");
     break;
   case ALARM_ERROR:
     digitalWrite(PIN_BUZZER, HIGH);
@@ -172,7 +172,7 @@ void sendAlarm(const uint8_t &setAlarm)
     digitalWrite(PIN_BUZZER, HIGH);
     delay(1000);
     digitalWrite(PIN_BUZZER, LOW);
-    DEBUG_MSG("%s\n", "Alarm ERROR");
+    // DEBUG_MSG("%s\n", "Alarm ERROR");
     break;
   default:
     break;

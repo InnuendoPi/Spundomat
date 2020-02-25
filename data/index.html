@@ -43,7 +43,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="misc_modal">
+  <div class="modal fade" id="misc_modal" >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -286,27 +286,28 @@
 			miscRender += data.temperatur + " °C";
 		}
 
-        miscRender += "</span></li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'>Spannung am Drucksensor<span class='badge badge-light'>";
-        miscRender += data.voltage + " V";
-
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>1. Kalibrierung bei 0 bar <span class='badge ";
+        miscRender += "</span></li> <br />";
+		if (data.offset == "0" || data.offset2 == "0" )
+		{
+			miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Spannung am Drucksensor<span class='badge badge-light'>";
+			miscRender += data.voltage + " V";
+			miscRender += "</span></li>";
+		}
+		
         if (data.offset == "0")
         {
-          miscRender += " badge-danger'>Kalibrierung bei 0bar ausführen";
+			miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>1. Kalibrierung bei 0 bar <span class='badge ";
+			miscRender += " badge-danger'>Kalibrierung bei 0bar ausführen";
+			miscRender += "</span></li>";
         }
-        else {
-          miscRender += " badge-success'> ok";
-        }
-		miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>2. Kalibrierung bei 2bar";
-		miscRender += "<span class='badge >";
         if (data.offset2 == "0")
         {
-          miscRender += " badge-danger'>Kalibrierung bei 2bar ausführen";
+			miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>2. Kalibrierung bei 2bar";
+			miscRender += "<span class='badge >";
+			miscRender += " badge-danger'>Kalibrierung bei 2bar ausführen";
+			miscRender += "</span> </li> <br />";
         }
-        else {
-          miscRender += " badge-success'> ok";
-        }
-		miscRender += "</span> </li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'> Magnetventil MV1 <span class='badge ";
+		miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> Magnetventil MV1 <span class='badge ";
         if (data.mv1) {
           miscRender += " badge-success'> An";
         }
@@ -749,8 +750,8 @@
       var mdns_name = modal.find('#modal_misc_mdns_name').val()
       var pressure = modal.find('#modal_misc_pressure').val()
       var carbonation = modal.find('#modal_misc_carbonation').val()
-	  var mode = modal.find('#modal_misc_modus').val()
-	  var einheit = modal.find('#modal_misc_kombi_auswahl').val()
+	  var mode = $('#modal_misc_modus option:selected').text();
+	  var einheit = $('#modal_misc_kombi_auswahl option:selected').text()
 	  var kombi = modal.find('#modal_misc_kombi').val()
       var mv1open = modal.find('#modal_misc_mv1open').val()
 	  var mv1close = modal.find('#modal_misc_mv1close').val()

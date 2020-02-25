@@ -69,7 +69,7 @@ const char Version[6] = "2.0b9";
 #define PAUSE200MS 200
 #define PAUSE100MS 100
 #define PAUSE10MS 10
-#define DELTA 0.01
+#define DELTA 0.03
 #define ENCODER_UPDATE 100
 #define BUTTON_UPDATE 100
 #define TEMPERATUR_UPDATE 30000

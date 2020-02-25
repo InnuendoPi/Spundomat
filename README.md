@@ -15,6 +15,8 @@ Version 2.0b9
 
 - Changed:  2. Kalibrierung Speicherung im Eeprom
 - Fixed:    Nachkommastellen aktueller CO2 Gehalt
+- Fixed:    Speichern Modus
+- Fixed:    Speichern Verzögerung
 
 Version 2.0b8
 

@@ -299,9 +299,8 @@ void handleSetMisc()
         {
             server.arg(i).toCharArray(nameMDNS, 16);
             checkChars2(nameMDNS);
-            if (strlen(nameMDNS) == 0 )
+            if (strlen(nameMDNS) == 0)
                 strlcpy(nameMDNS, "spundomat", sizeof(nameMDNS));
-
         }
         if (server.argName(i) == "mdns")
         {
@@ -322,7 +321,15 @@ void handleSetMisc()
         }
         if (server.argName(i) == "mode")
         {
-            setMode = server.arg(i).toInt();
+            for (int j = 0; j < sizeOfModes; j++)
+            {
+                if (modesWeb[j] == server.arg(i))
+                {
+                    setMode = j;
+                    break;
+                }
+            }
+            DEBUG_MSG("Web save mode String: %d Arg: %s\n", setMode, server.arg(i).c_str());
         }
         if (server.argName(i) == "mv1")
         {
@@ -415,7 +422,16 @@ void handleSetMisc()
         }
         if (server.argName(i) == "einheit")
         {
-            setEinheit = server.arg(i).toInt();
+            for (int j = 0; j < anzAuswahl; j++)
+            {
+                if (einheit[j] == server.arg(i))
+                {
+                    setEinheit = j;
+                    break;
+                }
+            }
+            // setEinheit = server.arg(i).toInt();
+            DEBUG_MSG("Web save einheit: %d Arg: %s\n", setEinheit, server.arg(i).c_str());
         }
 
         if (server.argName(i) == "verzkombi")
@@ -466,7 +482,7 @@ void handleSetMisc()
         {
             server.arg(i).toCharArray(dbDatabase, 15);
             checkChars2(dbDatabase);
-            if (strlen(dbDatabase) == 0 )
+            if (strlen(dbDatabase) == 0)
                 strlcpy(dbDatabase, "spundomat", sizeof(dbDatabase));
         }
         if (server.argName(i) == "dbuser")
@@ -498,10 +514,10 @@ void eraseEeprom()
     offset0 = 0;
     offset2 = 0;
     for (int i = 0; i < 8; i++) // Lösche 4 bytes offset0 und 4bytes offset2 (float)
-	{
-		EEPROM.write(i, 0);
-		EEPROM.commit();
-	}
+    {
+        EEPROM.write(i, 0);
+        EEPROM.commit();
+    }
     // writeFloat(0, 0);
     saveConfig();
 }

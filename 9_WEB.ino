@@ -78,10 +78,6 @@ void handleRequestMiscSet()
     doc["pressure"] = setPressure;
     doc["carbonation"] = setCarbonation;
     doc["mode"] = setMode;
-    //doc["co2"] = (int)(calcCarbonation(pressure, temperature) * 100) / 100.0;
-    // doc["druck"] = (int)(pressure * 100) / 100.0;
-    // doc["temperatur"] = (int)(temperature * 10) / 10.0;
-    // doc["voltage"] = (int)(voltage * 100) / 100.0;
     doc["co2"] = round(calcCarbonation(pressure, temperature) * 10) / 10.0;
     doc["druck"] = round(pressure * 10) / 10.0;
     doc["temperatur"] = round(temperature * 10) / 10.0;

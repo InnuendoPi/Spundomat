@@ -5,7 +5,8 @@
 Projekt Spundomat:
 
 Firmware:   Beta Status
-Platine:    Entwicklungsphase
+
+Platine:    Entwicklungsphase (noch nicht benutzbar)
 
 Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
@@ -13,6 +14,7 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 Version 2.0b9
 
+- Fixed:    Temperatur 85°C bei Start
 - Changed:  2. Kalibrierung Speicherung im Eeprom
 - Fixed:    Nachkommastellen aktueller CO2 Gehalt
 - Fixed:    Speichern Modus

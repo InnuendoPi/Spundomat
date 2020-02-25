@@ -6,7 +6,7 @@ void showLCD()
   {
   case 1: // Startseite
     Menu1[0] = "CO2:   ";
-    Menu1[0] += calcCarbonation(pressure, temperature);
+    Menu1[0] += round(calcCarbonation(pressure, temperature) * 10) / 10.0;
     Menu1[0] += "g/l ";
     if (setMode == AUS)
     {
@@ -73,7 +73,8 @@ void showLCD()
     
 
     Menu1[2] = "Temp: ";
-    Menu1[2] += sTemperature;
+    // Menu1[2] += sTemperature;
+    Menu1[2] += round(temperature * 10) / 10.0;
     Menu1[2] += "\337C"; // °C
     // Navigation
     if (up)

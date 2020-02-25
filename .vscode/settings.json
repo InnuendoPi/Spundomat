@@ -45,7 +45,8 @@
         "valarray": "cpp",
         "bitset": "cpp",
         "chrono": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "cmath": "cpp"
     },
     "terminal.integrated.windowsEnableConpty": false,
     "esp8266fs.espota.esp.port": 8266,

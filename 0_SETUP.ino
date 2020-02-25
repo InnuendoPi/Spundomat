@@ -54,7 +54,11 @@ void setup()
   // Starte I2C
   Wire.begin();
   Wire.beginTransmission(0x27);
+  
+  // Starte Temperatursensor
   sensors.begin();
+  readTemparature();
+  TickerTemp.start();
 
   // Pin Definitionen
   if (startMV1)
@@ -82,10 +86,6 @@ void setup()
   EEPROM.begin(512);
   offset0 = readFloat(0); // Lese Offset (Kalibrierung)
   offset2 = readFloat(4); // Lese Offset (Kalibrierung)
-  
-  // Starte Temperatursensor
-  readTemparature();
-  TickerTemp.start();
 
   // Starte Encoder
   TickerEncoder.start();

@@ -72,7 +72,7 @@
             <div class="tab-pane fade show active" id="misc1" role="tabpanel" aria-labelledby="misc1-tab">
               <br />
               <div class="form-group">
-                <label for="modal_misc_modus">Betriebsmodus</label>
+                <label for="modal_misc_modus">Modus</label>
                 <select class="form-control" id="modal_misc_modus"></select>
               </div>
               <div class="form-group">
@@ -84,7 +84,7 @@
                 <input type="text" class="form-control" placeholder="" id="modal_misc_carbonation" />
               </div>
 			  <div class="form-group">
-                <label for="modal_misc_kombi">Verzögerung Karbonisieren im Kombi-Modus</label>
+                <label for="modal_misc_kombi">Verzögerung Karbonisieren im Spundomat-Modus</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_kombi" />
 				<label for="modal_misc_kombi_auswahl">Einheit</label>
                 <select class="form-control" id="modal_misc_kombi_auswahl"></select>
@@ -229,7 +229,7 @@
     
 	function refresh() {
       $.get("/reqMiscSet", function (data) {
-        let miscRender = "<li class='list-group-item d-flex justify-content-between align-items-center'>Aktueller Betriebsmodus<span class='badge badge-info'>";
+        let miscRender = "<li class='list-group-item d-flex justify-content-between align-items-center'>Aktueller Modus<span class='badge badge-info'>";
         if (data.mode == 0 )
         {
           miscRender += "Aus";  
@@ -263,10 +263,7 @@
         miscRender += data.pressure + " bar";
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
         miscRender += data.carbonation + " g/l";
-        miscRender += "</span></li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller CO2 Gehalt<span class='badge badge-light'>";
-        miscRender += data.co2 + " g/l";
-
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller Druck<span class='badge badge-light'>";
+        miscRender += "</span></li><br /><li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller Druck<span class='badge badge-light'>";
         if (data.druck == -1 )
 		{
 			miscRender += "kein Drucksensor angeschlossen";
@@ -275,7 +272,8 @@
 		{
 			miscRender += data.druck + " bar";
 		}
-
+		miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller CO2 Gehalt<span class='badge badge-light'>";
+        miscRender += data.co2 + " g/l";
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Aktuelle Temperatur<span class='badge badge-light'>";
         if (data.temperatur == -127 )
 		{

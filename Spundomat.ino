@@ -159,8 +159,8 @@ InnuTicker TickerInfluxDB;
 
 // Deklariere Variablen
 float temperature;
-float oldTemperature;
-char sTemperature[5];
+float oldTemperature = 0.0;
+//char sTemperature[5];
 float voltage;
 //float offsetVoltage = 0.42;
 float offset0 = 0.0; // Standard Vadc bei 0bar an A0

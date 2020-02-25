@@ -3,12 +3,17 @@ void readTemparature()
 {
 	sensors.requestTemperatures();
 	temperature = sensors.getTempCByIndex(0);
-
+	if (temperature == 85.0)
+	{
+		millis2wait(750);
+		sensors.requestTemperatures();
+		temperature = sensors.getTempCByIndex(0);
+	}
 	if (testModus)
 		temperature = 20.0;
 
 	// Kommastelle für Ausgabe entfernen (Konvertiere float in char array)
-	dtostrf(temperature, 5, 1, sTemperature);
+	//dtostrf(temperature, 5, 1, sTemperature);
 
 	// Aktualisiere LCD wenn Temperatur geändert hat
 	if (temperature != oldTemperature)

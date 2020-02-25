@@ -78,13 +78,16 @@ void handleRequestMiscSet()
     doc["pressure"] = setPressure;
     doc["carbonation"] = setCarbonation;
     doc["mode"] = setMode;
-    doc["co2"] = (int)(calcCarbonation(pressure, temperature) * 100) / 100.0;
-    doc["druck"] = (int)(pressure * 100) / 100.0;
-    doc["temperatur"] = (int)(temperature * 10) / 10.0;
-    doc["voltage"] = (int)(voltage * 100) / 100.0;
+    //doc["co2"] = (int)(calcCarbonation(pressure, temperature) * 100) / 100.0;
+    // doc["druck"] = (int)(pressure * 100) / 100.0;
+    // doc["temperatur"] = (int)(temperature * 10) / 10.0;
+    // doc["voltage"] = (int)(voltage * 100) / 100.0;
+    doc["co2"] = round(calcCarbonation(pressure, temperature) * 10) / 10.0;
+    doc["druck"] = round(pressure * 10) / 10.0;
+    doc["temperatur"] = round(temperature * 10) / 10.0;
+    doc["voltage"] = round(voltage * 10) / 10.0;
     doc["offset"] = offset0;
     doc["offset2"] = offset2;
-    doc["pressoffset2"] = pressureOffset2;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
     doc["buzzer"] = startBuzzer;
@@ -296,6 +299,9 @@ void handleSetMisc()
         {
             server.arg(i).toCharArray(nameMDNS, 16);
             checkChars2(nameMDNS);
+            if (strlen(nameMDNS) == 0 )
+                strlcpy(nameMDNS, "spundomat", sizeof(nameMDNS));
+
         }
         if (server.argName(i) == "mdns")
         {
@@ -460,6 +466,8 @@ void handleSetMisc()
         {
             server.arg(i).toCharArray(dbDatabase, 15);
             checkChars2(dbDatabase);
+            if (strlen(dbDatabase) == 0 )
+                strlcpy(dbDatabase, "spundomat", sizeof(dbDatabase));
         }
         if (server.argName(i) == "dbuser")
         {
@@ -489,7 +497,12 @@ void eraseEeprom()
 {
     offset0 = 0;
     offset2 = 0;
-    writeFloat(0, 0);
+    for (int i = 0; i < 8; i++) // Lösche 4 bytes offset0 und 4bytes offset2 (float)
+	{
+		EEPROM.write(i, 0);
+		EEPROM.commit();
+	}
+    // writeFloat(0, 0);
     saveConfig();
 }
 
@@ -509,7 +522,10 @@ void kalibrieren()
         writeFloat(0, offset0);
     }
     else if (offset0 > 0 && readSensor() > 200) // 2bar ca. 330
+    {
         offset2 = readSensor();
+        writeFloat(4, offset2);
+    }
 
     readPressure();
     saveConfig();

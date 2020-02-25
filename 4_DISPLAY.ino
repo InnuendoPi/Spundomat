@@ -320,7 +320,10 @@ void showLCD()
           writeFloat(0, offset0);
         }
         else if (offset0 > 0 && readSensor() > 200) // 2bar ca. 330
+        {
           offset2 = readSensor();
+          writeFloat(4, offset2);
+        }
 
         readPressure();
         saveConfig();

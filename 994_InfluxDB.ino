@@ -2,10 +2,10 @@ void setInfluxDB()
 {
     // Setze Parameter 
     client.setConnectionParamsV1(dbServer, dbDatabase, dbUser, dbPass);
-    sensor.addTag("Temperatur", "0");
-    sensor.addTag("Pressure", "0");
-    sensor.addTag("ZielCO2", "0");
-    sensor.addTag("IstCO2", "0");
+    // sensor.addTag("Temperatur", "0");
+    // sensor.addTag("Pressure", "0");
+    // sensor.addTag("ZielCO2", "0");
+    // sensor.addTag("IstCO2", "0");
 }
 
 void checkDBConnect()
@@ -18,7 +18,9 @@ void checkDBConnect()
 
 void sendDBData()
 {
-    sensor.clearFields();
+    // sensor.clearFields();
+    Point sensor("spundomat_status");
+    sensor.addTag("Device", nameMDNS);
     sensor.addField("Temperatur", temperature);
     sensor.addField("Pressure", pressure);
     sensor.addField("ZielCO2", setCarbonation);

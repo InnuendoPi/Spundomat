@@ -39,7 +39,7 @@ float readFloat(unsigned int addr)
 		data.b[i] = EEPROM.read(addr + i);
 	}
 	if (isnan(data.f)) // Keine Kalibrierung
-		data.f = offset0;
+		data.f = 0;
 	
 	return data.f;
 }

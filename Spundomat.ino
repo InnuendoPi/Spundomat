@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0b8";
+const char Version[6] = "2.0b9";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -91,7 +91,10 @@ const char Version[6] = "2.0b8";
 #define ALARM_OFF 2
 #define ALARM_OK 3
 #define ALARM_ERROR 4
-
+#define DEF_PRESSURE 2.0
+#define DEF_CARB 4.5
+#define PRESSURE_OFFSET0 0.0
+#define PRESSURE_OFFSET2 2.0
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
@@ -109,9 +112,9 @@ const int PIN_MV2 = D0;            // Magnetventi2 eingehend MV2 (Karbonisieren)
 const double E = exp(1);
 
 // Voreinstellungen
-float setPressure = 2.0;    //  Vorgabe bei Neustart von 2,0 bar
-float setCarbonation = 5.0; //  Vorgabe bei Neustart von 5,0 gr/L
-int setMode = 0;            //  Startposition 0 = AUS , 1 = CO² , 2 = Druck, 3 = Karbonisieren
+float setPressure = DEF_PRESSURE;   //  Vorgabe bei Neustart von 2,0 bar
+float setCarbonation = DEF_CARB;    //  Vorgabe bei Neustart von 5,0 gr/L
+int setMode = AUS;                  //  Startposition 0 = AUS
 
 bool startMDNS = true;    // mDNS Dienst
 bool testModus = false;   // testModus - ignorieren!
@@ -137,7 +140,7 @@ NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 
 // Influx Server (optional)
 InfluxDBClient client;
-Point sensor("spundomat_status");
+// Point sensor("spundomat_status");
 bool startDB = false;
 char dbServer[30] = "http://192.168.100.30:8086";     // InfluxDB Server IP
 //char dbServer[30] = "http://172.22.100.22:8086";     // InfluxDB Server IP
@@ -162,7 +165,6 @@ float voltage;
 //float offsetVoltage = 0.42;
 float offset0 = 0.0; // Standard Vadc bei 0bar an A0
 float offset2 = 0.0; // Vadc bei 2bar an A0
-#define pressureOffset2 2.0
 float pressure = 0.0;
 float oldPressDisp = 0.0;
 float displayPressure = 0.0;
@@ -191,7 +193,7 @@ File fsUploadFile; // Datei Object
 #define sizeOfModes 9
 String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
 String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
-char nameMDNS[16] = "spundomat";                                                                                                  // http://spundomat/index.html
+char nameMDNS[16] = "spundomat";    // http://spundomat/index.html
 
 // Verzögerung Spundomat
 #define anzAuswahl 3

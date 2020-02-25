@@ -48,8 +48,8 @@ void readPressure()
 	//else if (offset2 > 0 && offset0 > 0 && sensorValue > offset0) // 2-Punkte-Kalibrierung
 	else if (offset2 > 0 && offset0 > 0) // 2-Punkte-Kalibrierung
 	{
-		float m = (pressureOffset2 - 0.0) / (offset2 - offset0);
-		float b = pressureOffset2 - m * offset2;
+		float m = (PRESSURE_OFFSET2 - PRESSURE_OFFSET0) / (offset2 - offset0);
+		float b = PRESSURE_OFFSET2 - m * offset2;
 
 		//pressure = m * sensorValue * 5.0 / 1023.0 + b;
 		pressure = m * sensorValue + b;

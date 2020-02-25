@@ -26,9 +26,7 @@ void setup()
   {
     updateSys();                      // WebUpdate
     if (SPIFFS.exists("/config.txt")) // Load configuration
-    {
       loadConfig();
-    }
     else
       Serial.println("*** SYSINFO: Konfigurationsdatei config.txt nicht vorhanden. Setze Standardwerte ...");
   }
@@ -87,6 +85,8 @@ void setup()
   // EEPROM
   EEPROM.begin(512);
   offset0 = readFloat(0); // Lese Offset (Kalibrierung)
+  offset2 = readFloat(4); // Lese Offset (Kalibrierung)
+  DEBUG_MSG("Offset0: %f Offset2: %f\n", offset0, offset2);
 
   // Starte Encoder
   TickerEncoder.start();
@@ -112,7 +112,6 @@ void setup()
   {
     setInfluxDB();
     TickerInfluxDB.start();
-    //checkDBConnect();
   }
 }
 

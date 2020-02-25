@@ -118,8 +118,8 @@ bool loadConfig()
     startMDNS = miscObj["MDNS"];
   if (miscObj.containsKey("TESTMODE"))
     testModus = miscObj["TESTMODE"];
-  if (miscObj.containsKey("OFFSET2"))
-    offset2 = miscObj["OFFSET2"];
+  // if (miscObj.containsKey("OFFSET2"))
+  //   offset2 = miscObj["OFFSET2"];
   
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
@@ -219,7 +219,7 @@ bool saveConfig()
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
   miscObj["TESTMODE"] = testModus;
-  miscObj["OFFSET2"] = offset2;
+  // miscObj["OFFSET2"] = offset2;
   
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);

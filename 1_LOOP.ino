@@ -40,19 +40,15 @@ void loop()
     TickerPressure.update();
     break;
   case SPUNDEN_CO2: // CO2 Spunden
-    // TickerPressure.pause();
     updateMV1();
     break;
   case SPUNDEN_DRUCK: // Druck Spunden
-    // TickerPressure.pause();
     updateMV1();
     break;
   case KARBONISIEREN_CO2: // CO2 Karbonisieren
-    // TickerPressure.pause();
     updateMV2();
     break;
   case KARBONISIEREN_DRUCK: // CO2 Karbonisieren
-    // TickerPressure.pause();
     updateMV2();
     break;
   case SPUNDOMAT: // CO2 Spunden & Karbonisieren
@@ -61,7 +57,6 @@ void loop()
   case PLAN1:
   case PLAN2:
   case PLAN3:
-    // TickerPressure.pause();
     startPlan();
     break;
   }

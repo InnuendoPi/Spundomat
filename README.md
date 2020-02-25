@@ -11,6 +11,11 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
+Version 2.0b9
+
+- Changed:  2. Kalibrierung Speicherung im Eeprom
+- Fixed:    Nachkommastellen aktueller CO2 Gehalt
+
 Version 2.0b8
 
 - Changed:  2. Kalibrierung nun fest auf 2bar (Konfig entfernt)

@@ -438,9 +438,11 @@ Der Spundomat unterstützt die Visualisierung mit der OpenSource Grafana. Zum ak
 
 Vor der Installation sollte der Raspberry aktualisiert werden:
 
-* sudo apt-get update
-* sudo apt-get upgrade
-* sudo reboot
+`sudo apt-get update`
+
+`sudo apt-get upgrade`
+
+`sudo reboot`
 
 **Installation Datenbank:**
 
@@ -448,23 +450,23 @@ Installation der Datenbank InfluxDB:
 
 Mit shh (bspw. Putty) anmelden und die folgenden Befehle ausführen
 
- > wget -qO- <https://repos.influxdata.com/influxdb.key> | sudo apt-key add -
+`wget -qO- <https://repos.influxdata.com/influxdb.key> | sudo apt-key add -`
   
 Wenn auf dem RaspberryPi die OS Version "stretch" installiert ist (cat /ect/os-release)
 
- > echo "deb <https://repos.influxdata.com/debian> stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+ `echo "deb <https://repos.influxdata.com/debian> stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list`
   
   oder wenn auf dem RaspberryPi die OS Version "buster" installiert ist
   
- > echo "deb <https://repos.influxdata.com/debian> buster stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-<!-- -->
- > sudo apt update
-<!-- -->
- > sudo apt install influxdb
-<!-- -->
- > sudo systemctl unmask influxdb
-<!-- -->
- > sudo systemctl enable influxdb
+ `echo "deb <https://repos.influxdata.com/debian> buster stable" | sudo tee /etc/apt/sources.list.d/influxdb.list`
+
+`sudo apt update`
+
+`sudo apt install influxdb`
+
+`sudo systemctl unmask influxdb`
+
+`sudo systemctl enable influxdb`
 
 Die Datenbank InfluxDB ist mit diesen 6 Schritten installiert und startet automatisch bei jedem Neustart vom RaspberryPi
 
@@ -474,46 +476,53 @@ Datenbank und Benutzer einrichten:
 
 Mit shh (bspw. Putty) anmelden und den folgenden Befehl ausführen
 
-> influx
+`influx`
 
 Die folgenden Datenbank Befehle der Reihe nach eingeben. Das Password xxx durch ein eigenes Password ersetzen. Die Anführungstriche müssen bleiben!
 
-> CREATE DATABASE spundomat
-<!-- -->
-> CREATE USER pi WITH PASSWORD 'xxx' WITH ALL PRIVILEGES
+`CREATE DATABASE spundomat`
+
+`CREATE USER pi WITH PASSWORD 'xxx' WITH ALL PRIVILEGES`
 
 Zugriff auf die Datenbank einrichten:
 
-> sudo nano /etc/influxdb/influxdb.conf
+`sudo nano /etc/influxdb/influxdb.conf`
 
   Mit der Tastenkombination Strg+W nach HTTP suchen. In diesem Abschnitt muss mindestens aktiviert werden:
 
-> enabled = true
-<!-- -->
-> bind-address = ":8086"
+`enabled = true`
+
+`bind-address = ":8086"`
 
 Diese zwei Einträge sind das Minimum. Es wird dringend empfohlen, eine Benutzer und Password Abfrage zu aktivieren.
 Die Änderung wird mit der Tastenkombination Strg+O gespeichert. Den Editor beenden mit Strg+X.
 
 Abschließend muss die Datenbank neu gestartet werden:
 
-> sudo systemctl restart influxdb
+`sudo systemctl restart influxdb`
 
 **Installation Grafana:**
 
 Vor der Eingabe der Befehle die aktuelle Version Grafana überprüfen und in Schritt 1 und 2 die Versionsnummer 6.6.1 ersetzen.
 
-1. wget <https://dl.grafana.com/oss/release/grafana_6.6.1_armhf.deb>
-2. sudo dpkg -i grafana_6.6.1_armhf.deb
-3. sudo systemctl enable grafana-server
-4. sudo systemctl start grafana-server
+`wget <https://dl.grafana.com/oss/release/grafana_6.6.1_armhf.deb>`
+
+`sudo dpkg -i grafana_6.6.1_armhf.deb`
+
+`sudo systemctl enable grafana-server`
+
+`sudo systemctl start grafana-server`
 
 Im Grafana Web Interface muss nun abschließend nur noch die DataSource InfluxDB hinzugefügt werden.
 
-* URL: <http://ip_rasberrypi:8086>
-* Database: spundomat
-* User: pi
-* Password: xxx
-* HTTP Method: POST
+`URL: <http://ip_rasberrypi:8086>`
+
+`Database: spundomat`
+
+`User: pi`
+
+`Password: xxx`
+
+`HTTP Method: POST`
 
 Mit "Save & Test" wird die Verbindung gespeichert und überprüft. Nun kann entweder das Beispiel-Dashboard Spundomat (Datei Spundomat Dashboard.json) aus dem Ordner Info in Grafana importiert oder ein eigenes Dashboard erstellt werden.

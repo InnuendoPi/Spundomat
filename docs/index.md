@@ -389,8 +389,8 @@ Beschreibung:
 |1 | Encoder  KY 040 | <https://www.ebay.de/itm/Potentiometer-Drehregler-KY-040-Rotary-Encoder-Drehgeber-Taster-Poti-Arduino/254138168087?hash=item3b2bd0b317:g:p9oAAOSw94NccoFi> |
 |1 | Wemos D1 mini |
 |1 | Steckernetzteil 12V / 2A |
-|1 | Drucksensor  0- 0,5 Mpa /1/4" |
-|1 | DS 18B20 Temperatursensor | <https://www.ebay.at/itm/G1-4-OLDRUCKSENSOR-Drucksensor-0-0-5-MPa-Fur-Oil-Fuel-Diesel-Gas-Wasser-Luft/371961467626?hash=item569aa192ea:g:SMEAAOSwlY1ZFbm~> |
+|1 | Drucksensor  0- 0,5 Mpa /1/4" | <https://www.ebay.at/itm/G1-4-OLDRUCKSENSOR-Drucksensor-0-0-5-MPa-Fur-Oil-Fuel-Diesel-Gas-Wasser-Luft/371961467626?hash=item569aa192ea:g:SMEAAOSwlY1ZFbm~> |
+|1 | DS 18B20 Temperatursensor |
 |1 | LCD Display 2004 |
 |2 | Magnetventile 12 V -1/4" | <https://www.ebay.at/itm/1-4-Pneumatik-Magnetventil-12V-DC-Electric-Solenoid-Valve-fur-Wasser-Luft-s0d/123512299808?hash=item1cc1e82120:g:zNEAAOSwMhVb~BfR> |
 

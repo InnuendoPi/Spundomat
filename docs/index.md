@@ -349,7 +349,7 @@ In diesem Projekt wurde eine Platine für den Spundomat entwickelt, um mit Klemm
 Die Platine bietet folgende Vorteile:
 
 * der Wemos D1 mini steckt auf einem Sockel und kann jederzeit abgenommen werden.
-* die Stromversorgung vom Wemos wird über ein Netzteil 12V/2A und einem Spannungsregler MP1584En hergestellt.
+* die Stromversorgung vom Wemos wird über ein Netzteil 12V/2A und einem Spannungsregler LM 2575T-5G hergestellt.
 * Sensoren, Display, Encoder und Magnetventile können direkt an die Schraubklemmen angeschlossen werden.
 * LEDs für beide Magnetventile
 * Piezzo Buzzer
@@ -413,10 +413,10 @@ Einrichtung:
 
 Vor der Inbetriebnahme mit einem Wemos D1 mini muss
 
-* der Trimmpoti auf 70.5kOhm eingestellt werden
-* der MP1584En ausgehend auf 5V eingestellt
+* der Trimmpoti auf 50kOhm eingestellt werden
+* der LM 2575T-5G ausgehend auf 5V eingestellt
 
-Diese Einstellungen müsen vorab durchgeführt werden! Ohne diese Einstellung kann der Wemos D1 min zerstört werden!
+Diese Einstellungen müsen vorab durchgeführt werden! Ohne diese Einstellung kann der Wemos D1 mini zerstört werden!
 
 **Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil
 

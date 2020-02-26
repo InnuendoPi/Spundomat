@@ -1,6 +1,6 @@
 # Spundomat
 
-**Spunden & Karbonisieren**
+**Spunden & Karbonisieren:**
 
 Das Projekt Spundomat ist aus dem hobbybrauer Forum entstanden. Der Grundgedanke für den Spundomat liegt in der Automatisierung von wiederkehrenden Ausgaben beim Brauen. Je nach Vorliebe setzen Hobbybrauer das Spunden oder das Karbonisieren ein.
 
@@ -76,7 +76,7 @@ Dieses Projekt wurde im hobbybrauer Forum gestartet und dient dem Informationsau
   * FS.h
   * InnuTicker (im Repository enthalten)
 
-# Installation
+## Installation
 
 **Installation ohne den Quellcode zu compilieren:**
 
@@ -142,14 +142,14 @@ Der Dateiexplorer ist erreichbar über den Webbrowser <http://spundomat/edit>
 
 Ein mDNS Name kann anstelle der IP Adresse vom ESP8266 im Webbrowser verwendet werden (<http://mDNSname>). Der Name ist frei wählbar. Der mDNS Name muss im Netzwerk eindeutig sein und darf keine Leer- oder Sonderzeichen enthalten.
 
-# Das Dashboard
+## Das Dashboard
 
 Das Dashboard vom Spundomat ist das Web Interface. Hier werden alle Informationen zum SPundomat übersichtlich dargestellt.
 Auch auf dem LCD Dispaly werden alle benötigten Informationen abhängig vom Betriebsmodus dargestellt. Auf dem LCD Display werden zusätzlich Informationen über das WLAN und die aktuelle IP Adresse angezeigt. Es ist letztlich Geschmackssache, ob das LCD oder das WebIf genutzt wird.
 
 Datei- und WebUpdate sind ausschließlich über das Web interface verfügbar.
 
-# Grundeinrichtung
+## Grundeinrichtung
 
 Über das Web Interface ist eine Grundeinrichtung vorzunehmen. Hierunter fällt das Aktivieren der verwendeten Magnetventile und die Kalibrierung.
 
@@ -209,7 +209,7 @@ Das Menü für die Grundeinstellung bietet Funktionen, um Einstellungen und KOnf
 * Lösche WiFi
 * Reset to defaults (Lösche WiFi, lösche 0bar Kalibrierung aus dem Eeprom und lösche die Spundomat Konfigruation)
 
-# Der Spundomat im Betrieb
+## Der Spundomat im Betrieb
 
 Über den Button "Bearbeiten" kann der Betriebsmodus für den Spundomat ausgewählt werden. Es wird zwischen zwei Betriebsmodis unterschieden:
 
@@ -258,7 +258,7 @@ Die Zeitintervalle, insbesondere die Werte für Ventile geschlossen, entscheiden
 
 Noch in der Umsetzung befindet sich die Anbindung an den TCPServer iSpindel (Tozzi Server) für eine Visualisierung der Gärung und Reifung.
 
-# Ablaufpläne
+## Ablaufpläne
 
 Die Firmware bietet die Möglichkeit drei unterschiedliche Ablaufpläne zu nutzen.
 
@@ -337,7 +337,7 @@ Sowohl Ablaufplanname als auch die Sequenzen Öffnen und Schließen für beide M
 * Hinweis: rechte Maustaste auf die Datei ablaufplan.txt -> Edit auswählen
 * Hinweis: Speichern der Änderung mit der Tastenkombination CTRL + S
 
-# Die Spundomat Platine
+## Die Spundomat Platine
 
 **Wichtiger Hinweis:**
 
@@ -345,7 +345,7 @@ Die Platine ist aus einem Hobby-Projekt entstanden. Eine fertig bestückte Plati
 
 *Alle Informationen über die Platine sind rein informativ und können falsch sein. Verwendung dieser Informationen auf eigene Gefahr. Jegliche Haftung wird ausgeschlossen.*
 
-In diesem Projekt wurde eine Platine für den Spundomat entwickelt, um mit Klemmschraubblöcken eine einfache Anbindung an Sensoren und Magnetventile zu bieten. Die Platine ist mit wenigen elektronsichen Bauteilen bestückt. Der Aufbau erfordert ein Grundwissen und Grundkenntnisse im Bereich der Elektrotechnik. 
+In diesem Projekt wurde eine Platine für den Spundomat entwickelt, um mit Klemmschraubblöcken eine einfache Anbindung an Sensoren und Magnetventile zu bieten. Die Platine ist mit wenigen elektronsichen Bauteilen bestückt. Der Aufbau erfordert ein Grundwissen und Grundkenntnisse im Bereich der Elektrotechnik.
 Die Platine bietet folgende Vorteile:
 
 * der Wemos D1 mini steckt auf einem Sockel und kann jederzeit abgenommen werden.
@@ -428,7 +428,7 @@ Diese Einstellungen müsen vorab durchgeführt werden! Ohne diese Einstellung ka
 
 ![Karbonisieren](img/Zwangskarbonisieren.jpg)
 
-# Visualisierung
+## Visualisierung
 
 Der Spundomat unterstützt die Visualisierung mit der OpenSource Grafana. Zum aktuellen Zeitpunkt wird nur die lokalen Version unterstützt. In dieser Anleitung wird die Installation und Konfiguration auf einem RaspberryPi beschrieben.
 
@@ -448,22 +448,23 @@ Installation der Datenbank InfluxDB:
 
 Mit shh (bspw. Putty) anmelden und die folgenden Befehle ausführen
 
-> wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+ > wget -qO- <https://repos.influxdata.com/influxdb.key> | sudo apt-key add -
   
 Wenn auf dem RaspberryPi die OS Version "stretch" installiert ist (cat /ect/os-release)
-> echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+
+ > echo "deb <https://repos.influxdata.com/debian> stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
   
   oder wenn auf dem RaspberryPi die OS Version "buster" installiert ist
   
-> echo "deb https://repos.influxdata.com/debian buster stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-
-> sudo apt update
-
-> sudo apt install influxdb
-
-> sudo systemctl unmask influxdb
-
-> sudo systemctl enable influxdb
+ > echo "deb <https://repos.influxdata.com/debian> buster stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+<!-- -->
+ > sudo apt update
+<!-- -->
+ > sudo apt install influxdb
+<!-- -->
+ > sudo systemctl unmask influxdb
+<!-- -->
+ > sudo systemctl enable influxdb
 
 Die Datenbank InfluxDB ist mit diesen 6 Schritten installiert und startet automatisch bei jedem Neustart vom RaspberryPi
 
@@ -478,7 +479,7 @@ Mit shh (bspw. Putty) anmelden und den folgenden Befehl ausführen
 Die folgenden Datenbank Befehle der Reihe nach eingeben. Das Password xxx durch ein eigenes Password ersetzen. Die Anführungstriche müssen bleiben!
 
 > CREATE DATABASE spundomat
-
+<!-- -->
 > CREATE USER pi WITH PASSWORD 'xxx' WITH ALL PRIVILEGES
 
 Zugriff auf die Datenbank einrichten:
@@ -488,7 +489,7 @@ Zugriff auf die Datenbank einrichten:
   Mit der Tastenkombination Strg+W nach HTTP suchen. In diesem Abschnitt muss mindestens aktiviert werden:
 
 > enabled = true
-
+<!-- -->
 > bind-address = ":8086"
 
 Diese zwei Einträge sind das Minimum. Es wird dringend empfohlen, eine Benutzer und Password Abfrage zu aktivieren.
@@ -502,7 +503,7 @@ Abschließend muss die Datenbank neu gestartet werden:
 
 Vor der Eingabe der Befehle die aktuelle Version Grafana überprüfen und in Schritt 1 und 2 die Versionsnummer 6.6.1 ersetzen.
 
-1. wget https://dl.grafana.com/oss/release/grafana_6.6.1_armhf.deb
+1. wget <https://dl.grafana.com/oss/release/grafana_6.6.1_armhf.deb>
 2. sudo dpkg -i grafana_6.6.1_armhf.deb
 3. sudo systemctl enable grafana-server
 4. sudo systemctl start grafana-server

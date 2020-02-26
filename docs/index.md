@@ -59,22 +59,7 @@ Dieses Projekt wurde im hobbybrauer Forum gestartet und dient dem Informationsau
 
 ![Einstellungen](img/Spundomat02.jpg)
 
-**Voraussetzungen: (2020.01):**
-
-* Arduino IDE 1.8.10
-* Optional Microsoft VSCode + Arduino + ESP8266FS
-* ESP8266 by ESP8266 Community version 2.6.3
-* Folgende Bibliotheken müssen über die Arduino IDE hinzugefügt werden:
-  * ArduinoJSON by Benoit Blanchon Version 6.13.0
-  * DallasTemperature by Miles Burton Version 3.8.0
-  * OneWire By Jim Studt Version 2.3.5
-  * WiFiManager by tzapu Version 0.15.0
-  * EEPROM.h
-  * RotaryEncoder.h
-  * OneButton.h
-  * Wire.h* LiquidCrystal_PCF8574.h
-  * FS.h
-  * InnuTicker (im Repository enthalten)
+---
 
 ## Installation
 
@@ -92,8 +77,6 @@ Beispiel für ein ESP8266 Modul vom Typ Wemos D1 mini mit 4MB Flash verbunden mi
   * Das Archiv enthält das esptool zum Flashen, das Skript Flashen.cmd und die zwei Firmware Dateien
 
   * Doppelklick auf die Datei Flashen.cmd.
-
-  Fertig!
 
   Sollte COM3 nicht der richtige Anschluss sein, muss im Skript Flashen.cmd an zwei Stellen COM3 durch den richtigen Anschluss ersetzt werden.
 
@@ -142,12 +125,16 @@ Der Dateiexplorer ist erreichbar über den Webbrowser <http://spundomat/edit>
 
 Ein mDNS Name kann anstelle der IP Adresse vom ESP8266 im Webbrowser verwendet werden (<http://mDNSname>). Der Name ist frei wählbar. Der mDNS Name muss im Netzwerk eindeutig sein und darf keine Leer- oder Sonderzeichen enthalten.
 
+---
+
 ## Das Dashboard
 
 Das Dashboard vom Spundomat ist das Web Interface. Hier werden alle Informationen zum SPundomat übersichtlich dargestellt.
 Auch auf dem LCD Dispaly werden alle benötigten Informationen abhängig vom Betriebsmodus dargestellt. Auf dem LCD Display werden zusätzlich Informationen über das WLAN und die aktuelle IP Adresse angezeigt. Es ist letztlich Geschmackssache, ob das LCD oder das WebIf genutzt wird.
 
 Datei- und WebUpdate sind ausschließlich über das Web interface verfügbar.
+
+---
 
 ## Grundeinrichtung
 
@@ -209,6 +196,8 @@ Das Menü für die Grundeinstellung bietet Funktionen, um Einstellungen und KOnf
 * Lösche WiFi
 * Reset to defaults (Lösche WiFi, lösche 0bar Kalibrierung aus dem Eeprom und lösche die Spundomat Konfigruation)
 
+---
+
 ## Der Spundomat im Betrieb
 
 Über den Button "Bearbeiten" kann der Betriebsmodus für den Spundomat ausgewählt werden. Es wird zwischen zwei Betriebsmodis unterschieden:
@@ -257,6 +246,8 @@ Im Modus Spundomat wechseln sich Magnetventil 1 (Spunder) und Magnetventil 2 (Ka
 Die Zeitintervalle, insbesondere die Werte für Ventile geschlossen, entscheiden nun über die Häufigkeit der Überprüfung.
 
 Noch in der Umsetzung befindet sich die Anbindung an den TCPServer iSpindel (Tozzi Server) für eine Visualisierung der Gärung und Reifung.
+
+---
 
 ## Ablaufpläne
 
@@ -336,6 +327,8 @@ Sowohl Ablaufplanname als auch die Sequenzen Öffnen und Schließen für beide M
 
 * Hinweis: rechte Maustaste auf die Datei ablaufplan.txt -> Edit auswählen
 * Hinweis: Speichern der Änderung mit der Tastenkombination CTRL + S
+
+---
 
 ## Die Spundomat Platine
 
@@ -427,6 +420,8 @@ Diese Einstellungen müsen vorab durchgeführt werden! Ohne diese Einstellung ka
 2. Möglichkeit: Zwangskarbonisierung
 
 ![Karbonisieren](img/Zwangskarbonisieren.jpg)
+
+---
 
 ## Visualisierung
 

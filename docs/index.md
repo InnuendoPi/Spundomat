@@ -386,6 +386,7 @@ Beschreibung:
 |1 | DS 18B20 Temperatursensor |
 |1 | LCD Display 2004 |
 |2 | Magnetventile 12 V -1/4" | <https://www.ebay.at/itm/1-4-Pneumatik-Magnetventil-12V-DC-Electric-Solenoid-Valve-fur-Wasser-Luft-s0d/123512299808?hash=item1cc1e82120:g:zNEAAOSwMhVb~BfR> |
+|4 | Distanzhülsen | <https://www.reichelt.de/distanzhuelsen-metall-6-kant-m3-15mm-da-15mm-p7018.html?&nbc=1> |
 
 **Pneumatikkomponenten:**
 
@@ -402,7 +403,7 @@ Beschreibung:
 | 1 |  Schlauch 6 mm ca. 2 mt | <https://hydrocontrol.fittingline.com/artikel/de/polyurethan-schlauch-6-x-4-mm-silber/PUN%206X4%20SILBER> |
 | 1 | Schlauch 8 mm ca. 1 mt | <https://hydrocontrol.fittingline.com/artikel/de/polyurethan-schlauch-8-x-5-mm-schwarz/PUN%208X5%20SCHWARZ> |
 
-Einrichtung:
+**Aufbau:**
 
 Vor der Inbetriebnahme mit einem Wemos D1 mini muss
 
@@ -411,7 +412,51 @@ Vor der Inbetriebnahme mit einem Wemos D1 mini muss
 
 Diese Einstellungen müsen vorab durchgeführt werden! Ohne diese Einstellung kann der Wemos D1 mini zerstört werden!
 
-**Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil
+Grundsätzlich können für das LCD- Display, Encoder, Sensoren sowohl Klemmblöcke mit RM 2,54 als auch PSK -Platinen-Steckverbinder verwendet werden
+<https://www.reichelt.de/kupplungs-leergehaeuse-crimptechnik-2-polig-psk-254-2w-p14857.html?&nbc=1&trstct=lsbght_sldr::14861>
+<!-- -->
+<https://www.reichelt.de/printstecker-einzelstecker-gerade-5-polig-pss-254-5g-p14911.html?&nbc=1>
+<!-- -->
+Allerdings benötigt man dafür eine spezielle Crimpzange
+
+* einlöten der beiden Brücken ( auf der Platine markiert)
+
+* alle Widerstände bestücken
+
+* alle Dioden, LED lt. Aufdruck bestücken
+
+* restliche Bauteile einlöten
+
+* zuletzt die beiden MosFet und den Schaltregler LM 2575T-5G einlöten > die Anschlussdrähte nicht zu lange belassen ( max. 10 mm) da sonst die Bauteile über den Gehäuserand ragen.
+
+* anschließend die beiden 8-poligen Steckleisten für den Wemos bestücken
+
+* am Wemos werden die Buchsenleisten verwendet
+
+* weiters alle Klemmblöcke ( oder Steckverbinder wer damit arbeitet) bestücken
+
+* die blauen Pfeile markieren die PSK -Steckverbinder
+
+![Platine1](img/platine1.png)
+
+* TFT muss vorerst nicht bestückt werden ( optional, falls jemand damit arbeiten möchte)
+
+* der Piezo -Summer wird an der Platinenunterseite auf die beiden Pins aufgelötet - Vorsicht Polarität! > violetter Pfeil ist der Pluspol
+
+![Platine1](img/platine1.png)
+
+Die Montage des LCD-Displays, der Platine und des Encoders erfolgt in dieser Reihenfolge
+
+* zuerst das Display mit 4 Distanzhülsen ( M3 x 15) am Gehäuse verschrauben
+<https://www.reichelt.de/distanzhuelsen-metall-6-kant-m3-15mm-da-15mm-p7018.html?&nbc=1>
+
+* darauf mittels M3 x 6 (8 ) mm Schrauben die Platine befestigen
+
+* zuletzt den Encoder mit M2,5 x 6 mm Schrauben befestigen ( leider passen beim Encoder keine M3 Schrauben)
+
+Die Verkabelung kann mit Flachbandlitzen durchgeführt werden.
+
+**Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil:**
 
 1. Möglichkeit: Spunder
 

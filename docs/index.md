@@ -360,7 +360,54 @@ Die Platine bietet folgende Vorteile:
 
 Beschreibung:
 
-Stückliste:
+**Elektronikbautteilliste:**
+
+| Anzahl | Artikel | Link |
+| ------ | ------- | ---- |
+|5 | Widerstand 1 k | <https://www.reichelt.de/widerstand-metallschicht-1-00-kohm-0207-0-6-w-1-metall-1-00k-p11403.html?&nbc=1> |
+|1 | Widerstand 4 k7 | <https://www.reichelt.de/widerstand-metallschicht-4-7-kohm-0207-0-6-w-1-k-o-sfcn4701t52-p237245.html?&trstct=pos_0&nbc=1> |
+|4 | Widerstand  10 k | <https://www.reichelt.de/widerstand-metallschicht-10-0-kohm-0207-0-6-w-1-metall-10-0k-p11449.html?&nbc=1> |
+|1 | Widerstand  150 k | <https://www.reichelt.de/widerstand-metallschicht-150-kohm-0207-0-6-w-1-k-o-sfcn1503t52-p237322.html?&nbc=1> |
+|1 | Diode  1N 5819 | <https://www.reichelt.de/schottkydiode-40-v-1-a-do-41-1n-5819-p41850.html?&nbc=1> |
+|2 | Dioden  1N 4004 | <https://www.reichelt.de/gleichrichterdiode-400-v-1-a-do-41-1n-4004-p1726.html?&trstct=pos_0&nbc=1> |
+|1 | LED 5mm rot | <https://www.reichelt.de/led-5-mm-bedrahtet-rot-1800-mcd-30-l-7113srd-j4-kb-p219690.html?&nbc=1> |
+|1 | LED 5 mm blau | <https://www.reichelt.de/led-5-mm-bedrahtet-blau-800-mcd-60-led-5mm-bl-p61102.html?r=1> |
+|1 | Transistor BC 547 A | <https://www.reichelt.de/bipolartransistor-npn-45v-0-1a-0-5w-to-92-bc-547a-p219128.html?&nbc=1> |
+|2 | Optokoppler EL 817 | <https://www.reichelt.de/optokoppler-5kv-35v-50ma-50-dip4-el-817-p146657.html?&nbc=1> |
+|2 | MosFet IRFIZ 24 N | <https://www.reichelt.de/mosfet-n-ch-55v-14a-29w-to-220-fullpak-irfiz-24n-p90327.html?&nbc=1> |
+|1 | Elko 100 uF/ 35 V stehend | <https://www.reichelt.de/elko-radial-100-uf-35-v-105-c-low-esr-aec-q200-rad-fc-100-35-p84619.html?&nbc=1> |
+|1 | Drossel 33uH    FAS 09HCP-331K-5 | <https://www.reichelt.de/power-induktivitaet-radial-330-h-fas-09hcp-331k-5-p245783.html?&nbc=1> |
+|1 | Schaltregler   LM 2575 - 5G | <https://www.ebay.at/itm/1-4-Pneumatik-Magnetventil-12V-DC-Electric-Solenoid-Valve-fur-Wasser-Luft-s0d/123512299808?hash=item1cc1e82120:g:zNEAAOSwMhVb~BfR> | <https://www.reichelt.de/loetbare-schraubklemme-2-pol-rm-5-08-mm-90-rnd-205-00287-p170288.html?&nbc=1> |
+|3 | Klemmblöcke 2- polig RM5,08 | <https://www.reichelt.de/anschlussklemme-3-pol-1-5-mm-rm-3-81-akl-086-03-p72034.html?&nbc=1> |
+|2 | Klemmblöcke 3- polig RM 3,81 |
+|1 | Klemmblock  5- polig RM 2,54 |
+|1 | Klemmblock  4- polig RM 2,54 |
+|1 | Piezosummer KPE 232A | <https://www.reichelt.de/piezosummer-summer-kpe-232a-p35920.html?&nbc=1> |
+|1 | XLR Buchse 3- polig | <https://www.reichelt.de/xlr-einbaubuchse-3-polig-mit-verriegelung-xlr-3eb-p22899.html?&nbc=1> |
+|1 | XLR Stecker 3- polig | <https://www.reichelt.de/xlr-stecker-3-polig-vernickelte-kontakte-xlr-3st-n-p40793.html?&nbc=1> |
+|1 | Schalter | <https://www.reichelt.de/wippschalter-1x-aus-schwarz-i-o-wippe-1801-1146-p36770.html?&nbc=1> |
+|1 | Encoder  KY 040 | <https://www.ebay.de/itm/Potentiometer-Drehregler-KY-040-Rotary-Encoder-Drehgeber-Taster-Poti-Arduino/254138168087?hash=item3b2bd0b317:g:p9oAAOSw94NccoFi> |
+|1 | Wemos D1 mini |
+|1 | Steckernetzteil 12V / 2A |
+|1 | Drucksensor  0- 0,5 Mpa /1/4" |
+|1 | DS 18B20 Temperatursensor | <https://www.ebay.at/itm/G1-4-OLDRUCKSENSOR-Drucksensor-0-0-5-MPa-Fur-Oil-Fuel-Diesel-Gas-Wasser-Luft/371961467626?hash=item569aa192ea:g:SMEAAOSwlY1ZFbm~> |
+|1 | LCD Display 2004 |
+|2 | Magnetventile 12 V -1/4" | <https://www.ebay.at/itm/1-4-Pneumatik-Magnetventil-12V-DC-Electric-Solenoid-Valve-fur-Wasser-Luft-s0d/123512299808?hash=item1cc1e82120:g:zNEAAOSwMhVb~BfR> |
+
+**Pneumatikkomponenten:**
+
+| Anzahl | Artikel | Link |
+| ------ | ------- | ---- |
+| 1 Schalldämpfer 1/4" | <https://hydrocontrol.fittingline.com/artikel/de/schalldaempfer-g-14-sinterbronze/SD%2014> |
+| 1 Rückschlagventil 6mm-1/4" | <https://hydrocontrol.fittingline.com/artikel/de/rueckschlagventil-r-14-6mm-durchfluss-vom-gewinde-zum-schlauch-iqs-standard/HAIQS%20146> |
+| 2 Steckanschlüsse 6mm -1/8" | <https://hydrocontrol.fittingline.com/artikel/de/gerader-steckanschluss-g-18-6mm-iqs-standard/IQSG%20186%20G> |
+| 3 Steckanschlüsse 6mm -1/4" | <https://hydrocontrol.fittingline.com/artikel/de/gerader-steckanschluss-g-14-6mm-iqs-standard/IQSG%20146%20G> |
+| 1 Verteilerblock 2x 1/4" -2x 1/8" | <https://hydrocontrol.fittingline.com/artikel/de/verteilerleiste-2-x-g-14-2-x-g-18-aluminium-eloxiert/RLE2%201418%20A> |
+| 1 Y-Steckverbinder 8-6mm | <https://hydrocontrol.fittingline.com/artikel/de/y-steckanschluss-8mm-6mm-iqs-standard/IQSY%208060> |
+| 1 Rückschlagventil 6 mm | <https://hydrocontrol.fittingline.com/artikel/de/steckanschluss-rueckschlagventil-6mm-iqs-standard/HIQS%2060> |
+| 1 Rückschlagventil 8mm | <https://hydrocontrol.fittingline.com/artikel/de/steckanschluss-rueckschlagventil-8mm-iqs-standard/HIQS%2080> |
+| 1  Schlauch 6 mm ca. 2 mt | <https://hydrocontrol.fittingline.com/artikel/de/polyurethan-schlauch-6-x-4-mm-silber/PUN%206X4%20SILBER> |
+| 1 Schlauch 8 mm ca. 1 mt | <https://hydrocontrol.fittingline.com/artikel/de/polyurethan-schlauch-8-x-5-mm-schwarz/PUN%208X5%20SCHWARZ> |
 
 Einrichtung:
 

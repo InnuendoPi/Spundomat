@@ -443,7 +443,7 @@ Allerdings benötigt man dafür eine spezielle Crimpzange
 
 * der Piezo -Summer wird an der Platinenunterseite auf die beiden Pins aufgelötet - Vorsicht Polarität! > violetter Pfeil ist der Pluspol
 
-![Platine1](img/platine1.png)
+![Platine2](img/platine2.png)
 
 Die Montage des LCD-Displays, der Platine und des Encoders erfolgt in dieser Reihenfolge
 

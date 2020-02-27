@@ -88,6 +88,7 @@ void handleRequestMiscSet()
     doc["mv2"] = startMV2;
     doc["buzzer"] = startBuzzer;
     doc["startdb"] = startDB;
+    doc["vistag"] = dbVisTag;
     String response;
     serializeJson(doc, response);
     server.send(200, "application/json", response);
@@ -317,15 +318,8 @@ void handleSetMisc()
         }
         if (server.argName(i) == "mode")
         {
-            for (int j = 0; j < sizeOfModes; j++)
-            {
-                if (modesWeb[j] == server.arg(i))
-                {
-                    setMode = j;
-                    break;
-                }
-            }
-            DEBUG_MSG("Web save mode String: %d Arg: %s\n", setMode, server.arg(i).c_str());
+            if (isValidInt(server.arg(i)))
+                setMode = server.arg(i).toInt();
         }
         if (server.argName(i) == "mv1")
         {
@@ -418,16 +412,8 @@ void handleSetMisc()
         }
         if (server.argName(i) == "einheit")
         {
-            for (int j = 0; j < anzAuswahl; j++)
-            {
-                if (einheit[j] == server.arg(i))
-                {
-                    setEinheit = j;
-                    break;
-                }
-            }
-            // setEinheit = server.arg(i).toInt();
-            // DEBUG_MSG("Web save einheit: %d Arg: %s\n", setEinheit, server.arg(i).c_str());
+            if (isValidInt(server.arg(i)))
+                setEinheit = server.arg(i).toInt();
         }
 
         if (server.argName(i) == "verzkombi")
@@ -518,29 +504,55 @@ void eraseEeprom()
     saveConfig();
 }
 
+void visualisieren()
+{
+    for (int i = 0; i < server.args(); i++)
+    {
+        if (server.argName(i) == "vistag")
+        {
+            server.arg(i).toCharArray(dbVisTag, 15);
+            checkChars2(dbVisTag);
+        }
+        if (server.argName(i) == "startvis")
+        {
+            if (server.arg(i) == "1")
+                startVis = true;
+            else
+                startVis = false;
+        }
+        yield();
+    }
+    if (startDB && startVis)
+        TickerInfluxDB.resume();
+    else
+        TickerInfluxDB.pause();
+}
+
 void kalibrieren()
 {
-    DEBUG_MSG("%s\n", "*** Kalibrierung");
     server.send(200, "text/plain", "kalibrieren...");
-    readPressure();
-    if (offset0 == 0) // Keine Kalibrierung bei 0 bar
+    // readPressure();
+    if (offset0 == 0.0) // Keine Kalibrierung bei 0 bar
     {
         offset0 = readSensor();
         writeFloat(0, offset0);
+        DEBUG_MSG("*** 1. Kalibrierung offset0: %f\n", offset0);
     }
-    else if (offset0 > 0 && readSensor() < 200)
+    else if (offset0 > 0 && readSensor() < 200.0)
     {
         offset0 = readSensor();
         writeFloat(0, offset0);
+        DEBUG_MSG("*** Re-Kalibrierung offset0: %f\n", offset0);
     }
-    else if (offset0 > 0 && readSensor() > 200) // 2bar ca. 330
+    else if (offset0 > 0 && readSensor() > 200.0) // 2bar ca. 330
     {
         offset2 = readSensor();
         writeFloat(4, offset2);
+        DEBUG_MSG("*** 2. Kalibrierung offset0: %f offset2: %f\n", offset0, offset2);
     }
 
     readPressure();
-    saveConfig();
+    // saveConfig();
     //    page = 2;
     //    menuitem = 0;
     reflashLCD = true;
@@ -605,3 +617,14 @@ void setMDNS()
     else
         Serial.printf("%s\n", "*** SYSINFO: Fehler Start mDNS! IP Adresse: %s\n", WiFi.localIP().toString().c_str());
 }
+
+// String getFormattedDate()
+// {
+//     time_t rawtime = timeClient.getEpochTime();
+//     struct tm *ti;
+//     ti = localtime(&rawtime);
+//     int jahr = ti->tm_year + 1900;
+//     int monat = (ti->tm_mon + 1) < 10 ? 0 + (ti->tm_mon + 1) : (ti->tm_mon + 1);
+//     int tag = timeClient.getDay();
+//     return year + "-" + monat + "-" + tag;
+// }

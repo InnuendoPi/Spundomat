@@ -405,13 +405,6 @@ Beschreibung:
 
 **Aufbau:**
 
-Vor der Inbetriebnahme mit einem Wemos D1 mini muss
-
-* der Trimmpoti auf 50kOhm eingestellt werden
-* der LM 2575T-5G ausgehend auf 5V eingestellt
-
-Diese Einstellungen müsen vorab durchgeführt werden! Ohne diese Einstellung kann der Wemos D1 mini zerstört werden!
-
 Grundsätzlich können für das LCD- Display, Encoder, Sensoren sowohl Klemmblöcke mit RM 2,54 als auch PSK -Platinen-Steckverbinder verwendet werden
 <https://www.reichelt.de/kupplungs-leergehaeuse-crimptechnik-2-polig-psk-254-2w-p14857.html?&nbc=1&trstct=lsbght_sldr::14861>
 <!-- -->
@@ -457,6 +450,44 @@ Die Montage des LCD-Displays, der Platine und des Encoders erfolgt in dieser Rei
 Die Verkabelung kann mit Flachbandlitzen durchgeführt werden.
 
 **Hardware: Anschlussmöglichkeiten Drucksensor und Magnetventil:**
+
+Im Spundomatgehäuse wird grundsätzlich die Schlauchdimension 6 x 4 mm verwendet (weichere PU-Qualität)
+
+* am Magnetventil 2 ( für das Zwangskarbonisieren/Spülen zuständig) muss der elektrische Spulenkopf um 180° gedreht werden -dazu Mutter etwas lösen, anheben und drehen - Mutter wieder festschrauben
+
+* zuerst an allen Bauteilen ( Magnetventile , Verteilerblock) die entsprechenden Fittinge einschrauben
+
+* Wichtig: der  Drucksensor muss mit Teflonband gedichtet werden, die restlichen Fittinge haben entweder Dichtringe oder Dichtmittelbeschichtungen
+
+![Pneumatik1](img/pneumatik1.png)
+
+Violett >  1/4" - 6 mm Steckverbinder - Spundomat Aus/Eingang zum /vom Keg
+Schwarz   >  1/4" - 6 mm Steckverbinder  - von der CO² -Flasche zum Spundomat
+Rot  >  1/8" - 6 mm Steckverbinder
+Blau  >  Rückschlagventil  1/4" - 6 mm
+Grün   >  Sinterschalldämpfer 1/4"
+Gelb   > Drucksensor ( unbedingt eindichten!)
+
+Links unten sieht man die XLR-Buchse für den Temperatursensor
+
+Für den Modus Spundomat / Spülen und Schnellkarbonisieren benötigt man noch folgende externe pneumatische Komponenten
+
+![Pneumatik2](img/pneumatik2.png)
+
+Schwarz  > Rückschlagventil 8 mm ( Pfeil zeigt in Öffnungsrichtung - ist am RV markiert)
+Grau        > Rückschlagventil 6 mm ( Pfeil zeigt in Öffnungsrichtung)
+Orange    > 6 mm Schlauch wird am Spundomat-Ausgang angeschlossen
+Y-Verteiler  8 mm > 6 mm
+
+Der graue 6 mm Schlauch ist mit dem CO²-Ventil des Keg verbunden
+Der schwarze 8 mm Schlauch ist mit dem Bier-Ventil des Keg verbunden
+
+Es wurden bewusst 2 Dimensionen und Farben gewählt um eine Verwechslung der Anschlüsse am Keg ( mit fatalen Folgen >  Bier im gesamten pneumatischen System, Sensor, Magnetventile, ect.) zu verhindern
+
+Wenn man nur spundet kann man den grauen 6 mm Schlauch direkt ( ohne Rückschlagventil) am Spundomat anschließen.
+Zudem können auch mehrere Keg´s bei gewünscht gleicher Karbonisierung durch Parallelschaltung mittels 6 mm T-Stücke angeschlossen werden.
+
+Hinweis: Die folgenden Schaubilder sind nicht aktuell!
 
 1. Möglichkeit: Spunder
 

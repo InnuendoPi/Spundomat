@@ -12,6 +12,13 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
+Version 2.0b10
+
+- Reworked: Neuer Button Visualisierung Start/Stop
+- Added:    Datenbank Tag Sud-ID für Visualisierung hinzugefügt
+- Reworked: Updates
+- Fixed:    LCD Anzeige -0.0bar
+
 Version 2.0b9
 
 - Fixed:    Temperatur 85°C bei Start

@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[6] = "2.0b9";
+const char Version[7] = "2.0b10";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -139,14 +139,14 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 
 // Influx Server (optional)
-InfluxDBClient client;
-// Point sensor("spundomat_status");
+InfluxDBClient dbClient;
 bool startDB = false;
+bool startVis = false;
 char dbServer[30] = "http://192.168.100.30:8086";     // InfluxDB Server IP
-//char dbServer[30] = "http://172.22.100.22:8086";     // InfluxDB Server IP
 char dbUser[15] = "";
 char dbPass[15] = "";
 char dbDatabase[15] = "spundomat";
+char dbVisTag[15] = "";
 unsigned long upInflux = DB_UPDATE;
 
 // Definiere Ticker Objekte

@@ -86,7 +86,7 @@ void setup()
   EEPROM.begin(512);
   offset0 = readFloat(0); // Lese Offset (Kalibrierung)
   offset2 = readFloat(4); // Lese Offset (Kalibrierung)
-
+  
   // Starte Encoder
   TickerEncoder.start();
   TickerButton.start();
@@ -111,6 +111,7 @@ void setup()
   {
     setInfluxDB();
     TickerInfluxDB.start();
+    TickerInfluxDB.pause();
   }
 }
 
@@ -120,13 +121,14 @@ void setupServer()
   server.on("/", handleRoot);
   server.on("/reboot", rebootDevice);     // Spundomat reboot
   server.on("/kalibrieren", kalibrieren); // Spundomat Kalibrierung
+  server.on("/visualisieren", visualisieren); // Spundomat Visualisierung
 
   server.on("/reqMisc", handleRequestMisc); // System Infos für WebConfig
   server.on("/setMisc", handleSetMisc);     // Einstellungen ändern
   server.on("/reqMiscSet", handleRequestMiscSet);
   server.on("/reqMode", handlereqMode);           // WebIf Abfrage Modus
   server.on("/reqEinheit", handlereqEinheit);     // WebIf Abfrage Einheit Zeiteingabe
-  server.on("/startHTTPUpdate", startHTTPUpdate); // Firmware ebUpdate
+  server.on("/startHTTPUpdate", startHTTPUpdate); // Firmware WebUpdate
   // FSBrowser initialisieren
   server.on("/list", HTTP_GET, handleFileList); // list directory
   server.on("/edit", HTTP_GET, []() {           // load editor

@@ -27,7 +27,8 @@ void loop()
   TickerButton.update();
 
   // InfluxDB Ticker
-  TickerInfluxDB.update();
+  if (startDB && startVis)
+    TickerInfluxDB.update();
 
   if (reflashLCD)
     showLCD();

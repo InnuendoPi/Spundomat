@@ -3,10 +3,17 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        {
-            "label": "Upload SPIFFS",
-            "type": "shell",
-            "command": "c:/arduino/tools/esptool.exe -ca 0x100000 -cd nodemcu -cp COM3 -cb 921600 -cf c:/arduino/git/Spundomat/build/Spundomat.spiffs.bin"
+      {
+        "label": "Starte Firmware.zip",
+        "type": "shell",
+        "windows": {
+          "command": ".\\Info\\buildFirm.cmd"
+        },
+        "group": "test",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
         }
+      }
     ]
-}
+  }

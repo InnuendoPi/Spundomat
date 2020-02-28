@@ -1,8 +1,4 @@
-.vscode/*
-.vscode/settings.json
-.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 *.code-workspace
 .DS_Store
 .gitattributes
@@ -25,3 +21,4 @@ Info/Flashen-Denis.cmd
 Info/Spundomat.ino.bin
 Info/Spundomat.spiffs.bin
 Info/esptool.exe
+Info/buildFirm.cmd

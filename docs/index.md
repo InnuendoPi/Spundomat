@@ -92,7 +92,7 @@ Beispiel für ein ESP8266 Modul vom Typ Wemos D1 mini mit 4MB Flash verbunden mi
 
         * Das ESP8266 Modul über einen Webbrowser mit dem WLAN verbinden
 
-        * Anschließend ist das MQTTDevice erreichbar über <http://spundomat>
+        * Anschließend ist der Spundomat erreichbar über <http://spundomat>
         je nach Netzwerkumgebung kann es 20-30 Sekunden dauern, bis der mDNS Name aufgelöst wird
 
 **Updates:**
@@ -373,8 +373,8 @@ Beschreibung:
 |1 | Schaltregler   LM 2575 - 5G | <https://www.ebay.at/itm/1-4-Pneumatik-Magnetventil-12V-DC-Electric-Solenoid-Valve-fur-Wasser-Luft-s0d/123512299808?hash=item1cc1e82120:g:zNEAAOSwMhVb~BfR> |
 |3 | Klemmblöcke 2- polig RM5,08 | <https://www.reichelt.de/loetbare-schraubklemme-2-pol-rm-5-08-mm-90-rnd-205-00287-p170288.html?&nbc=1> |
 |2 | Klemmblöcke 3- polig RM 3,81 | <https://www.reichelt.de/anschlussklemme-3-pol-1-5-mm-rm-3-81-akl-086-03-p72034.html?&nbc=1> |
-|1 | Klemmblock  5- polig RM 2,54 |
-|1 | Klemmblock  4- polig RM 2,54 |
+|1 | Klemmblock  5- polig RM 2,54 | <https://www.voelkner.de/products/435741/PTR-AKZ692-5-2.54-V-GRUeN-Schraubklemmblock-0.75mm-Polzahl-5-Gruen-1St..html> |
+|1 | Klemmblock  4- polig RM 2,54 | <https://www.voelkner.de/products/435741/PTR-AKZ692-4-2.54-V-GRUeN-Schraubklemmblock-0.75mm-Polzahl-4-Gruen-1St..html> |
 |1 | Piezosummer KPE 232A | <https://www.reichelt.de/piezosummer-summer-kpe-232a-p35920.html?&nbc=1> |
 |1 | XLR Buchse 3- polig | <https://www.reichelt.de/xlr-einbaubuchse-3-polig-mit-verriegelung-xlr-3eb-p22899.html?&nbc=1> |
 |1 | XLR Stecker 3- polig | <https://www.reichelt.de/xlr-stecker-3-polig-vernickelte-kontakte-xlr-3st-n-p40793.html?&nbc=1> |
@@ -405,47 +405,39 @@ Beschreibung:
 
 **Aufbau:**
 
-Grundsätzlich können für das LCD- Display, Encoder, Sensoren sowohl Klemmblöcke mit RM 2,54 als auch PSK -Platinen-Steckverbinder verwendet werden
+Grundsätzlich können für das LCD- Display, Encoder, Sensoren sowohl Klemmblöcke mit RM 2,54 als auch PSK -Platinen-Steckverbinder verwendet werden.
+
 <https://www.reichelt.de/kupplungs-leergehaeuse-crimptechnik-2-polig-psk-254-2w-p14857.html?&nbc=1&trstct=lsbght_sldr::14861>
 <!-- -->
 <https://www.reichelt.de/printstecker-einzelstecker-gerade-5-polig-pss-254-5g-p14911.html?&nbc=1>
 <!-- -->
-Allerdings benötigt man dafür eine spezielle Crimpzange
+Allerdings benötigt man dafür eine spezielle Crimpzange.
 
-* einlöten der beiden Brücken ( auf der Platine markiert)
+Vorgehensweise Aufbau der Platine:
 
-* alle Widerstände bestücken
-
-* alle Dioden, LED lt. Aufdruck bestücken
-
-* restliche Bauteile einlöten
-
-* zuletzt die beiden MosFet und den Schaltregler LM 2575T-5G einlöten > die Anschlussdrähte nicht zu lange belassen ( max. 10 mm) da sonst die Bauteile über den Gehäuserand ragen.
-
-* anschließend die beiden 8-poligen Steckleisten für den Wemos bestücken
-
-* am Wemos werden die Buchsenleisten verwendet
-
-* weiters alle Klemmblöcke ( oder Steckverbinder wer damit arbeitet) bestücken
-
-* die blauen Pfeile markieren die PSK -Steckverbinder
+1. einlöten der beiden Brücken (auf der Platine markiert)
+2. Platine mit allen Widerstände bestücken
+3. Pltine mit allen Dioden, LEDs gem. Aufdruck bestücken
+4. restliche Bauteile einlöten
+5. zuletzt werden die zwei MosFet und der Schaltregler LM 2575T-5G eingelöten
+  -> die Anschlussdrähte max. 10mm, weil sonst die Bauteile über den Gehäuserand ragen
+6. Steckleisten für den Wemos bestücken
+  -> am Wemos werden die Buchsenleisten verwendet
+7. nun alle Klemmblöcke (oder Steckverbinder) bestücken
+  -> die blauen Pfeile markieren die PSK -Steckverbinder
+8. Das TFT muss vorerst nicht bestückt werden (optional)
+9. der Piezo -Summer wird an der Platinenunterseite auf die beiden Pins aufgelötet - Vorsicht Polarität! 
+  -> violetter Pfeil ist der Pluspol
 
 ![Platine1](img/platine1.png)
-
-* TFT muss vorerst nicht bestückt werden ( optional, falls jemand damit arbeiten möchte)
-
-* der Piezo -Summer wird an der Platinenunterseite auf die beiden Pins aufgelötet - Vorsicht Polarität! > violetter Pfeil ist der Pluspol
-
 ![Platine2](img/platine2.png)
 
 Die Montage des LCD-Displays, der Platine und des Encoders erfolgt in dieser Reihenfolge
 
-* zuerst das Display mit 4 Distanzhülsen ( M3 x 15) am Gehäuse verschrauben
-<https://www.reichelt.de/distanzhuelsen-metall-6-kant-m3-15mm-da-15mm-p7018.html?&nbc=1>
-
-* darauf mittels M3 x 6 (8 ) mm Schrauben die Platine befestigen
-
-* zuletzt den Encoder mit M2,5 x 6 mm Schrauben befestigen ( leider passen beim Encoder keine M3 Schrauben)
+1. zuerst das Display mit 4 Distanzhülsen (M3 x 15) am Gehäuse verschrauben
+  <https://www.reichelt.de/distanzhuelsen-metall-6-kant-m3-15mm-da-15mm-p7018.html?&nbc=1>
+2. mit M3 x 6 bis 8mm Schrauben die Platine befestigen
+3. zuletzt den Encoder mit M2,5 x 6 mm Schrauben befestigen (beim Encoder passen keine M3 Schrauben)
 
 Die Verkabelung kann mit Flachbandlitzen durchgeführt werden.
 
@@ -453,39 +445,42 @@ Die Verkabelung kann mit Flachbandlitzen durchgeführt werden.
 
 Im Spundomatgehäuse wird grundsätzlich die Schlauchdimension 6 x 4 mm verwendet (weichere PU-Qualität)
 
-* am Magnetventil 2 ( für das Zwangskarbonisieren/Spülen zuständig) muss der elektrische Spulenkopf um 180° gedreht werden -dazu Mutter etwas lösen, anheben und drehen - Mutter wieder festschrauben
-
-* zuerst an allen Bauteilen ( Magnetventile , Verteilerblock) die entsprechenden Fittinge einschrauben
-
-* Wichtig: der  Drucksensor muss mit Teflonband gedichtet werden, die restlichen Fittinge haben entweder Dichtringe oder Dichtmittelbeschichtungen
+1. am Magnetventil 2 (Karbonisierer) muss der elektrische Spulenkopf um 180° gedreht werden 
+  -> dazu Mutter etwas lösen, anheben und drehen und die Mutter wieder festschrauben
+2. zuerst an allen Bauteilen (Magnetventile , Verteilerblock) die entsprechenden Fittinge einschrauben
+  -> Wichtig: der Drucksensor muss mit Teflonband gedichtet werden, die restlichen Fittinge haben entweder Dichtringe oder Dichtmittelbeschichtungen
 
 ![Pneumatik1](img/pneumatik1.png)
 
-Violett >  1/4" - 6 mm Steckverbinder - Spundomat Aus/Eingang zum /vom Keg
-Schwarz   >  1/4" - 6 mm Steckverbinder  - von der CO² -Flasche zum Spundomat
-Rot  >  1/8" - 6 mm Steckverbinder
-Blau  >  Rückschlagventil  1/4" - 6 mm
-Grün   >  Sinterschalldämpfer 1/4"
-Gelb   > Drucksensor ( unbedingt eindichten!)
+| Pfeil | Anschluss | Beschreibung |
+| ----- | --------- | ------------ |
+| Violett | 1/4" - 6 mm Steckverbinder | Spundomat Aus/Eingang zum /vom Keg |
+| Schwarz | 1/4" - 6 mm Steckverbinder | von der CO² -Flasche zum Spundomat |
+| Rot | 1/8" | 6 mm Steckverbinder |
+| Blau | 1/4" - 6 mm | Rückschlagventil |
+| Grün | 1/4" | Sinterschalldämpfer |
+| Gelb | | Drucksensor (unbedingt eindichten!) |
 
-Links unten sieht man die XLR-Buchse für den Temperatursensor
+Links unten befindet sich eine XLR-Buchse für den Temperatursensor DS18B20
 
 Für den Modus Spundomat / Spülen und Schnellkarbonisieren benötigt man noch folgende externe pneumatische Komponenten
 
 ![Pneumatik2](img/pneumatik2.png)
 
-Schwarz  > Rückschlagventil 8 mm ( Pfeil zeigt in Öffnungsrichtung - ist am RV markiert)
-Grau        > Rückschlagventil 6 mm ( Pfeil zeigt in Öffnungsrichtung)
-Orange    > 6 mm Schlauch wird am Spundomat-Ausgang angeschlossen
-Y-Verteiler  8 mm > 6 mm
+| Pfeil | Anschluss | Beschreibung |
+| ----- | --------- | ------------ |
+| Schwarz | 8mm | Rückschlagventil (Pfeil zeigt in Öffnungsrichtung) |
+| Grau | 6mm | Rückschlagventil (Pfeil zeigt in Öffnungsrichtung) |
+| Orange |6 mm | Schlauch wird am Spundomat-Ausgang angeschlossen |
+mit Y-Verteiler  8 mm  6 mm
 
-Der graue 6 mm Schlauch ist mit dem CO²-Ventil des Keg verbunden
+Der graue 6 mm Schlauch ist mit dem CO2-Ventil des Keg verbunden
 Der schwarze 8 mm Schlauch ist mit dem Bier-Ventil des Keg verbunden
 
-Es wurden bewusst 2 Dimensionen und Farben gewählt um eine Verwechslung der Anschlüsse am Keg ( mit fatalen Folgen >  Bier im gesamten pneumatischen System, Sensor, Magnetventile, ect.) zu verhindern
+Es wurden bewusst 2 Dimensionen und Farben gewählt, um eine Verwechslung der Anschlüsse am Keg zu verhindern. (Bier im gesamten pneumatischen System, Sensor, Magnetventile, ect.)
 
-Wenn man nur spundet kann man den grauen 6 mm Schlauch direkt ( ohne Rückschlagventil) am Spundomat anschließen.
-Zudem können auch mehrere Keg´s bei gewünscht gleicher Karbonisierung durch Parallelschaltung mittels 6 mm T-Stücke angeschlossen werden.
+Wenn man nur spundet kann man den grauen 6 mm Schlauch direkt ohne Rückschlagventil am Spundomat anschließen.
+Zudem können auch mehrere Kegs bei gewünscht gleicher Karbonisierung durch Parallelschaltung mittels 6 mm T-Stücke angeschlossen werden.
 
 Hinweis: Die folgenden Schaubilder sind nicht aktuell!
 
@@ -501,19 +496,57 @@ Hinweis: Die folgenden Schaubilder sind nicht aktuell!
 
 ## Visualisierung
 
-Der Spundomat unterstützt die Visualisierung mit der OpenSource Grafana. Zum aktuellen Zeitpunkt wird nur die lokalen Version unterstützt. In dieser Anleitung wird die Installation und Konfiguration auf einem RaspberryPi beschrieben.
+Der Spundomat unterstützt die Visualisierung mit der OpenSource Grafana. Zum aktuellen Zeitpunkt wird die lokalen Installation unterstützt. In dieser Anleitung wird die Installation und Konfiguration auf einem RaspberryPi beschrieben. Als Datenbank wird InfluxDB verwendet.
+
+Die Visualisierung ist eine optionale Möglichkeit, den Verlauf der Gärung und Reifung mit einer graphischen Darstellung zu dokumentieren. Die Installation der Datenbank InfluxDB, der Visualisierung Grafana und deren Konfiguration ist für den normalen Spundomat Betrieb nicht erforderlich.
+
+Die Visualisierung bietet die Möglichkeit, den Verlauf der Gärung und Reifung optisch zu überwachen. Mit Hilfe der Daten Temperatur, dem Ist-CO2-Gehalt und Ziel-CO2-Gehalt zu einem beliebeigen Zeitpunkt während der Gärung und Reifung, kann sehr leicht überprüft werden, ob sich bspw. der gewünschte CO2-Gehalt einstellt. Die Visualisierung ist unabhängig vom genutzten Betriebsmodus und kann sowohl von "Grünschlaucher", als auch Endvergärern genutzt werden.
+
+Ein Beispiel für ein Dashboard in Grafana ist im repository im Verzeichnis Info enthalten.
 
 ![Grafana](img/grafana.png)
 
-**Vor der Installation:**
+**Konfiguration:**
 
-Vor der Installation sollte der Raspberry aktualisiert werden:
+Unter den Systemeinstellungen im Tab System müssen die folge den Parameter konfiguriert werden:
 
-`sudo apt-get update`
+1. Influx Datenbank Server IP
 
-`sudo apt-get upgrade`
+    Die Adresse vom Datenbank Server ist im Format <http:IP-Adresse:Port> einzutragen. Der Standard Port lautet 8086
 
-`sudo reboot`
+    Beispiel: <http://192.168.178.100:8086>
+
+    Die Adresse vom Datenbank Server besteht immer aus dem Protokoll (http), der IP-Adresse oder Hostname, gefolgt von einem Doppelpunkt und einem Port.
+
+2. Datenbank Name
+
+    Hier ist der Name der Datenbank in InfluxDB einzutragen
+
+3. Benutzername und Password
+
+    Ist die Authentifizierung aktiviert mussen Benutzername und Password hinterlegt werden
+
+Mit der Checkbox "Aktiviere Visualisierung Grafana" wird die Visualisierung aktiviert.
+
+Mit diesen Einstellungen ist die Visualisierung betriebsbereit. Der Status für die Visualisierung lautet "betriebsbereit und pausiert". Der Spundomat schreibt nicht permanent Daten in die Influx Datenbank. Nach dem Start oder Reset vom Spundomat ist die Visualisierung betriebsbereit und wartet auf ein Startsignal.
+
+Über den Button "Visualisierung" im WebIf kann nun das Schreiben in die Datenbank gestartet bzw. gestoppt werden. Zusätzlich kann optional eine Sud-ID eingegeben werden. Diese Sud-ID wird in der InfluxDB als zusätzlicher tag verwendet. Die Daten Temperatur CO2-Gehalt befinden sich dann unter den tags "spundomat-status, sud-id". Es empfiehlt sich für das tag Sud-ID eine eindeutige Bezeichnung zu verwenden, bsp. mit Datumsangabe.
+
+Beispiel für eine Sud-ID: Helles-20200201
+
+Maximal können 15 Zeichen für die Sud-ID eingegeben werden.
+
+Vorgehensweise Abfüllen zur Gärung und Reifung:
+
+Sobald der Sud in Kegs abgefüllt ist, wird der Spundomat mit den Kegs verbunden und im gewünschte Betriebsmodus die notwendigen Parameter (CO2-Gehalt oder Druck) eingestellt. Sobald dies abgeschlossen ist, beginnt der Prozess Gärung bzw. Riefung. Das ist der Zeitpunkt, zu dem die Visualisierung - also das Schreiben von Daten in die Datenbank - mit einem Klick auf "Visualisierung" gestartet wird.
+
+Wenn der Prozess Gärung bzw. Reifung abgeschlossen ist, wird das Schreiben der Daten mit einem Klick auf Visualisierung beendet.
+
+Mit dieser Vorgehensweise beinhaltet die Visualisierung nur die relevanten Daten für den Verlauf der Gärung und Reifung des Jungbieres.
+
+Die URL für das Dashboard kann in Grafana über die Funktion Export ausgelesen werden.
+
+Beispiel für die URL Dashboard: <http://192.168.178.100:3000/d/xxxxxxx/spundomat?orgId=1&refresh=5s&kiosk=tv>
 
 **Installation Datenbank:**
 
@@ -572,6 +605,12 @@ Abschließend muss die Datenbank neu gestartet werden:
 
 `sudo systemctl restart influxdb`
 
+Die Datenbank InfluxDB speichert alle Daten in der Standard Einstellung unendlich lange (autogen retention policy). Es empfiehlt sich, veraltete Daten automatisch zu löschen:
+
+`alter retention policy "autogen" on "spundomat" duration 52w1d replication 1 shard duration 1d default`
+
+Mit dieser Regel (Retention Policy) wird die Standard-Einstellung "behalte die Daten unendlich lange" geändert in "lösche Daten nach 52 Wochen" (52w) und aggregiere Daten nach einem Tag (1d) in einem Shard.
+
 **Installation Grafana:**
 
 Vor der Eingabe der Befehle die aktuelle Version Grafana überprüfen und in Schritt 1 und 2 die Versionsnummer 6.6.1 ersetzen.
@@ -586,14 +625,10 @@ Vor der Eingabe der Befehle die aktuelle Version Grafana überprüfen und in Sch
 
 Im Grafana Web Interface muss nun abschließend nur noch die DataSource InfluxDB hinzugefügt werden.
 
-`URL: <http://ip_rasberrypi:8086>`
-
-`Database: spundomat`
-
-`User: pi`
-
-`Password: xxx`
-
-`HTTP Method: POST`
+* URL: <http://ip_rasberrypi:8086>
+* Database: spundomat
+* User: pi
+* Password: xxx
+* HTTP Method: POST
 
 Mit "Save & Test" wird die Verbindung gespeichert und überprüft. Nun kann entweder das Beispiel-Dashboard Spundomat (Datei Spundomat Dashboard.json) aus dem Ordner Info in Grafana importiert oder ein eigenes Dashboard erstellt werden.

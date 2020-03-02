@@ -72,16 +72,16 @@ bool loadFromSpiffs(String path)
 
 void handleRequestMiscSet()
 {
-    StaticJsonDocument<256> doc;
+    StaticJsonDocument<384> doc;
     doc["mdns"] = startMDNS;
     doc["mdns_name"] = nameMDNS;
     doc["pressure"] = setPressure;
     doc["carbonation"] = setCarbonation;
     doc["mode"] = setMode;
-    doc["co2"] = round(calcCarbonation(pressure, temperature) * 10) / 10.0;
-    doc["druck"] = round(pressure * 10) / 10.0;
-    doc["temperatur"] = round(temperature * 10) / 10.0;
-    doc["voltage"] = round(voltage * 10) / 10.0;
+    doc["co2"] = ((int)(calcCarbonation(pressure, temperature) * 10)) / 10.0;
+    doc["druck"] = ((int)(pressure * 10)) / 10.0;
+    doc["temperatur"] = ((int)(temperature * 10)) / 10.0;
+    doc["voltage"] = ((int)(voltage * 10)) / 10.0;
     doc["offset"] = offset0;
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;
@@ -89,6 +89,12 @@ void handleRequestMiscSet()
     doc["buzzer"] = startBuzzer;
     doc["startdb"] = startDB;
     doc["vistag"] = dbVisTag;
+    doc["einheit"] = setEinheit;
+    if (setEinheit == 0 || setEinheit == 1)
+        doc["verzkombi"] = (int)verzKombi;
+    else
+        doc["verzkombi"] = verzKombi;
+
     String response;
     serializeJson(doc, response);
     server.send(200, "application/json", response);
@@ -190,7 +196,10 @@ void handleRequestMisc()
     }
     if (request == "verzkombi")
     {
-        message = verzKombi;
+        if (setEinheit == 0 || setEinheit == 1)
+            message = (int)verzKombi;
+        else
+            message = verzKombi;
         goto SendMessage;
     }
     if (request == "einheit")

@@ -426,7 +426,7 @@ Vorgehensweise Aufbau der Platine:
 7. nun alle Klemmblöcke (oder Steckverbinder) bestücken
   -> die blauen Pfeile markieren die PSK -Steckverbinder
 8. Das TFT muss vorerst nicht bestückt werden (optional)
-9. der Piezo -Summer wird an der Platinenunterseite auf die beiden Pins aufgelötet - Vorsicht Polarität! 
+9. der Piezo -Summer wird an der Platinenunterseite auf die beiden Pins aufgelötet - Vorsicht Polarität!
   -> violetter Pfeil ist der Pluspol
 
 ![Platine1](img/platine1.png)
@@ -445,7 +445,7 @@ Die Verkabelung kann mit Flachbandlitzen durchgeführt werden.
 
 Im Spundomatgehäuse wird grundsätzlich die Schlauchdimension 6 x 4 mm verwendet (weichere PU-Qualität)
 
-1. am Magnetventil 2 (Karbonisierer) muss der elektrische Spulenkopf um 180° gedreht werden 
+1. am Magnetventil 2 (Karbonisierer) muss der elektrische Spulenkopf um 180° gedreht werden
   -> dazu Mutter etwas lösen, anheben und drehen und die Mutter wieder festschrauben
 2. zuerst an allen Bauteilen (Magnetventile , Verteilerblock) die entsprechenden Fittinge einschrauben
   -> Wichtig: der Drucksensor muss mit Teflonband gedichtet werden, die restlichen Fittinge haben entweder Dichtringe oder Dichtmittelbeschichtungen

@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.0b10";
+const char Version[7] = "2.0b11";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -69,12 +69,12 @@ const char Version[7] = "2.0b10";
 #define PAUSE200MS 200
 #define PAUSE100MS 100
 #define PAUSE10MS 10
-#define DELTA 0.03
+#define DELTA 0.1
 #define ENCODER_UPDATE 100
 #define BUTTON_UPDATE 100
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
-#define SPUNDOMAT_UPDATE 1000
+// #define SPUNDOMAT_UPDATE 2000
 #define DB_UPDATE 30000
 #define AUS 0
 #define SPUNDOMAT 1
@@ -115,7 +115,7 @@ const double E = exp(1);
 float setPressure = DEF_PRESSURE;   //  Vorgabe bei Neustart von 2,0 bar
 float setCarbonation = DEF_CARB;    //  Vorgabe bei Neustart von 5,0 gr/L
 int setMode = AUS;                  //  Startposition 0 = AUS
-
+int newMode = AUS;
 bool startMDNS = true;    // mDNS Dienst
 bool testModus = false;   // testModus - ignorieren!
 bool startMV1 = false;    // Aktiviere MV1 an D8
@@ -154,7 +154,6 @@ InnuTicker TickerTemp;
 InnuTicker TickerPressure;
 InnuTicker TickerEncoder;
 InnuTicker TickerButton;
-InnuTicker TickerSpundomat;
 InnuTicker TickerInfluxDB;
 
 // Deklariere Variablen

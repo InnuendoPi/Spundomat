@@ -250,31 +250,65 @@
         let miscRender = "<li class='list-group-item d-flex justify-content-between align-items-center'>Aktueller Modus<span class='badge badge-info'>";
         if (data.mode == 0) {
           miscRender += "Aus";
+		  miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
+          miscRender += data.pressure + " bar";
+          miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
+          miscRender += data.carbonation + " g/l";
+          miscRender += "</span></li>";
         }
         else if (data.mode == 1) {
           miscRender += "Spundomat";
+          miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
+          miscRender += data.carbonation + " g/l";
+          miscRender += "</span></li>";
         }
         else if (data.mode == 2) {
           miscRender += "Spunden CO2-Gehalt";
+          miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
+          miscRender += data.carbonation + " g/l";
+          miscRender += "</span></li>";
         }
         else if (data.mode == 3) {
           miscRender += "Spunden Druck";
+		  miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
+          miscRender += data.pressure + " bar";
+          miscRender += "</span></li>";
         }
         else if (data.mode == 4) {
           miscRender += "Karbonisieren CO2-Gehalt";
+          miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
+          miscRender += data.carbonation + " g/l";
+          miscRender += "</span></li>";
         }
         else if (data.mode == 5) {
           miscRender += "Karbonisieren Druck";
+		  miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
+          miscRender += data.pressure + " bar";
+          miscRender += "</span></li>";
         }
         else {
           miscRender += "Ablaufplan";
+		  miscRender += "</span></li>";
         }
 
-        miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
-        miscRender += data.pressure + " bar";
-        miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
-        miscRender += data.carbonation + " g/l";
-        miscRender += "</span></li><br /><li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller Druck<span class='badge badge-light'>";
+		if (data.mode == 1) {
+			miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Verzögerung Modus Spundomat Karbonisierung<span class='badge badge-info'>";
+			miscRender += data.verzkombi;
+			if (data.einheit == 0) {
+				miscRender += " min";
+			}
+			else if (data.einheit == 1) {
+				miscRender += " h";
+			}
+			else if (data.einheit == 2){
+				miscRender += " gr/l";
+			}
+			miscRender += "</span></li><br />";
+		}
+		else {
+			miscRender += "<br />";
+		}
+		miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller Druck<span class='badge badge-light'>";
         if (data.druck == -1) {
           miscRender += "kein Drucksensor angeschlossen";
         }
@@ -309,34 +343,34 @@
           miscRender += " badge-danger'>Kalibrierung bei 2bar ausführen";
           miscRender += "</span> </li> <br />";
         }
-        miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> Magnetventil MV1 <span class='badge ";
+        miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> Magnetventile <span class='badge ";
         if (data.mv1) {
-          miscRender += " badge-success'> An";
+          miscRender += " badge-success'>MV1 Aktiviert";
         }
         else {
-          miscRender += " badge-dark'> Aus";
+          miscRender += " badge-dark'>MV1 Deaktiviert";
         }
-        miscRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Magnetventil MV2 <span class='badge ";
-        if (data.mv2) {
-          miscRender += " badge-success'> An";
+        miscRender += "</span><span class='badge ";
+		if (data.mv2) {
+          miscRender += " badge-success'>MV2 Aktiviert";
         }
         else {
-          miscRender += " badge-dark'> Aus";
+          miscRender += " badge-dark'>MV2 Deaktiviert";
         }
         miscRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Buzzer <span class='badge ";
         if (data.buzzer) {
-          miscRender += " badge-success'> An";
+          miscRender += " badge-success'>Aktiviert";
         }
         else {
-          miscRender += " badge-dark'> Aus";
+          miscRender += " badge-dark'>Deaktiviert";
         }
 
         miscRender += "</span> </li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'> MDNS <span class='badge ";
         if (data.mdns) {
-          miscRender += " badge-success'> Aktiviert";
+          miscRender += " badge-success'>Aktiviert";
         }
         else {
-          miscRender += " badge-dark'> Deaktiviert";
+          miscRender += " badge-dark'>Deaktiviert";
         }
         miscRender += " </span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Visualisierung InfluxDB (Grafana) <span class='badge ";
         if (data.startdb) {

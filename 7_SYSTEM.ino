@@ -61,12 +61,13 @@ bool checkRangeDruck(const String &str)
 }
 bool checkRangeCO2(const String &str)
 {
-  int check = str.toInt();
-  if (check >= 0.0 && check <= 8.0) //20ms bis 2 Stunden
+  float check = str.toFloat();
+  if (check >= 0.0 && check <= 8.0) //0gr/l bis 8gr/l
     return true;
   else
     return false;
 }
+
 char *checkChars(char *input)
 {
   char *output = input;
@@ -181,11 +182,17 @@ void sendAlarm(const uint8_t &setAlarm)
 
 void calcVerzSpundomat()
 {
-  if (setEinheit == 0)
+  if (setEinheit == 0) // Verzögerung in Minuten
+  {
     verzKarbonisierung = verzKombi * 1000 * 60;
-  else if (setEinheit == 1)
+    minKarbonisierung = 0.0;
+  }
+  else if (setEinheit == 1) // Verzögerung in Stunden
+  {
     verzKarbonisierung = verzKombi * 1000 * 60 * 60;
-  else if (setEinheit == 2)
+    minKarbonisierung = 0.0;
+  }
+  else if (setEinheit == 2) // Verzögerung min CO2-Gehalt
   {
     verzKarbonisierung = 0;
     minKarbonisierung = verzKombi;
@@ -198,6 +205,5 @@ void setTicker() // Ticker Objekte deklarieren
   TickerPressure.config(tickerPressureCallback, upPressure, 0);
   TickerEncoder.config(tickerEncoderCallback, ENCODER_UPDATE, 0);
   TickerButton.config(tickerButtonCallback, BUTTON_UPDATE, 0);
-  TickerSpundomat.config(tickerSpundomatCallback, SPUNDOMAT_UPDATE, 0);
   TickerInfluxDB.config(tickerInfluxDBCallback, upInflux, 0);
 }

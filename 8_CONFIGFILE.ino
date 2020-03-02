@@ -37,22 +37,25 @@ bool loadConfig()
   if (spundObj.containsKey("CARBONATION"))
     setCarbonation = spundObj["CARBONATION"];
   if (spundObj.containsKey("MODE"))
+  {
     setMode = spundObj["MODE"];
+    newMode = setMode;
+  }
   if (spundObj.containsKey("VERZKOMBI"))
     verzKombi = spundObj["VERZKOMBI"];
   if (spundObj.containsKey("EINHEIT"))
     setEinheit = spundObj["EINHEIT"];
-  // Setze Startmodus auf Aus (obwohl Modus gespeichert ist)
-
-  Serial.printf("setPressure: %d\n", setPressure);
-  Serial.printf("setCarbonation: %d\n", setCarbonation);
+  
+  Serial.printf("setPressure: %f\n", setPressure);
+  Serial.printf("setCarbonation: %f\n", setCarbonation);
   Serial.printf("setMode: %d\n", setMode);
-  Serial.printf("verzKombi: %d\n", verzKombi);
+  Serial.printf("verzKombi: %f\n", verzKombi);
   Serial.printf("setEinheit: %d\n", setEinheit);
   Serial.println("--------");
-
   // Berechne Verzögerung Karbonisierung im Kombi-Modus
   calcVerzSpundomat();
+  Serial.printf("Verzögerung: %d minCarb: %f\n", verzKarbonisierung, minKarbonisierung);
+  Serial.println("--------");
 
   // InfluxDB Einstellungen
   JsonArray databaseArray = doc["DATABASE"];
@@ -147,13 +150,9 @@ bool loadConfig()
     file.close();
   }
 
-  //setMode = AUS;
-
   // Setze Intervalle für Ticker Objekte
   TickerPressure.interval(upPressure);
   TickerTemp.interval(upTemp);
-  TickerSpundomat.interval(SPUNDOMAT_UPDATE);
-  TickerSpundomat.stop();
   if (startBuzzer && setMode == AUS)
     sendAlarm(ALARM_OK);
   else if (startBuzzer)
@@ -170,12 +169,17 @@ bool saveConfig()
   spundObj["PRESSURE"] = setPressure;
   spundObj["CARBONATION"] = setCarbonation;
   spundObj["MODE"] = setMode;
+  newMode = setMode;
   spundObj["VERZKOMBI"] = verzKombi;
   spundObj["EINHEIT"] = setEinheit;
   DEBUG_MSG("setPressure: %f\n", setPressure);
   DEBUG_MSG("setCarbonation: %f\n", setCarbonation);
   DEBUG_MSG("verzKombi: %d\n", verzKombi);
   DEBUG_MSG("Einheit: %d\n", setEinheit);
+  DEBUG_MSG("%s\n", "--------");
+  // Berechne Verzögerung Karbonisierung im Kombi-Modus
+  calcVerzSpundomat();
+  DEBUG_MSG("Verzögerung: %d minCarb: %f\n", verzKarbonisierung, minKarbonisierung);
   DEBUG_MSG("%s\n", "--------");
 
   // Hardware Einstellungen
@@ -257,13 +261,9 @@ bool saveConfig()
 
   // Setze Intervall Temperatur Ticker
   TickerTemp.interval(upTemp);
+  
   // Setze Intervall Drucksensor Ticker
   TickerPressure.interval(upPressure);
-
-  if (setMode != SPUNDOMAT)
-    TickerSpundomat.stop();
-  else
-    TickerSpundomat.start();
 
   if (setMode == AUS)
     TickerPressure.start();
@@ -302,12 +302,12 @@ bool saveConfig()
     prevMillis = millis(); // Zeitstempel
     break;
   case PLAN1:
+  case PLAN2:
+  case PLAN3:
     // for (int test = 0; test < 20; test++)
     // {
     //   DEBUG_MSG("Line %d: x1: %f y1: %d z1: %d x2: %f y2: %d z2: %d\n", test, structPlan1[test].zieldruckMV1, structPlan1[test].intervallMV1Open, structPlan1[test].intervallMV1Close, structPlan1[test].zieldruckMV2, structPlan1[test].intervallMV2Open, structPlan1[test].intervallMV2Close);
     // }
-  case PLAN2:
-  case PLAN3:
     initPlan();
     if (SPIFFS.exists("/ablaufplan.txt"))
     {

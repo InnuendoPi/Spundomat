@@ -118,7 +118,7 @@ void checkTestMode()
 			pressure = oldPressDisp + 0.015;
 		}
 		break;
-	case SPUNDOMAT_UPDATE: // CO2 Spunden & Karbonisieren
+	case SPUNDOMAT: // CO2 Spunden & Karbonisieren
 		if (!stepA)
 		{
 			pressure = oldPressDisp - 0.015;

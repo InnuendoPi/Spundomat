@@ -12,6 +12,13 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
+Version 2.0b11
+
+- Fixed:    Fehler ABlauf Modus Spundomat behoben
+- Fixed:    Fehler bei der Berechnung Verzögerung min CO2 behoben
+- Fixed:    Modus Einstellung Encoder
+- Fixed:    Fehler Ticker Spundomat behoben (ersetzt)
+
 Version 2.0b10
 
 - Reworked: Neuer Button Visualisierung Start/Stop

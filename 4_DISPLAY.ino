@@ -6,12 +6,12 @@ void showLCD()
   {
   case 1: // Startseite
     Menu1[0] = "CO2:   ";
-    Menu1[0] += round(calcCarbonation(pressure, temperature) * 10) / 10.0;
+    Menu1[0] += ((int)(calcCarbonation(pressure, temperature) * 10)) / 10.0;
     Menu1[0] += "g/l ";
     if (setMode == AUS)
     {
       Menu1[3] = "Volt:  ";
-      Menu1[3] += voltage;
+      Menu1[3] += ((int)(voltage * 10)) / 10.0;
       Menu1[3] += "V";
     }
     else if (setMode == SPUNDOMAT)
@@ -70,11 +70,10 @@ void showLCD()
       Menu1[1] += pressure;
       Menu1[1] += "bar ";
     }
-    
 
-    Menu1[2] = "Temp: ";
+    Menu1[2] = "Temp:  ";
     // Menu1[2] += sTemperature;
-    Menu1[2] += round(temperature * 10) / 10.0;
+    Menu1[2] += ((int)(temperature * 10)) / 10.0;
     Menu1[2] += "\337C"; // °C
     // Navigation
     if (up)
@@ -134,16 +133,17 @@ void showLCD()
 
   case 2:                   // switch(page) Einstellungen
     Menu2[0] = "Zur\365ck"; // ü
-    Menu2[1] = "Modus: ";
-    Menu2[1] += modes[setMode];
+    Menu2[1] = "Modus:";
+    // Menu2[1] += modes[setMode];
+    Menu2[1] += modes[newMode];
     Menu2[2] = "Soll: ";
 
-    if (setMode == AUS || setMode == SPUNDOMAT || setMode == SPUNDEN_CO2 || setMode == KARBONISIEREN_CO2)  // CO2 
+    if (setMode == AUS || setMode == SPUNDOMAT || setMode == SPUNDEN_CO2 || setMode == KARBONISIEREN_CO2) // CO2
     {
       Menu2[2] += setCarbonation;
       Menu2[2] += " g/l";
     }
-    else if (setMode == SPUNDEN_DRUCK || setMode == KARBONISIEREN_DRUCK)  // Druck
+    else if (setMode == SPUNDEN_DRUCK || setMode == KARBONISIEREN_DRUCK) // Druck
     {
       Menu2[2] += setPressure;
       Menu2[2] += " bar";
@@ -215,25 +215,35 @@ void showLCD()
       lcd.setCursor(1, 1);
       lcd.print(Menu2[(menuitem + 1)]);
     }
+    if (buttonPressed)
+    {
+      setMode = newMode;
+      if (setMode == SPUNDOMAT)
+        prevMillis = millis(); // Zeitstempel
+    }
 
     // Ändere Einstellungen
     switch (edititem)
     {
     case 1: // Modus einstellen
-      lcd.setCursor(8, 0);
+      lcd.setCursor(7, 0);
       lcd.blink();
-      if (up && setMode < sizeOfModes - 1)
+      //if (up && setMode < sizeOfModes - 1)
+      if (up && newMode < sizeOfModes - 1)
       {
-        setMode++;
+        // setMode++;
+        newMode++;
         reflashLCD = true;
       }
-      else if (down && setMode > 0)
+      // else if (down && setMode > 0)
+      else if (down && newMode > 0)
       {
-        setMode--;
+        // setMode--;
+        newMode--;
         reflashLCD = true;
       }
       break;
-
+      
     case 2: // Sollwert
       lcd.setCursor(7, 0);
       lcd.blink();

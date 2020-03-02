@@ -46,14 +46,15 @@ public:
 		unsigned long currentMillis = millis();
 		if ((pressure > calcPressure(setCarbonation, temperature)) && (fabs(pressure - calcPressure(setCarbonation, temperature)) > DELTA))
 		{
+			// DEBUG_MSG("Delta Release: %f\n", fabs(pressure - calcPressure(setCarbonation, temperature)));
 			if ((mvState == HIGH) && (currentMillis - previousMillis >= openInterval)) // wenn MV1 offen ist, dann schließe es nach openInterval ms
 			{
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Spunden-CO2 close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
-				stepA = true; // Kombi-Modus
+				previousMillis = currentMillis;
+				stepA = true; // Spundomat Modus
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -61,9 +62,9 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Spunden-CO2 open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
-				stepA = false; // Kombi-Modus
+				previousMillis = currentMillis;
+				stepA = false; // Spundomat Modus
 			}
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
@@ -77,7 +78,7 @@ public:
 				readPressure();
 				previousMillis = currentMillis;
 			}
-			stepA = true; // Kombi-Modus
+			stepA = true; // Spundomat Modus
 		}
 	}
 
@@ -93,8 +94,8 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Spunden-Druck close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
+				previousMillis = currentMillis;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -102,8 +103,8 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Spunden-Druck open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				previousMillis = currentMillis;
 			}
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
@@ -132,8 +133,8 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Karbonisieren close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
+				previousMillis = currentMillis;
 				stepB = true; // Kombi-Modus
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
@@ -142,8 +143,8 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Karbonisieren open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				previousMillis = currentMillis;
 				stepB = false; // Kombi-Modus
 			}
 		}
@@ -169,14 +170,15 @@ public:
 		unsigned long currentMillis = millis();
 		if ((pressure < calcPressure(setCarbonation, temperature)) && (fabs(pressure - calcPressure(setCarbonation, temperature)) > DELTA))
 		{
+			// DEBUG_MSG("Delta Build: %f\n", fabs(pressure - calcPressure(setCarbonation, temperature)));
 			if ((mvState == HIGH) && (currentMillis - previousMillis >= openInterval)) // wenn MV offen ist, dann schließe es nach openInterval ms
 			{
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Karbonisieren close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
-				stepB = true; // Kombi-Modus
+				previousMillis = currentMillis;
+				stepB = true; // Spundomat Modus
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -184,9 +186,9 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Modus Karbonisieren open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
-				stepB = false; // Kombi-Modus
+				previousMillis = currentMillis;
+				stepB = false; // Spundomat Modus
 			}
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
@@ -219,8 +221,8 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", mvPin, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
+				previousMillis = currentMillis;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -228,8 +230,8 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress2 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", mvPin, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				previousMillis = currentMillis;
 			}
 			return false;
 		}
@@ -258,8 +260,8 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, prevMVState, mvState, currentMillis, previousMillis, closeInterval, newPressure);
+				previousMillis = currentMillis;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -267,8 +269,8 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				previousMillis = currentMillis;
 				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress2 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, prevMVState, mvState, currentMillis, previousMillis, openInterval, newPressure);
+				previousMillis = currentMillis;
 			}
 			return false;
 		}
@@ -326,35 +328,35 @@ void updateMV2() // Modus Karbonisieren
 		mv2.switchOff();
 }
 
-void updateSpundomat() // Kombi
+void updateSpundomat() // Spundomat Modus
 {
 	float localCalcPress = calcPressure(setCarbonation, temperature);
-
 	if (!stepA) // true: MV1 aktiv | false: MV1 inaktiv
 	{
-		DEBUG_MSG("Kombimodus MV1-1 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
+		// DEBUG_MSG("Spundomat Modus MV1-1 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
 		mv1.releasePressureCO2();
 		return;
 	}
 	else if (!stepB && stepA) // true: MV2 aktiv | false: MV2 inaktiv
 	{
-		if (verzKarbonisierung == 0 && minKarbonisierung == 0.0)
+		//DEBUG_MSG("Spundomat Modus Verzögerung: %ld minCarb: %f\n", verzKarbonisierung, minKarbonisierung);
+		if (verzKarbonisierung == 0 && minKarbonisierung == 0.0) // Keine Verzögerung Karbonisieren
 		{
-			DEBUG_MSG("Kombimodus MV2-3 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
+			// DEBUG_MSG("Spundomat Modus MV2-3 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
 			mv2.buildPressureCO2();
 			return;
 		}
-		else if (verzKarbonisierung > 0 && millis() > (prevMillis + verzKarbonisierung))
+		else if (verzKarbonisierung > 0 && millis() > (prevMillis + verzKarbonisierung)) // Verzögerung Karbonisieren Zeit
 		{
 			prevMillis = millis();
 			verzKarbonisierung = 0;
-			DEBUG_MSG("Kombimodus MV2-2 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
+			// DEBUG_MSG("Spundomat Modus MV2-2 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
 			mv2.buildPressureCO2();
 			return;
 		}
-		else if (minKarbonisierung > 0.0 && minKarbonisierung < calcCarbonation(pressure, temperature))
+		else if (minKarbonisierung > 0.0 && minKarbonisierung < calcCarbonation(pressure, temperature)) // Verzögerung min CO2-Gehalt
 		{
-			DEBUG_MSG("Kombimodus MV2-3 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
+			// DEBUG_MSG("Spundomat Modus MV2-3 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
 			mv2.buildPressureCO2();
 			return;
 		}

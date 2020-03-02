@@ -53,7 +53,7 @@ void loop()
     updateMV2();
     break;
   case SPUNDOMAT: // CO2 Spunden & Karbonisieren
-    TickerSpundomat.update();
+    updateSpundomat();
     break;
   case PLAN1:
   case PLAN2:

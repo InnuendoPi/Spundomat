@@ -218,8 +218,7 @@ void showLCD()
     if (buttonPressed)
     {
       setMode = newMode;
-      if (setMode == SPUNDOMAT)
-        prevMillis = millis(); // Zeitstempel
+      saveConfig();
     }
 
     // Ändere Einstellungen

@@ -41,11 +41,12 @@ bool loadConfig()
     setMode = spundObj["MODE"];
     newMode = setMode;
   }
+  
   if (spundObj.containsKey("VERZKOMBI"))
     verzKombi = spundObj["VERZKOMBI"];
   if (spundObj.containsKey("EINHEIT"))
     setEinheit = spundObj["EINHEIT"];
-  
+
   Serial.printf("setPressure: %f\n", setPressure);
   Serial.printf("setCarbonation: %f\n", setCarbonation);
   Serial.printf("setMode: %d\n", setMode);
@@ -121,13 +122,10 @@ bool loadConfig()
     startMDNS = miscObj["MDNS"];
   if (miscObj.containsKey("TESTMODE"))
     testModus = miscObj["TESTMODE"];
-  // if (miscObj.containsKey("OFFSET2"))
-  //   offset2 = miscObj["OFFSET2"];
-  
+
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
   Serial.printf("Testmodus: %d\n", testModus);
-  
 
   Serial.println("------ loadConfig finished ------");
   configFile.close();
@@ -152,6 +150,7 @@ bool loadConfig()
 
   // Setze Intervalle für Ticker Objekte
   TickerPressure.interval(upPressure);
+
   TickerTemp.interval(upTemp);
   if (startBuzzer && setMode == AUS)
     sendAlarm(ALARM_OK);
@@ -224,10 +223,10 @@ bool saveConfig()
   miscObj["UPTEMP"] = upTemp;
   miscObj["TESTMODE"] = testModus;
   // miscObj["OFFSET2"] = offset2;
-  
+
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
-  
+
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
@@ -261,7 +260,7 @@ bool saveConfig()
 
   // Setze Intervall Temperatur Ticker
   TickerTemp.interval(upTemp);
-  
+
   // Setze Intervall Drucksensor Ticker
   TickerPressure.interval(upPressure);
 

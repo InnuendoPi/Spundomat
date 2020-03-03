@@ -70,8 +70,6 @@ const char Version[7] = "2.0b11";
 #define PAUSE100MS 100
 #define PAUSE10MS 10
 #define DELTA 0.1
-#define ENCODER_UPDATE 100
-#define BUTTON_UPDATE 100
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
 // #define SPUNDOMAT_UPDATE 2000
@@ -152,8 +150,6 @@ unsigned long upInflux = DB_UPDATE;
 // Definiere Ticker Objekte
 InnuTicker TickerTemp;
 InnuTicker TickerPressure;
-InnuTicker TickerEncoder;
-InnuTicker TickerButton;
 InnuTicker TickerInfluxDB;
 
 // Deklariere Variablen

@@ -18,6 +18,11 @@ Version 2.0b11
 - Fixed:    Fehler bei der Berechnung Verzögerung min CO2 behoben
 - Fixed:    Modus Einstellung Encoder
 - Fixed:    Fehler Ticker Spundomat behoben (ersetzt)
+- Fixed:    Fehler Start Ablaufpläne über Encoder behoben
+- Fixed:    Fehler Start Ticker Drucksensor behoben
+- Removed:  Ticker Encoder
+- Removed:  Ticker Button
+- Cleanup:  Web Interface
 
 Version 2.0b10
 

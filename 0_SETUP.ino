@@ -54,7 +54,7 @@ void setup()
   // Starte I2C
   Wire.begin();
   Wire.beginTransmission(0x27);
-  
+
   // Starte Temperatursensor
   sensors.begin();
   readTemparature();
@@ -86,14 +86,13 @@ void setup()
   EEPROM.begin(512);
   offset0 = readFloat(0); // Lese Offset (Kalibrierung)
   offset2 = readFloat(4); // Lese Offset (Kalibrierung)
-  
-  // Starte Encoder
-  TickerEncoder.start();
-  TickerButton.start();
 
   // Starte Drucksensor
   readPressure();
-  TickerPressure.start();
+  if (setMode == AUS)
+    TickerPressure.start();
+  else
+    TickerPressure.pause();
 
   // Zeitserver via NTP
   timeClient.begin();
@@ -119,8 +118,8 @@ void setup()
 void setupServer()
 {
   server.on("/", handleRoot);
-  server.on("/reboot", rebootDevice);     // Spundomat reboot
-  server.on("/kalibrieren", kalibrieren); // Spundomat Kalibrierung
+  server.on("/reboot", rebootDevice);         // Spundomat reboot
+  server.on("/kalibrieren", kalibrieren);     // Spundomat Kalibrierung
   server.on("/visualisieren", visualisieren); // Spundomat Visualisierung
 
   server.on("/reqMisc", handleRequestMisc); // System Infos für WebConfig

@@ -55,6 +55,7 @@ public:
 				DEBUG_MSG("Magnetventil Modus Spunden-CO2 close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
 				stepA = true; // Spundomat Modus
+				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -65,6 +66,7 @@ public:
 				DEBUG_MSG("Magnetventil Modus Spunden-CO2 open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
 				stepA = false; // Spundomat Modus
+				reflashLCD = true;
 			}
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
@@ -96,6 +98,7 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				DEBUG_MSG("Magnetventil Modus Spunden-Druck close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
+				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -105,6 +108,7 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				DEBUG_MSG("Magnetventil Modus Spunden-Druck open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
+				reflashLCD = true;
 			}
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
@@ -136,6 +140,7 @@ public:
 				DEBUG_MSG("Magnetventil Modus Karbonisieren close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
 				stepB = true; // Kombi-Modus
+				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -146,6 +151,7 @@ public:
 				DEBUG_MSG("Magnetventil Modus Karbonisieren open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
 				stepB = false; // Kombi-Modus
+				reflashLCD = true;
 			}
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
@@ -179,6 +185,7 @@ public:
 				DEBUG_MSG("Magnetventil Modus Karbonisieren close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
 				stepB = true; // Spundomat Modus
+				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -189,6 +196,7 @@ public:
 				DEBUG_MSG("Magnetventil Modus Karbonisieren open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
 				stepB = false; // Spundomat Modus
+				reflashLCD = true;
 			}
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
@@ -223,6 +231,7 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", mvPin, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
+				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -232,6 +241,7 @@ public:
 				digitalWrite(mvPin, mvState); // Update Magnetventil
 				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress2 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", mvPin, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
+				reflashLCD = true;
 			}
 			return false;
 		}
@@ -262,6 +272,7 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, prevMVState, mvState, currentMillis, previousMillis, closeInterval, newPressure);
 				previousMillis = currentMillis;
+				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
 			{
@@ -271,6 +282,7 @@ public:
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress2 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, prevMVState, mvState, currentMillis, previousMillis, openInterval, newPressure);
 				previousMillis = currentMillis;
+				reflashLCD = true;
 			}
 			return false;
 		}

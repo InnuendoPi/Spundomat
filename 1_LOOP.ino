@@ -22,9 +22,9 @@ void loop()
   // Check DS18B20 Ticker
   TickerTemp.update();
 
-  // Check Encoder Ticker
-  TickerEncoder.update();
-  TickerButton.update();
+  // Check Encoder
+  button.tick();
+  readEncoder();
 
   // InfluxDB Ticker
   if (startDB && startVis)

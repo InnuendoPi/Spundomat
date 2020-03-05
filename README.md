@@ -12,6 +12,14 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
+Version 2.0b12
+
+- Fixed:    Fehler Modus Spundomat behoben. closeInterval wurde nicht korrekt verarbeitet
+- Fixed:    Verarbeitung Ablaufpläne
+- Changed:  2 Dezimalstellen für aktueller CO2-Gehalt und Druck
+- Changed:  Hysterese auf 0.05bar reduziert
+- Fixed:    TestModus überarbeitet (Debug)
+
 Version 2.0b11
 
 - Fixed:    Fehler ABlauf Modus Spundomat behoben

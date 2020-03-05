@@ -38,11 +38,35 @@ public:
 		previousMillis = 0;
 		enabled = false;
 	}
+	
+	void change(long newOpen, long newClose, bool newEnabled) // Aufruf aus configfile
+	{
+		openInterval = newOpen;
+		closeInterval = newClose;
+		enabled = newEnabled;
+		previousMillis = 0;
+		DEBUG_MSG("Change Pin: %d open: %ld close: %ld\n", mvPin, openInterval, closeInterval);
+	}
+	
+	void switchOff() // Zusätzlicher Ausschalter
+	{
+		mvState = LOW;
+		digitalWrite(mvPin, mvState);
+	}
+
+	bool getState() // Gibt den aktuellen Status HIGH/LOW von MV zurück
+	{
+		return mvState;
+	}
 
 	void releasePressureCO2() // MV1 Modus Spunden CO2
 	{
 		if (!enabled)
+		{
+			setMode = 0;
+			saveConfig();
 			return;
+		}
 		unsigned long currentMillis = millis();
 		if ((pressure > calcPressure(setCarbonation, temperature)) && (fabs(pressure - calcPressure(setCarbonation, temperature)) > DELTA))
 		{
@@ -71,29 +95,34 @@ public:
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
-			mvState = LOW;
-			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
-			digitalWrite(mvPin, mvState);
-
-			// millis2wait(closeInterval);
-
-			DEBUG_MSG("Magnetventil Modus Spunden-CO2 Delta P: %f Status: %d \n", pressure, mvState);
-			if (currentMillis - previousMillis >= openInterval)
+			if (mvState == HIGH)
+			{
+				mvState = LOW;
+				millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
+				digitalWrite(mvPin, mvState);
+			}
+			// DEBUG_MSG("Magnetventil Modus Spunden-CO2 Delta P: %f Status: %d \n", pressure, mvState);
+			if (currentMillis - previousMillis >= closeInterval)
 			{
 				readPressure();
+				DEBUG_MSG("Magnetventil Modus Spunden-CO2 Delta P: %f Status: %d \n", pressure, mvState);
 				previousMillis = currentMillis;
-				// stepA = true; // Spundomat Modus Test!
-				// return; // Test!
+				stepA = true; // Spundomat Modus Test!
+				return;		  // Test!
 			}
-			stepA = true; // Spundomat Modus
-			// stepA = false; // Spundomat Modus Test!
+			// stepA = true; // Spundomat Modus
+			stepA = false; // Spundomat Modus Test!
 		}
 	}
 
 	void releasePressureDruck() // MV1 Modus Spunden Druck
 	{
 		if (!enabled) // MV1 aktiviert?
+		{
+			setMode = 0;
+			saveConfig();
 			return;
+		}
 		unsigned long currentMillis = millis();
 		if (pressure > setPressure)
 		{
@@ -103,7 +132,7 @@ public:
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
 				DEBUG_MSG("Magnetventil Modus Spunden-Druck close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
-				previousMillis = currentMillis;;
+				previousMillis = currentMillis;
 				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
@@ -119,25 +148,32 @@ public:
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
-			mvState = LOW;
-			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
-			digitalWrite(mvPin, mvState);
-			DEBUG_MSG("Magnetventil Modus Spunden-Druck delta P: %f Status: %d \n", pressure, mvState);
-			
-			// millis2wait(closeInterval);
-
+			if (mvState == HIGH)
+			{
+				mvState = LOW;
+				millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
+				digitalWrite(mvPin, mvState);
+			}
 			if (currentMillis - previousMillis >= openInterval)
 			{
 				readPressure();
+				DEBUG_MSG("Magnetventil Modus Spunden-Druck delta P: %f Status: %d \n", pressure, mvState);
 				previousMillis = currentMillis;
+				stepA = true;
+				return;
 			}
+			stepA = false;
 		}
 	}
 
 	void buildPressureDruck() // MV2 Modus Karbonisieren
 	{
 		if (!enabled) // MV2 aktiviert?
+		{
+			setMode = 0;
+			saveConfig();
 			return;
+		}
 		unsigned long currentMillis = millis();
 		if (pressure < setPressure)
 		{
@@ -165,26 +201,33 @@ public:
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
-			mvState = LOW;
-			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
-			digitalWrite(mvPin, mvState);
-
-			// millis2wait(closeInterval);
-
-			DEBUG_MSG("Magnetventil Modus Karbonisieren delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
-			if (currentMillis - previousMillis >= openInterval)
+			if (mvState == HIGH)
+			{
+				mvState = LOW;
+				millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
+				digitalWrite(mvPin, mvState);
+			}
+			// DEBUG_MSG("Magnetventil Modus Karbonisieren delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
+			if (currentMillis - previousMillis >= closeInterval)
 			{
 				readPressure();
+				DEBUG_MSG("Magnetventil Modus Karbonisieren delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
 				previousMillis = currentMillis;
+				stepB = true;
+				return;
 			}
-			stepB = true;
+			stepB = false;
 		}
 	}
 
 	void buildPressureCO2() // MV2 Modus Karbonisieren
 	{
 		if (!enabled) // MV2 aktiviert?
+		{
+			setMode = 0;
+			saveConfig();
 			return;
+		}
 		unsigned long currentMillis = millis();
 		if ((pressure < calcPressure(setCarbonation, temperature)) && (fabs(pressure - calcPressure(setCarbonation, temperature)) > DELTA))
 		{
@@ -213,22 +256,22 @@ public:
 		}
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
-			mvState = LOW;
-			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
-			digitalWrite(mvPin, mvState);
-
-			// millis2wait(closeInterval);
-
-			DEBUG_MSG("Magnetventil Modus Karbonisieren delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
-			if (currentMillis - previousMillis >= openInterval)
+			if (mvState == HIGH)
+			{
+				mvState = LOW;
+				millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
+				digitalWrite(mvPin, mvState);
+			}
+			// DEBUG_MSG("Magnetventil Modus Karbonisieren delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
+			if (currentMillis - previousMillis >= closeInterval)
 			{
 				readPressure();
+				DEBUG_MSG("Magnetventil Modus Karbonisieren delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
 				previousMillis = currentMillis;
-				// stepB = true; // Test!
-				// return; // Test
+				stepB = true;
+				return;
 			}
-			stepB = true;
-			// stepB = false; // Test
+			stepB = false;
 		}
 	}
 
@@ -318,25 +361,6 @@ public:
 			readPressure();
 			return true;
 		}
-	}
-
-	void change(long newOpen, long newClose, bool newEnabled) // Aufruf aus configfile
-	{
-		openInterval = newOpen;
-		closeInterval = newClose;
-		enabled = newEnabled;
-		previousMillis = 0;
-		DEBUG_MSG("Change Pin: %d open: %ld close: %ld\n", mvPin, openInterval, closeInterval);
-	}
-	void switchOff() // Zusätzlicher Ausschalter
-	{
-		mvState = LOW;
-		digitalWrite(mvPin, mvState);
-		//DEBUG_MSG("Switched off %d status: %d\n", mvPin, mvState);
-	}
-	bool getState() // Gibt den aktuellen Status HIGH/LOW von MV zurück
-	{
-		return mvState;
 	}
 };
 
@@ -459,8 +483,8 @@ void startPlan() // Modus Ablaufplan
 			DEBUG_MSG("Counterplan Ende %d\n", counterPlan);
 			return;
 		}
-		stepA = false;		 // Setze StepA aktiv
-		stepB = false;		 // Setze StepB aktiv
+		stepA = false;			// Setze StepA aktiv
+		stepB = false;			// Setze StepB aktiv
 		millis2wait(PAUSE2SEC); // StepA und StepB abgeschlossen -> kurze Pause
 		DEBUG_MSG("Counterplan: #%d\n", counterPlan);
 		// Setze Intervalle für den nächsten Schritt

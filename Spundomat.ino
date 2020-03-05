@@ -69,10 +69,9 @@ const char Version[7] = "2.0b12";
 #define PAUSE200MS 200
 #define PAUSE100MS 100
 #define PAUSE10MS 10
-#define DELTA 0.1
+#define DELTA 0.05
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
-// #define SPUNDOMAT_UPDATE 2000
 #define DB_UPDATE 30000
 #define AUS 0
 #define SPUNDOMAT 1

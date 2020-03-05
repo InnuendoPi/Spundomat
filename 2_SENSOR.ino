@@ -96,40 +96,77 @@ void checkTestMode()
 	case AUS:
 		break;
 	case SPUNDEN_CO2: // CO2 Spunden
-		if (pressure < calcPressure(setCarbonation, temperature))
+		if (pressure > calcPressure(setCarbonation, temperature))
 		{
-			pressure = oldPressDisp + 0.1;
+			pressure = oldPressDisp - 0.15;
 		}
+		else
+			pressure = 3.0;
 		break;
 	case SPUNDEN_DRUCK: // Druck Spunden
 		if (pressure < setPressure)
 		{
-			pressure = oldPressDisp - 0.1;
+			pressure = oldPressDisp - 0.15;
 		}
+		else
+			pressure = 3.0;
 		break;
 	case KARBONISIEREN_CO2: // Karbonisieren
-		if (pressure > calcPressure(setCarbonation, temperature))
+		if (pressure < calcPressure(setCarbonation, temperature))
 		{
-			pressure = oldPressDisp + 0.1;
+			pressure = oldPressDisp + 0.15;
 		}
+		else
+			pressure = 0.2;
 		break;
 	case KARBONISIEREN_DRUCK: // Karbonisieren
-		if (pressure > setPressure)
+		if (pressure < setPressure)
 		{
-			pressure = oldPressDisp + 0.1;
+			pressure = oldPressDisp + 0.15;
 		}
+		else
+			pressure = 0.2;
 		break;
 	case SPUNDOMAT: // CO2 Spunden & Karbonisieren
-		if (!stepA)
+		
+		if (pressure > calcPressure(setCarbonation, temperature))
 		{
-			pressure = oldPressDisp + 0.1;
-			DEBUG_MSG("Plan !StepA %f\n", pressure);
+			DEBUG_MSG("Größer P: %f O: %f A: %d B: %d\n", pressure, oldPressDisp, stepA, stepB);
+			oldPressDisp -= 0.15;
+			pressure = oldPressDisp - 0.15;
 		}
-		else if (!stepB && stepA)
+		else if (pressure < calcPressure(setCarbonation, temperature))
 		{
-			pressure = oldPressDisp - 0.1;
-			DEBUG_MSG("Plan !StepB %f\n", pressure);
+			DEBUG_MSG("Kleiner P: %f O: %f A: %d B: %d\n", pressure, oldPressDisp, stepA, stepB);
+			pressure = oldPressDisp + 0.15;
 		}
+		else //if (fabs(pressure - calcPressure(setCarbonation, temperature)) < DELTA)
+		{
+			DEBUG_MSG("Fabs P: %f A: %d B: %d\n", pressure, stepA, stepB);
+			pressure = oldPressDisp + 0.15;
+		}
+		
+
+		// if (!stepA && stepB)
+		// {
+		// 	pressure = oldPressDisp + 0.15;
+		// 	DEBUG_MSG("Plan !StepA %f stepA: %d stepB: %d\n", pressure, stepA, stepB);
+		// }
+		// else if (!stepB && stepA)
+		// {
+		// 	pressure = oldPressDisp + 0.15;
+		// 	DEBUG_MSG("Plan !StepB %f stepA: %d stepB: %d\n", pressure, stepA, stepB);
+		// }
+		// else if (stepB && stepA)
+		// {
+		// 	pressure = oldPressDisp - 0.15;
+		// 	DEBUG_MSG("Plan StepA && StepB %f stepA: %d stepB: %d\n", pressure, stepA, stepB);
+		// }
+		// else if (!stepB && !stepA)
+		// {
+		// 	// pressure = oldPressDisp + 0.15;
+		// 	DEBUG_MSG("Plan StepA && StepB %f stepA: %d stepB: %d\n", pressure, stepA, stepB);
+		// }
 		break;
 	case PLAN1:
 	case PLAN2:

@@ -82,8 +82,11 @@ public:
 			{
 				readPressure();
 				previousMillis = currentMillis;
+				// stepA = true; // Spundomat Modus Test!
+				// return; // Test!
 			}
 			stepA = true; // Spundomat Modus
+			// stepA = false; // Spundomat Modus Test!
 		}
 	}
 
@@ -221,8 +224,11 @@ public:
 			{
 				readPressure();
 				previousMillis = currentMillis;
+				// stepB = true; // Test!
+				// return; // Test
 			}
 			stepB = true;
+			// stepB = false; // Test
 		}
 	}
 

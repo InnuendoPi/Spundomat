@@ -46,7 +46,8 @@
         "bitset": "cpp",
         "chrono": "cpp",
         "algorithm": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "complex": "cpp"
     },
     "terminal.integrated.windowsEnableConpty": false,
     "esp8266fs.espota.esp.port": 8266,

@@ -48,7 +48,7 @@ void showLCD()
     }
     else if (setMode == PLAN1 || setMode == PLAN2 || setMode == PLAN3)
     {
-      Menu1[3] = "Plan: #";
+      Menu1[3] = "Plan #";
       Menu1[3] += counterPlan + 1;
       if (!stepA)
       {
@@ -217,8 +217,11 @@ void showLCD()
     }
     if (buttonPressed)
     {
-      setMode = newMode;
-      saveConfig();
+      if (setMode != newMode)
+      {
+        setMode = newMode;
+        saveConfig();
+      }
     }
 
     // Ändere Einstellungen
@@ -242,7 +245,7 @@ void showLCD()
         reflashLCD = true;
       }
       break;
-      
+
     case 2: // Sollwert
       lcd.setCursor(7, 0);
       lcd.blink();

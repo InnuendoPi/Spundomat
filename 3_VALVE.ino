@@ -52,7 +52,7 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Modus Spunden-CO2 close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
+				DEBUG_MSG("Magnetventil Modus Spunden-CO2 close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
 				stepA = true; // Spundomat Modus
 				reflashLCD = true;
@@ -63,7 +63,7 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Modus Spunden-CO2 open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				DEBUG_MSG("Magnetventil Modus Spunden-CO2 open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
 				stepA = false; // Spundomat Modus
 				reflashLCD = true;
@@ -74,6 +74,9 @@ public:
 			mvState = LOW;
 			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
+
+			// millis2wait(closeInterval);
+
 			DEBUG_MSG("Magnetventil Modus Spunden-CO2 Delta P: %f Status: %d \n", pressure, mvState);
 			if (currentMillis - previousMillis >= openInterval)
 			{
@@ -96,8 +99,8 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Modus Spunden-Druck close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
-				previousMillis = currentMillis;
+				DEBUG_MSG("Magnetventil Modus Spunden-Druck close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				previousMillis = currentMillis;;
 				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
@@ -106,7 +109,7 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Modus Spunden-Druck open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				DEBUG_MSG("Magnetventil Modus Spunden-Druck open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
 				reflashLCD = true;
 			}
@@ -117,6 +120,9 @@ public:
 			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
 			DEBUG_MSG("Magnetventil Modus Spunden-Druck delta P: %f Status: %d \n", pressure, mvState);
+			
+			// millis2wait(closeInterval);
+
 			if (currentMillis - previousMillis >= openInterval)
 			{
 				readPressure();
@@ -137,9 +143,9 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Modus Karbonisieren close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
+				DEBUG_MSG("Magnetventil Modus Karbonisieren close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
-				stepB = true; // Kombi-Modus
+				stepB = true;
 				reflashLCD = true;
 			}
 			else if ((mvState == LOW) && (currentMillis - previousMillis >= closeInterval)) // wenn MV geschlossen ist, dann öffne es nach closeInterval ms
@@ -148,7 +154,7 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Magnetventil
-				DEBUG_MSG("Magnetventil Modus Karbonisieren open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				DEBUG_MSG("Magnetventil Modus Karbonisieren open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
 				stepB = false; // Kombi-Modus
 				reflashLCD = true;
@@ -159,6 +165,9 @@ public:
 			mvState = LOW;
 			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
+
+			// millis2wait(closeInterval);
+
 			DEBUG_MSG("Magnetventil Modus Karbonisieren delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
 			if (currentMillis - previousMillis >= openInterval)
 			{
@@ -182,7 +191,7 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Modus Karbonisieren close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
+				DEBUG_MSG("Magnetventil Modus Karbonisieren close P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
 				stepB = true; // Spundomat Modus
 				reflashLCD = true;
@@ -193,7 +202,7 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Magnetventil
-				DEBUG_MSG("Magnetventil Modus Karbonisieren open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				DEBUG_MSG("Magnetventil Modus Karbonisieren open P: %f prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
 				stepB = false; // Spundomat Modus
 				reflashLCD = true;
@@ -204,6 +213,9 @@ public:
 			mvState = LOW;
 			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
+
+			// millis2wait(closeInterval);
+
 			DEBUG_MSG("Magnetventil Modus Karbonisieren delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
 			if (currentMillis - previousMillis >= openInterval)
 			{
@@ -219,6 +231,7 @@ public:
 		if (!enabled) // MV2 aktiviert?
 		{
 			setMode = 0;
+			saveConfig();
 			return true;
 		}
 		unsigned long currentMillis = millis();
@@ -229,7 +242,7 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", mvPin, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
+				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress low Pressure: %f prevStatus: %d Status: %d currentMillis: %lu prevOpen: %lu Intervall: %ld \n", mvPin, pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval);
 				previousMillis = currentMillis;
 				reflashLCD = true;
 			}
@@ -239,7 +252,7 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Magnetventil
-				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress2 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", mvPin, prevMVState, mvState, currentMillis, previousMillis, openInterval);
+				DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress high Pressure: %f prevStatus: %d Status: %d currentMillis: %lu prevOpen: %lu Intervall: %ld \n", mvPin, pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval);
 				previousMillis = currentMillis;
 				reflashLCD = true;
 			}
@@ -250,7 +263,9 @@ public:
 			mvState = LOW;
 			millis2wait(100); // Verzögerung um 2 Schaltvorgänge unter 10ms zu vermeiden
 			digitalWrite(mvPin, mvState);
-			DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress3 Status: %d \n", mvPin, mvState);
+			DEBUG_MSG("Magnetventil Pin: %d Modus planBuildPress low-2 Status: %d \n", mvPin, mvState);
+			millis2wait(closeInterval);
+			readPressure();
 			return true;
 		}
 	}
@@ -260,6 +275,7 @@ public:
 		if (!enabled) // MV1 aktiviert?
 		{
 			setMode = 0;
+			saveConfig();
 			return true;
 		}
 		unsigned long currentMillis = millis();
@@ -270,7 +286,7 @@ public:
 				prevMVState = mvState;
 				mvState = LOW;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress1 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, prevMVState, mvState, currentMillis, previousMillis, closeInterval, newPressure);
+				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress low Pressure: %f prevStatus: %d Status: %d currentMillis: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, pressure, prevMVState, mvState, currentMillis, previousMillis, closeInterval, newPressure);
 				previousMillis = currentMillis;
 				reflashLCD = true;
 			}
@@ -280,7 +296,7 @@ public:
 				prevMVState = mvState;
 				mvState = HIGH;
 				digitalWrite(mvPin, mvState); // Update Status Magnetventil
-				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress2 prevStatus: %d Status: %d current: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, prevMVState, mvState, currentMillis, previousMillis, openInterval, newPressure);
+				DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress high Pressure: %f prevStatus: %d Status: %d currentMillis: %lu prevOpen: %lu Intervall: %ld newPressure: %f\n", mvPin, pressure, prevMVState, mvState, currentMillis, previousMillis, openInterval, newPressure);
 				previousMillis = currentMillis;
 				reflashLCD = true;
 			}
@@ -289,9 +305,11 @@ public:
 		else // hier muss das Magnetventil immer geschlossen werden
 		{
 			mvState = LOW;
-			millis2wait(200); // Schutz Magnetventil
+			millis2wait(100); // Schutz Magnetventil
 			digitalWrite(mvPin, mvState);
-			DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress3 Status: %d newPressure: %f Pressure: %f\n", mvPin, mvState, newPressure, pressure);
+			DEBUG_MSG("Magnetventil Pin: %d Modus planRelPress low-2 Status: %d newPressure: %f Pressure: %f\n", mvPin, mvState, newPressure, pressure);
+			millis2wait(closeInterval);
+			readPressure();
 			return true;
 		}
 	}
@@ -399,7 +417,7 @@ void startPlan() // Modus Ablaufplan
 	}
 	if (!stepA) // true: MV1 aktiv | false: MV1 inaktiv
 	{
-		// DEBUG_MSG("startPlan StepA #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, structPlan[counterPlan].zieldruckMV1, pressure);
+		// DEBUG_MSG("startPlan StepA #%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, structPlan[counterPlan].zieldruckMV1, pressure);
 		if (structPlan[counterPlan].zieldruckMV1 == 0.0)
 		{
 			stepA = true;
@@ -413,7 +431,7 @@ void startPlan() // Modus Ablaufplan
 	}
 	else if (!stepB && stepA) // true: MV2 aktiv | false: MV2 inaktiv
 	{
-		// DEBUG_MSG("startPlan StepB #%d/%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, count, structPlan[counterPlan].zieldruckMV2, pressure);
+		// DEBUG_MSG("startPlan StepB #%d Zieldruck: %f Ist-Druck: %f\n", counterPlan, structPlan[counterPlan].zieldruckMV2, pressure);
 		if (structPlan[counterPlan].zieldruckMV2 == 0.0)
 		{
 			stepB = true;
@@ -431,6 +449,7 @@ void startPlan() // Modus Ablaufplan
 		if (counterPlan == maxSchritte)
 		{
 			setMode = 0;
+			saveConfig();
 			DEBUG_MSG("Counterplan Ende %d\n", counterPlan);
 			return;
 		}

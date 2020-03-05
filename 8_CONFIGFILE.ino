@@ -168,7 +168,6 @@ bool saveConfig()
   spundObj["PRESSURE"] = setPressure;
   spundObj["CARBONATION"] = setCarbonation;
   spundObj["MODE"] = setMode;
-  newMode = setMode;
   spundObj["VERZKOMBI"] = verzKombi;
   spundObj["EINHEIT"] = setEinheit;
   DEBUG_MSG("setPressure: %f\n", setPressure);

@@ -329,6 +329,7 @@ void handleSetMisc()
         {
             if (isValidInt(server.arg(i)))
                 setMode = server.arg(i).toInt();
+            newMode = setMode;
         }
         if (server.argName(i) == "mv1")
         {

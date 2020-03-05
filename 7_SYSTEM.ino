@@ -140,7 +140,7 @@ void sendAlarm(const uint8_t &setAlarm)
     delay(150);
     tone(PIN_BUZZER, 880, 50);
     // delay(100);
-    DEBUG_MSG("%s\n", "Alarm ON");
+    // DEBUG_MSG("%s\n", "Alarm ON");
     break;
   case ALARM_OFF:
     tone(PIN_BUZZER, 880, 50);

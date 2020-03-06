@@ -357,7 +357,14 @@
           miscRender += " badge-danger'>Kalibrierung bei 2bar ausführen";
           miscRender += "</span> </li> <br />";
         }
-        miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> Magnetventile <span class='badge ";
+        miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Hardware<span class='badge ";
+		if (data.buzzer) {
+          miscRender += " badge-success'>Buzzer Aktiviert";
+        }
+        else {
+          miscRender += " badge-dark'>Buzzer Deaktiviert";
+        }
+		miscRender += "</span><span class='badge ";
         if (data.mv1) {
           miscRender += " badge-success'>MV1 Aktiviert";
         }
@@ -371,15 +378,8 @@
         else {
           miscRender += " badge-dark'>MV2 Deaktiviert";
         }
-        miscRender += "</span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Buzzer <span class='badge ";
-        if (data.buzzer) {
-          miscRender += " badge-success'>Aktiviert";
-        }
-        else {
-          miscRender += " badge-dark'>Deaktiviert";
-        }
-
-        miscRender += "</span> </li> <br /> <li class='list-group-item d-flex justify-content-between align-items-center'> MDNS <span class='badge ";
+        miscRender += "</span> </li>";
+        miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> MDNS <span class='badge ";
         if (data.mdns) {
           miscRender += " badge-success'>Aktiviert";
         }

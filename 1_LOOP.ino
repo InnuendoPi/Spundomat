@@ -37,7 +37,6 @@ void loop()
   switch (setMode)
   {
   case AUS: // aus
-    // Check Drucksensor Ticker
     TickerPressure.update();
     break;
   case SPUNDEN_CO2: // CO2 Spunden

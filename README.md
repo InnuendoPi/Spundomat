@@ -12,6 +12,11 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
+Version 2.0b13
+
+- Added:    Status (HIGH/LOW) Magnetventile hinzugefügt
+- Changed:  Handling Ticker Drucksensor angepasst
+
 Version 2.0b12
 
 - Fixed:    Fehler Modus Spundomat behoben. closeInterval wurde nicht korrekt verarbeitet

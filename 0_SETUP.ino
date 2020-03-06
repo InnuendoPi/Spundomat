@@ -88,12 +88,8 @@ void setup()
   offset2 = readFloat(4); // Lese Offset (Kalibrierung)
 
   // Starte Drucksensor
-  readPressure();
-  if (setMode == AUS)
-    TickerPressure.start();
-  else
-    TickerPressure.pause();
-
+  TickerPressure.start();
+  
   // Zeitserver via NTP
   timeClient.begin();
   timeClient.update();

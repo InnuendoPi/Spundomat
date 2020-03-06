@@ -263,11 +263,6 @@ bool saveConfig()
   // Setze Intervall Drucksensor Ticker
   TickerPressure.interval(upPressure);
 
-  if (setMode == AUS)
-    TickerPressure.start();
-  else
-    TickerPressure.pause();
-
   // Setze Open/Close Standard für MV1/MV2
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);

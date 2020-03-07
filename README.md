@@ -12,6 +12,15 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
+Version 2.0F1
+
+- Optimze:  Handling Magnetventile
+- Reworked: WebIf (Ablaufpläne Deaktiviert, Pausiert, Aktiviert)
+- Reworked: WebIf (Ablaufpläne Anzeige aktueller Schritt)
+- Reworked: WebIf Dashboard Informationen
+- Fixed:    Fehler Anzeige Druck WebIf während Ablaufpläne behoben
+- Cleanup
+
 Version 2.0b13
 
 - Added:    Status (HIGH/LOW) Magnetventile hinzugefügt

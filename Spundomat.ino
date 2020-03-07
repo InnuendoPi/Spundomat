@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.0b13";
+const char Version[7] = "2.0F1";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -154,9 +154,7 @@ InnuTicker TickerInfluxDB;
 // Deklariere Variablen
 float temperature;
 float oldTemperature = 0.0;
-//char sTemperature[5];
 float voltage;
-//float offsetVoltage = 0.42;
 float offset0 = 0.0; // Standard Vadc bei 0bar an A0
 float offset2 = 0.0; // Vadc bei 2bar an A0
 float pressure = 0.0;
@@ -196,7 +194,7 @@ int setEinheit = 0;
 float verzKombi = 0.0;
 float minKarbonisierung = 0.0;
 unsigned long verzKarbonisierung = 0;
-unsigned long prevMillis;
+unsigned long lastTimeSpundomat;
 
 // Ablaufplan
 #define maxSchritte 20

@@ -86,10 +86,26 @@ void handleRequestMiscSet()
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
+    if (setMode < PLAN1)
+    {
+        doc["mv1opendisp"] = mv1Open;
+        doc["mv1closedisp"] = mv1Close;
+        doc["mv2opendisp"] = mv2Open;
+        doc["mv2closedisp"] = mv2Close;
+    }
+    else
+    {
+        doc["mv1opendisp"] = structPlan[counterPlan].intervallMV1Open;
+        doc["mv1closedisp"] = structPlan[counterPlan].intervallMV1Close;
+        doc["mv2opendisp"] = structPlan[counterPlan].intervallMV2Open;
+        doc["mv2closedisp"] = structPlan[counterPlan].intervallMV2Close;
+    }
     doc["buzzer"] = startBuzzer;
     doc["startdb"] = startDB;
     doc["vistag"] = dbVisTag;
+    doc["startvis"] = startVis;
     doc["einheit"] = setEinheit;
+    doc["ablauf"] = (counterPlan + 1);
     if (setEinheit == 0 || setEinheit == 1)
         doc["verzkombi"] = (int)verzKombi;
     else
@@ -510,7 +526,6 @@ void eraseEeprom()
         EEPROM.write(i, 0);
         EEPROM.commit();
     }
-    // writeFloat(0, 0);
     saveConfig();
 }
 
@@ -541,7 +556,6 @@ void visualisieren()
 void kalibrieren()
 {
     server.send(200, "text/plain", "kalibrieren...");
-    // readPressure();
     if (offset0 == 0.0) // Keine Kalibrierung bei 0 bar
     {
         offset0 = readSensor();
@@ -627,14 +641,3 @@ void setMDNS()
     else
         Serial.printf("%s\n", "*** SYSINFO: Fehler Start mDNS! IP Adresse: %s\n", WiFi.localIP().toString().c_str());
 }
-
-// String getFormattedDate()
-// {
-//     time_t rawtime = timeClient.getEpochTime();
-//     struct tm *ti;
-//     ti = localtime(&rawtime);
-//     int jahr = ti->tm_year + 1900;
-//     int monat = (ti->tm_mon + 1) < 10 ? 0 + (ti->tm_mon + 1) : (ti->tm_mon + 1);
-//     int tag = timeClient.getDay();
-//     return year + "-" + monat + "-" + tag;
-// }

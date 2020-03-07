@@ -101,11 +101,11 @@
                 <label class="form-check-label" for="modal_misc_mv1">Aktiviere MV1 (Spunden)</label>
               </div>
               <div class="form-group">
-                <label for="modal_misc_mv1open">Öffne MV1 (Spunder) - ms</label>
+                <label for="modal_misc_mv1open">Öffne MV1 (Spunden) - ms</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_mv1open" />
               </div>
               <div class="form-group">
-                <label for="modal_misc_mv1close">Schließe MV1 (Spunder) - ms</label>
+                <label for="modal_misc_mv1close">Schließe MV1 (Spunden) - ms</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_mv1close" />
               </div>
               <br />
@@ -145,10 +145,6 @@
               <div class="form-group">
                 <label for="modal_misc_mdns_name">Eindeutiger mDNS Name</label>
                 <input type="text" class="form-control" placeholder="" id="modal_misc_mdns_name" />
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_testmode" />
-                <label class="form-check-label" for="modal_misc_testmode">Aktiviere Testmodus (debug)</label>
               </div>
               <br />
             </div>
@@ -199,6 +195,14 @@
                 <label class="form-check-label" for="modal_misc_clear">Lösche alle Einstellungen (Reset to
                   defaults)</label>
               </div>
+			  <br />
+              <label class="form-check-label">Debug - nicht aktivieren!</label>
+              <br />
+			  <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_testmode" />
+                <label class="form-check-label" for="modal_misc_testmode">debug mode</label>
+              </div>
+			  <br />
             </div>
           </div>
         </div>
@@ -299,7 +303,7 @@
           miscRender += "</span></li>";
         }
         else {
-          miscRender += "Ablaufplan";
+          miscRender += "Ablaufplan #" + data.ablauf;
 		  miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
           miscRender += data.pressure + " bar";
           miscRender += "</span></li>";
@@ -359,41 +363,47 @@
         }
         miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Hardware<span class='badge ";
 		if (data.buzzer) {
-          miscRender += " badge-success'>Buzzer Aktiviert";
+          miscRender += " badge-success'>Alarm aktiviert";
         }
         else {
-          miscRender += " badge-dark'>Buzzer Deaktiviert";
+          miscRender += " badge-dark'>Alarm deaktiviert";
         }
 		miscRender += "</span><span class='badge ";
         if (data.mv1) {
-          miscRender += " badge-success'>MV1 Aktiviert";
+          miscRender += " badge-success'>MV1: " + data.mv1opendisp + " / " + data.mv1closedisp;
         }
         else {
-          miscRender += " badge-dark'>MV1 Deaktiviert";
+          miscRender += " badge-dark'>MV1 deaktiviert";
         }
         miscRender += "</span><span class='badge ";
         if (data.mv2) {
-          miscRender += " badge-success'>MV2 Aktiviert";
+          miscRender += " badge-success'>MV2: " + data.mv2opendisp + " / " + data.mv2closedisp;
         }
         else {
-          miscRender += " badge-dark'>MV2 Deaktiviert";
+          miscRender += " badge-dark'>MV2 deaktiviert";
         }
         miscRender += "</span> </li>";
-        miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> MDNS <span class='badge ";
-        if (data.mdns) {
-          miscRender += " badge-success'>Aktiviert";
+        miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Dienste<span class='badge ";
+		if (data.mdns) {
+          miscRender += " badge-success align-items-'>mDNS: " + data.mdns_name;
         }
         else {
-          miscRender += " badge-dark'>Deaktiviert";
+          miscRender += " badge-dark'>mDNS deaktiviert";
         }
-        miscRender += " </span> </li> <li class='list-group-item d-flex justify-content-between align-items-center'> Visualisierung InfluxDB (Grafana) <span class='badge ";
-        if (data.startdb) {
-          miscRender += " badge-success'> Aktiviert";
+		miscRender += "</span><span class='badge ";
+		if (data.startdb) {
+		  if (data.startvis) {
+			miscRender += " badge-success'>Visualisierung: " + data.vistag;
+		  }
+		  else
+		  {
+            miscRender += " badge-secondary'>Visualisierung pausiert";
+		  }
         }
         else {
-          miscRender += " badge-dark'> Deaktiviert";
+          miscRender += " badge-dark'>Visualisierung deaktiviert";
         }
-        miscRender += " </span> </li>";
+        miscRender += "</span></li>";
         $('#miscSettings').html(miscRender);
       });
     }
@@ -502,17 +512,23 @@
       var mv2;
       var mv2open;
       var mv2close;
+	  var mv1opendisp;
+      var mv1closedisp;
+      var mv2opendisp;
+      var mv2closedisp;
       var uppressure;
       var uptemp;
       var buzzer;
       var testmode;
       var offset2;
       var startdb;
+	  var startvis;
       var dbserver;
       var dbdatabase;
       var dbuser;
       var dbpass;
       var dbup;
+	  var ablauf;
 
       $.ajax({
         url: '/reqMisc?req=mdns',
@@ -704,6 +720,46 @@
           mv2close = data;
         }
       });
+	  $.ajax({
+        url: '/reqMisc?req=mv1opendisp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mv1opendisp = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=mv1closedisp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mv1closedisp = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=mv2opendisp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mv2opendisp = data;
+        }
+      });
+      $.ajax({
+        url: '/reqMisc?req=mv2closedisp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          mv2closedisp = data;
+        }
+      });
       $.ajax({
         url: '/reqMisc?req=uppressure',
         type: 'get',
@@ -764,6 +820,16 @@
           startdb = data;
         }
       });
+	  $.ajax({
+        url: '/reqMisc?req=startvis',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          startvis = data;
+        }
+      });
       $.ajax({
         url: '/reqMisc?req=dbdatabase',
         type: 'get',
@@ -802,6 +868,16 @@
         cache: false,
         success: function (data) {
           dbup = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=ablauf',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          ablauf = data;
         }
       });
 

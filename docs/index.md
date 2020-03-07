@@ -273,9 +273,9 @@ Ablaufpläne werden in der Textdatei ablaufplan.txt definiert. Über den Dateiex
 
 Ein Ablaufplan beginnt mit einer Namensgebung. Die Namensgebung beginnt mit dem Kennzeichner "#" (ohne "). Jeder Ablaufplan hat einen Namen für das LCD Display und einen (meist längeren Namen) für das Web Interface. Als Trennzeichen zwischen diesen zwei Namen wird das Semikolon verwendet:
 
-Beispiel: #P1 Entlueften;Plan 1 Keg entlüften
+Beispiel: #P1 QuickCarb;Plan 1 schnelles Zwangskarbonisieren
 
-Diese Zeile kennzeichnet durch das #-Zeichen einen Namen für einen Ablaufplan. Der Ablaufplan wird im LCD Display mit dem Namen "P1 Entlueften" angezeigt. Im Web Interface mit dem Namen "Plan 1 Keg entlüften".
+Diese Zeile kennzeichnet durch das #-Zeichen einen Namen für einen Ablaufplan. Der Ablaufplan wird im LCD Display mit dem Namen "P1 QuickCarb" angezeigt. Im Web Interface mit dem Namen "Plan 1 schnelles Zwangskarbonisieren".
 Auf die Namensgebung für einen Ablaufplan folgt der zeitlichen Ablauf für das Öffnen und Schließen der zwei Magnetventile. Als Trennzeichen wird wieder das Semikolon verwendet. Es wird folgendes Format verwendet: (MV1 = Magnetventil 1, MV2 = Magnetventil 2).
 
 Zieldruck MV1 ; Öffne MV1 ; Schließe MV1 ; Zieldruck MV2 ; Öffne MV2 ; Schließe MV2
@@ -311,18 +311,22 @@ Mit dem Spundomat kann nun ein automatisierter Prozess gestartet werden. Bei ein
 
 Mit dem Ablaufplan "Schnelles Zwangskarbonisieren" und dem oben skizzierten Anschluss Keg kann nun die CO2-Zuführung durch den Getränkeanschluss sehr genau getaktet werden: (zur Verbesserung der Lesbarkeit wurden Leerzeichen eingefügt!)
 
-0.0 ; 0; 0 ; 0.8 ; 100; 3000
+0.0 ; 0; 0 ; 1.0 ; 200 ; 10000
 
-0.1 ; 300 ; 4000 ; 0.8 ; 100; 3000
+0.2 ; 200 ; 30000 ; 1.0 ; 200 ; 10000
 
-0.1 ; 300 ; 4000 ; 0.8 ; 100 ; 3000
+0.2 ; 200 ; 30000 ; 1.0 ; 200 ; 10000
 
 Diese Sequenzen bewirken:
 Ein Druck von 0.0bar wird übersprungen. Das bedeutet: Magnetventil 1 macht im ersten Schritt nichts und der Ablaufplan springt direkt zu Magnetventil 2.
-Magnetventil 2 soll einen Zieldruck von 0.8bar herstellen. Um diesen Druck im Keg zu erreichen wird das Ventil 100ms geöffnet und danach für 3000ms geschlossen. Bis der Zieldruck von 0.8bar erreicht ist, wird also das Magnetventil 2 immer wieder für 100ms geöffnet und danach für 3 Sekunden geschlossen.
-Mit dieser Taktung kann gezielt CO2 in das Keg gedrückt werden. Die kurze Öffnungszeit von nur 100ms gegenüber der langen Zeit Ventil geschlossen verhindert ein starkes Schäumen im Keg. Das Ziel beim schnellen Zwangskarbonisieren ist ein "feines durchblubbern" um CO2 im Bier zu binden.
-In Schritt 2 kommt Magnetventil 1 zum Einsatz. Der vorhandene Druck von 0.8bar soll auf 0.1bar abgebaut werden. Wieder kommt die Sequenz Öffnen und Schließen zum Einsatz: lasse Druck ab durch öffnen von MV1 für 300ms. Warte dann mit einem geschlossenen MV1 4000ms ab, bevor der Vorgang wiederholt wird.
+Magnetventil 2 soll einen Zieldruck von 1.0bar herstellen. Um diesen Druck im Keg zu erreichen wird das Ventil 200ms geöffnet und danach für 10000ms (10 Sekunden) geschlossen. Bis der Zieldruck von 1.0bar erreicht ist, wird also das Magnetventil 2 immer wieder für 200ms geöffnet und danach für 10 Sekunden geschlossen.
+Mit dieser Taktung kann gezielt CO2 in das Keg gedrückt werden. Die kurze Öffnungszeit von nur 200ms gegenüber der langen Zeit Ventil geschlossen verhindert ein starkes Schäumen im Keg. Das Ziel beim schnellen Zwangskarbonisieren ist ein "feines durchblubbern" um CO2 im Bier zu binden.
+In Schritt 2 kommt Magnetventil 1 zum Einsatz. Der vorhandene Druck von 1.0bar soll auf 0.2bar abgebaut werden. Wieder kommt die Sequenz Öffnen und Schließen zum Einsatz: lasse Druck ab durch öffnen von MV1 für 200ms. Warte dann mit einem geschlossenen MV1 30000ms (30 Sekunden) ab, bevor der Vorgang wiederholt wird.
 Diese Schritte lassen sich nun bis zu 20x wiederholen. Ein Ablaufplan kann von nur wenigen Sekunden bis hin zu mehreren Stunden andauern. Die Parameter Öffnen und Schließen sind individuell für jede Umgebung anzupassen. Der vorgefertigte Ablaufplan ist nur als Hilfe gedacht!
+
+Visualisierung einer schnellen Zwangskarbonisierung (4 Widerholungen)
+
+![QuickCarb](img/quickcarb.jpg)
 
 Während beim "schnellen Zwangskarbonisieren" das Binden von CO2 im Bier im Vordergrund steht, ist bei der CO2-Wäsche das Austreiben von Fehlarmonen die Hauptaufgabe. Eine Nebenwirkung der CO2-Wäsche ist sogar, dass der CO2-Gehalt am Ende der Wäsche niedriger ist. Hierfür wird das Bier stark mit einem Druck von 3 oder sogar 4bar durchströmt. Mit kräftigen Sequenzen CO2 durch das Bier sollen Fehlaromen wie bspw. Schwefelgerüche ausgetrieben werden. Zu beachten ist das Schäumen! Das Schließen der Magnetventile sind (immer) wie Pausenzeiten zu verstehen. Wenn durch ein Bier CO2 mit 4bar "durchgeschossen" wird, ist Schaumbildung unvermeidlich. Je geringer der freie Kopfraum im Keg, desto höher ist die Gefahr, dass Schaum oder ganz allgemein Flüssigkeit über die Druckschläuche zu den Magnetventilen gelangen kann.
 

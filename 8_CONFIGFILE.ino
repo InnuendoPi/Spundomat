@@ -221,7 +221,6 @@ bool saveConfig()
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
   miscObj["TESTMODE"] = testModus;
-  // miscObj["OFFSET2"] = offset2;
 
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
@@ -292,7 +291,7 @@ bool saveConfig()
     break;
   case SPUNDOMAT:          // Spunden und Karbonisieren
     calcVerzSpundomat();   // Berechne Verzögerung Karbonisierung im Kombi-Modus
-    prevMillis = millis(); // Zeitstempel
+    lastTimeSpundomat = millis(); // Zeitstempel
     break;
   case PLAN1:
   case PLAN2:

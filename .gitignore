@@ -1,5 +1,6 @@
 .vscode/
 *.code-workspace
+*.kopie
 .DS_Store
 .gitattributes
 .gitignore

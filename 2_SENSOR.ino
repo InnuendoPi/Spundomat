@@ -12,7 +12,6 @@ void readTemparature()
 	if (testModus)
 		temperature = 20.0;
 
-	// Kommastelle für Ausgabe entfernen (Konvertiere float in char array)
 	//dtostrf(temperature, 5, 1, sTemperature);
 
 	// Aktualisiere LCD wenn Temperatur geändert hat
@@ -52,20 +51,15 @@ void readPressure()
 			DEBUG_MSG("Keine Kalibrierung Sensor: %d P: %f\n", sensorValue, pressure);
 			return;
 		}
-		//else if (offset2 > 0 && offset0 > 0 && sensorValue > offset0) // 2-Punkte-Kalibrierung
 		else if (offset2 > 0 && offset0 > 0) // 2-Punkte-Kalibrierung
 		{
 			float m = (PRESSURE_OFFSET2 - PRESSURE_OFFSET0) / (offset2 - offset0);
 			float b = PRESSURE_OFFSET2 - m * offset2;
-
-			//pressure = m * sensorValue * 5.0 / 1023.0 + b;
 			pressure = m * sensorValue + b;
-			// DEBUG_MSG("2-Punkte Kalibrierung Sensor: %d P: %f offset0: %d offset2: %d m: %f b: %f\n", sensorValue, pressure, offset0, offset2, m, b);
 		}
 		else if (offset0 != 0.0 && offset2 == 0.0) // 1-Punkt-Kalibrierung
 		{
 			pressure = (sensorValue * 0.004889 - offset0 * 5.0 / 1023.0) * 1.724;
-			// DEBUG_MSG("1-Punkt Kalibrierung Senor: %d P: %f offset0: %d \n", sensorValue, pressure, offset0);
 		}
 
 		// if (isnan(pressure) || pressure < 0)
@@ -132,7 +126,6 @@ void checkTestMode()
 		if (pressure > calcPressure(setCarbonation, temperature))
 		{
 			DEBUG_MSG("Größer P: %f O: %f A: %d B: %d\n", pressure, oldPressDisp, stepA, stepB);
-			oldPressDisp -= 0.15;
 			pressure = oldPressDisp - 0.15;
 		}
 		else if (pressure < calcPressure(setCarbonation, temperature))
@@ -140,33 +133,6 @@ void checkTestMode()
 			DEBUG_MSG("Kleiner P: %f O: %f A: %d B: %d\n", pressure, oldPressDisp, stepA, stepB);
 			pressure = oldPressDisp + 0.15;
 		}
-		else //if (fabs(pressure - calcPressure(setCarbonation, temperature)) < DELTA)
-		{
-			DEBUG_MSG("Fabs P: %f A: %d B: %d\n", pressure, stepA, stepB);
-			pressure = oldPressDisp + 0.15;
-		}
-		
-
-		// if (!stepA && stepB)
-		// {
-		// 	pressure = oldPressDisp + 0.15;
-		// 	DEBUG_MSG("Plan !StepA %f stepA: %d stepB: %d\n", pressure, stepA, stepB);
-		// }
-		// else if (!stepB && stepA)
-		// {
-		// 	pressure = oldPressDisp + 0.15;
-		// 	DEBUG_MSG("Plan !StepB %f stepA: %d stepB: %d\n", pressure, stepA, stepB);
-		// }
-		// else if (stepB && stepA)
-		// {
-		// 	pressure = oldPressDisp - 0.15;
-		// 	DEBUG_MSG("Plan StepA && StepB %f stepA: %d stepB: %d\n", pressure, stepA, stepB);
-		// }
-		// else if (!stepB && !stepA)
-		// {
-		// 	// pressure = oldPressDisp + 0.15;
-		// 	DEBUG_MSG("Plan StepA && StepB %f stepA: %d stepB: %d\n", pressure, stepA, stepB);
-		// }
 		break;
 	case PLAN1:
 	case PLAN2:

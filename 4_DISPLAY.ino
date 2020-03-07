@@ -28,7 +28,6 @@ void showLCD()
     }
     else if (setMode == SPUNDEN_DRUCK)
     {
-      //Menu1[1] += "Spund";
       Menu1[3] = "Spunden: ";
       Menu1[3] += setPressure;
       Menu1[3] += "bar";
@@ -41,7 +40,6 @@ void showLCD()
     }
     else if (setMode == KARBONISIEREN_DRUCK)
     {
-      //Menu1[1] += "Spund";
       Menu1[3] = "Karbonisiere: ";
       Menu1[3] += setPressure;
       Menu1[3] += "b";
@@ -72,7 +70,6 @@ void showLCD()
     }
 
     Menu1[2] = "Temp:  ";
-    // Menu1[2] += sTemperature;
     Menu1[2] += ((int)(temperature * 10)) / 10.0;
     Menu1[2] += "\337C"; // °C
     // Navigation
@@ -134,7 +131,6 @@ void showLCD()
   case 2:                   // switch(page) Einstellungen
     Menu2[0] = "Zur\365ck"; // ü
     Menu2[1] = "Modus:";
-    // Menu2[1] += modes[setMode];
     Menu2[1] += modes[newMode];
     Menu2[2] = "Soll: ";
 
@@ -230,17 +226,13 @@ void showLCD()
     case 1: // Modus einstellen
       lcd.setCursor(7, 0);
       lcd.blink();
-      //if (up && setMode < sizeOfModes - 1)
       if (up && newMode < sizeOfModes - 1)
       {
-        // setMode++;
         newMode++;
         reflashLCD = true;
       }
-      // else if (down && setMode > 0)
       else if (down && newMode > 0)
       {
-        // setMode--;
         newMode--;
         reflashLCD = true;
       }

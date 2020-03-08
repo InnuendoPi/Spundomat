@@ -269,19 +269,30 @@
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
           miscRender += data.pressure + " bar";
           miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
-          miscRender += data.carbonation + " g/l";
+          miscRender += data.carbonation + " gr/l";
           miscRender += "</span></li>";
         }
         else if (data.mode == 1) {
           miscRender += "Spundomat";
           miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
-          miscRender += data.carbonation + " g/l";
+          miscRender += data.carbonation + " gr/l";
+          miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Verzögerung Karbonisierung<span class='badge badge-info'>";
+          miscRender += data.delayspund;
+		  if (data.einheit == 0) {
+            miscRender += " min";
+          }
+          else if (data.einheit == 1) {
+            miscRender += " h";
+          }
+          else {
+            miscRender += " gr/l";
+          }
           miscRender += "</span></li>";
         }
         else if (data.mode == 2) {
           miscRender += "Spunden CO2-Gehalt";
           miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
-          miscRender += data.carbonation + " g/l";
+          miscRender += data.carbonation + " gr/l";
           miscRender += "</span></li>";
         }
         else if (data.mode == 3) {
@@ -293,7 +304,7 @@
         else if (data.mode == 4) {
           miscRender += "Karbonisieren CO2-Gehalt";
           miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
-          miscRender += data.carbonation + " g/l";
+          miscRender += data.carbonation + " gr/l";
           miscRender += "</span></li>";
         }
         else if (data.mode == 5) {
@@ -308,24 +319,7 @@
           miscRender += data.pressure + " bar";
           miscRender += "</span></li>";
         }
-
-        if (data.mode == 1) {
-          miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Verzögerung Modus Spundomat Karbonisierung<span class='badge badge-info'>";
-          miscRender += data.verzkombi;
-          if (data.einheit == 0) {
-            miscRender += " min";
-          }
-          else if (data.einheit == 1) {
-            miscRender += " h";
-          }
-          else if (data.einheit == 2) {
-            miscRender += " gr/l";
-          }
-          miscRender += "</span></li><br />";
-        }
-        else {
-          miscRender += "<br />";
-        }
+		miscRender += "<br/>";
         miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller Druck<span class='badge badge-light'>";
         if (data.druck == -1) {
           miscRender += "kein Drucksensor angeschlossen";
@@ -334,7 +328,7 @@
           miscRender += data.druck + " bar";
         }
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller CO2 Gehalt<span class='badge badge-light'>";
-        miscRender += data.co2 + " g/l";
+        miscRender += data.co2 + " gr/l";
         miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Aktuelle Temperatur<span class='badge badge-light'>";
         if (data.temperatur == -127) {
           miscRender += "kein Temperatursensor angeschlossen";
@@ -343,7 +337,7 @@
           miscRender += data.temperatur + " °C";
         }
 
-        miscRender += "</span></li> <br />";
+        miscRender += "</span></li><br/>";
         if (data.offset == "0" || data.offset2 == "0") {
           miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Spannung am Drucksensor<span class='badge badge-light'>";
           miscRender += data.voltage + " V";
@@ -499,7 +493,8 @@
       var pressure;
       var carbonation;
       var mode;
-      var kombi;
+      var delayspund;
+	  var delayspunddisp;
       var einheit;
       var druck;
       var voltage;
@@ -587,7 +582,7 @@
         async: false,
         cache: false,
         success: function (data) {
-          kombi = data;
+          delayspund = data;
         }
       });
       $.ajax({
@@ -908,7 +903,7 @@
       modal.find('#modal_misc_mv2close').val(mv2close);
       modal.find('#modal_misc_interval_pressure').val(uppressure);
       modal.find('#modal_misc_interval_temp').val(uptemp);
-      modal.find('#modal_misc_kombi').val(kombi);
+      modal.find('#modal_misc_kombi').val(delayspund);
       modal.find('#modal_misc_offset').val(offset);
       modal.find('#modal_misc_offset2').val(offset2);
       modal.find('#modal_misc_db_server').val(dbserver);
@@ -927,7 +922,7 @@
       // var mode = $('#modal_misc_modus option:selected').text();
       var mode = $('#modal_misc_modus').val();
       var einheit = $('#modal_misc_kombi_auswahl').val();
-      var kombi = modal.find('#modal_misc_kombi').val();
+      var delayspund = modal.find('#modal_misc_kombi').val();
       var mv1open = modal.find('#modal_misc_mv1open').val();
       var mv1close = modal.find('#modal_misc_mv1close').val();
       var mv2open = modal.find('#modal_misc_mv2open').val();
@@ -995,7 +990,7 @@
       }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + kombi + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup,
         type: 'POST',
         dataType: 'html',
         async: false,

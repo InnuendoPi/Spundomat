@@ -139,7 +139,7 @@ Vorgehensweise Kalibrierung:
 
 Das komplette System muss drucklos sein. Eine CO2 Flasche, ein Keg oder Rückschlagventile sind vom Drucksensor zu trennen. Die Kalibrierung misst die Spannung am analogen Port des Wemos D1 mini bei 0bar. Diese Spannung (Offset) wird im Eeprom des Wemos gespeichert und wird bei der Berechung Druck verwendet.
 
-Eine 2. Kalibrierung bei 2bar vorgenommen. Hierfür wird ein leeres Keg mit 2bar befüllt. Wenn das Keg relativ genau mit 2bar befüllt ist wird der Spundomat angeschlossen. Wenn die Funktion "Kalibrierung" nun erneut ausgeführt wird, speichert die Firmware den 2. Offset-Wert für 2bar im Eeprom des Wemos ab.
+Eine 2. Kalibrierung bei 2bar vorgenommen. Hierfür wird ein leeres Keg mit 2bar befüllt. Wenn das Keg relativ genau mit 2bar befüllt ist wird der Spundomat angeschlossen. Zu beachten ist, dass der Druck von 2bar mit einem Manometer gemessen werden muss und nicht mit dem Spundomat. Wenn die Funktion "Kalibrierung" nun erneut ausgeführt wird, speichert die Firmware den 2. Offset-Wert für 2bar im Eeprom des Wemos ab.
 
 Die Kalibrierung kann jederzeit über die Grundeinstellungen -> Restore - > Kalibrierung löschen entfernt werden.
 

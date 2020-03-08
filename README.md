@@ -14,6 +14,10 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 Version 2.0F1
 
+- Fixed:    Fehler Anzeige Spundomat Verzögerung im Dashboard behoben
+
+Version 2.0F1
+
 - Optimze:  Handling Magnetventile
 - Reworked: WebIf (Ablaufpläne Deaktiviert, Pausiert, Aktiviert)
 - Reworked: WebIf (Ablaufpläne Anzeige aktueller Schritt)

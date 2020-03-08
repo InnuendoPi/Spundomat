@@ -72,7 +72,7 @@ bool loadFromSpiffs(String path)
 
 void handleRequestMiscSet()
 {
-    StaticJsonDocument<384> doc;
+    StaticJsonDocument<512> doc;
     doc["mdns"] = startMDNS;
     doc["mdns_name"] = nameMDNS;
     doc["pressure"] = setPressure;
@@ -106,14 +106,22 @@ void handleRequestMiscSet()
     doc["startvis"] = startVis;
     doc["einheit"] = setEinheit;
     doc["ablauf"] = (counterPlan + 1);
-    if (setEinheit == 0 || setEinheit == 1)
-        doc["verzkombi"] = (int)verzKombi;
+
+    if (setEinheit == 0)
+        doc["delayspund"] = (int)(verzKarbonisierung / 1000 / 60);
+    else if  (setEinheit == 1)
+        doc["delayspund"] = (int)(verzKarbonisierung / 1000 / 60 / 60);
     else
-        doc["verzkombi"] = verzKombi;
+        doc["delayspund"] = minKarbonisierung;
 
     String response;
     serializeJson(doc, response);
     server.send(200, "application/json", response);
+
+    // size_t len = measureJson(doc);
+    // int memoryUsed = doc.memoryUsage();
+    // DEBUG_MSG("JSON config length: %d\n", len);
+    // DEBUG_MSG("JSON memory usage: %d\n", memoryUsed);
 }
 
 void handleRequestMisc()

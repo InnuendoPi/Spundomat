@@ -18,16 +18,23 @@ void readTemparature()
 			{
 				setMode = AUS;
 				newMode = setMode;
+				reflashLCD = true;
 				if (startBuzzer)
 					sendAlarm(ALARM_ERROR);
-
 				saveConfig();
+				lastTimeSpundomat = millis();
 				return;
+			}
+			else 
+			{
+				if (millis() > (lastTimeSpundomat + PAUSE2MIN) && startBuzzer)
+				{
+					sendAlarm(ALARM_ERROR);
+					lastTimeSpundomat = millis();
+				}
 			}
 		}
 	}
-
-
 
 	//dtostrf(temperature, 5, 1, sTemperature);
 

@@ -14,6 +14,8 @@
 // Berechne CO2 gehalt
 float calcCarbonation(float Pressure, float Temperature)
 {
+	if (temperature == 85.0 || temperature == -127.00)
+		return 0.0;
 	float localCarbonation;
 	localCarbonation = (Pressure + 1.013) * pow(E, (-10.73797 + (2617.25 / (Temperature + 273.15)))) * 10;
 	return localCarbonation;
@@ -22,6 +24,8 @@ float calcCarbonation(float Pressure, float Temperature)
 // Berechne Solldruck
 float calcPressure(float Carbonation, float Temperature)
 {
+	if (temperature == 85.0 || temperature == -127.00)
+		return 0.0;
 	float localPressure;
 	localPressure = (Carbonation / 10) / pow(E, (-10.73797 + (2617.25 / (Temperature + 273.15)))) - 1.013;
 	return localPressure;

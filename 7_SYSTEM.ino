@@ -149,7 +149,7 @@ void sendAlarm(const uint8_t &setAlarm)
     {
       tone(PIN_BUZZER, 880, 50);
       delay(150);
-      tone(PIN_BUZZER, 660, 50);
+      tone(PIN_BUZZER, 440, 50);
       delay(150);
     }
     millis2wait(PAUSE1SEC);

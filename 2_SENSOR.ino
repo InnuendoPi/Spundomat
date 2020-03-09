@@ -1,15 +1,31 @@
 // Lese Temperatur
 void readTemparature()
 {
+	// sensors.requestTemperatures();
+	//temperature = sensors.getTempCByIndex(0);
+
 	sensors.requestTemperatures();
-	temperature = sensors.getTempCByIndex(0);
-	if (temperature == 85.0)
+	bool sens_isConnected = sensors.isConnected(0);
+	sens_isConnected ? temperature = sensors.getTempCByIndex(0) : temperature = -127.0;
+
+	if (temperature == 85.0 || temperature == -127.00)
 	{
-		millis2wait(750);
+		millis2wait(PAUSE1SEC);
 		sensors.requestTemperatures();
 		temperature = sensors.getTempCByIndex(0);
+		if (temperature == 85.0 || temperature == -127.00) // DS18B20 im Fehlerstatus
+		{
+			setMode = AUS;
+			if (startBuzzer)
+    			sendAlarm(ALARM_ERROR);
+			
+			saveConfig();
+			return;
+		}
 	}
-	if (testModus)
+	else
+
+		if (testModus)
 		temperature = 20.0;
 
 	//dtostrf(temperature, 5, 1, sTemperature);
@@ -122,7 +138,7 @@ void checkTestMode()
 			pressure = 0.2;
 		break;
 	case SPUNDOMAT: // CO2 Spunden & Karbonisieren
-		
+
 		if (pressure > calcPressure(setCarbonation, temperature))
 		{
 			DEBUG_MSG("Größer P: %f O: %f A: %d B: %d\n", pressure, oldPressDisp, stepA, stepB);

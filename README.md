@@ -12,7 +12,11 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.0F1
+Version 2.0F3
+
+- Added:    bei einem Sensorfehler Temperatur wird nun ein Alarm ausgegeben und der SPundomat ausgeschaltet
+
+Version 2.0F2
 
 - Fixed:    Fehler Anzeige Spundomat Verzögerung im Dashboard behoben
 

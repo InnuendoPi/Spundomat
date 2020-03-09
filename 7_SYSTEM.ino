@@ -126,21 +126,11 @@ void sendAlarm(const uint8_t &setAlarm)
   switch (setAlarm)
   {
   case ALARM_ON:
-    // digitalWrite(PIN_BUZZER, HIGH);
-    // delay(100);
-    // digitalWrite(PIN_BUZZER, LOW);
-    // delay(50);
-    // digitalWrite(PIN_BUZZER, HIGH);
-    // delay(100);
-    // digitalWrite(PIN_BUZZER, LOW);
-
     tone(PIN_BUZZER, 440, 50);
     delay(150);
     tone(PIN_BUZZER, 660, 50);
     delay(150);
     tone(PIN_BUZZER, 880, 50);
-    // delay(100);
-    // DEBUG_MSG("%s\n", "Alarm ON");
     break;
   case ALARM_OFF:
     tone(PIN_BUZZER, 880, 50);
@@ -148,32 +138,21 @@ void sendAlarm(const uint8_t &setAlarm)
     tone(PIN_BUZZER, 660, 50);
     delay(150);
     tone(PIN_BUZZER, 440, 50);
-    // delay(100);
-    // delay(100);
-    // digitalWrite(PIN_BUZZER, HIGH);
-    // delay(500);
-    // digitalWrite(PIN_BUZZER, LOW);
-    // DEBUG_MSG("%s\n", "Alarm OFF");
     break;
   case ALARM_OK:
     digitalWrite(PIN_BUZZER, HIGH);
     delay(200);
     digitalWrite(PIN_BUZZER, LOW);
-    // DEBUG_MSG("%s\n", "Alarm OK");
     break;
   case ALARM_ERROR:
-    digitalWrite(PIN_BUZZER, HIGH);
-    delay(1000);
-    digitalWrite(PIN_BUZZER, LOW);
-    delay(500);
-    digitalWrite(PIN_BUZZER, HIGH);
-    delay(1000);
-    digitalWrite(PIN_BUZZER, LOW);
-    delay(500);
-    digitalWrite(PIN_BUZZER, HIGH);
-    delay(1000);
-    digitalWrite(PIN_BUZZER, LOW);
-    // DEBUG_MSG("%s\n", "Alarm ERROR");
+    for (int i = 0; i < 20; i++)
+    {
+      tone(PIN_BUZZER, 880, 50);
+      delay(150);
+      tone(PIN_BUZZER, 660, 50);
+      delay(150);
+    }
+    millis2wait(PAUSE1SEC);
     break;
   default:
     break;

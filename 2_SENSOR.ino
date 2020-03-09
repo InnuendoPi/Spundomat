@@ -15,12 +15,15 @@ void readTemparature()
 		temperature = sensors.getTempCByIndex(0);
 		if (temperature == 85.0 || temperature == -127.00) // DS18B20 im Fehlerstatus
 		{
-			setMode = AUS;
-			if (startBuzzer)
-    			sendAlarm(ALARM_ERROR);
-			
-			saveConfig();
-			return;
+			if (setMode != AUS)
+			{
+				setMode = AUS;
+				if (startBuzzer)
+					sendAlarm(ALARM_ERROR);
+
+				saveConfig();
+				return;
+			}
 		}
 	}
 	else

@@ -324,7 +324,7 @@ Mit dieser Taktung kann gezielt CO2 in das Keg gedrückt werden. Die kurze Öffn
 In Schritt 2 kommt Magnetventil 1 zum Einsatz. Der vorhandene Druck von 1.0bar soll auf 0.2bar abgebaut werden. Wieder kommt die Sequenz Öffnen und Schließen zum Einsatz: lasse Druck ab durch öffnen von MV1 für 200ms. Warte dann mit einem geschlossenen MV1 30000ms (30 Sekunden) ab, bevor der Vorgang wiederholt wird.
 Diese Schritte lassen sich nun bis zu 20x wiederholen. Ein Ablaufplan kann von nur wenigen Sekunden bis hin zu mehreren Stunden andauern. Die Parameter Öffnen und Schließen sind individuell für jede Umgebung anzupassen. Der vorgefertigte Ablaufplan ist nur als Hilfe gedacht!
 
-Visualisierung einer schnellen Zwangskarbonisierung (4 Widerholungen)
+Visualisierung einer schnellen Zwangskarbonisierung (4 Wiederholungen)
 
 ![QuickCarb](img/quickcarb.jpg)
 

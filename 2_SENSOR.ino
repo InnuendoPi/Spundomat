@@ -3,6 +3,10 @@ void readTemparature()
 {
 	sensors.requestTemperatures();
 	temperature = sensors.getTempCByIndex(0);
+
+	if (testModus)
+		temperature = 20.0;
+
 	if (temperature == 85.0 || temperature == -127.00)
 	{
 		millis2wait(PAUSE1SEC);
@@ -13,6 +17,7 @@ void readTemparature()
 			if (setMode != AUS)
 			{
 				setMode = AUS;
+				newMode = setMode;
 				if (startBuzzer)
 					sendAlarm(ALARM_ERROR);
 
@@ -21,10 +26,8 @@ void readTemparature()
 			}
 		}
 	}
-	else
 
-		if (testModus)
-		temperature = 20.0;
+
 
 	//dtostrf(temperature, 5, 1, sTemperature);
 

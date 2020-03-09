@@ -1,13 +1,8 @@
 // Lese Temperatur
 void readTemparature()
 {
-	// sensors.requestTemperatures();
-	//temperature = sensors.getTempCByIndex(0);
-
 	sensors.requestTemperatures();
-	bool sens_isConnected = sensors.isConnected(0);
-	sens_isConnected ? temperature = sensors.getTempCByIndex(0) : temperature = -127.0;
-
+	temperature = sensors.getTempCByIndex(0);
 	if (temperature == 85.0 || temperature == -127.00)
 	{
 		millis2wait(PAUSE1SEC);

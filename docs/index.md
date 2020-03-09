@@ -470,7 +470,7 @@ Im Spundomatgehäuse wird grundsätzlich die Schlauchdimension 6 x 4 mm verwende
 | Rot | 1/8" | 6 mm Steckverbinder |
 | Blau | 1/4" - 6 mm | Rückschlagventil |
 | Grün | 1/4" | Sinterschalldämpfer |
-| Gelb | | Drucksensor (unbedingt eindichten!) |
+| Gelb | - | Drucksensor (unbedingt eindichten!) |
 
 Links unten befindet sich eine XLR-Buchse für den Temperatursensor DS18B20
 

@@ -150,6 +150,7 @@ bool loadConfig()
 
   // Setze Intervalle für Ticker Objekte
   TickerPressure.interval(upPressure);
+  TickerInfluxDB.interval(upInflux);
 
   TickerTemp.interval(upTemp);
   if (startBuzzer && setMode == AUS)
@@ -261,6 +262,9 @@ bool saveConfig()
 
   // Setze Intervall Drucksensor Ticker
   TickerPressure.interval(upPressure);
+  
+  // Setze Intervall Datenbank Ticker
+  TickerInfluxDB.interval(upInflux);
 
   // Setze Open/Close Standard für MV1/MV2
   mv1.change(mv1Open, mv1Close, startMV1);

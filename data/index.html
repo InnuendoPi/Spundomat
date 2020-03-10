@@ -386,8 +386,16 @@
         }
 		miscRender += "</span><span class='badge ";
 		if (data.startdb) {
-		  if (data.startvis) {
-			miscRender += " badge-success'>Visualisierung: " + data.vistag;
+		  if (data.startvis) 
+		  {
+			if (data.visstate == 0) 
+			{
+				miscRender += " badge-success'>Visualisierung: " + data.vistag;
+			}
+			else
+			{
+				miscRender += " badge-danger'>Visualisierung: " + data.visstate;
+			}
 		  }
 		  else
 		  {
@@ -518,6 +526,7 @@
       var offset2;
       var startdb;
 	  var startvis;
+	  var visstate;
       var dbserver;
       var dbdatabase;
       var dbuser;
@@ -823,6 +832,16 @@
         cache: false,
         success: function (data) {
           startvis = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=visstate',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          visstate = data;
         }
       });
       $.ajax({

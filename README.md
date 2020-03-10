@@ -4,17 +4,21 @@
 
 Projekt Spundomat:
 
-Firmware:   Beta Status
+Firmware:   Beta
 
-Platine:    Entwicklungsphase (noch nicht benutzbar)
+Platine:    Entwicklungsphase
 
 Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
+Version 2.0F4
+
+- Added:    Bei einem Fehler Verbindung Datenbank Visualisierung wird im Dashboard nur der Fehler angeziegt
+
 Version 2.0F3
 
-- Added:    bei einem Sensorfehler Temperatur wird nun ein Alarm ausgegeben und der SPundomat ausgeschaltet
+- Added:    bei einem Sensorfehler Temperatur wird nun ein Alarm ausgegeben und der Spundomat ausgeschaltet
 
 Version 2.0F2
 
@@ -33,17 +37,11 @@ Version 2.0b13
 
 - Added:    Status (HIGH/LOW) Magnetventile hinzugefügt
 - Changed:  Handling Ticker Drucksensor angepasst
-
-Version 2.0b12
-
 - Fixed:    Fehler Modus Spundomat behoben. closeInterval wurde nicht korrekt verarbeitet
 - Fixed:    Verarbeitung Ablaufpläne
 - Changed:  2 Dezimalstellen für aktueller CO2-Gehalt und Druck
 - Changed:  Hysterese auf 0.05bar reduziert
 - Fixed:    TestModus überarbeitet (Debug)
-
-Version 2.0b11
-
 - Fixed:    Fehler ABlauf Modus Spundomat behoben
 - Fixed:    Fehler bei der Berechnung Verzögerung min CO2 behoben
 - Fixed:    Modus Einstellung Encoder
@@ -53,24 +51,15 @@ Version 2.0b11
 - Removed:  Ticker Encoder
 - Removed:  Ticker Button
 - Cleanup:  Web Interface
-
-Version 2.0b10
-
 - Reworked: Neuer Button Visualisierung Start/Stop
 - Added:    Datenbank Tag Sud-ID für Visualisierung hinzugefügt
 - Reworked: Updates
 - Fixed:    LCD Anzeige -0.0bar
-
-Version 2.0b9
-
 - Fixed:    Temperatur 85°C bei Start
 - Changed:  2. Kalibrierung Speicherung im Eeprom
 - Fixed:    Nachkommastellen aktueller CO2 Gehalt
 - Fixed:    Speichern Modus
 - Fixed:    Speichern Verzögerung
-
-Version 2.0b8
-
 - Changed:  2. Kalibrierung nun fest auf 2bar (Konfig entfernt)
 - Fixed:    NaN wenn 1. Kalibrierung nicht ausgeführt wurde
 - Reworked: WebIf
@@ -78,9 +67,6 @@ Version 2.0b8
 - Changed:  Pinbelegung
 - Changed:  Alarme
 - Fixed:    Update Log
-
-Version 2.0b7
-
 - Fixed:    loadConfig korrigiert (JSON Hardware Block versehentlich entfernt)
 - Fixed:    JSON doc size
 - Changed:  Dashboard Datenbank Verbindung hinzugefügt
@@ -88,21 +74,12 @@ Version 2.0b7
 - Fixed:    Reset to defaults beinhaltet nun auch lösche Kalibrierung aus Eeprom
 - Removed:  TCPServer Unterstützung gelöscht. Das Projekt Tozzi Server wird vorerst nicht weiter verfolgt
 - Changed:  PIN Mapping (Herberts Enocder li/re)
-
-Version 2.0b6
-
 - Added:    InfluxDB für Grafana implementiert
 - Changed:  DT und CLK getauscht
 - Changed:  Der Betriebsmodus wird nun beim Neustart wieder hergestellt
-
-Version 2.0b5
-
 - Fixed:    Kalibrierung Datentyp
 - Changed:  Pinmap angepasst (Encoder, MV2 Piezo)
 - Removed:  I/O Expander I2C PCF8574
-
-Version 2.0b3
-
 - Test:     I/O Expander I2C PCF8574
 - Added:    Ablaufpläne.txt mit Testwerten gefüllt
 - Added:    Alarmfunktion
@@ -110,9 +87,6 @@ Version 2.0b3
 - Added:    Überprüfung Eingabe Web Interface CO2 Gehalt (0.0 bis 8.0)
 - Fixed:    LCD Anzeige Karbonisieren und Spunden CO2 Gehalt statt Druck
 - Fixed:    Reflash LCD in Menüs Einstellungen
-
-Version 2.0b2
-
 - Renamed:  Kombi-Modus in Spundomat Modus umbenannt
 - Renamed:  Spundomat CO2 in Spunden CO2 umbenannt
 - Renamed:  Spundomat Druck in Spunden Druck umbenannt
@@ -125,16 +99,10 @@ Version 2.0b2
 - Removed:  setPause in Ablaufpläne (millis2wait)
 - Fixed:    Ticker ReadPressure wurde nicht autmatisch gestartet
 - Fixed:    Überprüfung Eingabe mDNS Name war fehlerhaft
-
-Version 2.0b1
-
 - Add:      mDNS Name in der LCD Anzeige
 - Add:      Eingabe mDNS Name: Leerzeichen werden automatisch entfernt
 - Reworked: Kombi-Modus als serielle Abfolge MVV1, MV2
 - Add:      Verzögerung Kombi-Modus (Minuten/Stunden)
-
-Version 2.0
-
 - Add:      Kombi-Modus
 - Reworked  Ablaufpläne Speicherhandling verbessert
 - Fixed:    Fehlerhafte Sensorauswertung in Ablaufplänen

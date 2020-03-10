@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.0F3";
+const char Version[7] = "2.0F4";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -138,8 +138,9 @@ NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 
 // Influx Server (optional)
 InfluxDBClient dbClient;
-bool startDB = false;
-bool startVis = false;
+bool startDB = false;       // Visualisierung aktiviert
+bool startVis = false;      // Visualisierung gestartet
+String visState = "0";    // Status Schreiben in Datenbank
 char dbServer[30] = "http://192.168.100.30:8086";     // InfluxDB Server IP
 char dbUser[15] = "";
 char dbPass[15] = "";

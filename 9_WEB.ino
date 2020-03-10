@@ -103,6 +103,7 @@ void handleRequestMiscSet()
     doc["buzzer"] = startBuzzer;
     doc["startdb"] = startDB;
     doc["vistag"] = dbVisTag;
+    doc["visstate"] = visState;
     doc["startvis"] = startVis;
     doc["einheit"] = setEinheit;
     doc["ablauf"] = (counterPlan + 1);
@@ -556,7 +557,10 @@ void visualisieren()
         yield();
     }
     if (startDB && startVis)
+    {
         TickerInfluxDB.resume();
+        sendDBData();
+    }
     else
         TickerInfluxDB.pause();
 }

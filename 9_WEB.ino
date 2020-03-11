@@ -121,11 +121,6 @@ void handleRequestMiscSet()
     String response;
     serializeJson(doc, response);
     server.send(200, "application/json", response);
-
-    // size_t len = measureJson(doc);
-    // int memoryUsed = doc.memoryUsage();
-    // DEBUG_MSG("JSON config length: %d\n", len);
-    // DEBUG_MSG("JSON memory usage: %d\n", memoryUsed);
 }
 
 void handleRequestMisc()
@@ -290,11 +285,11 @@ void handleRequestMisc()
         message = (upInflux / 1000);
         goto SendMessage;
     }
-    if (request == "alertmessage")
-    {
-        message = alertMessage;
-        goto SendMessage;
-    }
+    // if (request == "alertmessage")
+    // {
+    //     message = alertMessage;
+    //     goto SendMessage;
+    // }
 
 SendMessage:
     server.send(200, "text/plain", message);

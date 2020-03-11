@@ -410,7 +410,8 @@
 		
 		if (data.alertstate)
 		{
-  		  var alertmessage;
+  		  /*
+		  var alertmessage;
 		  $.ajax({
 			url: '/reqMisc?req=alertmessage',
 			type: 'get',
@@ -422,14 +423,8 @@
 			}
 		  });
 		  alert(alertmessage);
-		  /*
-		  $.ajax({
-			url: '/setMisc?alertstate=false',
-			type: 'POST',
-			dataType: 'html',
-			async: false,
-			cache: false
-		  });*/
+		  */
+		  alert("WebUpdate abgeschlossen");
 		}
       });
     }
@@ -1100,22 +1095,7 @@
       });
       document.getElementById("firmware").innerHTML = firmware;
     });
-/*
-	$(function () {
-      var alertmessage;
-      $.ajax({
-        url: '/reqMisc?req=alertmessage',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          alertmessage = data;
-        }
-      });
-      document.getElementById("alertmessage").innerHTML = alertmessage;
-    });
-*/
+
   </script>
 </body>
 

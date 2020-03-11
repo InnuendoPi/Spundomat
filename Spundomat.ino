@@ -73,7 +73,7 @@ const char Version[7] = "2.0F5";
 #define DELTA 0.05
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
-#define DB_UPDATE 30000
+#define DB_UPDATE 60000
 #define AUS 0
 #define SPUNDOMAT 1
 #define SPUNDEN_CO2 2

@@ -19,6 +19,7 @@ Hinweis zum Quellcode:
 
 Version 2.0F5
 
+- Added:    nach einem WebUpdate erscheint eine Info
 - Added:    Bei einem Fehler Visualisierung wird im Dashboard nun der Fehler angezeigt
 - Fixed:    Fehler Anzeige Ziel CO2-Gehalt mit 5 Nachkommastellen behoben
 - Added:    bei einem Sensorfehler Temperatur wird nun ein Alarm ausgegeben und der Spundomat ausgeschaltet

@@ -285,11 +285,6 @@ void handleRequestMisc()
         message = (upInflux / 1000);
         goto SendMessage;
     }
-    // if (request == "alertmessage")
-    // {
-    //     message = alertMessage;
-    //     goto SendMessage;
-    // }
 
 SendMessage:
     server.send(200, "text/plain", message);

@@ -263,8 +263,14 @@
 
     function refresh() {
       $.get("/reqMiscSet", function (data) {
-        let miscRender = "<li class='list-group-item d-flex justify-content-between align-items-center'>Aktueller Modus<span class='badge badge-info'>";
-        if (data.mode == 0) {
+        let miscRender = "<li class='list-group-item d-flex justify-content-between align-items-center'>Aktueller Modus";
+		if (data.mode == 0) {
+			miscRender += "<span class='badge badge-info'>";
+		}
+		else {
+			miscRender += "<span class='badge badge-success'>";
+		}
+		if (data.mode == 0) {
           miscRender += "Aus";
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
           miscRender += data.pressure + " bar";
@@ -410,21 +416,8 @@
 		
 		if (data.alertstate)
 		{
-  		  /*
-		  var alertmessage;
-		  $.ajax({
-			url: '/reqMisc?req=alertmessage',
-			type: 'get',
-			dataType: 'html',
-			async: false,
-			cache: false,
-			success: function (data) {
-			  alertmessage = data;
-			}
-		  });
-		  alert(alertmessage);
-		  */
-		  alert("WebUpdate abgeschlossen");
+		  alert("*** SYSINFO: WebUpdate abgeschlossen");
+		  location.reload();
 		}
       });
     }
@@ -478,8 +471,9 @@
       });
 
       $("#modal-btn-web").on("click", function () {
-        $("#mi-modal-upd").modal('hide');
-        onload = setInterval(refresh, 60000);
+		document.getElementById("firmware").innerHTML = "WebUpdate gestartet ...";
+		$("#mi-modal-upd").modal('hide');
+		onload = setInterval(refresh, 120000);
         callback("1");
       });
 
@@ -496,7 +490,7 @@
 
     modalConfirmUpd(function (confirm) {
       if (confirm == "1") {
-        $.ajax({
+		$.ajax({
           url: '/startHTTPUpdate',
           type: 'POST',
           async: false,

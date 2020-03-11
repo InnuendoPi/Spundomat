@@ -120,7 +120,6 @@ bool startMV1 = false;    // Aktiviere MV1 an D8
 bool startMV2 = false;    // Aktiviere MV2 an D0
 bool startBuzzer = false; // Aktiviere Buzzer an D4
 bool alertState = false;
-// String alertMessage = "";
 
 // Klassen Initialisierungen
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display

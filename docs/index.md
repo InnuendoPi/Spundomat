@@ -478,8 +478,7 @@ Für den Modus Spundomat sowie für die Ablaufpläne CO2-Wäsche und schnelles Z
 | ----- | --------- | ------------ |
 | Schwarz | 8mm | Rückschlagventil (Pfeil zeigt in Öffnungsrichtung) |
 | Grau | 6mm | Rückschlagventil (Pfeil zeigt in Öffnungsrichtung) |
-| Orange |6 mm | Schlauch wird am Spundomat-Ausgang angeschlossen |
-mit Y-Verteiler  8 mm  6 mm
+| Orange |6 mm | Schlauch wird am Spundomat-Ausgang angeschlossen mit Y-Verteiler 8 mm 6 mm |
 
 Der graue 6 mm Schlauch ist mit dem CO2-Ventil des Keg verbunden
 Der schwarze 8 mm Schlauch ist mit dem Bier-Ventil des Keg verbunden

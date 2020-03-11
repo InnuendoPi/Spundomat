@@ -10,22 +10,19 @@ Platine:    Entwicklungsphase
 
 Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
+Hinweis zum Quellcode:
+
+- das Modul WebUpdate ist nicht im repository enthalten
+- Debug Ausgaben werden über Debug Port aktiviert
+
 ## Changelog
 
-Version 2.0F4
+Version 2.0F5
 
-- Added:    Bei einem Fehler Verbindung Datenbank Visualisierung wird im Dashboard nur der Fehler angeziegt
-
-Version 2.0F3
-
+- Added:    Bei einem Fehler Visualisierung wird im Dashboard nun der Fehler angezeigt
+- Fixed:    Fehler Anzeige Ziel CO2-Gehalt mit 5 Nachkommastellen behoben
 - Added:    bei einem Sensorfehler Temperatur wird nun ein Alarm ausgegeben und der Spundomat ausgeschaltet
-
-Version 2.0F2
-
 - Fixed:    Fehler Anzeige Spundomat Verzögerung im Dashboard behoben
-
-Version 2.0F1
-
 - Optimze:  Handling Magnetventile
 - Reworked: WebIf (Ablaufpläne Deaktiviert, Pausiert, Aktiviert)
 - Reworked: WebIf (Ablaufpläne Anzeige aktueller Schritt)
@@ -33,7 +30,7 @@ Version 2.0F1
 - Fixed:    Fehler Anzeige Druck WebIf während Ablaufpläne behoben
 - Cleanup
 
-Version 2.0b13
+Version 2.0beta13
 
 - Added:    Status (HIGH/LOW) Magnetventile hinzugefügt
 - Changed:  Handling Ticker Drucksensor angepasst

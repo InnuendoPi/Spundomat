@@ -75,8 +75,8 @@ void handleRequestMiscSet()
     StaticJsonDocument<512> doc;
     doc["mdns"] = startMDNS;
     doc["mdns_name"] = nameMDNS;
-    doc["pressure"] = setPressure;
-    doc["carbonation"] = setCarbonation;
+    doc["pressure"] = ((int)(setPressure * 100)) / 100.0;
+    doc["carbonation"] = ((int)(setCarbonation * 100)) / 100.0;
     doc["mode"] = setMode;
     doc["co2"] = ((int)(calcCarbonation(pressure, temperature) * 100)) / 100.0;
     doc["druck"] = ((int)(pressure * 100)) / 100.0;

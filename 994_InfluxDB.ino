@@ -27,7 +27,7 @@ void sendDBData()
     if (!dbClient.writePoint(dbData))
     {
         // DEBUG_MSG("InfluxDB Schreibfehler1: %s\n", dbClient.getLastErrorMessage().c_str());
-        millis2wait(PAUSE100MS);
+        // millis2wait(PAUSE100MS);
         if (!dbClient.writePoint(dbData)) // 2. Versuch in Datenbank zu schreiben
         {
             visState = dbClient.getLastErrorMessage().c_str();   // setze Schreibstatus auf Fehler

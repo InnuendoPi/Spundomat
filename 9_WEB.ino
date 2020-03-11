@@ -107,6 +107,9 @@ void handleRequestMiscSet()
     doc["startvis"] = startVis;
     doc["einheit"] = setEinheit;
     doc["ablauf"] = (counterPlan + 1);
+    doc["alertstate"] = alertState;
+    if (alertState)
+        alertState = false;
 
     if (setEinheit == 0)
         doc["delayspund"] = (int)(verzKarbonisierung / 1000 / 60);
@@ -285,6 +288,11 @@ void handleRequestMisc()
     if (request == "dbup")
     {
         message = (upInflux / 1000);
+        goto SendMessage;
+    }
+    if (request == "alertmessage")
+    {
+        message = alertMessage;
         goto SendMessage;
     }
 
@@ -519,6 +527,10 @@ void handleSetMisc()
             {
                 upInflux = server.arg(i).toInt() * 1000;
             }
+        }
+        if (server.argName(i) == "alertstate")
+        {
+            alertState = false;
         }
         yield();
     }

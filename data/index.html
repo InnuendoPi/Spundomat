@@ -407,9 +407,33 @@
         }
         miscRender += "</span></li>";
         $('#miscSettings').html(miscRender);
+		
+		if (data.alertstate)
+		{
+  		  var alertmessage;
+		  $.ajax({
+			url: '/reqMisc?req=alertmessage',
+			type: 'get',
+			dataType: 'html',
+			async: false,
+			cache: false,
+			success: function (data) {
+			  alertmessage = data;
+			}
+		  });
+		  alert(alertmessage);
+		  /*
+		  $.ajax({
+			url: '/setMisc?alertstate=false',
+			type: 'POST',
+			dataType: 'html',
+			async: false,
+			cache: false
+		  });*/
+		}
       });
     }
-
+	
     var modalConfirmVis = function (callback) {
       $("#btn_visual").on("click", function () {
         $("#mi-modal-vis").modal('show');
@@ -533,6 +557,7 @@
       var dbpass;
       var dbup;
 	  var ablauf;
+	  var alertstate;
 
       $.ajax({
         url: '/reqMisc?req=mdns',
@@ -894,6 +919,26 @@
           ablauf = data;
         }
       });
+	  $.ajax({
+        url: '/reqMisc?req=alertstate',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          alertstate = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=alertmessage',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          alertmessage = data;
+        }
+      });
 
       var modal = $(this);
       $('#modal_misc_modus').load('/reqMode');
@@ -1055,7 +1100,22 @@
       });
       document.getElementById("firmware").innerHTML = firmware;
     });
-
+/*
+	$(function () {
+      var alertmessage;
+      $.ajax({
+        url: '/reqMisc?req=alertmessage',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          alertmessage = data;
+        }
+      });
+      document.getElementById("alertmessage").innerHTML = alertmessage;
+    });
+*/
   </script>
 </body>
 

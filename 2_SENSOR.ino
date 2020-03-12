@@ -106,6 +106,18 @@ void readPressure()
 	}
 }
 
+void checkDichtheit()
+{
+	if (millis() > (lastTimeSpundomat + PAUSE5MIN))
+	{
+
+		DEBUG_MSG("Überprüfung Dichtheit Delta: %f\n", (pressure - dichtPressure));
+		ergDichtheit = pressure - dichtPressure;
+		setMode = AUS;
+		saveConfig();
+	}
+}
+
 // !!!Testcode!!! Ignorieren!
 void checkTestMode()
 {

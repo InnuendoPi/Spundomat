@@ -315,6 +315,11 @@ bool saveConfig()
     stepA = false;
     stepB = false;
     break;
+  case DICHTHEIT:
+    DEBUG_MSG("%s\n", "Start Überprüfung Dichtheit");
+    lastTimeSpundomat = millis();
+    dichtPressure = pressure;
+    break;
   default:
     mv1.switchOff();
     mv2.switchOff();

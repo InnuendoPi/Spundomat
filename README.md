@@ -17,8 +17,10 @@ Hinweis zum Quellcode:
 
 ## Changelog
 
-Version 2.0F5
+Version 2.0F6
 
+- Update:   Gerber Dateien
+- Added:    Neuer Modus Überprüfe Dichtheit
 - Added:    nach einem WebUpdate erscheint eine Info
 - Added:    Bei einem Fehler Visualisierung wird im Dashboard nun der Fehler angezeigt
 - Fixed:    Fehler Anzeige Ziel CO2-Gehalt mit 5 Nachkommastellen behoben

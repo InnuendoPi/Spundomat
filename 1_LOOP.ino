@@ -59,6 +59,9 @@ void loop()
   case PLAN3:
     startPlan();
     break;
+  case DICHTHEIT:
+    checkDichtheit();
+    break;
   }
   up = false;
   down = false;

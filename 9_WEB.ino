@@ -117,6 +117,7 @@ void handleRequestMiscSet()
         doc["delayspund"] = (int)(verzKarbonisierung / 1000 / 60 / 60);
     else
         doc["delayspund"] = minKarbonisierung;
+    doc["dichtheit"] = ((int)(ergDichtheit * 1000)) / 1000.0;
 
     String response;
     serializeJson(doc, response);
@@ -654,4 +655,12 @@ void setMDNS()
     }
     else
         Serial.printf("%s\n", "*** SYSINFO: Fehler Start mDNS! IP Adresse: %s\n", WiFi.localIP().toString().c_str());
+}
+
+void startDichtheit()
+{
+    DEBUG_MSG("%s\n", "Start Überprüfung Dichtheit");
+    setMode = DICHTHEIT;
+    lastTimeSpundomat = millis();
+    dichtPressure = pressure;
 }

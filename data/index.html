@@ -319,6 +319,12 @@
           miscRender += data.pressure + " bar";
           miscRender += "</span></li>";
         }
+		else if (data.mode == 9) {
+          miscRender += "Überprüfe Dichtheit";
+          miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
+          miscRender += data.pressure + " bar";
+          miscRender += "</span></li>";
+        }
         else {
           miscRender += "Ablaufplan #" + data.ablauf;
 		  miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
@@ -384,6 +390,15 @@
         }
         miscRender += "</span> </li>";
         miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Dienste<span class='badge ";
+		if (data.dichtheit == -127.0)
+		{
+			miscRender += " badge-dark'>Dichtheit nicht überprüft";
+		}
+		else
+		{
+			miscRender += " badge-secondary'>Dichtheit überprüft: " + data.dichtheit;
+		}
+		miscRender += "</span><span class='badge ";
 		if (data.mdns) {
           miscRender += " badge-success align-items-'>mDNS: " + data.mdns_name;
         }
@@ -1074,7 +1089,7 @@
         window.location.reload(true);
       });;
     });
-
+	
     $(function () {
       var firmware;
       $.ajax({

@@ -70,6 +70,7 @@ const char Version[7] = "2.0F5";
 #define PAUSE100MS 100
 #define PAUSE10MS 10
 #define PAUSE2MIN 120000
+#define PAUSE5MIN 300000
 #define DELTA 0.05
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
@@ -83,6 +84,7 @@ const char Version[7] = "2.0F5";
 #define PLAN1 6
 #define PLAN2 7
 #define PLAN3 8
+#define DICHTHEIT 9
 #define DEFAULT_OPEN 300
 #define DEFAULT_CLOSE 2000
 #define ALARM_ON 1
@@ -110,9 +112,10 @@ const int PIN_MV2 = D0;            // Magnetventi2 eingehend MV2 (Karbonisieren)
 const double E = exp(1);
 
 // Voreinstellungen
-float setPressure = DEF_PRESSURE;   //  Vorgabe bei Neustart von 2,0 bar
-float setCarbonation = DEF_CARB;    //  Vorgabe bei Neustart von 5,0 gr/L
-int setMode = AUS;                  //  Startposition 0 = AUS
+float setPressure = DEF_PRESSURE;   // Vorgabe bei Neustart von 2,0 bar
+float setCarbonation = DEF_CARB;    // Vorgabe bei Neustart von 5,0 gr/L
+float dichtPressure = 0.0;          // Überprüfung Dichtheit
+int setMode = AUS;                  // Startposition 0 = AUS
 int newMode = AUS;
 bool startMDNS = true;    // mDNS Dienst
 bool testModus = false;   // testModus - ignorieren!
@@ -120,6 +123,7 @@ bool startMV1 = false;    // Aktiviere MV1 an D8
 bool startMV2 = false;    // Aktiviere MV2 an D0
 bool startBuzzer = false; // Aktiviere Buzzer an D4
 bool alertState = false;
+float ergDichtheit = -127.0;
 
 // Klassen Initialisierungen
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display
@@ -185,9 +189,9 @@ String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
-#define sizeOfModes 9
-String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3"};                            // ModusNamen im Display
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3"}; // Modus-Namen für WebIf
+#define sizeOfModes 10
+String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3", "Dichtheit"};                            // ModusNamen im Display
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3", "Überprüfe Dichtheit"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat";    // http://spundomat/index.html
 
 // Verzögerung Spundomat

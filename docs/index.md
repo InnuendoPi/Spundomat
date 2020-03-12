@@ -235,6 +235,17 @@ Die Zeitintervalle, insbesondere die Werte für Magnetventile geschlossen, entsc
 
 Bitte beachten: wenn ein 19l Keg mit 18,5l Jungbier befüllt ist und ein Druck von ca. 1bar im Keg herrscht, entsteht automatisch eine Schaumbildung, wenn das Magnetventil 1 Spunden für längere Zeit (über 500ms) geöffnet wird. Nachgärung und Reifung benötigt Zeit und Ruhe. Dementsprechend sind kurze Zeitintervalle für das Öffnen und lange Zeitintervalle für das Schließen der Magnetventile zu bevorzugen.
 
+**Der Modus Überprüfe Dichtheit:**
+
+Im Modus Überprüfe Dichtheit kann das System wie der Name vermuten lässt auf Dichtheit überprüft werden. Bei NC/CC Kegs sind die Deckel sehr häufig undicht. Das pneumatische Stecksystem birgt ebenfalls die Gefahr, dass bei einem schnellen Aufbau eine Verbindung nicht korrekt eingesteckt wird. Der Modus Überprüfe Dichtheit überprüft die Druckänderung nach einem Zeitintervall von 5 Minuten. Wenn zum Zeitpunkt 0 (null) im Keg ein Druck von 1,025bar herrscht und 5 Minuten später wird ein Druck von 0.995bar gemessen, dann lautet das Ergebnis der Überprüfung Dichtheit 0,03bar. Dieser Wert wird nicht gespeichert. Nach einem Neustart des Spundomaten wird im Dashboard immer "Dichtheit nicht überprüft" angezeigt.
+
+Um mit diesen Modus die Dichtheit zu überprüfen, müssen die folgenden Vorbereitungen abgeschlossen sein:
+
+* ein Keg ist mit einem Druck von ca. 1bar zu befüllen
+* das Keg und Spundomat sollten min. 15 Minuten in der Umgebungstemperatur gestanden haben
+
+Nun kann der Modus "Überprüfe Dichtheit" ausgewählt werden. Nach 5 Minuten wechselt der Spundomat automatisch den Modus auf "Aus" und aktualisiert die Anzeige im Dashboard.
+
 ---
 
 ## Ablaufpläne

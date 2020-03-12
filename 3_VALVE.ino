@@ -319,6 +319,8 @@ void updateMV2() // Modus Karbonisieren
 		mv2.buildPressureCO2();
 	else if (setMode == KARBONISIEREN_DRUCK)
 		mv2.buildPressureDruck();
+	else if (setMode == DICHTHEIT)
+		mv2.buildPressureDruck();
 	else
 		mv2.switchOff();
 }

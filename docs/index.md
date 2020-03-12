@@ -241,10 +241,10 @@ Im Modus Überprüfe Dichtheit kann das System wie der Name vermuten lässt auf 
 
 Um mit diesen Modus die Dichtheit zu überprüfen, müssen die folgenden Vorbereitungen abgeschlossen sein:
 
-* ein Keg ist mit einem Druck von ca. 1bar zu befüllen
 * das Keg und Spundomat sollten min. 15 Minuten in der Umgebungstemperatur gestanden haben
+* in den Einstellungen wird der "Zielwert Druck" auf einen Wert von 1bar oder höher eingestellt 
 
-Nun kann der Modus "Überprüfe Dichtheit" ausgewählt werden. Nach 5 Minuten wechselt der Spundomat automatisch den Modus auf "Aus" und aktualisiert die Anzeige im Dashboard.
+Nun kann der Modus "Überprüfe Dichtheit" ausgewählt werden. Das Keg wird mit dem konfiguriertem Druck befüllt. Sobald dieser Druck erreicht ist, wartet der Spundomat 2 Minuten ab. Nach 2 Minuten wird der aktuelle Druck (#1) gemessen. Nach einer weiteren Wartezeit von 5 Minuten wird ein zweites Mal der Druck (#2) gemessen. Das Delta, also die Differenz der beiden Druckmessungen (Delta = #2 - #1) wechselt der Spundomat automatisch den Modus auf "Aus" und zeigt im Dashboard das Delta an.
 
 ---
 

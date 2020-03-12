@@ -59,6 +59,12 @@ void showLCD()
       Menu1[3] += displayPressure;
       Menu1[3] += "bar";
     }
+    else if (setMode == DICHTHEIT)
+    {
+      Menu1[3] = "Pruefe Dicht: ";
+      Menu1[3] += setPressure;
+      Menu1[3] += "b";
+    }
 
     Menu1[1] = "Druck: ";
     if (pressure == -1)
@@ -182,7 +188,7 @@ void showLCD()
         {
           edititem = menuitem;
         }
-        else
+        else 
         {
           edititem = 0;
         }

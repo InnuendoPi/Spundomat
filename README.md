@@ -19,7 +19,8 @@ Hinweis zum Quellcode:
 
 Version 2.0F6
 
-- Update:   Gerber Dateien
+- Reworked: Modus Überprüfe Dichtheit
+- Update:   Gerber Dateien aktualisiert
 - Added:    Neuer Modus Überprüfe Dichtheit
 - Added:    nach einem WebUpdate erscheint eine Info
 - Added:    Bei einem Fehler Visualisierung wird im Dashboard nun der Fehler angezeigt

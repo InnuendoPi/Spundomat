@@ -119,6 +119,7 @@ void checkDichtheit()
 		dichtPressure = 0.0;
 		lastTimeSpundomat = millis();
 		DEBUG_MSG("Überprüfung Dichtheit Step 2 Zeitstempel: %lu \n", lastTimeSpundomat);
+		sendAlarm(ALARM_OK);
 		return;
 	} 
 	else if (lastTimeSpundomat > 0.0 && dichtPressure == 0.0 && millis() > (lastTimeSpundomat + PAUSE2MIN)) // Step 3 Warte 2min (Gleichgewicht)
@@ -127,6 +128,7 @@ void checkDichtheit()
 		dichtPressure = pressure;
 	    ergDichtheit = 0.0;
 		DEBUG_MSG("Überprüfung Dichtheit Step 3 dichtP: %f Elapsed %lu \n", dichtPressure, (millis()-lastTimeSpundomat));
+		sendAlarm(ALARM_OK);
 		return;
 	}
 	else if (lastTimeSpundomat > 0.0 && millis() > (lastTimeSpundomat + PAUSE5MIN)) // Step 4 nach 5min ermittle Delta

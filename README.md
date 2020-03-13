@@ -19,6 +19,7 @@ Hinweis zum Quellcode:
 
 Version 2.0F6
 
+- Fixed:    kleine Fehlerkorrektur
 - Reworked: Modus Überprüfe Dichtheit
 - Update:   Gerber Dateien aktualisiert
 - Added:    Neuer Modus Überprüfe Dichtheit

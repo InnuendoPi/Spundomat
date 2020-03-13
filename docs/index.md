@@ -242,7 +242,7 @@ Im Modus Überprüfe Dichtheit kann das System wie der Name vermuten lässt auf 
 Um mit diesen Modus die Dichtheit zu überprüfen, müssen die folgenden Vorbereitungen abgeschlossen sein:
 
 * das Keg und Spundomat sollten min. 15 Minuten in der Umgebungstemperatur gestanden haben
-* in den Einstellungen wird der "Zielwert Druck" auf einen Wert von 1bar oder höher eingestellt 
+* in den Einstellungen wird der "Zielwert Druck" auf einen Wert von 1bar oder höher eingestellt
 
 Nun kann der Modus "Überprüfe Dichtheit" ausgewählt werden. Das Keg wird mit dem konfiguriertem Druck befüllt. Sobald dieser Druck erreicht ist, wartet der Spundomat 2 Minuten ab. Nach 2 Minuten wird der aktuelle Druck (#1) gemessen. Nach einer weiteren Wartezeit von 5 Minuten wird ein zweites Mal der Druck (#2) gemessen. Das Delta, also die Differenz der beiden Druckmessungen (Delta = #2 - #1) wechselt der Spundomat automatisch den Modus auf "Aus" und zeigt im Dashboard das Delta an.
 
@@ -330,11 +330,19 @@ Mit dieser Taktung kann gezielt CO2 in das Keg gedrückt werden. Die kurze Öffn
 In Schritt 2 kommt Magnetventil 1 zum Einsatz. Der vorhandene Druck von 1.0bar soll auf 0.2bar abgebaut werden. Wieder kommt die Sequenz Öffnen und Schließen zum Einsatz: lasse Druck ab durch öffnen von MV1 für 200ms. Warte dann mit einem geschlossenen MV1 30000ms (30 Sekunden) ab, bevor der Vorgang wiederholt wird.
 Diese Schritte lassen sich nun bis zu 20x wiederholen. Ein Ablaufplan kann von nur wenigen Sekunden bis hin zu mehreren Stunden andauern. Die Parameter Öffnen und Schließen sind individuell für jede Umgebung anzupassen. Der vorgefertigte Ablaufplan ist nur als Hilfe gedacht!
 
-Visualisierung einer schnellen Zwangskarbonisierung (4 Wiederholungen)
+Visualisierung einer schnellen Zwangskarbonisierung (Ausschnitt mit 4 Wiederholungen)
 
 ![QuickCarb](img/quickcarb.jpg)
 
+Die rote Drucklinie zeigt den Verlauf. Kennzeichnet ist der Druckunterschied zwischen Min und Max, sowie der flache Druckabfall.
+
 Während beim "schnellen Zwangskarbonisieren" das Binden von CO2 im Bier im Vordergrund steht, ist bei der CO2-Wäsche das Austreiben von Fehlarmonen die Hauptaufgabe. Eine Nebenwirkung der CO2-Wäsche ist sogar, dass der CO2-Gehalt am Ende der Wäsche niedriger ist. Hierfür wird das Bier stark mit einem Druck von 3 oder sogar höher durchströmt. Mit kräftigen Sequenzen CO2 durch das Bier sollen Fehlaromen wie bspw. Schwefelgerüche ausgetrieben werden. Zu beachten ist das Schäumen! Das Schließen der Magnetventile sind (immer) wie Pausenzeiten zu verstehen. Wenn durch ein Bier CO2 mit 3bar "durchgeschossen" wird, ist Schaumbildung unvermeidlich. Je geringer der freie Kopfraum im Keg, desto höher ist die Gefahr, dass Schaum oder ganz allgemein Flüssigkeit über die Druckschläuche zu den Magnetventilen gelangen kann.
+
+Visualisierung einer CO2 Wäsche (Ausschnitt mit 2 Wiederholungen)
+
+![CO2Wäsche](img/co2waesche.jpg)
+
+Wieder zeigt die rote Drucklinie den Verlauf. Kennzeichnet ist der größere Druckunterschied zwischen Min und Max, der sehr schnell ansteigende Druck aufgrund des "starken durchbubberns" und dem sehr flachen langsamen Druckabfall.
 
 Sowohl Ablaufplan-Name als auch die Sequenzen Öffnen und Schließen für beide Magnetventile können individuell angepasst werden. Die drei Ablaufpläne im Repository sind als Starthilfe gedacht und sollen vom Endanwender überschrieben werden. Es wird empfohlen, das Editieren der Datei ablaufplan.txt über den Dateiexplorer im Web Interface der Firmware durchzuführen, weil das Formatkennzeichen für Zeilenende und Zeilenvorschub unterschiedlich abgespeichert wird.
 
@@ -385,7 +393,7 @@ Beschreibung:
 |1 | Transistor BC 547 A | <https://www.reichelt.de/bipolartransistor-npn-45v-0-1a-0-5w-to-92-bc-547a-p219128.html?&nbc=1> |
 |2 | Optokoppler EL 817 | <https://www.reichelt.de/optokoppler-5kv-35v-50ma-50-dip4-el-817-p146657.html?&nbc=1> |
 |2 | MosFet IRFIZ 24 N | <https://www.reichelt.de/mosfet-n-ch-55v-14a-29w-to-220-fullpak-irfiz-24n-p90327.html?&nbc=1> |
-|1 | Elko 100 uF/ 35 V stehend | <https://www.reichelt.de/elko-radial-100-uf-35-v-105-c-low-esr-aec-q200-rad-fc-100-35-p84619.html?&nbc=1> |
+|1 | Elko 100 uF/ 35 V stehend | <https://www.reichelt.de/elko-100-f-16-v-105-c-rad-lxz-16-100-p166363.html?&trstct=pos_4&nbc=1> |
 |1 | Drossel 33uH    FAS 09HCP-331K-5 | <https://www.reichelt.de/power-induktivitaet-radial-330-h-fas-09hcp-331k-5-p245783.html?&nbc=1> |
 |1 | Schaltregler   LM 2575 - 5G | <https://www.reichelt.de/index.html?ACTION=446&LA=446&nbc=1&q=lm2575t-5g> |
 |3 | Klemmblöcke 2- polig RM5,08 | <https://www.reichelt.de/loetbare-schraubklemme-2-pol-rm-5-08-mm-90-rnd-205-00287-p170288.html?&nbc=1> |

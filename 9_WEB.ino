@@ -86,7 +86,7 @@ void handleRequestMiscSet()
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
-    if (setMode < PLAN1)
+    if (setMode < PLAN1 || setMode > PLAN3)
     {
         doc["mv1opendisp"] = mv1Open;
         doc["mv1closedisp"] = mv1Close;
@@ -111,13 +111,57 @@ void handleRequestMiscSet()
     if (alertState)
         alertState = false;
 
+    doc["restverz"] = "0";
     if (setEinheit == 0)
+    {
         doc["delayspund"] = (int)(verzKarbonisierung / 1000 / 60);
-    else if  (setEinheit == 1)
+        if (verzKarbonisierung > 0)
+        {
+            long restzeit = (lastTimeSpundomat + verzKarbonisierung - millis()) / 1000;
+            if (restzeit < 0)
+                doc["restverz"] = "0";
+            int resth = restzeit / 60 / 60;
+            int restm = restzeit / 60;
+            int rests = restzeit;
+            resth % 24 > 0 ? resth = resth % 24 : resth = 0;
+            restm % 60 > 0 ? restm = restm % 60 : restm = 0;
+            rests % 60 > 0 ? rests = rests % 60 : rests = 0;
+            doc["restverz"] = String(resth) + ":" + String(restm) + ":" + String(rests);
+        }
+    }
+    else if (setEinheit == 1)
+    {
         doc["delayspund"] = (int)(verzKarbonisierung / 1000 / 60 / 60);
+        if (verzKarbonisierung > 0)
+        {
+            long restzeit = (lastTimeSpundomat + verzKarbonisierung - millis()) / 1000;
+            if (restzeit < 0)
+                doc["restverz"] = "0";
+            int resth = restzeit / 60 / 60;
+            int restm = restzeit / 60;
+            int rests = restzeit;
+            resth % 24 > 0 ? resth = resth % 24 : resth = 0;
+            restm % 60 > 0 ? restm = restm % 60 : restm = 0;
+            rests % 60 > 0 ? rests = rests % 60 : rests = 0;
+            doc["restverz"] = String(resth) + ":" + String(restm) + ":" + String(rests);
+        }
+    }
     else
         doc["delayspund"] = minKarbonisierung;
     doc["dichtheit"] = ((int)(ergDichtheit * 1000)) / 1000.0;
+    if (setMode == DICHTHEIT)
+    {
+        long restzeit = (lastTimeSpundomat + PAUSE5MIN + PAUSE2MIN - millis()) / 1000;
+        if (restzeit < 0)
+            doc["restverz"] = "0";
+        int resth = restzeit / 60 / 60;
+        int restm = restzeit / 60;
+        int rests = restzeit;
+        resth % 24 > 0 ? resth = resth % 24 : resth = 0;
+        restm % 60 > 0 ? restm = restm % 60 : restm = 0;
+        rests % 60 > 0 ? rests = rests % 60 : rests = 0;
+        doc["restverz"] = String(resth) + ":" + String(restm) + ":" + String(rests);
+    }
 
     String response;
     serializeJson(doc, response);

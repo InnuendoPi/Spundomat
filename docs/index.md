@@ -507,6 +507,16 @@ Es wurden bewusst 2 Dimensionen und Farben gewählt, um eine Verwechslung der An
 Wenn man nur spundet kann man den grauen 6 mm Schlauch direkt ohne Rückschlagventil am Spundomat anschließen.
 Zudem können auch mehrere Kegs bei gewünscht gleicher Karbonisierung durch Parallelschaltung mittels 6 mm T-Stücke angeschlossen werden.
 
+**3D Druck Gehäuse:**
+
+Im Ordner Info ist ein Archiv für den 3D Druck hinterlegt. Alle Einzelteile können ohne Stützstruktur gedruckt werden. Der Sensorhalter kann mit einer Füllung von 40% gedruckt werden, bei allen Teilen mit einer 100% Füllung. Bei dem Sensorhalter werden die 3 Wandlinien mit der Füllung überlappen gedruckt ( Isolationswirkung).
+
+Positionierung der Bauteile auf dem Bett:
+![3Druck1](img/3D1.png)
+
+So sollten die Bauteile gedreht werden:
+![3Druck2](img/3D2.png)
+
 ---
 
 ## Visualisierung

@@ -279,7 +279,13 @@
           miscRender += "</span></li>";
         }
         else if (data.mode == 1) {
-          miscRender += "Spundomat";
+          if (data.einheit < 2 && data.restverz != "0") {
+			miscRender += "Spundomat " + data.restverz;
+		  }
+		  else
+		  {
+		    miscRender += "Spundomat";
+		  }
           miscRender += "</span></li> <li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert CO2 Gehalt<span class='badge badge-info'>";
           miscRender += data.carbonation + " gr/l";
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Verzögerung Karbonisierung<span class='badge badge-info'>";
@@ -320,7 +326,12 @@
           miscRender += "</span></li>";
         }
 		else if (data.mode == 9) {
-          miscRender += "Überprüfe Dichtheit";
+		  if (data.restverz != "0") {
+			miscRender += "Überprüfe Dichtheit " + data.restverz;
+		  }
+		  else {
+		    miscRender += "Überprüfe Dichtheit";
+		  }
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
           miscRender += data.pressure + " bar";
           miscRender += "</span></li>";

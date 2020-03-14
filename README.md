@@ -17,8 +17,10 @@ Hinweis zum Quellcode:
 
 ## Changelog
 
-Version 2.0F6
+Version 2.0F7
 
+- Fixed:    Anzeigefehler behoben
+- Added:    Timer Information im Modus Spundomat und Dichtheit
 - Fixed:    kleine Fehlerkorrektur
 - Reworked: Modus Überprüfe Dichtheit
 - Update:   Gerber Dateien aktualisiert

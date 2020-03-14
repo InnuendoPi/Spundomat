@@ -15,8 +15,8 @@ weil das Spundventil überschüssiges CO2 automatisch ablässt.
 Am einfachsten schlaucht man nach 5-7 Tagen in die Drucktanks oder Kegs und hängt das nach 
 Tanktemperatur (bzw. Raumtemperatur wenn nicht temperaturreguliert) richtig eingestellte Spundventil an.
 
-Zum Anschließen, Umkonfigurieren, Carbonisieren und leichten Reinigen der CO2-Schäuche eignen 
-sich Pneumatische Schnellkupplungen hervorragend.
+Zum Anschließen, Umkonfigurieren, Carbonisieren und leichten Reinigen der CO2-Schläuche eignen 
+sich pneumatische Schnellkupplungen hervorragend.
 
 Dieser Quellcode baut auf einem Snippet von Janick 2017 auf.
 */
@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.0F6";
+const char Version[7] = "2.0F7";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000

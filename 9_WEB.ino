@@ -126,7 +126,12 @@ void handleRequestMiscSet()
             resth % 24 > 0 ? resth = resth % 24 : resth = 0;
             restm % 60 > 0 ? restm = restm % 60 : restm = 0;
             rests % 60 > 0 ? rests = rests % 60 : rests = 0;
-            doc["restverz"] = String(resth) + ":" + String(restm) + ":" + String(rests);
+            char countdown[9]{'\0'};
+            int x = snprintf(countdown, sizeof(countdown), "%02d:%02d:%02d", resth, restm, rests);
+            if (x > 0)
+                doc["restverz"] = countdown;
+            else
+                doc["restverz"] = "0";
         }
     }
     else if (setEinheit == 1)
@@ -143,7 +148,12 @@ void handleRequestMiscSet()
             resth % 24 > 0 ? resth = resth % 24 : resth = 0;
             restm % 60 > 0 ? restm = restm % 60 : restm = 0;
             rests % 60 > 0 ? rests = rests % 60 : rests = 0;
-            doc["restverz"] = String(resth) + ":" + String(restm) + ":" + String(rests);
+            char countdown[9]{'\0'};
+            int x = snprintf(countdown, sizeof(countdown), "%02d:%02d:%02d", resth, restm, rests);
+            if (x > 0)
+                doc["restverz"] = countdown;
+            else
+                doc["restverz"] = "0";
         }
     }
     else
@@ -160,7 +170,14 @@ void handleRequestMiscSet()
         resth % 24 > 0 ? resth = resth % 24 : resth = 0;
         restm % 60 > 0 ? restm = restm % 60 : restm = 0;
         rests % 60 > 0 ? rests = rests % 60 : rests = 0;
-        doc["restverz"] = String(resth) + ":" + String(restm) + ":" + String(rests);
+        // doc["restverz"] = String(resth) + ":" + String(restm) + ":" + String(rests);
+        char countdown[9]{'\0'};
+        int x = snprintf(countdown, sizeof(countdown), "%02d:%02d:%02d", resth, restm, rests);
+        if (x > 0)
+            doc["restverz"] = countdown;
+        else
+            doc["restverz"] = "0";
+         //berechneCountdown(lastTimeSpundomat + PAUSE5MIN + PAUSE2MIN);
     }
 
     String response;

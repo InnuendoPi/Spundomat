@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.0F8";
+const char Version[7] = "2.0F9";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -69,6 +69,7 @@ const char Version[7] = "2.0F8";
 #define PAUSE200MS 200
 #define PAUSE100MS 100
 #define PAUSE10MS 10
+#define PAUSE50MS 50
 #define PAUSE2MIN 120000
 #define PAUSE5MIN 300000
 #define DELTA 0.05

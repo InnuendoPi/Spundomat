@@ -12,6 +12,7 @@ class Magnetventil
 	int mvState;			  // Aktueller MV Status
 	unsigned long lastTimeMV; // letztes Update MV
 	bool enabled;
+	int mvMode = 0;			// 0: Normal (Std open/close), 1: Kurz (50ms open und Std close)
 
 public:
 	Magnetventil(int pin, long newOpen, long newClose, bool newEnabled) // Konstruktor
@@ -23,6 +24,7 @@ public:
 		mvState = LOW;			  // Magnetventil ist geschlossen
 		lastTimeMV = 0;			  // Default Zeitstempel
 		enabled = newEnabled;	 // Aus der config.txt wird startMV1/2 auf die Klassenvar enabled übertragen
+		mvMode = 0;
 	}
 
 	Magnetventil(int pin) // Konstrukttor
@@ -34,6 +36,7 @@ public:
 		mvState = LOW;
 		lastTimeMV = 0;
 		enabled = false;
+		mvMode = 0;
 	}
 
 	void change(long newOpen, long newClose, bool newEnabled) // Aufruf aus configfile
@@ -92,6 +95,12 @@ public:
 				DEBUG_MSG("MV Spunden-CO2 open P: %f Status: %d current: %lu prevOpen: %lu Intervall: %ld \n", pressure, mvState, millis(), lastTimeMV, openInterval);
 				switchOn();
 				stepA = false;
+			}
+			// Test 20200321
+			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen
+			{
+				mvMode = 1;
+				change(PAUSE50MS, closeInterval, true);
 			}
 		}
 		else
@@ -217,6 +226,12 @@ public:
 				return;
 			}
 			stepB = false;
+			// Test 20200321
+			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen
+			{
+				mvMode = 1;
+				change(PAUSE50MS, closeInterval, true);
+			}
 		}
 	}
 

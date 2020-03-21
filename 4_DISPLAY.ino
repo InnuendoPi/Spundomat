@@ -126,6 +126,9 @@ void showLCD()
       lcd.print("SSID ");
       lcd.print(WiFi.SSID());
       lcd.setCursor(0, 2);
+      lcd.print("RSSI ");
+      lcd.print(WiFi.RSSI());
+      lcd.setCursor(0, 3);
       if (startMDNS)
       {
         lcd.print("mDNS ");

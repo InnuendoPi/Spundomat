@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.0F7";
+const char Version[7] = "2.0F8";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -157,6 +157,7 @@ unsigned long upInflux = DB_UPDATE;
 InnuTicker TickerTemp;
 InnuTicker TickerPressure;
 InnuTicker TickerInfluxDB;
+InnuTicker TickerEncoder;
 
 // Deklariere Variablen
 float temperature;

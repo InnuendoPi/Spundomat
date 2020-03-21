@@ -61,6 +61,7 @@ void loop()
     break;
   case DICHTHEIT:
     checkDichtheit();
+    TickerEncoder.update();
     break;
   }
   up = false;

@@ -179,7 +179,26 @@
               </div>
             </div>
             <div class="tab-pane fade" id="misc4" role="tabpanel" aria-labelledby="misc4-tab">
-              <br />
+			  <br />
+			  <div class="form-group row">
+                <label for="modal_misc_rssi" class="col-sm col-form-label">WLAN Signalstärke:</label>
+				<div class="col-sm">
+					<input type="text" readonly class="form-control-plaintext" id="modal_misc_rssi">
+				</div>	
+              </div>
+			  <div class="form-group row">
+                <label for="modal_misc_offset" class="col-sm col-form-label">Offset Kalibrierung bei 0bar:</label>
+				<div class="col-sm">
+					<input type="text" readonly class="form-control-plaintext" id="modal_misc_offset">
+				</div>	
+              </div>
+			  <div class="form-group row">
+                <label for="modal_misc_offset2" class="col-sm col-form-label">Offset Kalibrierung bei 2bar:</label>
+				<div class="col-sm">
+					<input type="text" readonly class="form-control-plaintext" id="modal_misc_offset2">
+				</div>	
+              </div>
+			  <br />
               <label class="form-check-label">Reset Spundomat</label>
               <br />
               <div class="form-check">
@@ -573,6 +592,7 @@
       var dbup;
 	  var ablauf;
 	  var alertstate;
+	  var rssi;
 
       $.ajax({
         url: '/reqMisc?req=mdns',
@@ -954,6 +974,16 @@
           alertmessage = data;
         }
       });
+	  $.ajax({
+        url: '/reqMisc?req=rssi',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          rssi = data;
+        }
+      });
 
       var modal = $(this);
       $('#modal_misc_modus').load('/reqMode');
@@ -990,6 +1020,7 @@
       modal.find('#modal_misc_db_user').val(dbuser);
       modal.find('#modal_misc_db_pass').val(dbpass);
       modal.find('#modal_misc_db_up').val(dbup);
+	  modal.find('#modal_misc_rssi').val(rssi);
       var modal = $(this);
     });
 

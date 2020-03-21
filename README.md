@@ -17,8 +17,12 @@ Hinweis zum Quellcode:
 
 ## Changelog
 
-Version 2.0F7
+Version 2.0F8
 
+- Update:   Gerber Dateien aktualisiert
+- Update:   Gehäusedateien 3D aktualisiert
+- Fixed:    Encoder reagierte im Modus Dichtheit nicht während der Wartezeit
+- Fixed:    Anzeigefehler LCD behoben, wenn keine Kalibrierung durchgeführt wurde
 - Fixed:    Anzeigefehler behoben
 - Added:    Timer Information im Modus Spundomat und Dichtheit
 - Fixed:    kleine Fehlerkorrektur

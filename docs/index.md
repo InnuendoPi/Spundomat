@@ -237,7 +237,13 @@ Bitte beachten: wenn ein 19l Keg mit 18,5l Jungbier befüllt ist und ein Druck v
 
 **Der Modus Überprüfe Dichtheit:**
 
-Im Modus Überprüfe Dichtheit kann das System wie der Name vermuten lässt auf Dichtheit überprüft werden. Bei NC/CC Kegs sind die Deckel sehr häufig undicht. Das pneumatische Stecksystem birgt ebenfalls die Gefahr, dass bei einem schnellen Aufbau eine Verbindung nicht korrekt eingesteckt wird. Der Modus Überprüfe Dichtheit überprüft die Druckänderung nach einem Zeitintervall von 5 Minuten. Wenn zum Zeitpunkt 0 (null) im Keg ein Druck von 1,025bar herrscht und 5 Minuten später wird ein Druck von 0.995bar gemessen, dann lautet das Ergebnis der Überprüfung Dichtheit 0,03bar. Dieser Wert wird nicht gespeichert. Nach einem Neustart des Spundomaten wird im Dashboard immer "Dichtheit nicht überprüft" angezeigt.
+Im Modus Überprüfe Dichtheit kann das System wie der Name vermuten lässt auf Dichtheit überprüft werden. Bei NC/CC Kegs sind die Deckel sehr häufig undicht. Meist schließt sich die undichte Stelle bei höherem Druck im Keg. Die NC/CC Anschlüsse für die CO2 und Bierleitungen sind ebenfalls sehr häufig undicht. Hier ist es im Gegensatz zum Keg Deckel eher umgedreht: bei höherem Druck tritt Undichtheit auf. Das pneumatische Stecksystem birgt ebenfalls die Gefahr, dass bei einem schnellen Aufbau eine Verbindung nicht korrekt eingesteckt wird. Der Modus Überprüfe Dichtheit kann und sollte vor jedem Spundomat Einsatz durchgeführt werden.
+
+Der Modus Überprüfe Dichtheit überprüft die Druckänderung nach einem Zeitintervall von 5 Minuten. Wenn zum Zeitpunkt 0 (null) im Keg ein Druck von 1,025bar herrscht und 5 Minuten später wird ein Druck von 0.995bar gemessen, dann lautet das Ergebnis der Überprüfung Dichtheit 0,03bar. Dieser Wert wird nicht gespeichert. Nach einem Neustart des Spundomaten wird im Dashboard immer "Dichtheit nicht überprüft" angezeigt.
+
+Ein positiver Wert als Ergebnis der Überprüfung Dichtheit ist als Druckverlust zu bewerten. Es liegt eine Undichtheit vor.
+
+Ein negativer Wert als Ergebnis ist als Druckzunahme zu bewerten. Eine Druckzunahme basiert in den meisten Fällen auf eine Ändeurng der Temperatur im Keg bzw. im gesamten Drucksystem.
 
 Um mit diesen Modus die Dichtheit zu überprüfen, müssen die folgenden Vorbereitungen abgeschlossen sein:
 

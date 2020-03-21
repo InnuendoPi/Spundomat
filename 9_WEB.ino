@@ -347,6 +347,11 @@ void handleRequestMisc()
         message = (upInflux / 1000);
         goto SendMessage;
     }
+    if (request == "rssi")
+    {
+        message = WiFi.RSSI();
+        goto SendMessage;
+    }
 
 SendMessage:
     server.send(200, "text/plain", message);

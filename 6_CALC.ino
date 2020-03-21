@@ -16,6 +16,8 @@ float calcCarbonation(const float &localPress, const float &localTemp)
 {
 	if (localTemp == 85.0 || localTemp == -127.00)
 		return 0.0;
+	else if (offset0 == 0.0 && offset2 == 0.0)
+		return 0.0;
 	return ((localPress + 1.013) * pow(E, (-10.73797 + (2617.25 / (localTemp + 273.15)))) * 10);
 }
 
@@ -23,6 +25,8 @@ float calcCarbonation(const float &localPress, const float &localTemp)
 float calcPressure(const float &localCarb, const float &localTemp)
 {
 	if (localTemp == 85.0 || localTemp == -127.00)
+		return 0.0;
+	else if (offset0 == 0.0 && offset2 == 0.0)
 		return 0.0;
 	return ((localCarb / 10) / pow(E, (-10.73797 + (2617.25 / (localTemp + 273.15)))) - 1.013);
 }
@@ -39,7 +43,7 @@ float readFloat(unsigned int addr)
 		data.b[i] = EEPROM.read(addr + i);
 	}
 	if (isnan(data.f)) // Keine Kalibrierung
-		data.f = 0;
+		data.f = 0.0;
 	
 	return data.f;
 }

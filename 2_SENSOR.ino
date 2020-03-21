@@ -71,7 +71,7 @@ void readPressure()
 		{
 			pressure = 0.0;
 			oldPressDisp = pressure;
-			reflashLCD = false;
+			//reflashLCD = false;
 			DEBUG_MSG("Keine Kalibrierung Sensor: %d P: %f\n", sensorValue, pressure);
 			return;
 		}
@@ -120,6 +120,9 @@ void checkDichtheit()
 		lastTimeSpundomat = millis();
 		DEBUG_MSG("Überprüfung Dichtheit Step 2 Zeitstempel: %lu \n", lastTimeSpundomat);
 		sendAlarm(ALARM_OK);
+		TickerEncoder.start();
+		TickerTemp.interval(PAUSE2SEC);
+		TickerPressure.interval(PAUSE2SEC);
 		return;
 	} 
 	else if (lastTimeSpundomat > 0.0 && dichtPressure == 0.0 && millis() > (lastTimeSpundomat + PAUSE2MIN)) // Step 3 Warte 2min (Gleichgewicht)
@@ -136,7 +139,10 @@ void checkDichtheit()
 		readPressure();
 		ergDichtheit = pressure - dichtPressure;
 		DEBUG_MSG("Überprüfung Dichtheit Step 4 Delta %f Elapsed %lu \n", (pressure - dichtPressure), (millis()-lastTimeSpundomat));
-		setMode = AUS;
+		TickerEncoder.stop();
+		TickerTemp.interval(upTemp);
+  		TickerPressure.interval(upPressure);
+  		setMode = AUS;
 		saveConfig();
 	}
 }

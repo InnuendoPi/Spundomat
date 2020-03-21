@@ -183,4 +183,5 @@ void setTicker() // Ticker Objekte deklarieren
   TickerTemp.config(tickerTempCallback, upTemp, 0);
   TickerPressure.config(tickerPressureCallback, upPressure, 0);
   TickerInfluxDB.config(tickerInfluxDBCallback, upInflux, 0);
+  TickerInfluxDB.config(tickerEncoderCallback, PAUSE1SEC, 0);
 }

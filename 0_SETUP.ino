@@ -103,11 +103,7 @@ void setup()
 
   // Influx Datenbank
   if (startDB)
-  {
     setInfluxDB();
-    TickerInfluxDB.start();
-    TickerInfluxDB.pause();
-  }
 }
 
 // Webserver

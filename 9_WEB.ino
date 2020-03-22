@@ -619,9 +619,16 @@ void visualisieren()
         if (server.argName(i) == "startvis")
         {
             if (server.arg(i) == "1")
+            {
                 startVis = true;
+                TickerInfluxDB.interval(upInflux);
+                TickerInfluxDB.start();
+            }
             else
+            {
                 startVis = false;
+                TickerInfluxDB.stop();
+            }
         }
         yield();
     }

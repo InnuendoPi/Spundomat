@@ -24,18 +24,15 @@ void sendDBData()
     dbData.addField("ZielCO2", setCarbonation);
     dbData.addField("IstCO2", calcCarbonation(pressure, temperature));
     DEBUG_MSG("Sende an InfluxDB: %s\n", dbData.toLineProtocol().c_str());
+    visState = "0";
     if (!dbClient.writePoint(dbData))
     {
-        // DEBUG_MSG("InfluxDB Schreibfehler1: %s\n", dbClient.getLastErrorMessage().c_str());
+        DEBUG_MSG("InfluxDB Schreibfehler1: %s\n", dbClient.getLastErrorMessage().c_str());
         // millis2wait(PAUSE100MS);
         if (!dbClient.writePoint(dbData)) // 2. Versuch in Datenbank zu schreiben
         {
-            visState = dbClient.getLastErrorMessage().c_str();   // setze Schreibstatus auf Fehler
-            DEBUG_MSG("InfluxDB Schreibfehler: %s\n", dbClient.getLastErrorMessage().c_str());
+            visState = dbClient.getLastErrorMessage().c_str(); // setze Schreibstatus auf Fehler
+            DEBUG_MSG("InfluxDB Schreibfehler2: %s\n", dbClient.getLastErrorMessage().c_str());
         }
-        else
-            visState = "0";
     }
-    else
-        visState = "0";
 }

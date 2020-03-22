@@ -17,8 +17,9 @@ Hinweis zum Quellcode:
 
 ## Changelog
 
-Version 2.0F8
+Version 2.0F10
 
+- Fixed:    Typo Ticker InfluxDB
 - Update:   Gerber Dateien aktualisiert
 - Update:   Gehäusedateien 3D aktualisiert
 - Fixed:    Encoder reagierte im Modus Dichtheit nicht während der Wartezeit

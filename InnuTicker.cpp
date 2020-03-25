@@ -55,6 +55,21 @@ void InnuTicker::update()
 		callback();
 }
 
+void InnuTicker::updateNow()
+{
+	lastTime = 0;
+	if (tick())
+		callback();
+}
+
+bool InnuTicker::getUp()
+{
+	if ((millis() - lastTime) >= timer)
+		return true;
+	else
+		return false;
+}
+
 void InnuTicker::config(uint32_t newTimer, uint32_t newRepeat)
 {
 	this->timer = newTimer;

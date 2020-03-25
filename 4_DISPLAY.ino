@@ -6,7 +6,7 @@ void showLCD()
   {
   case 1: // Startseite
     Menu1[0] = "CO2:   ";
-    Menu1[0] += ((int)(calcCarbonation(pressure, temperature) * 10)) / 10.0;
+    Menu1[0] += ((int)(calcCarbonation(pressure, temperature) * 100)) / 100.0;
     Menu1[0] += "g/l ";
     if (setMode == AUS)
     {
@@ -67,13 +67,13 @@ void showLCD()
     }
 
     Menu1[1] = "Druck: ";
-    if (pressure == -1)
-      Menu1[1] += "-       ";
-    else
-    {
+    // if (pressure == -1)
+    //   Menu1[1] += "-       ";
+    // else
+    // {
       Menu1[1] += pressure;
       Menu1[1] += "bar ";
-    }
+    // }
 
     Menu1[2] = "Temp:  ";
     Menu1[2] += ((int)(temperature * 10)) / 10.0;

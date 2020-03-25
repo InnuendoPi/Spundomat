@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.0F10";
+const char Version[7] = "2.0F11";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -72,9 +72,10 @@ const char Version[7] = "2.0F10";
 #define PAUSE50MS 50
 #define PAUSE2MIN 120000
 #define PAUSE5MIN 300000
-#define DELTA 0.05
+#define DELTA 0.04
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
+#define DISPLAY_UPDATE 2000
 #define DB_UPDATE 60000
 #define AUS 0
 #define SPUNDOMAT 1
@@ -86,8 +87,8 @@ const char Version[7] = "2.0F10";
 #define PLAN2 7
 #define PLAN3 8
 #define DICHTHEIT 9
-#define DEFAULT_OPEN 300
-#define DEFAULT_CLOSE 2000
+#define DEFAULT_OPEN 200
+#define DEFAULT_CLOSE 10000
 #define ALARM_ON 1
 #define ALARM_OFF 2
 #define ALARM_OK 3
@@ -158,7 +159,7 @@ unsigned long upInflux = DB_UPDATE;
 InnuTicker TickerTemp;
 InnuTicker TickerPressure;
 InnuTicker TickerInfluxDB;
-InnuTicker TickerEncoder;
+InnuTicker TickerDisplay;
 
 // Deklariere Variablen
 float temperature;

@@ -13,7 +13,7 @@ void tickerPressureCallback() // Timer Objekt Druck
   readPressure();
 }
 
-void tickerEncoderCallback() // Timer Objekt Druck
+void tickerDisplayCallback() // Timer Objekt Druck
 {
-  reflashLCD = true;
+  showLCD();
 }

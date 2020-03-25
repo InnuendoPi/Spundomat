@@ -12,7 +12,7 @@ class Magnetventil
 	int mvState;			  // Aktueller MV Status
 	unsigned long lastTimeMV; // letztes Update MV
 	bool enabled;
-	int mvMode = 0;			// 0: Normal (Std open/close), 1: Kurz (50ms open und Std close)
+	int mvMode = 0; // 0: Normal (Std open/close), 1: Kurz (50ms open und Std close)
 
 public:
 	Magnetventil(int pin, long newOpen, long newClose, bool newEnabled) // Konstruktor
@@ -64,9 +64,24 @@ public:
 		reflashLCD = true;
 	}
 
+	long getCloseInterval()
+	{
+		return closeInterval;
+	}
+
 	bool getState() // Gibt den aktuellen Status HIGH/LOW von MV zurück
 	{
 		return mvState;
+	}
+
+	int getMVMode()
+	{
+		return mvMode;
+	}
+
+	void setMVMode(int value)
+	{
+		mvMode = value;
 	}
 
 	unsigned long getElapsed()
@@ -96,12 +111,8 @@ public:
 				switchOn();
 				stepA = false;
 			}
-			// Test 20200321
 			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen
-			{
-				mvMode = 1;
-				change(PAUSE50MS, closeInterval, true);
-			}
+				changeMV();
 		}
 		else
 		{
@@ -218,6 +229,10 @@ public:
 		{
 			if (mvState == HIGH)
 				switchOff();
+
+			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen
+				changeMV();
+
 			if (getElapsed() >= closeInterval)
 			{
 				DEBUG_MSG("MV Karb-CO2 Delta Status: %d P: %f calcP: %f\n", mvState, pressure, calcPressure(setCarbonation, temperature));
@@ -226,12 +241,6 @@ public:
 				return;
 			}
 			stepB = false;
-			// Test 20200321
-			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen
-			{
-				mvMode = 1;
-				change(PAUSE50MS, closeInterval, true);
-			}
 		}
 	}
 
@@ -340,39 +349,69 @@ void updateMV2() // Modus Karbonisieren
 		mv2.switchOff();
 }
 
+void changeMV()
+{
+	if (mv1.getMVMode() == 0)
+	{
+		mv1.setMVMode(1);
+		if (mv1.getCloseInterval() >= PAUSE5SEC)
+			mv1.change(PAUSE10MS, mv1.getCloseInterval(), true);
+		else
+			mv1.change(PAUSE10MS, PAUSE5SEC, true);
+	}
+	if (mv2.getMVMode() == 0)
+	{
+		mv2.setMVMode(1);
+		if (mv2.getCloseInterval() >= PAUSE5SEC)
+			mv2.change(PAUSE10MS, mv2.getCloseInterval(), true);
+		else
+			mv2.change(PAUSE10MS, PAUSE5SEC, true);
+	}
+}
+
 void updateSpundomat() // Spundomat Modus
 {
 	if ((mv1.getState() == LOW && mv2.getState() == LOW))
 		TickerPressure.update();
 
-	//float localCalcPress = calcPressure(setCarbonation, temperature);
 	if (!stepA) // true: MV1 aktiv | false: MV1 inaktiv
 	{
-		// DEBUG_MSG("Spundomat Modus MV1-1 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
-		mv1.releasePressureCO2();
+		if (mv2.getElapsed() >= mv2.getCloseInterval())
+		{
+			// DEBUG_MSG("Spundomat Modus MV1-1 Elapsed MV2: %d Ist-Druck: %f\n", mv2.getElapsed(), pressure);
+			mv1.releasePressureCO2();
+		}
 		return;
 	}
 	else if (!stepB && stepA) // true: MV2 aktiv | false: MV2 inaktiv
 	{
-		//DEBUG_MSG("Spundomat Modus Verzögerung: %ld minCarb: %f\n", verzKarbonisierung, minKarbonisierung);
 		if (verzKarbonisierung == 0 && minKarbonisierung == 0.0) // Keine Verzögerung Karbonisieren
 		{
-			// DEBUG_MSG("Spundomat Modus MV2-3 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
-			mv2.buildPressureCO2();
+			if (mv1.getElapsed() >= mv1.getCloseInterval())
+			{
+				// DEBUG_MSG("Spundomat Modus MV2-3 Elapsed MV1: %d Ist-Druck: %f\n", mv1.getElapsed(), pressure);
+				mv2.buildPressureCO2();
+			}
 			return;
 		}
 		else if (verzKarbonisierung > 0 && millis() > (lastTimeSpundomat + verzKarbonisierung)) // Verzögerung Karbonisieren Zeit
 		{
-			lastTimeSpundomat = millis();
-			verzKarbonisierung = 0;
-			// DEBUG_MSG("Spundomat Modus MV2-2 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
-			mv2.buildPressureCO2();
+			if (mv1.getElapsed() >= mv1.getCloseInterval())
+			{
+				lastTimeSpundomat = millis();
+				verzKarbonisierung = 0;
+				// DEBUG_MSG("Spundomat Modus MV2-2 Elapsed MV1: %d Ist-Druck: %f\n", mv1.getElapsed(), pressure);
+				mv2.buildPressureCO2();
+			}
 			return;
 		}
 		else if (minKarbonisierung > 0.0 && minKarbonisierung < calcCarbonation(pressure, temperature)) // Verzögerung min CO2-Gehalt
 		{
-			// DEBUG_MSG("Spundomat Modus MV2-3 Zieldruck: %f Ist-Druck: %f\n", localCalcPress, pressure);
-			mv2.buildPressureCO2();
+			if (mv1.getElapsed() >= mv1.getCloseInterval())
+			{
+				// DEBUG_MSG("Spundomat Modus MV2-3 Elapsed MV1: %d Ist-Druck: %f\n", mv1.getElapsed(), pressure);
+				mv2.buildPressureCO2();
+			}
 			return;
 		}
 		else

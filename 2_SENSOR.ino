@@ -120,7 +120,7 @@ void checkDichtheit()
 		lastTimeSpundomat = millis();
 		DEBUG_MSG("Überprüfung Dichtheit Step 2 Zeitstempel: %lu \n", lastTimeSpundomat);
 		sendAlarm(ALARM_OK);
-		TickerEncoder.start();
+		// TickerDisplay.start();
 		TickerTemp.interval(PAUSE2SEC);
 		TickerPressure.interval(PAUSE2SEC);
 		return;
@@ -139,7 +139,7 @@ void checkDichtheit()
 		readPressure();
 		ergDichtheit = pressure - dichtPressure;
 		DEBUG_MSG("Überprüfung Dichtheit Step 4 Delta %f Elapsed %lu \n", (pressure - dichtPressure), (millis()-lastTimeSpundomat));
-		TickerEncoder.stop();
+		// TickerDisplay.stop();
 		TickerTemp.interval(upTemp);
   		TickerPressure.interval(upPressure);
   		setMode = AUS;

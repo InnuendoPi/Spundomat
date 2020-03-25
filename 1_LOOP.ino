@@ -30,8 +30,8 @@ void loop()
   if (startDB && startVis)
     TickerInfluxDB.update();
 
-  if (reflashLCD)
-    showLCD();
+  if (reflashLCD || TickerDisplay.getUp())
+    TickerDisplay.updateNow();
 
   // Betriebsmodi
   switch (setMode)
@@ -61,7 +61,7 @@ void loop()
     break;
   case DICHTHEIT:
     checkDichtheit();
-    TickerEncoder.update();
+    // TickerEncoder.update();
     break;
   }
   up = false;

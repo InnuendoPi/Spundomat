@@ -89,6 +89,8 @@ void setup()
 
   // Starte Drucksensor
   TickerPressure.start();
+  // Starte Display
+  TickerDisplay.start();
   
   // Zeitserver via NTP
   timeClient.begin();

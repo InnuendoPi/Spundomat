@@ -8,8 +8,8 @@
 // Ticker status
 //
 // @param STOPPED Standard, der Ticker ist gestoppt
-// @param RUNNING Der Ticker läuft
-// @param PAUSED Dder Ticker pausiert
+// @param RUNNING der Ticker läuft
+// @param PAUSED der Ticker pausiert
 //
 enum status_t {STOPPED, RUNNING, PAUSED};
 
@@ -46,16 +46,10 @@ public:
 
 	// Die Funktion Update muss in der loop aufgerufen werden. Update prüft den Ticker und ruft wenn erforderlich die Callback Funktion auf
 	void update();
-	
-	// Setze Timer und Wiederholung neu
-	void config(uint32_t timer, uint32_t repeat = 0);
-
-	// Setze Callback-Funktion, Timer und Wiederholung neu
-	void config(fptr callback, uint32_t timer, uint32_t repeat = 0);
-
-	// Ändere das Zeitintervall
+	void updateNow();
+	bool getUp();
 	//
-	// @param timer Länge Zeitintervall in ms 
+	// @param timer Länge Zeitintervall in ms
 	//
 	void interval(uint32_t timer);
 
@@ -69,6 +63,7 @@ public:
 	//
 	// @returns gibt den aktuellen Status vom Ticker zurück: STOPPED, RUNNING oder PAUSED
 	//
+
 	status_t state();
 
 	// Anzahl an ausgeführten Wiederholungen
@@ -78,6 +73,10 @@ public:
 	uint32_t counter();
 
 	bool aktiv();
+
+	void config(fptr callback, uint32_t timer, uint32_t repeat);
+
+	void config(uint32_t newTimer, uint32_t newRepeat);
 
 private:
 	bool tick();

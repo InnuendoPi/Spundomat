@@ -17,8 +17,12 @@ Hinweis zum Quellcode:
 
 ## Changelog
 
-Version 2.0F10
+Version 2.0F11
 
+- Added:    Automatische Reduzierung der Intervalle Öffne MVs im Modus Spundomat
+- Reworked: Update LCD Display
+- Reworked: LCD Display 2 Nachkommastellen CO2 Gehalt
+- Added:    Erweiterung der Ticker lib updateNow
 - Fixed:    Typo Ticker InfluxDB
 - Update:   Gerber Dateien aktualisiert
 - Update:   Gehäusedateien 3D aktualisiert

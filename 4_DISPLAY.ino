@@ -10,9 +10,9 @@ void showLCD()
     Menu1[0] += "g/l ";
     if (setMode == AUS)
     {
-      Menu1[3] = "Volt:  ";
-      Menu1[3] += ((int)(voltage * 10)) / 10.0;
-      Menu1[3] += "V";
+      Menu1[3] = getDayOfWeek(timeClient.getDay());
+      Menu1[3] += " ";
+      Menu1[3] += timeClient.getFormattedTime().c_str();
     }
     else if (setMode == SPUNDOMAT)
     {
@@ -71,8 +71,8 @@ void showLCD()
     //   Menu1[1] += "-       ";
     // else
     // {
-      Menu1[1] += pressure;
-      Menu1[1] += "bar ";
+    Menu1[1] += pressure;
+    Menu1[1] += "bar ";
     // }
 
     Menu1[2] = "Temp:  ";
@@ -191,7 +191,7 @@ void showLCD()
         {
           edititem = menuitem;
         }
-        else 
+        else
         {
           edititem = 0;
         }

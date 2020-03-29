@@ -64,6 +64,11 @@ public:
 		reflashLCD = true;
 	}
 
+	bool getEnabled()
+	{
+		return enabled;
+	}
+
 	long getCloseInterval()
 	{
 		return closeInterval;
@@ -111,7 +116,7 @@ public:
 				switchOn();
 				stepA = false;
 			}
-			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen
+			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen im Modus Spundomat
 				changeMV();
 		}
 		else
@@ -210,6 +215,10 @@ public:
 			saveConfig();
 			return;
 		}
+		// Ändere mv2open wenn Delta Druck kleine 0.1 ist
+		// if (fabs(pressure - calcPressure(setCarbonation, temperature)) > 0.1)
+		// 	changeMV();
+
 		if ((pressure < calcPressure(setCarbonation, temperature)) && (fabs(pressure - calcPressure(setCarbonation, temperature)) > DELTA))
 		{
 			if ((mvState == HIGH) && (getElapsed() >= openInterval))
@@ -230,7 +239,7 @@ public:
 			if (mvState == HIGH)
 				switchOff();
 
-			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen
+			if (setMode == SPUNDOMAT && mvMode == 0) // Reduziere mvOpen im Modus Spundomat
 				changeMV();
 
 			if (getElapsed() >= closeInterval)
@@ -351,18 +360,18 @@ void updateMV2() // Modus Karbonisieren
 
 void changeMV()
 {
-	if (mv1.getMVMode() == 0)
+	if (mv1.getMVMode() == 0 && mv1.getEnabled())
 	{
-		mv1.setMVMode(1);
-		if (mv1.getCloseInterval() >= PAUSE5SEC)
+		mv1.setMVMode(MVMODE1);
+		if (mv1.getCloseInterval() >= PAUSE10SEC)
 			mv1.change(PAUSE10MS, mv1.getCloseInterval(), true);
 		else
 			mv1.change(PAUSE10MS, PAUSE5SEC, true);
 	}
-	if (mv2.getMVMode() == 0)
+	if (mv2.getMVMode() == 0 && mv2.getEnabled())
 	{
-		mv2.setMVMode(1);
-		if (mv2.getCloseInterval() >= PAUSE5SEC)
+		mv2.setMVMode(MVMODE1);
+		if (mv2.getCloseInterval() >= PAUSE10SEC)
 			mv2.change(PAUSE10MS, mv2.getCloseInterval(), true);
 		else
 			mv2.change(PAUSE10MS, PAUSE5SEC, true);

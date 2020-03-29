@@ -177,7 +177,7 @@ void handleRequestMiscSet()
             doc["restverz"] = countdown;
         else
             doc["restverz"] = "0";
-         //berechneCountdown(lastTimeSpundomat + PAUSE5MIN + PAUSE2MIN);
+        //berechneCountdown(lastTimeSpundomat + PAUSE5MIN + PAUSE2MIN);
     }
 
     String response;
@@ -443,7 +443,7 @@ void handleSetMisc()
         {
             if (isValidInt(server.arg(i)))
             {
-                if (checkRange(server.arg(i)))
+                if (checkRange2(server.arg(i)))
                     mv1Close = server.arg(i).toInt();
             }
         }
@@ -620,13 +620,22 @@ void visualisieren()
         {
             if (server.arg(i) == "1")
             {
-                startVis = true;
-                TickerInfluxDB.interval(upInflux);
-                TickerInfluxDB.start();
+                if (checkDBConnect())
+                {
+                    startVis = true;
+                    TickerInfluxDB.interval(upInflux);
+                    TickerInfluxDB.start();
+                }
+                else
+                {
+                    startVis = false;
+                    TickerInfluxDB.stop();
+                }
             }
             else
             {
                 startVis = false;
+                visState = "0";
                 TickerInfluxDB.stop();
             }
         }

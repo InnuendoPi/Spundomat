@@ -45,7 +45,16 @@ bool isValidInt(const String &str)
 bool checkRange(const String &str)
 {
   int check = str.toInt();
-  if (check >= 20 && check <= 7200000) //20ms bis 2 Stunden
+  if (check >= 10 && check <= 7200000) //20ms bis 2 Stunden
+    return true;
+  else
+    return false;
+}
+
+bool checkRange2(const String &str)
+{
+  int check = str.toInt();
+  if (check >= 50 && check <= 7200000) //20ms bis 2 Stunden
     return true;
   else
     return false;
@@ -184,4 +193,34 @@ void setTicker() // Ticker Objekte deklarieren
   TickerPressure.config(tickerPressureCallback, upPressure, 0);
   TickerInfluxDB.config(tickerInfluxDBCallback, upInflux, 0);
   TickerDisplay.config(tickerDisplayCallback, DISPLAY_UPDATE, 0);
+}
+
+String getDayOfWeek(int value)
+{
+  switch (value)
+  {
+  case 0:
+    return "Sonntag";
+    break;
+  case 1:
+    return "Montag";
+    break;
+  case 2:
+    return "Dienstag";
+    break;
+  case 3:
+    return "Mittwoch";
+    break;
+  case 4:
+    return "Donnerstag";
+    break;
+  case 5:
+    return "Freitag";
+    break;
+  case 6:
+    return "Samstag";
+    break;
+  default:
+    return "";
+  }
 }

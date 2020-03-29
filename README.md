@@ -2,23 +2,15 @@
 
 ![ov1](/Info/Spundomat01.jpg)
 
-Projekt Spundomat:
-
-Firmware:   Beta
-
-Platine:    Entwicklungsphase
-
 Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
-
-Hinweis zum Quellcode:
-
-- das Modul WebUpdate ist nicht im repository enthalten
-- Debug Ausgaben werden über Debug Port aktiviert
 
 ## Changelog
 
-Version 2.0F11
+Version 2.0F12
 
+- Update:   Libs InfluxDB, ArduinoJson
+- Update:   Influx CheckDBConnect: bei einem Verbindungsfehler wird der Task Vis gestoppt
+- Update:   LCD Display
 - Added:    Automatische Reduzierung der Intervalle Öffne MVs im Modus Spundomat
 - Reworked: Update LCD Display
 - Reworked: LCD Display 2 Nachkommastellen CO2 Gehalt

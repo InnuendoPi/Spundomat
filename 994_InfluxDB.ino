@@ -4,12 +4,20 @@ void setInfluxDB()
     dbClient.setConnectionParamsV1(dbServer, dbDatabase, dbUser, dbPass);
 }
 
-void checkDBConnect()
+bool checkDBConnect()
 {
     if (dbClient.validateConnection())
+    {
         DEBUG_MSG("Verbinde mit InfluxDB: %s\n", dbClient.getServerUrl().c_str());
-    else
-        DEBUG_MSG("Verbindung zu InfluxDB Datenbank fehlgeschlagen: ", dbClient.getLastErrorMessage().c_str());
+        visState = "0";
+        return true;
+    }
+    else 
+    {
+        DEBUG_MSG("Verbindung zu InfluxDB Datenbank fehlgeschlagen: %s\n", dbClient.getLastErrorMessage().c_str());
+        visState = dbClient.getLastErrorMessage().c_str();
+        return false;
+    }
 }
 
 void sendDBData()

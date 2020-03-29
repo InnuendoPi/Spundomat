@@ -61,18 +61,20 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.0F11";
+const char Version[7] = "2.0F12";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
 #define PAUSE5SEC 5000
+#define PAUSE10SEC 10000
 #define PAUSE200MS 200
 #define PAUSE100MS 100
 #define PAUSE10MS 10
 #define PAUSE50MS 50
 #define PAUSE2MIN 120000
 #define PAUSE5MIN 300000
-#define DELTA 0.04
+#define DELTA 0.05
+#define MVMODE1 1
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000
 #define DISPLAY_UPDATE 2000

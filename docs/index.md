@@ -207,6 +207,10 @@ Ebenfalls ein eher seltener genutzer Modus ist das Karbonisieren auf Basis Druck
 
 Der Modus Spundomat fügt die zwei Betriebsmodis Spunden und Karbonisieren auf Basis CO2-Gehalt zusammen. Dieser Modus basiert auf dem Zielwert CO2-Gehalt. Druck im Keg oberhalb wird automatisch abgelassen. Druck unterhalb führt automatisch zum Zuführen von CO2. Dieser Modus ermittelt während der Nachgärung und Reifung Temperaturänderung und berechnet den erforderlichen Druck im Keg neu.
 
+Besonderheit im Modus Spundomat:
+
+Sobald der Spundomat den Zieldruck für den berechneten CO2-Gehalt erreicht hat, werden die Zeitintervalle für beide Magnetventile automatisch angepasst. Die Magnetventile öffnen für 10ms und schließen für mindestens 10 Sekunden. Diese Automatik verhindert unnötigen CO2 Verbrauch durch ständiges Spunden und Karboniseren rund um den Zielwert, wenn zu lange Öffnungsintervalle konfiguriert wurden.
+
 Zusätzlich bietet die Firmware eine Verzögerung für die Karbonisierung. In einfachen Worten: starte die Nachgärung im Keg und baue Druck langsam auf. Nach einer einstellabren Zeit bspw. nach 2-3 Tagen oder ab einem durch Nachgärung aufgebautem CO2-Gehalt von bspw 3 gr/l starte die Karbonisierung.
 
 Für eine Verzögerung der Karbonisierung kann als Parameter die Zeit (in Minuten oder Stunden) oder ein Mindest-CO2 Gehalt gennutzt werden. Beide Verzögerungen für die Karbonisierung bieten der Hefe Zeit für die Nachgärung. Die Verzögerung wird meist dann angewendet, wenn sehr früh im Gärungsprozess geschlaucht werden soll.

@@ -450,7 +450,14 @@
 		  }
 		  else
 		  {
-            miscRender += " badge-secondary'>Visualisierung pausiert";
+            if (data.visstate == 0) 
+			{
+				miscRender += " badge-secondary'>Visualisierung pausiert";
+			}
+			else
+			{
+				miscRender += " badge-danger'>Visualisierung: " + data.visstate;
+			}			
 		  }
         }
         else {

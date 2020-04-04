@@ -44,7 +44,7 @@ float readFloat(unsigned int addr)
 	}
 	if (isnan(data.f)) // Keine Kalibrierung
 		data.f = 0.0;
-	
+
 	return data.f;
 }
 

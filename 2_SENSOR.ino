@@ -25,7 +25,7 @@ void readTemparature()
 				lastTimeSpundomat = millis();
 				return;
 			}
-			else 
+			else
 			{
 				if (millis() > (lastTimeSpundomat + PAUSE2MIN) && startBuzzer)
 				{
@@ -108,7 +108,7 @@ void readPressure()
 
 void checkDichtheit()
 {
-	
+
 	if (pressure < setPressure && lastTimeSpundomat == 0.0) // Step 1 Befülle Keg
 	{
 		updateMV2();
@@ -124,13 +124,13 @@ void checkDichtheit()
 		TickerTemp.interval(PAUSE2SEC);
 		TickerPressure.interval(PAUSE2SEC);
 		return;
-	} 
+	}
 	else if (lastTimeSpundomat > 0.0 && dichtPressure == 0.0 && millis() > (lastTimeSpundomat + PAUSE2MIN)) // Step 3 Warte 2min (Gleichgewicht)
 	{
 		readPressure();
 		dichtPressure = pressure;
-	    ergDichtheit = 0.0;
-		DEBUG_MSG("Überprüfung Dichtheit Step 3 dichtP: %f Elapsed %lu \n", dichtPressure, (millis()-lastTimeSpundomat));
+		ergDichtheit = 0.0;
+		DEBUG_MSG("Überprüfung Dichtheit Step 3 dichtP: %f Elapsed %lu \n", dichtPressure, (millis() - lastTimeSpundomat));
 		sendAlarm(ALARM_OK);
 		return;
 	}
@@ -138,11 +138,11 @@ void checkDichtheit()
 	{
 		readPressure();
 		ergDichtheit = pressure - dichtPressure;
-		DEBUG_MSG("Überprüfung Dichtheit Step 4 Delta %f Elapsed %lu \n", (pressure - dichtPressure), (millis()-lastTimeSpundomat));
+		DEBUG_MSG("Überprüfung Dichtheit Step 4 Delta %f Elapsed %lu \n", (pressure - dichtPressure), (millis() - lastTimeSpundomat));
 		// TickerDisplay.stop();
 		TickerTemp.interval(upTemp);
-  		TickerPressure.interval(upPressure);
-  		setMode = AUS;
+		TickerPressure.interval(upPressure);
+		setMode = AUS;
 		saveConfig();
 	}
 }

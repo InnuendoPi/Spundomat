@@ -4,21 +4,26 @@
 #include "Arduino.h"
 
 // InnuTicker Zeitintervall
- 
+
 // Ticker status
 //
 // @param STOPPED Standard, der Ticker ist gestoppt
 // @param RUNNING der Ticker läuft
 // @param PAUSED der Ticker pausiert
 //
-enum status_t {STOPPED, RUNNING, PAUSED};
+enum status_t
+{
+	STOPPED,
+	RUNNING,
+	PAUSED
+};
 
 typedef void (*fptr)();
 
-class InnuTicker {
+class InnuTicker
+{
 
 public:
-
 	// Erstelle ein Ticker Object
 	//
 	// @param callback Name der Callback Funktion

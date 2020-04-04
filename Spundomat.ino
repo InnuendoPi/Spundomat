@@ -73,7 +73,7 @@ const char Version[7] = "2.0";
 #define PAUSE50MS 50
 #define PAUSE2MIN 120000
 #define PAUSE5MIN 300000
-#define DELTA 0.05
+#define DELTA 0.05F
 #define MVMODE1 1
 #define TEMPERATUR_UPDATE 30000
 #define PRESSURE_UPDATE 1000

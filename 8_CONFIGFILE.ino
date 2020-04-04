@@ -41,7 +41,7 @@ bool loadConfig()
     setMode = spundObj["MODE"];
     newMode = setMode;
   }
-  
+
   if (spundObj.containsKey("VERZKOMBI"))
     verzKombi = spundObj["VERZKOMBI"];
   if (spundObj.containsKey("EINHEIT"))
@@ -262,7 +262,7 @@ bool saveConfig()
 
   // Setze Intervall Drucksensor Ticker
   TickerPressure.interval(upPressure);
-  
+
   // Setze Intervall Datenbank Ticker
   TickerInfluxDB.interval(upInflux);
 
@@ -293,8 +293,8 @@ bool saveConfig()
   case KARBONISIEREN_DRUCK: // CO2 Karbonisieren
     mv1.switchOff();
     break;
-  case SPUNDOMAT:          // Spunden und Karbonisieren
-    calcVerzSpundomat();   // Berechne Verzögerung Karbonisierung im Kombi-Modus
+  case SPUNDOMAT:                 // Spunden und Karbonisieren
+    calcVerzSpundomat();          // Berechne Verzögerung Karbonisierung im Kombi-Modus
     lastTimeSpundomat = millis(); // Zeitstempel
     break;
   case PLAN1:

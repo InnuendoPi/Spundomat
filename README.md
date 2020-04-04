@@ -6,8 +6,9 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.0F12
+Version 2.0
 
+- Cleanup:  2.0
 - Update:   Libs InfluxDB, ArduinoJson
 - Update:   Influx CheckDBConnect: bei einem Verbindungsfehler wird der Task Vis gestoppt
 - Update:   LCD Display

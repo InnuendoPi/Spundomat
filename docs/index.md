@@ -403,7 +403,7 @@ Beschreibung:
 |1 | Transistor BC 547 A | <https://www.reichelt.de/bipolartransistor-npn-45v-0-1a-0-5w-to-92-bc-547a-p219128.html?&nbc=1> |
 |2 | Optokoppler EL 817 | <https://www.reichelt.de/optokoppler-5kv-35v-50ma-50-dip4-el-817-p146657.html?&nbc=1> |
 |2 | MosFet IRFIZ 24 N | <https://www.reichelt.de/mosfet-n-ch-55v-14a-29w-to-220-fullpak-irfiz-24n-p90327.html?&nbc=1> |
-|1 | Elko 100 uF/ 16V stehend | <https://www.reichelt.de/schaltregler-step-down-5v-1a-4-75-40vi-to220-5-lm2575t-5g-p255418.html?r=1> |
+|1 | Elko 100 uF/ 16V stehend | <https://www.reichelt.de/elko-100-f-16-v-105-c-rad-lxz-16-100-p166363.html?&trstct=pos_0&nbc=1> |
 |1 | Drossel 33uH    FAS 09HCP-331K-5 | <https://www.reichelt.de/power-induktivitaet-radial-330-h-fas-09hcp-331k-5-p245783.html?&nbc=1> |
 |1 | Schaltregler   LM 2575T-5G | <https://www.reichelt.de/index.html?ACTION=446&LA=446&nbc=1&q=lm2575t-5g> |
 |3 | Klemmblöcke 2- polig RM5,08 | <https://www.reichelt.de/loetbare-schraubklemme-2-pol-rm-5-08-mm-90-rnd-205-00287-p170288.html?&nbc=1> |

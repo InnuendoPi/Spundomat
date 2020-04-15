@@ -6,8 +6,9 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.01
+Version 2.02
 
+- Added:    WebIf, Abfrage Kalibrieren Start-Abbruch
 - Reworked: WebIf, Menü Einstellungen überarbeitet, Anzeige Volt entfernt
 - Cleanup:  2.0
 - Update:   Libs InfluxDB, ArduinoJson

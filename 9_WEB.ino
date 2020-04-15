@@ -81,7 +81,6 @@ void handleRequestMiscSet()
     doc["co2"] = ((int)(calcCarbonation(pressure, temperature) * 100)) / 100.0;
     doc["druck"] = ((int)(pressure * 100)) / 100.0;
     doc["temperatur"] = ((int)(temperature * 10)) / 10.0;
-    doc["voltage"] = ((int)(voltage * 10)) / 10.0;
     doc["offset"] = offset0;
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;

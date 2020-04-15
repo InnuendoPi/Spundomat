@@ -388,7 +388,9 @@ Beschreibung:
 
 **Elektronikbautteilliste:**
 
-*Lieferanten und Hersteller wie bspw. amazon, ebay, fittingline, reichelt oder voelkner sowie die Links zu deren Produkten sind rein informativ als Suchhilfe für allgemein bekannter Anbieter zu verstehen!*
+*Lieferanten und Hersteller wie bspw. amazon, ebay, fittingline oder reichelt sowie die Links zu deren Produkten sind rein informativ als Suchhilfe für allgemein bekannter Anbieter zu verstehen!*
+
+Zusammenstellung: <https://www.reichelt.de/my/1696058>
 
 | Anzahl | Artikel | Link |
 | ------ | ------- | ---- |
@@ -408,8 +410,8 @@ Beschreibung:
 |1 | Schaltregler   LM 2575T-5G | <https://www.reichelt.de/index.html?ACTION=446&LA=446&nbc=1&q=lm2575t-5g> |
 |3 | Klemmblöcke 2- polig RM5,08 | <https://www.reichelt.de/loetbare-schraubklemme-2-pol-rm-5-08-mm-90-rnd-205-00287-p170288.html?&nbc=1> |
 |2 | Klemmblöcke 3- polig RM 3,81 | <https://www.reichelt.de/anschlussklemme-3-pol-1-5-mm-rm-3-81-akl-086-03-p72034.html?&nbc=1> |
-|1 | Klemmblock  5- polig RM 2,54 | <https://www.voelkner.de/products/435741/PTR-AKZ692-5-2.54-V-GRUeN-Schraubklemmblock-0.75mm-Polzahl-5-Gruen-1St..html> |
-|1 | Klemmblock  4- polig RM 2,54 | <https://www.voelkner.de/products/435741/PTR-AKZ692-4-2.54-V-GRUeN-Schraubklemmblock-0.75mm-Polzahl-4-Gruen-1St..html> |
+|1 | Klemmblock  5- polig RM 2,54 | <https://www.reichelt.de/leiterplattenklemme-5-polig-rm-2-54-mm-dg308-2-54-5-p276217.html?&GROUP=C1F3&START=0&SORT=artnr&OFFSET=16&nbc=1> |
+|1 | Klemmblock  4- polig RM 2,54 | <https://www.reichelt.de/leiterplattenklemme-4-polig-rm-2-54-mm-dg308-2-54-4-p276216.html?&GROUP=C1F3&START=0&SORT=artnr&OFFSET=16&nbc=1> |
 |1 | Piezosummer KPE 232A | <https://www.reichelt.de/piezosummer-summer-kpe-232a-p35920.html?&nbc=1> |
 |1 | XLR Buchse 3- polig | <https://www.reichelt.de/xlr-einbaubuchse-3-polig-mit-verriegelung-xlr-3eb-p22899.html?&nbc=1> |
 |1 | XLR Stecker 3- polig | <https://www.reichelt.de/xlr-stecker-3-polig-vernickelte-kontakte-xlr-3st-n-p40793.html?&nbc=1> |

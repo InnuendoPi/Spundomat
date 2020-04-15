@@ -32,7 +32,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">Spundomat Dashboard <a href="" class="badge badge-warning"
-                data-target="#misc_modal" data-toggle="modal" data-value="-1" style="float:right">Bearbeiten</a>
+                data-target="#misc_modal" data-toggle="modal" data-value="-1" style="float:right">Einstellungen</a>
             </div>
             <div class="card-body">
               <ul class="list-group" id="miscSettings"></ul>
@@ -75,53 +75,74 @@
           <div class="tab-content" id="miscTabContent">
             <div class="tab-pane fade show active" id="misc1" role="tabpanel" aria-labelledby="misc1-tab">
               <br />
-              <div class="form-group">
-                <label for="modal_misc_modus">Modus</label>
-                <select class="form-control" id="modal_misc_modus"></select>
+              <div class="form-group row">
+                <label for="modal_misc_modus" class="col-sm col-form-label">Modus</label>
+				<div class="col-sm-auto">
+					<select class="form-control" id="modal_misc_modus"></select>
+				</div>	
               </div>
-              <div class="form-group">
-                <label for="modal_misc_pressure">Zielwert Druck (bar)</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_pressure" />
+              <div class="form-group row">
+                <label for="modal_misc_pressure" class="col-sm col-form-label">Zielwert Druck [bar]</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_pressure" />
+				</div>	
               </div>
-              <div class="form-group">
-                <label for="modal_misc_carbonation">Zielwert CO2 Gehalt (gr/l)</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_carbonation" />
+              <div class="form-group row">
+                <label for="modal_misc_carbonation" class="col-sm col-form-label">Zielwert CO2 Gehalt [gr/l]</label>
+				<div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_carbonation" />
+				</div>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_kombi">Verzögerung Karbonisieren im Spundomat-Modus</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_kombi" />
-                <label for="modal_misc_kombi_auswahl">Einheit für Verzögerung</label>
-                <select class="form-control" id="modal_misc_kombi_auswahl"></select>
+			  <div class="border-top my-3"></div>
+              <div class="form-group row">
+                <label for="modal_misc_kombi" class="col-sm col-form-label">Verzögerung Karbonisieren im Spundomat-Modus</label>
+				<div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_kombi" />
+				</div>
+			  </div>
+			  <div class="form-group row">
+                <label for="modal_misc_kombi_auswahl" class="col-sm col-form-label">Einheit für Verzögerung</label>
+				<div class="col-sm-auto">
+					<select class="form-control" id="modal_misc_kombi_auswahl"></select>
+				</div>	
               </div>
             </div>
             <div class="tab-pane fade" id="misc2" role="tabpanel" aria-labelledby="misc2-tab">
               <br />
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_mv1" />
-                <label class="form-check-label" for="modal_misc_mv1">Aktiviere MV1 (Spunden)</label>
+                <label class="form-check-label" for="modal_misc_mv1">Aktiviere MV1 [Spunden]</label>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_mv1open">Öffne MV1 (Spunden) - ms</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_mv1open" />
+              <div class="form-group row">
+                <label for="modal_misc_mv1open" class="col-sm col-form-label">Öffne MV1 [ms]</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_mv1open" />
+				</div>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_mv1close">Schließe MV1 (Spunden) - ms</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_mv1close" />
+              <div class="form-group row">
+                <label for="modal_misc_mv1close" class="col-sm col-form-label">Schließe MV1 [ms]</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_mv1close" />
+				</div>
               </div>
-              <br />
+              <div class="border-top my-3"></div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_mv2" />
-                <label class="form-check-label" for="modal_misc_mv2">Aktiviere MV2 (Karbonisieren)</label>
+                <label class="form-check-label" for="modal_misc_mv2">Aktiviere MV2 [Karbonisieren]</label>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_mv2open">Öffne MV2 (Karbonisieren) - ms</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_mv2open" />
+              <div class="form-group row">
+                <label for="modal_misc_mv2open" class="col-sm col-form-label">Öffne MV2 [ms]</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_mv2open" />
+				</div>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_mv2close">Schließe MV2 (Karbonisieren) - ms</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_mv2close" />
+              <div class="form-group row">
+                <label for="modal_misc_mv2close" class="col-sm col-form-label">Schließe MV2 [ms]</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_mv2close" />
+				</div>
               </div>
-              <br />
+              <div class="border-top my-3"></div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_buzzer" />
                 <label class="form-check-label" for="modal_misc_buzzer">Aktiviere Buzzer Alarm</label>
@@ -129,22 +150,28 @@
             </div>
             <div class="tab-pane fade" id="misc3" role="tabpanel" aria-labelledby="misc3-tab">
               <br />
-              <div class="form-group">
-                <label for="modal_misc_intervall_pressure">Intervall lese Drucksensor - ms</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_interval_pressure" />
+              <div class="form-group row">
+                <label for="modal_misc_intervall_pressure" class="col-sm col-form-label">Intervall Drucksensor [ms]</label>
+				<div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_interval_pressure" />
+				</div>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_intervall_temp">Intervall lese Temperatursensor - ms</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_interval_temp" />
+              <div class="form-group row">
+                <label for="modal_misc_intervall_temp" class="col-sm col-form-label">Intervall Temperatursensor [ms]</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_interval_temp" />
+				</div>	
               </div>
-              <br />
+              <div class="border-top my-3"></div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_mdns" />
                 <label class="form-check-label" for="modal_misc_mdns">Aktiviere mDNS (Neustart erforderlich)</label>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_mdns_name">Eindeutiger mDNS Name</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_mdns_name" />
+              <div class="form-group row">
+                <label for="modal_misc_mdns_name" class="col-sm col-form-label">Eindeutiger mDNS Name</label>
+				<div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_mdns_name" />
+				</div>	
               </div>
               <br />
             </div>
@@ -157,25 +184,35 @@
                 <label class="form-check-label" for="modal_misc_db_enable">Aktiviere Grafana (Neustart
                   erforderlich!)</label>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_db_server">Influx Datenbank Server IP:Port (http://192.168.1.10:8086)</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_db_server" />
+              <div class="form-group row">
+                <label for="modal_misc_db_server" class="col-sm col-form-label">Datenbank Server</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="http://192.168.1.10:8086" id="modal_misc_db_server" />
+				</div>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_db_database">Datenbank Name</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_db_database" />
+              <div class="form-group row">
+                <label for="modal_misc_db_database" class="col-sm col-form-label">Datenbank Name</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="spundomat" id="modal_misc_db_database" />
+				</div>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_db_user">Datenbank Benutzer</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_db_user" />
+              <div class="form-group row">
+                <label for="modal_misc_db_user" class="col-sm col-form-label">Datenbank Benutzer</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_db_user" />
+				</div>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_db_pass">Datenbank Benutzer Password</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_db_pass" />
+              <div class="form-group row ">
+                <label for="modal_misc_db_pass" class="col-sm col-form-label">Datenbank Benutzer Password</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_db_pass" />
+				</div>
               </div>
-              <div class="form-group">
-                <label for="modal_misc_db_up">Update Intervall Datenbank in sek</label>
-                <input type="text" class="form-control" placeholder="" id="modal_misc_db_up" />
+              <div class="form-group row">
+                <label for="modal_misc_db_up" class="col-sm col-form-label">Update Intervall Datenbank in sek</label>
+                <div class="col-sm-auto">
+					<input type="text" class="text-right" placeholder="" id="modal_misc_db_up" />
+				</div>
               </div>
             </div>
             <div class="tab-pane fade" id="misc4" role="tabpanel" aria-labelledby="misc4-tab">
@@ -198,7 +235,7 @@
 					<input type="text" readonly class="form-control-plaintext" id="modal_misc_offset2">
 				</div>	
               </div>
-			  <br />
+			  <div class="border-top my-3"></div>
               <label class="form-check-label">Reset Spundomat</label>
               <br />
               <div class="form-check">
@@ -372,12 +409,6 @@
         }
 
         miscRender += "</span></li><br/>";
-        if (data.offset == "0" || data.offset2 == "0") {
-          miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Spannung am Drucksensor<span class='badge badge-light'>";
-          miscRender += data.voltage + " V";
-          miscRender += "</span></li>";
-        }
-
         if (data.offset == "0") {
           miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>1. Kalibrierung bei 0 bar <span class='badge ";
           miscRender += " badge-danger'>Kalibrierung bei 0bar ausführen";

@@ -139,7 +139,7 @@ WiFiManager wifiManager;
 ESP8266WebServer server(80);
 ESP8266HTTPUpdateServer httpUpdate; // Version mit SPIFFS Update
 // Zeitserver Einstellungen
-#define NTP_OFFSET 60 * 60                // NTP in Sekunden
+#define NTP_OFFSET 60 * 120               // NTP in Sekunden
 #define NTP_INTERVAL 60 * 60 * 1000       // NTP in ms
 #define NTP_ADDRESS "europe.pool.ntp.org" // NTP change this to whatever pool is closest (see ntp.org)
 WiFiUDP ntpUDP;

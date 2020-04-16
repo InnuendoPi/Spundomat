@@ -94,7 +94,8 @@ void setup()
 
   // Zeitserver via NTP
   timeClient.begin();
-  timeClient.update();
+  timeClient.forceUpdate();
+  checkSummerTime();
 
   // LCD
   startLCD();

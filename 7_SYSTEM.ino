@@ -195,6 +195,48 @@ void setTicker() // Ticker Objekte deklarieren
   TickerDisplay.config(tickerDisplayCallback, DISPLAY_UPDATE, 0);
 }
 
+void checkSummerTime()
+{
+  time_t rawtime = timeClient.getEpochTime();
+  struct tm *ti;
+  ti = localtime(&rawtime);
+  int year = ti->tm_year + 1900;
+  int month = ti->tm_mon + 1;
+  int day = ti->tm_mday;
+  int hour = ti->tm_hour;
+  int tzHours = 1; // UTC: 0 MEZ: 1
+  int x1, x2, x3, lastyear;
+  int lasttzHours;
+  if (month < 3 || month > 10)
+  {
+    timeClient.setTimeOffset(3600);
+    return;
+  }
+  if (month > 3 && month < 10)
+  {
+    timeClient.setTimeOffset(7200);
+    return;
+  }
+  if (year != lastyear || tzHours != lasttzHours)
+  {
+    x1 = 1 + tzHours + 24 * (31 - (5 * year / 4 + 4) % 7);
+    x2 = 1 + tzHours + 24 * (31 - (5 * year / 4 + 1) % 7);
+    lastyear = year;
+    lasttzHours = tzHours;
+  }
+  x3 = hour + 24 * day;
+  if (month == 3 && x3 >= x1 || month == 10 && x3 < x2)
+  {
+    timeClient.setTimeOffset(7200);
+    return;
+  }
+  else
+  {
+    timeClient.setTimeOffset(3600);
+    return;
+  }
+}
+
 String getDayOfWeek(int value)
 {
   switch (value)

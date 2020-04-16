@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.01";
+const char Version[7] = "2.02";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -139,9 +139,9 @@ WiFiManager wifiManager;
 ESP8266WebServer server(80);
 ESP8266HTTPUpdateServer httpUpdate; // Version mit SPIFFS Update
 // Zeitserver Einstellungen
-#define NTP_OFFSET 60 * 120               // NTP in Sekunden
-#define NTP_INTERVAL 60 * 60 * 1000       // NTP in ms
-#define NTP_ADDRESS "europe.pool.ntp.org" // NTP change this to whatever pool is closest (see ntp.org)
+#define NTP_OFFSET 60 * 60                // Offset Winterzeit in Sekunden
+#define NTP_INTERVAL 60 * 60 * 1000       // Aktualisierung NTP in ms
+#define NTP_ADDRESS "europe.pool.ntp.org" // NTP Server
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 

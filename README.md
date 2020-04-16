@@ -8,6 +8,7 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 Version 2.02
 
+- Fixed:    Umstellung Sommer/Winterzeit
 - Added:    WebIf, Abfrage Kalibrieren Start-Abbruch
 - Reworked: WebIf, Menü Einstellungen überarbeitet, Anzeige Volt entfernt
 - Cleanup:  2.0

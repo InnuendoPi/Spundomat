@@ -4,7 +4,6 @@
 .DS_Store
 .gitattributes
 .gitignore
-999_HTTPUpdate.ino
 data/config.json
 data/certs.ar
 build/core

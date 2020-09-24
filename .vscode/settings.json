@@ -19,7 +19,7 @@
     //"esp8266fs.esptool.executable": "C:/Users/pn010.TEAM/AppData/Local/Arduino15/packages/esp8266/tools/esptool/2.5.0-4-b40a506/esptool.exe",
     //"esp8266fs.esptool.executable": "C:/Arduino/tools/esptool.exe",
     //"esp8266fs.mkspiffs.executable": "C:/Arduino/tools/mkspiffs.exe",
-    "esp8266fs.esptool.executable": "C:/Users/pn010.TEAM/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/2.6.3/tools/esptool/esptool.py",
+    "esp8266fs.esptool.executable": "C:/Users/pn010.TEAM/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/2.7.4/tools/esptool/esptool.py",
     "esp8266fs.esptool.verbosity": "vvv",
     "esp8266fs.spiffsImage": "C:/Arduino/git/Spundomat/build/Spundomat.spiffs.bin",
     "esp8266fs.dataFiles": "C:/Arduino/git/Spundomat/data",

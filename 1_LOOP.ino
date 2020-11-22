@@ -5,7 +5,7 @@ void loop()
   server.handleClient();
 
   // Prüfe WiFi status
-  if ((WiFi.status() != WL_CONNECTED) ||  (!WiFi.localIP().isSet()))
+  if (WiFi.status() != WL_CONNECTED)
   {
     DEBUG_MSG("*** SYSINFO: WLAN nicht verbunden: %s\n", WiFi.status());
     DEBUG_MSG("*** SYSINFO: WLAN IP %s\n", WiFi.localIP().toString().c_str());

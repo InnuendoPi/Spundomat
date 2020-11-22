@@ -1,17 +1,24 @@
+unsigned long nextResetTime=0;
 void loop()
 {
   // Webserver (80)
   server.handleClient();
 
   // Prüfe WiFi status
-  if (WiFi.status() != WL_CONNECTED)
+  if ((WiFi.status() != WL_CONNECTED) ||  (!WiFi.localIP().isSet()))
   {
     DEBUG_MSG("*** SYSINFO: WLAN nicht verbunden: %s\n", WiFi.status());
     DEBUG_MSG("*** SYSINFO: WLAN IP %s\n", WiFi.localIP().toString().c_str());
+    if (nextResetTime==0) nextResetTime=millis()+30*60*1000;
     WiFi.mode(WIFI_STA);
     WiFi.begin();
+  } else {
+    nextResetTime=0;
   }
-
+  if ((millis() > nextResetTime) && (nextResetTime>0)) {
+    SPIFFS.end(); // unmount SPIFFS
+    ESP.restart();
+  }
   // Check mDNS
   if (startMDNS)
     MDNS.update();

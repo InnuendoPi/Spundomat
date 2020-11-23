@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.06";
+const char Version[7] = "2.07";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -128,6 +128,7 @@ bool startMV2 = false;    // Aktiviere MV2 an D0
 bool startBuzzer = false; // Aktiviere Buzzer an D4
 bool alertState = false;
 float ergDichtheit = -127.0;
+bool wlanState = true;
 
 // Klassen Initialisierungen
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display

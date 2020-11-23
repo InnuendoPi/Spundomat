@@ -159,7 +159,7 @@ void upFirm()
 {
     BearSSL::CertStore certStore;
     int numCerts = certStore.initCertStore(SPIFFS, PSTR("/certs.idx"), PSTR("/certs.ar"));
-    Serial.print(F("Number of CA certs read: ")); //DONT CHANGE!!!
+    Serial.print(F("*** SYSINFO: Number of CA certs read: "));
     Serial.println(numCerts);
     if (numCerts == 0)
     {
@@ -220,7 +220,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upSSLLCD();
-        Serial.print("*** SYSINFO Start Index update Free Heap: ");
+        Serial.print("*** SYSINFO: Start Index update Free Heap: ");
         Serial.println(ESP.getFreeHeap());
         upIn();
     }
@@ -247,7 +247,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upIndexLCD();
-        Serial.print("*** SYSINFO Start Cert update Free Heap: ");
+        Serial.print("*** SYSINFO: Start Cert update Free Heap: ");
         Serial.println(ESP.getFreeHeap());
         upCerts();
     }
@@ -273,7 +273,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upFirmLCD();
-        Serial.print("*** SYSINFO Start Firmware update Free Heap: ");
+        Serial.print("*** SYSINFO: Start Firmware update Free Heap: ");
         Serial.println(ESP.getFreeHeap());
         upFirm();
     }

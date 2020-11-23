@@ -72,7 +72,7 @@ void readPressure()
 			pressure = 0.0;
 			oldPressDisp = pressure;
 			//reflashLCD = false;
-			DEBUG_MSG("Keine Kalibrierung Sensor: %d P: %f\n", sensorValue, pressure);
+			//DEBUG_MSG("Keine Kalibrierung Sensor: %d P: %f\n", sensorValue, pressure);
 			return;
 		}
 		else if (offset2 > 0 && offset0 > 0) // 2-Punkte-Kalibrierung

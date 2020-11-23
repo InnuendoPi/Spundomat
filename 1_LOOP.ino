@@ -7,10 +7,17 @@ void loop()
   // Prüfe WiFi status
   if (WiFi.status() != WL_CONNECTED)
   {
+    if (wlanState)
       DEBUG_MSG("%s", "*** SYSINFO: WLAN nicht verbunden\n");
-      WiFi.reconnect();
-      if (WiFi.status() == WL_CONNECTED)
-        DEBUG_MSG("*** SYSINFO: WLAN reconnect IP %s\n", WiFi.localIP().toString().c_str());
+    delay(100);
+    WiFi.begin();
+    if (WiFi.status() == WL_CONNECTED)
+    {
+      DEBUG_MSG("*** SYSINFO: WLAN reconnect IP %s\n", WiFi.localIP().toString().c_str());
+      wlanState = true;
+    }
+    else
+      wlanState = false;
   }
 
   // Check mDNS

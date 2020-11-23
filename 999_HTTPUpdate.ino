@@ -342,23 +342,23 @@ void checkLog()
 
 void update_progress(int cur, int total)
 {
-    Serial.printf("*** SYSINFO:  Firmware Update %d von %d Bytes\n", cur, total);
+    Serial.printf("*** SYSINFO: Firmware Update %d von %d Bytes\n", cur, total);
 }
 
 void update_started()
 {
-    Serial.println("*** SYSINFO:  Firmware Update gestartet");
+    Serial.println("*** SYSINFO: Firmware Update gestartet");
 }
 
 void update_finished()
 {
-    Serial.println("*** SYSINFO:  Firmware Update beendet");
+    Serial.println("*** SYSINFO: Firmware Update beendet");
     SPIFFS.remove("/update3.txt");
 }
 
 void update_error(int err)
 {
-    Serial.printf("*** SYSINFO:  Firmware Update Fehler error code %d\n", err);
+    Serial.printf("*** SYSINFO: Firmware Update Fehler error code %d\n", err);
     SPIFFS.end(); // unmount SPIFFS
     ESP.restart();
 }

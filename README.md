@@ -6,8 +6,9 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.05
+Version 2.06
 
+- Fixed:    WLAN reconnect
 - Update:   ESP8266 2.7.4 (weiterhin SPIFFS)
 - Update:   Bibliotheken aktualisiert
 - Fixed:    Umstellung Sommer/Winterzeit

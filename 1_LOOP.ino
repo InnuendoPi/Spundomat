@@ -3,13 +3,14 @@ void loop()
   // Webserver (80)
   server.handleClient();
 
+  
   // Prüfe WiFi status
   if (WiFi.status() != WL_CONNECTED)
   {
-    DEBUG_MSG("*** SYSINFO: WLAN nicht verbunden: %s\n", WiFi.status());
-    DEBUG_MSG("*** SYSINFO: WLAN IP %s\n", WiFi.localIP().toString().c_str());
-    WiFi.mode(WIFI_STA);
-    WiFi.begin();
+      DEBUG_MSG("%s", "*** SYSINFO: WLAN nicht verbunden\n");
+      WiFi.reconnect();
+      if (WiFi.status() == WL_CONNECTED)
+        DEBUG_MSG("*** SYSINFO: WLAN reconnect IP %s\n", WiFi.localIP().toString().c_str());
   }
 
   // Check mDNS

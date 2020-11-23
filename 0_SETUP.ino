@@ -18,9 +18,10 @@ void setup()
   wifiManager.autoConnect(nameMDNS);
   WiFi.setSleepMode(WIFI_NONE_SLEEP);
   WiFi.mode(WIFI_STA);
+  WiFi.persistent(true);
   WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
-
+  
   // Load filesystem
   if (SPIFFS.begin())
   {

@@ -61,7 +61,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.07";
+const char Version[7] = "2.08";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -79,6 +79,7 @@ const char Version[7] = "2.07";
 #define PRESSURE_UPDATE 1000
 #define DISPLAY_UPDATE 2000
 #define DB_UPDATE 60000
+#define WLAN_UPDATE 30000
 #define AUS 0
 #define SPUNDOMAT 1
 #define SPUNDEN_CO2 2
@@ -163,6 +164,7 @@ InnuTicker TickerTemp;
 InnuTicker TickerPressure;
 InnuTicker TickerInfluxDB;
 InnuTicker TickerDisplay;
+InnuTicker TickerWLAN;
 
 // Deklariere Variablen
 float temperature;

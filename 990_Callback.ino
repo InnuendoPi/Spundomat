@@ -17,3 +17,9 @@ void tickerDisplayCallback() // Timer Objekt Druck
 {
   showLCD();
 }
+
+void tickerWLANCallback() // Timer Objekt Druck
+{
+  WiFi.mode(WIFI_OFF);
+  DEBUG_MSG("%s", "*** SYSINFO: debug WLAN disconnected\n");
+}

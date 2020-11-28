@@ -6,7 +6,7 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.06
+Version 2.08
 
 - Fixed:    WLAN reconnect
 - Update:   ESP8266 2.7.4 (weiterhin SPIFFS)
@@ -50,9 +50,9 @@ Bibliotheken: (Stand ab Version 2.05, 09.2020)
 - ESP8266 2.7.4 (SPIFFS)
 - Arduino IDE 1.8.13
 - Visual Code 1.48.2
-- ArduinoJSON 6.16
-- InfluxDB 3.3.0
-- WiFiManager 0.15.0
+- ArduinoJSON 6.17
+- InfluxDB 3.6
+- WiFiManager 2.0
 
 Flash size 4MB (FS:2MB OTA:~1019kB)
 SSL support all SSL ciphers (most comp)

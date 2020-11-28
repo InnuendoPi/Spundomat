@@ -193,6 +193,7 @@ void setTicker() // Ticker Objekte deklarieren
   TickerPressure.config(tickerPressureCallback, upPressure, 0);
   TickerInfluxDB.config(tickerInfluxDBCallback, upInflux, 0);
   TickerDisplay.config(tickerDisplayCallback, DISPLAY_UPDATE, 0);
+  TickerWLAN.config(tickerWLANCallback, WLAN_UPDATE, 0);
 }
 
 void checkSummerTime()

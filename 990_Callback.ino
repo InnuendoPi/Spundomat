@@ -34,5 +34,6 @@ void tickerWLANCallback() // Timer Objekt Druck
   {
     wlanState = false;
     DEBUG_MSG("%s", "*** SYSINFO: WLAN not connected\n");
+    sendAlarm(ALARM_ERROR);
   }
 }

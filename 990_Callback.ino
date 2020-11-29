@@ -5,7 +5,10 @@ void tickerTempCallback() // Timer Objekt Temperatur
 
 void tickerInfluxDBCallback() // Timer Objekt Influx Datenbank
 {
-  sendDBData();
+  if (wlanState)
+    sendDBData();
+  else
+    DEBUG_MSG("%s", "*** SYSINFO: sending Influx data skipped: WLAN not connected\n");
 }
 
 void tickerPressureCallback() // Timer Objekt Druck
@@ -20,6 +23,16 @@ void tickerDisplayCallback() // Timer Objekt Druck
 
 void tickerWLANCallback() // Timer Objekt Druck
 {
-  WiFi.mode(WIFI_OFF);
-  DEBUG_MSG("%s", "*** SYSINFO: debug WLAN disconnected\n");
+  WiFi.reconnect();
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    DEBUG_MSG("*** SYSINFO: WLAN reconnect IP %s\n", WiFi.localIP().toString().c_str());
+    wlanState = true;
+    TickerWLAN.stop();
+  }
+  else
+  {
+    wlanState = false;
+    DEBUG_MSG("%s", "*** SYSINFO: WLAN not connected\n");
+  }
 }

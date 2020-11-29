@@ -8,28 +8,15 @@ void loop()
   {
     if (wlanState)
     {
-      DEBUG_MSG("%s", "*** SYSINFO: WLAN nicht verbunden\n");
+      DEBUG_MSG("%s", "*** SYSINFO: WLAN loop nicht verbunden\n");
       WiFi.mode(WIFI_OFF);
       WiFi.mode(WIFI_STA);
-    }
-    
-    WiFi.reconnect();
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(1000); // warte auf WLAN (endlos)
-        DEBUG_MSG("%s", ".");
-    }
-    if (WiFi.status() == WL_CONNECTED)
-    {
-      DEBUG_MSG("*** SYSINFO: WLAN reconnect IP %s\n", WiFi.localIP().toString().c_str());
-      wlanState = true;
+      wlanState = false;
+      TickerWLAN.start();
     }
     else
-      wlanState = false;
+      TickerWLAN.update();
   }
-
-  // Debug WLAN
-  // TickerWLAN.update();
 
   // Check mDNS
   if (startMDNS)

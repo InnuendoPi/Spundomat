@@ -61,8 +61,9 @@ void setup()
   readTemparature();
   TickerTemp.start();
 
-  // Debug WLAN
-  // TickerWLAN.start();
+  // Check WLAN
+  TickerWLAN.start();
+  TickerWLAN.pause();
 
   // Pin Definitionen
   if (startMV1)

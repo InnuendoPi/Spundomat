@@ -144,9 +144,15 @@
                 </div>
               </div>
               <div class="border-top my-3"></div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_buzzer" />
-                <label class="form-check-label" for="modal_misc_buzzer">Aktiviere Buzzer Alarm</label>
+			  <div class="form-group row">
+                <label for="modal_misc_modus_gpio" class="col-sm col-form-label">Modus GPIO</label>
+                <div class="col-sm-auto">
+                  <select class="form-control" id="modal_misc_modus_gpio"></select>
+                </div>
+              </div>
+			  <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_co2sen" />
+                <label class="form-check-label" for="modal_misc_co2sen">Aktiviere CO2 Sensor</label>
               </div>
             </div>
             <div class="tab-pane fade" id="misc3" role="tabpanel" aria-labelledby="misc3-tab">
@@ -445,12 +451,33 @@
           miscRender += "</span> </li> <br />";
         }
         miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Hardware<span class='badge ";
-        if (data.buzzer) {
+        if (data.gpio == 1) {
           miscRender += " badge-success'>Alarm aktiviert";
         }
-        else {
-          miscRender += " badge-dark'>Alarm deaktiviert";
+		else if (data.gpio == 2) {
+          miscRender += " badge-success'>Ventilator aktiviert";
         }
+        else {
+          miscRender += " badge-dark'>GPIO deaktiviert";
+        }
+		miscRender += "</span><span class='badge ";
+		if (data.co2sen) {
+          if (data.wertco2 < 1000)
+		  {
+			miscRender += " badge-success'>";
+		  }
+		  else if (data.wertco2 < 2000) {
+			miscRender += " badge-warning'>";
+		  }
+		  else {
+			miscRender += " badge-danger'>";
+		  }
+		  miscRender += "CO2: "  + data.wertco2 + "ppm"
+        }
+        else {
+          miscRender += " badge-dark'>CO2 Sensor deaktiviert";
+        }
+		
         miscRender += "</span><span class='badge ";
         if (data.mv1) {
           miscRender += " badge-success'>MV1: " + data.mv1opendisp + " / " + data.mv1closedisp;
@@ -653,7 +680,6 @@
       var mv2closedisp;
       var uppressure;
       var uptemp;
-      var buzzer;
       var testmode;
       var offset2;
       var startdb;
@@ -667,6 +693,8 @@
       var ablauf;
       var alertstate;
       var rssi;
+	  var co2sen;
+	  var gpio;
 
       $.ajax({
         url: '/reqMisc?req=mdns',
@@ -919,16 +947,6 @@
         }
       });
       $.ajax({
-        url: '/reqMisc?req=buzzer',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          buzzer = data;
-        }
-      });
-      $.ajax({
         url: '/reqMisc?req=testmode',
         type: 'get',
         dataType: 'html',
@@ -1058,10 +1076,31 @@
           rssi = data;
         }
       });
+	  $.ajax({
+        url: '/reqMisc?req=co2sen',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          co2sen = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=gpio',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          gpio = data;
+        }
+      });
 
       var modal = $(this);
       $('#modal_misc_modus').load('/reqMode');
       $('#modal_misc_kombi_auswahl').load('/reqEinheit');
+	  $('#modal_misc_modus_gpio').load('/reqGPIO');
       modal.find('#modal_misc_mdns_name').val(mdns_name);
       if (mdns == "1") { modal.find('#modal_misc_mdns').prop("checked", true); }
       else { modal.find('#modal_misc_mdns').prop("checked", false); }
@@ -1069,12 +1108,12 @@
       else { modal.find('#modal_misc_mv1').prop("checked", false); }
       if (mv2 == "1") { modal.find('#modal_misc_mv2').prop("checked", true); }
       else { modal.find('#modal_misc_mv2').prop("checked", false); }
-      if (buzzer == "1") { modal.find('#modal_misc_buzzer').prop("checked", true); }
-      else { modal.find('#modal_misc_buzzer').prop("checked", false); }
       if (testmode == "1") { modal.find('#modal_misc_testmode').prop("checked", true); }
       else { modal.find('#modal_misc_testmode').prop("checked", false); }
       if (startdb == "1") { modal.find('#modal_misc_db_enable').prop("checked", true); }
       else { modal.find('#modal_misc_db_enable').prop("checked", false); }
+	  if (co2sen == "1") { modal.find('#modal_misc_co2sen').prop("checked", true); }
+      else { modal.find('#modal_misc_co2sen').prop("checked", false); }
       modal.find('#modal_misc_reset').prop("checked", false);
       modal.find('#modal_misc_clear').prop("checked", false);
       modal.find('#modal_misc_eeprom').prop("checked", false);
@@ -1106,6 +1145,7 @@
       // var mode = $('#modal_misc_modus option:selected').text();
       var mode = $('#modal_misc_modus').val();
       var einheit = $('#modal_misc_kombi_auswahl').val();
+	  var gpio = $('#modal_misc_modus_gpio').val();
       var delayspund = modal.find('#modal_misc_kombi').val();
       var mv1open = modal.find('#modal_misc_mv1open').val();
       var mv1close = modal.find('#modal_misc_mv1close').val();
@@ -1154,12 +1194,6 @@
       else {
         var mv2 = "0";
       }
-      if (modal.find('#modal_misc_buzzer').prop("checked") == true) {
-        var buzzer = "1";
-      }
-      else {
-        var buzzer = "0";
-      }
       if (modal.find('#modal_misc_testmode').prop("checked") == true) {
         var testmode = "1";
       }
@@ -1172,9 +1206,15 @@
       else {
         var startdb = "0";
       }
+	  if (modal.find('#modal_misc_co2sen').prop("checked") == true) {
+        var co2sen = "1";
+      }
+      else {
+        var co2sen = "0";
+      }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&buzzer=' + buzzer + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup + '&co2sen=' + co2sen + '&gpio=' + gpio,
         type: 'POST',
         dataType: 'html',
         async: false,

@@ -14,7 +14,7 @@ bool loadConfig()
   {
     Serial.print("*** SYSINFO: Konfigurationsdatei zu groß");
     Serial.println("------ loadConfig aborted -------");
-    if (startBuzzer)
+    if (setGPIO == 1)
       sendAlarm(ALARM_ERROR);
     return false;
   }
@@ -25,7 +25,7 @@ bool loadConfig()
   {
     Serial.print("Conf: Error Json ");
     Serial.println(error.c_str());
-    if (startBuzzer)
+    if (setGPIO == 1)
       sendAlarm(ALARM_ERROR);
     return false;
   }
@@ -89,8 +89,8 @@ bool loadConfig()
     startMV1 = hwObj["MV1"];
   if (hwObj.containsKey("MV2"))
     startMV2 = hwObj["MV2"];
-  if (hwObj.containsKey("BUZZER"))
-    startBuzzer = hwObj["BUZZER"];
+  if (hwObj.containsKey("GPIO"))
+    setGPIO = hwObj["GPIO"];
   if (hwObj.containsKey("MV1OPEN"))
     mv1Open = hwObj["MV1OPEN"];
   if (hwObj.containsKey("MV1CLOSE"))
@@ -99,10 +99,13 @@ bool loadConfig()
     mv2Open = hwObj["MV2OPEN"];
   if (hwObj.containsKey("MV2CLOSE"))
     mv2Close = hwObj["MV2CLOSE"];
+  if (hwObj.containsKey("CO2SEN"))
+    startCO2 = hwObj["CO2SEN"];
 
   Serial.printf("MV1: %d Open: %d Close: %d\n", startMV1, mv1Open, mv1Close);
   Serial.printf("MV2: %d Open: %d Close: %d\n", startMV2, mv2Open, mv2Close);
-  Serial.printf("Buzzer: %d\n", startBuzzer);
+  Serial.printf("startCO2: %d\n", startCO2);
+  Serial.printf("GPIO: %d\n", setGPIO);
   Serial.println("--------");
 
   // System Einstellungen
@@ -122,6 +125,7 @@ bool loadConfig()
     startMDNS = miscObj["MDNS"];
   if (miscObj.containsKey("TESTMODE"))
     testModus = miscObj["TESTMODE"];
+
 
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
@@ -151,11 +155,11 @@ bool loadConfig()
   // Setze Intervalle für Ticker Objekte
   TickerPressure.interval(upPressure);
   TickerInfluxDB.interval(upInflux);
-
   TickerTemp.interval(upTemp);
-  if (startBuzzer && setMode == AUS)
+  
+  if (setGPIO == 1 && setMode == AUS)
     sendAlarm(ALARM_OK);
-  else if (startBuzzer)
+  else if (setGPIO == 1)
     sendAlarm(ALARM_ON);
 }
 
@@ -190,12 +194,14 @@ bool saveConfig()
   hwObj["MV2"] = startMV2;
   hwObj["MV2OPEN"] = mv2Open;
   hwObj["MV2CLOSE"] = mv2Close;
-  hwObj["BUZZER"] = startBuzzer;
+  hwObj["CO2SEN"] = startCO2;
+  hwObj["GPIO"] = setGPIO;
   DEBUG_MSG("MV1: %d Open: %d Close %d\n", startMV1, mv1Open, mv1Close);
   DEBUG_MSG("MV2: %d Open: %d Close %d\n", startMV2, mv2Open, mv2Close);
-  DEBUG_MSG("Buzzer: %d\n", startBuzzer);
+  DEBUG_MSG("startCO2: %d\n", startCO2);
+  DEBUG_MSG("GPIO: %d\n", setGPIO);
   DEBUG_MSG("%s\n", "--------");
-
+  
   // Datenbank Einstellungen
   JsonArray databaseArray = doc.createNestedArray("DATABASE");
   JsonObject databaseObj = databaseArray.createNestedObject();
@@ -225,7 +231,6 @@ bool saveConfig()
 
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
-
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
@@ -238,7 +243,7 @@ bool saveConfig()
     DEBUG_MSG("JSON memory usage: %d\n", memoryUsed);
     DEBUG_MSG("%s\n", "Failed to write config file - config too large");
     DEBUG_MSG("%s\n", "------ saveConfig aborted ------");
-    if (startBuzzer)
+    if (setGPIO == 1)
       sendAlarm(ALARM_ERROR);
     return false;
   }
@@ -248,7 +253,7 @@ bool saveConfig()
   {
     DEBUG_MSG("%s\n", "Failed to open config file for writing");
     DEBUG_MSG("%s\n", "------ saveConfig aborted ------");
-    if (startBuzzer)
+    if (setGPIO == 1)
       sendAlarm(ALARM_ERROR);
     return false;
   }
@@ -270,7 +275,7 @@ bool saveConfig()
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);
   DEBUG_MSG("%s\n", "------------");
-  if (setMode != AUS && startBuzzer)
+  if (setMode != AUS && setGPIO == 1)
     sendAlarm(ALARM_ON);
 
   switch (setMode)
@@ -278,7 +283,7 @@ bool saveConfig()
   case AUS: // aus
     mv1.switchOff();
     mv2.switchOff();
-    if (startBuzzer)
+    if (setGPIO == 1)
       sendAlarm(ALARM_OFF);
     break;
   case SPUNDEN_CO2: // CO2 Spunden

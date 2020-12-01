@@ -48,6 +48,8 @@ Dieser Quellcode baut auf einem Snippet von Janick 2017 auf.
 #include "InnuTicker.h"
 #include <CertStoreBearSSL.h>
 #include <InfluxDbClient.h>
+#include <MHZ19.h>     
+#include <SoftwareSerial.h> // Serielle Kommunikation mit CO2 Sensor
 
 #ifdef DEBUG_ESP_PORT
 #define DEBUG_MSG(...) DEBUG_ESP_PORT.printf(__VA_ARGS__)
@@ -61,7 +63,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.10";
+const char Version[7] = "2.12";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -80,6 +82,8 @@ const char Version[7] = "2.10";
 #define DISPLAY_UPDATE 2000
 #define DB_UPDATE 60000
 #define WLAN_UPDATE 30000
+#define CO2_UPDATE 60000
+
 #define AUS 0
 #define SPUNDOMAT 1
 #define SPUNDEN_CO2 2
@@ -96,6 +100,7 @@ const char Version[7] = "2.10";
 #define ALARM_OFF 2
 #define ALARM_OK 3
 #define ALARM_ERROR 4
+#define ALARM_WARNING 5
 #define DEF_PRESSURE 2.0
 #define DEF_CARB 4.5
 #define PRESSURE_OFFSET0 0.0
@@ -103,9 +108,7 @@ const char Version[7] = "2.10";
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
-
-// Neue PIN Belegung 20200213
-const int PIN_BUZZER = D7;         // Buzzer
+const int PIN_BUZZER = D7;         // Buzzer od. Venitalor
 const int PIN_TEMP = D3;           // DS18B20
 const int PIN_ENCODER_A = D6;      // CLK Out A
 const int PIN_ENCODER_B = D5;      // DT Out B
@@ -126,12 +129,15 @@ bool startMDNS = true;    // mDNS Dienst
 bool testModus = false;   // testModus - ignorieren!
 bool startMV1 = false;    // Aktiviere MV1 an D8
 bool startMV2 = false;    // Aktiviere MV2 an D0
-bool startBuzzer = false; // Aktiviere Buzzer an D4
 bool alertState = false;
 float ergDichtheit = -127.0;
 bool wlanState = true;
+bool startCO2 = false;
+int wertCO2 = 0;                // CO2 Wert in ppm
 
 // Klassen Initialisierungen
+MHZ19 myMHZ19;                      // CO2 Sensor MH-Z19b
+SoftwareSerial co2Serial(D2, D1);   // RX, TX Pins festlegen
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display
 OneWire oneWire(PIN_TEMP);       // DS18B20
 DallasTemperature sensors(&oneWire);
@@ -140,6 +146,7 @@ RotaryEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B); // Encoder drehen
 WiFiManager wifiManager;
 ESP8266WebServer server(80);
 ESP8266HTTPUpdateServer httpUpdate; // Version mit SPIFFS Update
+
 // Zeitserver Einstellungen
 #define NTP_OFFSET 60 * 60                // Offset Winterzeit in Sekunden
 #define NTP_INTERVAL 60 * 60 * 1000       // Aktualisierung NTP in ms
@@ -165,6 +172,7 @@ InnuTicker TickerPressure;
 InnuTicker TickerInfluxDB;
 InnuTicker TickerDisplay;
 InnuTicker TickerWLAN;
+InnuTicker TickerCO2;
 
 // Deklariere Variablen
 float temperature;
@@ -210,6 +218,11 @@ float verzKombi = 0.0;
 float minKarbonisierung = 0.0;
 unsigned long verzKarbonisierung = 0;
 unsigned long lastTimeSpundomat;
+
+// Modus GPIO D7
+#define sizeOfGPIO 3
+String modesGPIO[sizeOfGPIO] = {"Aus", "Piezo Buzzer", "Ventilator"};
+int setGPIO = 0;
 
 // Ablaufplan
 #define maxSchritte 20

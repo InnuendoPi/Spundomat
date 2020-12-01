@@ -6,8 +6,10 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.08
+Version 2.12
 
+- Added:    MH-Z19b CO2 Sensor
+- Changed:  GPIO D7 Optionen: Aus, Piezo Buzzer oder Ventilator (an Relais/SSR)
 - Fixed:    WLAN reconnect
 - Update:   ESP8266 2.7.4 (weiterhin SPIFFS)
 - Update:   Bibliotheken aktualisiert
@@ -45,7 +47,7 @@ Version 2.08
 - Fixed:    Fehler Anzeige Druck WebIf während Ablaufpläne behoben
 - Cleanup
 
-Bibliotheken: (Stand ab Version 2.05, 09.2020)
+Bibliotheken: (Stand ab Version 2.12, 12.2020)
 
 - ESP8266 2.7.4 (SPIFFS)
 - Arduino IDE 1.8.13
@@ -53,6 +55,7 @@ Bibliotheken: (Stand ab Version 2.05, 09.2020)
 - ArduinoJSON 6.17
 - InfluxDB 3.6
 - WiFiManager 2.0
+- MH-Z19 1.5
 
 Flash size 4MB (FS:2MB OTA:~1019kB)
 SSL support all SSL ciphers (most comp)

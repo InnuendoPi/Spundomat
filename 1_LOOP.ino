@@ -32,6 +32,10 @@ void loop()
   button.tick();
   readEncoder();
 
+  // Check CO2 Sensor
+  if (startCO2)
+    TickerCO2.update();
+
   // InfluxDB Ticker
   if (startDB && startVis)
     TickerInfluxDB.update();

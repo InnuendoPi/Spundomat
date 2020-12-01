@@ -130,7 +130,7 @@ String PinToString(unsigned char &pinbyte)
 
 void sendAlarm(const uint8_t &setAlarm)
 {
-  if (!startBuzzer)
+  if (setGPIO != 1)
     return;
   switch (setAlarm)
   {
@@ -152,6 +152,16 @@ void sendAlarm(const uint8_t &setAlarm)
     digitalWrite(PIN_BUZZER, HIGH);
     delay(200);
     digitalWrite(PIN_BUZZER, LOW);
+    break;
+  case ALARM_WARNING:
+    for (int i = 0; i < 3; i++)
+    {
+      tone(PIN_BUZZER, 880, 50);
+      delay(150);
+      tone(PIN_BUZZER, 440, 50);
+      delay(150);
+      millis2wait(PAUSE1SEC);
+    }
     break;
   case ALARM_ERROR:
     for (int i = 0; i < 20; i++)
@@ -194,6 +204,7 @@ void setTicker() // Ticker Objekte deklarieren
   TickerInfluxDB.config(tickerInfluxDBCallback, upInflux, 0);
   TickerDisplay.config(tickerDisplayCallback, DISPLAY_UPDATE, 0);
   TickerWLAN.config(tickerWLANCallback, WLAN_UPDATE, 0);
+  TickerCO2.config(tickerCO2Callback, CO2_UPDATE, 0);
 }
 
 void checkSummerTime()

@@ -85,6 +85,8 @@ void handleRequestMiscSet()
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
+    doc["co2sen"] = startCO2;
+    doc["wertco2"] = wertCO2;
     if (setMode < PLAN1 || setMode > PLAN3)
     {
         doc["mv1opendisp"] = mv1Open;
@@ -99,7 +101,7 @@ void handleRequestMiscSet()
         doc["mv2opendisp"] = structPlan[counterPlan].intervallMV2Open;
         doc["mv2closedisp"] = structPlan[counterPlan].intervallMV2Close;
     }
-    doc["buzzer"] = startBuzzer;
+    doc["gpio"] = setGPIO;
     doc["startdb"] = startDB;
     doc["vistag"] = dbVisTag;
     doc["visstate"] = visState;
@@ -252,14 +254,6 @@ void handleRequestMisc()
         message = mv2Close;
         goto SendMessage;
     }
-    if (request == "buzzer")
-    {
-        if (startBuzzer)
-            message = "1";
-        else
-            message = "0";
-        goto SendMessage;
-    }
     if (request == "testmode")
     {
         if (testModus)
@@ -349,6 +343,19 @@ void handleRequestMisc()
     if (request == "rssi")
     {
         message = WiFi.RSSI();
+        goto SendMessage;
+    }
+    if (request == "co2sen")
+    {
+        if (startCO2)
+            message = "1";
+        else
+            message = "0";
+        goto SendMessage;
+    }
+    if (request == "gpio")
+    {
+        message = setGPIO;
         goto SendMessage;
     }
 
@@ -472,19 +479,6 @@ void handleSetMisc()
                     mv2Close = server.arg(i).toInt();
             }
         }
-        if (server.argName(i) == "buzzer")
-        {
-            if (server.arg(i) == "1")
-            {
-                startBuzzer = true;
-                pinMode(PIN_BUZZER, OUTPUT);
-            }
-            else
-            {
-                startBuzzer = false;
-                pinMode(PIN_BUZZER, INPUT);
-            }
-        }
         if (server.argName(i) == "testmode")
         {
             if (server.arg(i) == "1")
@@ -587,6 +581,18 @@ void handleSetMisc()
         if (server.argName(i) == "alertstate")
         {
             alertState = false;
+        }
+        if (server.argName(i) == "co2sen")
+        {
+            if (server.arg(i) == "1")
+                startCO2 = true;
+            else
+                startCO2 = false;
+        }
+        if (server.argName(i) == "gpio")
+        {
+            if (isValidInt(server.arg(i)))
+                setGPIO = server.arg(i).toInt();
         }
         yield();
     }
@@ -713,6 +719,27 @@ void handlereqEinheit()
             message += i;
             message += "\">";
             message += einheit[i];
+            message += F("</option>");
+        }
+    }
+    yield();
+    server.send(200, "text/plain", message);
+}
+
+void handlereqGPIO()
+{
+    String message;
+    message += F("<option>");
+    message += modesGPIO[setGPIO];
+    message += F("</option><option disabled>──────────</option>");
+    for (int i = 0; i < sizeOfGPIO; i++)
+    {
+        if (setGPIO != i)
+        {
+            message += F("<option value=\"");
+            message += i;
+            message += "\">";
+            message += modesGPIO[i];
             message += F("</option>");
         }
     }

@@ -19,7 +19,7 @@ void readTemparature()
 				setMode = AUS;
 				newMode = setMode;
 				reflashLCD = true;
-				if (startBuzzer)
+				if (setGPIO == 1)
 					sendAlarm(ALARM_ERROR);
 				saveConfig();
 				lastTimeSpundomat = millis();
@@ -27,7 +27,7 @@ void readTemparature()
 			}
 			else
 			{
-				if (millis() > (lastTimeSpundomat + PAUSE2MIN) && startBuzzer)
+				if (millis() > (lastTimeSpundomat + PAUSE2MIN) && setGPIO == 1)
 				{
 					sendAlarm(ALARM_ERROR);
 					lastTimeSpundomat = millis();

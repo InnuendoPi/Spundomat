@@ -21,7 +21,7 @@ void setup()
   WiFi.persistent(true);
   WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
-  
+
   // Load filesystem
   if (SPIFFS.begin())
   {
@@ -76,9 +76,9 @@ void setup()
     pinMode(PIN_MV2, OUTPUT); // D0
     digitalWrite(PIN_MV2, LOW);
   }
-  if (startBuzzer)
+  if (setGPIO > 0) // 0 = Aus 1 = Buzzer 2 = Ventilator
   {
-    pinMode(PIN_BUZZER, OUTPUT); // D4
+    pinMode(PIN_BUZZER, OUTPUT); // D7
     digitalWrite(PIN_BUZZER, LOW);
   }
 
@@ -112,6 +112,14 @@ void setup()
   // Influx Datenbank
   if (startDB)
     setInfluxDB();
+
+  if (startCO2)
+  {
+    co2Serial.begin(9600);
+    myMHZ19.begin(co2Serial);
+    initCO2();
+    TickerCO2.start();
+  }
 }
 
 // Webserver
@@ -127,6 +135,7 @@ void setupServer()
   server.on("/reqMiscSet", handleRequestMiscSet);
   server.on("/reqMode", handlereqMode);           // WebIf Abfrage Modus
   server.on("/reqEinheit", handlereqEinheit);     // WebIf Abfrage Einheit Zeiteingabe
+  server.on("/reqGPIO", handlereqGPIO);           // WebIf Abfrage Modus GPIO D7
   server.on("/startHTTPUpdate", startHTTPUpdate); // Firmware WebUpdate
   // FSBrowser initialisieren
   server.on("/list", HTTP_GET, handleFileList); // list directory
@@ -138,10 +147,11 @@ void setupServer()
   });
   server.on("/edit", HTTP_PUT, handleFileCreate);    // create file
   server.on("/edit", HTTP_DELETE, handleFileDelete); // delete file
-  server.on("/edit", HTTP_POST, []() {
-    server.send(200, "text/plain", "");
-  },
-            handleFileUpload);
+  server.on(
+      "/edit", HTTP_POST, []() {
+        server.send(200, "text/plain", "");
+      },
+      handleFileUpload);
 
   server.onNotFound(handleWebRequests); // Sonstiges
 

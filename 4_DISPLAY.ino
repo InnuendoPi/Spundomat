@@ -65,6 +65,12 @@ void showLCD()
       Menu1[3] += setPressure;
       Menu1[3] += "b";
     }
+    else if (setMode == STEUERUNG)
+    {
+      Menu1[3] = "Zieltemp: ";
+      Menu1[3] += targetTemp;
+      Menu1[3] += "\337C";
+    }
 
     Menu1[1] = "Druck: ";
     // if (pressure == -1)
@@ -152,6 +158,11 @@ void showLCD()
     {
       Menu2[2] += setPressure;
       Menu2[2] += " bar";
+    }
+    else if (setMode == STEUERUNG) // Druck
+    {
+      Menu2[2] += targetTemp;
+      Menu2[2] += "\337C";
     }
 
     Menu2[3] = "Kalibrierung";
@@ -268,6 +279,16 @@ void showLCD()
       else if (down && (setMode == SPUNDEN_DRUCK || setMode == KARBONISIEREN_DRUCK)) // Druck
       {
         setPressure -= 0.05;
+        reflashLCD = true;
+      }
+      else if (up && (setMode == STEUERUNG)) // Druck
+      {
+        targetTemp += 0.1;
+        reflashLCD = true;
+      }
+      else if (down && (setMode == STEUERUNG)) // Druck
+      {
+        targetTemp -= 0.1;
         reflashLCD = true;
       }
       break;

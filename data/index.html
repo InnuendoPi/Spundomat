@@ -95,8 +95,7 @@
               </div>
               <div class="border-top my-3"></div>
               <div class="form-group row">
-                <label for="modal_misc_kombi" class="col-sm col-form-label">Verzögerung Karbonisieren im
-                  Spundomat-Modus</label>
+                <label for="modal_misc_kombi" class="col-sm col-form-label">Verzögerung Karbonisieren im Spundomat-Modus</label>
                 <div class="col-sm-auto">
                   <input type="text" class="text-right" placeholder="" id="modal_misc_kombi" />
                 </div>
@@ -105,6 +104,13 @@
                 <label for="modal_misc_kombi_auswahl" class="col-sm col-form-label">Einheit für Verzögerung</label>
                 <div class="col-sm-auto">
                   <select class="form-control" id="modal_misc_kombi_auswahl"></select>
+                </div>
+              </div>
+			  <div class="border-top my-3"></div>
+              <div class="form-group row">
+                <label for="modal_misc_con" class="col-sm col-form-label">Zieltemperatur Gärsteuerung</label>
+                <div class="col-sm-auto">
+                  <input type="text" class="text-right" placeholder="" id="modal_misc_con" />
                 </div>
               </div>
             </div>
@@ -169,6 +175,13 @@
                   [ms]</label>
                 <div class="col-sm-auto">
                   <input type="text" class="text-right" placeholder="" id="modal_misc_interval_temp" />
+                </div>
+              </div>
+			  <div class="form-group row">
+                <label for="modal_misc_intervall_con" class="col-sm col-form-label">Intervall Gärsteuerung
+                  [ms]</label>
+                <div class="col-sm-auto">
+                  <input type="text" class="text-right" placeholder="" id="modal_misc_interval_con" />
                 </div>
               </div>
               <div class="border-top my-3"></div>
@@ -245,6 +258,11 @@
                   <input type="text" readonly class="form-control-plaintext" id="modal_misc_offset2">
                 </div>
               </div>
+			  <div class="border-top my-3"></div>
+			  <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_testmode" />
+                <label class="form-check-label" for="modal_misc_testmode">Testmodus (nicht aktivieren!)</label>
+              </div>
               <div class="border-top my-3"></div>
               <label class="form-check-label">Reset Spundomat</label>
               <br />
@@ -258,8 +276,7 @@
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_clear" />
-                <label class="form-check-label" for="modal_misc_clear">Lösche alle Einstellungen (Reset to
-                  defaults)</label>
+                <label class="form-check-label" for="modal_misc_clear">Lösche alle Einstellungen (Reset to defaults)</label>
               </div>
               <br />
             </div>
@@ -414,6 +431,12 @@
           miscRender += data.pressure + " bar";
           miscRender += "</span></li>";
         }
+		else if (data.mode == 10) {
+          miscRender += "Gärsteuerung ";
+          miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zieltemperatur<span class='badge badge-info'>";
+          miscRender += data.targettemp + " °C";
+          miscRender += "</span></li>";
+        }
         else {
           miscRender += "Ablaufplan #" + data.ablauf;
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
@@ -477,20 +500,47 @@
         else {
           miscRender += " badge-dark'>CO2 Sensor deaktiviert";
         }
+		miscRender += "</span><span class='badge ";
+        if (data.mode != 10)
+		{
+			if (data.mv1) 
+			{
+				miscRender += " badge-success'>MV1: " + data.mv1opendisp + " / " + data.mv1closedisp;
+			}
+			else
+			{
+				miscRender += " badge-dark'>MV1 deaktiviert";
+			}
+			miscRender += "</span><span class='badge ";
+			if (data.mv2) 
+			{
+				miscRender += " badge-success'>MV2: " + data.mv2opendisp + " / " + data.mv2closedisp;
+			}
+			else
+			{
+				miscRender += " badge-dark'>MV2 deaktiviert";
+			}
 		
-        miscRender += "</span><span class='badge ";
-        if (data.mv1) {
-          miscRender += " badge-success'>MV1: " + data.mv1opendisp + " / " + data.mv1closedisp;
-        }
-        else {
-          miscRender += " badge-dark'>MV1 deaktiviert";
-        }
-        miscRender += "</span><span class='badge ";
-        if (data.mv2) {
-          miscRender += " badge-success'>MV2: " + data.mv2opendisp + " / " + data.mv2closedisp;
-        }
-        else {
-          miscRender += " badge-dark'>MV2 deaktiviert";
+		}
+		else if (data.mode == 10)
+		{
+			if (data.controller == 1)
+			{
+				miscRender += " badge-success'>Kühlung aktiv";
+			}
+			else
+			{
+				miscRender += " badge-dark'>Kühlung aus";
+			}
+			miscRender += "</span><span class='badge ";
+			if (data.controller == 2)
+			{
+				miscRender += " badge-success'>Heizung aktiv";
+			}
+			else
+			{
+				miscRender += " badge-dark'>Heizung aus";
+			}
         }
         miscRender += "</span> </li>";
         miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Dienste<span class='badge ";
@@ -695,6 +745,8 @@
       var rssi;
 	  var co2sen;
 	  var gpio;
+	  var targettemp;
+	  var uptarget;
 
       $.ajax({
         url: '/reqMisc?req=mdns',
@@ -1096,6 +1148,26 @@
           gpio = data;
         }
       });
+	  $.ajax({
+        url: '/reqMisc?req=targettemp',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          targettemp = data;
+        }
+      });
+	  $.ajax({
+        url: '/reqMisc?req=uptarget',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          uptarget = data;
+        }
+      });
 
       var modal = $(this);
       $('#modal_misc_modus').load('/reqMode');
@@ -1134,6 +1206,8 @@
       modal.find('#modal_misc_db_pass').val(dbpass);
       modal.find('#modal_misc_db_up').val(dbup);
       modal.find('#modal_misc_rssi').val(rssi);
+	  modal.find('#modal_misc_interval_con').val(uptarget);
+	  modal.find('#modal_misc_con').val(targettemp);
       var modal = $(this);
     });
 
@@ -1158,6 +1232,9 @@
       var dbuser = modal.find('#modal_misc_db_user').val();
       var dbpass = modal.find('#modal_misc_db_pass').val();
       var dbup = modal.find('#modal_misc_db_up').val();
+	  var targettemp = modal.find('#modal_misc_con').val();
+	  var uptarget = modal.find('#modal_misc_intervall_con').val();
+	  
       if (modal.find('#modal_misc_mdns').prop("checked") == true) {
         var mdns = "1";
       }
@@ -1214,7 +1291,7 @@
       }
 
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup + '&co2sen=' + co2sen + '&gpio=' + gpio,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup + '&co2sen=' + co2sen + '&gpio=' + gpio + '&targettemp=' + targettemp + '&uptarget=' + uptarget,
         type: 'POST',
         dataType: 'html',
         async: false,

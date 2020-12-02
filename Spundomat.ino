@@ -52,7 +52,7 @@ Dieser Quellcode baut auf einem Snippet von Janick 2017 auf.
 #include <SoftwareSerial.h> // Serielle Kommunikation mit CO2 Sensor
 
 #ifdef DEBUG_ESP_PORT
-#define DEBUG_MSG(...) DEBUG_ESP_PORT.printf(__VA_ARGS__)
+#define DEBUG_MSG(...) DEBUG_ESP_PORT.printf("%s ", timeClient.getFormattedTime().c_str());DEBUG_ESP_PORT.printf(__VA_ARGS__)
 #else
 #define DEBUG_MSG(...)
 #endif
@@ -63,7 +63,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.12";
+const char Version[7] = "2.15";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -83,6 +83,7 @@ const char Version[7] = "2.12";
 #define DB_UPDATE 60000
 #define WLAN_UPDATE 30000
 #define CO2_UPDATE 60000
+#define TARGET_UPDATE 60000
 
 #define AUS 0
 #define SPUNDOMAT 1
@@ -94,6 +95,7 @@ const char Version[7] = "2.12";
 #define PLAN2 7
 #define PLAN3 8
 #define DICHTHEIT 9
+#define STEUERUNG 10
 #define DEFAULT_OPEN 200
 #define DEFAULT_CLOSE 10000
 #define ALARM_ON 1
@@ -105,6 +107,9 @@ const char Version[7] = "2.12";
 #define DEF_CARB 4.5
 #define PRESSURE_OFFSET0 0.0
 #define PRESSURE_OFFSET2 2.0
+#define ABWEICHUNG 0.5
+#define DEF_TARGET_TEMP 18.0
+#define ZUSATZALARM 1200000        // 20min
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
@@ -158,6 +163,7 @@ NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 InfluxDBClient dbClient;
 bool startDB = false;       // Visualisierung aktiviert
 bool startVis = false;      // Visualisierung gestartet
+bool connected2DB = false;  // Datenbankverbindung hergestellt
 String visState = "0";    // Status Schreiben in Datenbank
 char dbServer[30] = "http://192.168.100.30:8086";     // InfluxDB Server IP
 char dbUser[15] = "";
@@ -173,10 +179,13 @@ InnuTicker TickerInfluxDB;
 InnuTicker TickerDisplay;
 InnuTicker TickerWLAN;
 InnuTicker TickerCO2;
+InnuTicker TickerSteuerung;
+InnuTicker TickerAlarmierung;
 
 // Deklariere Variablen
 float temperature;
 float oldTemperature = 0.0;
+float alarmTemperature = 0.0;
 float voltage;
 float offset0 = 0.0; // Standard Vadc bei 0bar an A0
 float offset2 = 0.0; // Vadc bei 2bar an A0
@@ -205,9 +214,9 @@ String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
-#define sizeOfModes 10
-String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3", "Dichtheit"};                            // ModusNamen im Display
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3", "Überprüfe Dichtheit"}; // Modus-Namen für WebIf
+#define sizeOfModes 11
+String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3", "Dichtheit", "Gaersteuerung"};                            // ModusNamen im Display
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3", "Überprüfe Dichtheit", "Gärsteuerung"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat";    // http://spundomat/index.html
 
 // Verzögerung Spundomat
@@ -223,6 +232,11 @@ unsigned long lastTimeSpundomat;
 #define sizeOfGPIO 3
 String modesGPIO[sizeOfGPIO] = {"Aus", "Piezo Buzzer", "Ventilator"};
 int setGPIO = 0;
+
+// Gärsteuerung
+float targetTemp = DEF_TARGET_TEMP;
+int upTarget = TARGET_UPDATE;
+int controller = 0;
 
 // Ablaufplan
 #define maxSchritte 20

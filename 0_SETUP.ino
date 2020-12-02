@@ -39,6 +39,11 @@ void setup()
 
   // Erstelle Ticker
   setTicker();
+  
+  // Zeitserver via NTP
+  timeClient.begin();
+  timeClient.forceUpdate();
+  checkSummerTime();
 
   // Starte Webserver
   setupServer();
@@ -97,17 +102,15 @@ void setup()
   // Starte Display
   TickerDisplay.start();
 
-  // Zeitserver via NTP
-  timeClient.begin();
-  timeClient.forceUpdate();
-  checkSummerTime();
+  if (setMode == STEUERUNG)
+  {
+    TickerSteuerung.start();
+    TickerAlarmierung.start();
+    steuerung();
+  }
 
   // LCD
   startLCD();
-
-  // Uhrzeit
-  Serial.printf("*** SYSINFO: %s\n", timeClient.getFormattedTime().c_str());
-  checkLog();
 
   // Influx Datenbank
   if (startDB)
@@ -120,6 +123,9 @@ void setup()
     initCO2();
     TickerCO2.start();
   }
+
+  // Check Update logs
+  checkLog();
 }
 
 // Webserver

@@ -46,12 +46,15 @@ bool loadConfig()
     verzKombi = spundObj["VERZKOMBI"];
   if (spundObj.containsKey("EINHEIT"))
     setEinheit = spundObj["EINHEIT"];
+  if (spundObj.containsKey("TARGET"))
+    targetTemp = spundObj["TARGET"];
 
   Serial.printf("setPressure: %f\n", setPressure);
   Serial.printf("setCarbonation: %f\n", setCarbonation);
   Serial.printf("setMode: %d\n", setMode);
   Serial.printf("verzKombi: %f\n", verzKombi);
   Serial.printf("setEinheit: %d\n", setEinheit);
+  Serial.printf("targetTemp: %f\n", targetTemp);
   Serial.println("--------");
   // Berechne Verzögerung Karbonisierung im Kombi-Modus
   calcVerzSpundomat();
@@ -116,8 +119,11 @@ bool loadConfig()
     upPressure = miscObj["UPPRESSURE"];
   if (miscObj.containsKey("UPTEMP"))
     upTemp = miscObj["UPTEMP"];
+  if (miscObj.containsKey("UPTARGET"))
+    upTarget = miscObj["UPTARGET"];
   Serial.printf("Intervall Drucksensor: %d\n", upPressure);
   Serial.printf("Intervall Temperatursensor: %d\n", upTemp);
+  Serial.printf("Intervall Gärsteuerung: %d\n", upTarget);
   if (miscObj.containsKey("NAMEMDNS"))
     strlcpy(nameMDNS, miscObj["NAMEMDNS"], sizeof(nameMDNS));
 
@@ -126,10 +132,20 @@ bool loadConfig()
   if (miscObj.containsKey("TESTMODE"))
     testModus = miscObj["TESTMODE"];
 
-
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
   Serial.printf("Testmodus: %d\n", testModus);
+
+  // Visualisierungs Einstellungen
+  JsonArray visArray = doc["VISUALISIERUNG"];
+  JsonObject visObj = visArray[0];
+  if (visObj.containsKey("VISSTARTED"))
+    startVis = visObj["VISSTARTED"];
+  if (visObj.containsKey("SUDID"))
+    strlcpy(dbVisTag, visObj["SUDID"], sizeof(dbVisTag));
+
+  Serial.printf("Visualisierung gestartet: %d\n", startVis);
+  Serial.printf("Sud-Id: %s\n", dbVisTag);
 
   Serial.println("------ loadConfig finished ------");
   configFile.close();
@@ -156,7 +172,9 @@ bool loadConfig()
   TickerPressure.interval(upPressure);
   TickerInfluxDB.interval(upInflux);
   TickerTemp.interval(upTemp);
-  
+  TickerSteuerung.interval(upTarget);
+  TickerAlarmierung.interval(ZUSATZALARM);
+
   if (setGPIO == 1 && setMode == AUS)
     sendAlarm(ALARM_OK);
   else if (setGPIO == 1)
@@ -175,10 +193,12 @@ bool saveConfig()
   spundObj["MODE"] = setMode;
   spundObj["VERZKOMBI"] = verzKombi;
   spundObj["EINHEIT"] = setEinheit;
+  spundObj["TARGET"] = targetTemp;
   DEBUG_MSG("setPressure: %f\n", setPressure);
   DEBUG_MSG("setCarbonation: %f\n", setCarbonation);
   DEBUG_MSG("verzKombi: %d\n", verzKombi);
   DEBUG_MSG("Einheit: %d\n", setEinheit);
+  DEBUG_MSG("Target: %f\n", targetTemp);
   DEBUG_MSG("%s\n", "--------");
   // Berechne Verzögerung Karbonisierung im Kombi-Modus
   calcVerzSpundomat();
@@ -201,7 +221,7 @@ bool saveConfig()
   DEBUG_MSG("startCO2: %d\n", startCO2);
   DEBUG_MSG("GPIO: %d\n", setGPIO);
   DEBUG_MSG("%s\n", "--------");
-  
+
   // Datenbank Einstellungen
   JsonArray databaseArray = doc.createNestedArray("DATABASE");
   JsonObject databaseObj = databaseArray.createNestedObject();
@@ -227,13 +247,22 @@ bool saveConfig()
   miscObj["MDNS"] = startMDNS;
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
+  miscObj["UPTARGET"] = upTarget;
   miscObj["TESTMODE"] = testModus;
 
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
+  DEBUG_MSG("Interval Gärsteuerung: %d\n", upTarget);
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
+
+  JsonArray visArray = doc.createNestedArray("VISUALISIERUNG");
+  JsonObject visObj = visArray.createNestedObject();
+  visObj["VISSTARTED"] = startVis;
+  visObj["SUDID"] = dbVisTag;
+  DEBUG_MSG("Visualisierung gestartet: %d\n", startVis);
+  DEBUG_MSG("Sud-Id: %s\n", dbVisTag);
 
   size_t len = measureJson(doc);
   int memoryUsed = doc.memoryUsage();
@@ -271,12 +300,26 @@ bool saveConfig()
   // Setze Intervall Datenbank Ticker
   TickerInfluxDB.interval(upInflux);
 
+  // Setze Intervall Gärsteuerung Ticker
+  TickerSteuerung.interval(upTarget);
+  TickerAlarmierung.interval(ZUSATZALARM);
+
   // Setze Open/Close Standard für MV1/MV2
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);
   DEBUG_MSG("%s\n", "------------");
   if (setMode != AUS && setGPIO == 1)
     sendAlarm(ALARM_ON);
+  if (setMode != STEUERUNG)
+  {
+    TickerSteuerung.stop();
+    TickerAlarmierung.stop();
+  }
+  else if (setMode == STEUERUNG)
+  {
+    TickerSteuerung.start();
+    TickerAlarmierung.start();
+  }
 
   switch (setMode)
   {
@@ -325,6 +368,9 @@ bool saveConfig()
     // lastTimeSpundomat = millis();
     // dichtPressure = pressure;
     lastTimeSpundomat = 0.0;
+    break;
+  case STEUERUNG:
+    steuerung();
     break;
   default:
     mv1.switchOff();

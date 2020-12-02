@@ -72,6 +72,10 @@ void loop()
   case DICHTHEIT:
     checkDichtheit();
     break;
+  case STEUERUNG:
+    TickerSteuerung.update();
+    TickerAlarmierung.update();
+    break;
   }
   up = false;
   down = false;

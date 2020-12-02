@@ -1,6 +1,6 @@
 void setInfluxDB()
 {
-    // Setze Parameter 
+    // Setze Parameter
     dbClient.setConnectionParamsV1(dbServer, dbDatabase, dbUser, dbPass);
 }
 
@@ -8,14 +8,19 @@ bool checkDBConnect()
 {
     if (dbClient.validateConnection())
     {
-        DEBUG_MSG("Verbinde mit InfluxDB: %s\n", dbClient.getServerUrl().c_str());
+        if (!connected2DB)
+        {
+            DEBUG_MSG("Verbinde mit InfluxDB: %s\n", dbClient.getServerUrl().c_str());
+            connected2DB = true;
+        }
         visState = "0";
         return true;
     }
-    else 
+    else
     {
         DEBUG_MSG("Verbindung zu InfluxDB Datenbank fehlgeschlagen: %s\n", dbClient.getLastErrorMessage().c_str());
         visState = dbClient.getLastErrorMessage().c_str();
+        connected2DB = false;
         return false;
     }
 }
@@ -26,7 +31,7 @@ void sendDBData()
     Point dbData("spundomat_status");
     dbData.addTag("Device", nameMDNS);
     if (dbVisTag[0] != '\0')
-            dbData.addTag("Sud-ID", dbVisTag);
+        dbData.addTag("Sud-ID", dbVisTag);
     dbData.addField("Temperatur", temperature);
     dbData.addField("Pressure", pressure);
     dbData.addField("ZielCO2", setCarbonation);

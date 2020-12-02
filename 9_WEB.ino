@@ -81,12 +81,14 @@ void handleRequestMiscSet()
     doc["co2"] = ((int)(calcCarbonation(pressure, temperature) * 100)) / 100.0;
     doc["druck"] = ((int)(pressure * 100)) / 100.0;
     doc["temperatur"] = ((int)(temperature * 10)) / 10.0;
+    doc["targettemp"] = ((int)(targetTemp * 10)) / 10.0;
     doc["offset"] = offset0;
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
     doc["co2sen"] = startCO2;
     doc["wertco2"] = wertCO2;
+    doc["controller"] = controller;
     if (setMode < PLAN1 || setMode > PLAN3)
     {
         doc["mv1opendisp"] = mv1Open;
@@ -358,6 +360,16 @@ void handleRequestMisc()
         message = setGPIO;
         goto SendMessage;
     }
+    if (request == "uptarget")
+    {
+        message = upTarget;
+        goto SendMessage;
+    }
+    if (request == "targettemp")
+    {
+        message = targetTemp;
+        goto SendMessage;
+    }
 
 SendMessage:
     server.send(200, "text/plain", message);
@@ -594,6 +606,19 @@ void handleSetMisc()
             if (isValidInt(server.arg(i)))
                 setGPIO = server.arg(i).toInt();
         }
+        if (server.argName(i) == "uptarget")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                if (checkRange(server.arg(i)))
+                    upTarget = server.arg(i).toInt();
+            }
+        }
+        if (server.argName(i) == "targettemp")
+        {
+            if (checkRange(server.arg(i)))
+                targetTemp = formatDOT(server.arg(i));
+        }
         yield();
     }
     saveConfig();
@@ -759,10 +784,10 @@ void setMDNS()
     if (startMDNS && nameMDNS[0] != '\0' && WiFi.status() == WL_CONNECTED)
     {
         if (MDNS.begin(nameMDNS))
-            Serial.printf("*** SYSINFO: mDNS gestartet als %s verbunden an %s\n", nameMDNS, WiFi.localIP().toString().c_str());
+            Serial.printf("*** SYSINFO: mDNS gestartet als %s verbunden an %s; Time: %s; RSSI=%d\n", nameMDNS, WiFi.localIP().toString().c_str(), timeClient.getFormattedTime().c_str(), WiFi.RSSI());
     }
     else
-        Serial.printf("%s\n", "*** SYSINFO: Fehler Start mDNS! IP Adresse: %s\n", WiFi.localIP().toString().c_str());
+        Serial.printf("%s\n", "*** SYSINFO: Fehler Start mDNS! IP Adresse: %s; Time: %s\n", WiFi.localIP().toString().c_str(), timeClient.getFormattedTime().c_str());
 }
 
 void startDichtheit()

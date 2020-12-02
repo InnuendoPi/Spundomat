@@ -5,10 +5,10 @@ void tickerTempCallback() // Timer Objekt Temperatur
 
 void tickerInfluxDBCallback() // Timer Objekt Influx Datenbank
 {
-  if (wlanState)
+  if (wlanState && checkDBConnect())  // if checkDBConnect is successful it sets visState to 0
     sendDBData();
   else
-    DEBUG_MSG("%s", "*** SYSINFO: sending Influx data skipped: WLAN not connected\n");
+    DEBUG_MSG("*** SYSINFO: sending Influx data skipped: WLAN not connected\n");
 }
 
 void tickerPressureCallback() // Timer Objekt Druck
@@ -81,4 +81,29 @@ void tickerCO2Callback()
       digitalWrite(PIN_BUZZER, HIGH);
     }
   }
+}
+
+void tickerSteuerungCallback()
+{
+  steuerung();
+}
+
+void tickerAlarmierungCallback()
+{
+  float diff = targetTemp - temperature;
+  if (abs(diff) > 0.5)    // Differenz zur Zieltemperatur
+  {
+    float diff2 = alarmTemperature - temperature;
+    if (abs(diff2) < 0.02) // Differenz Änderung zur Temperatur vor <ZUSATZALARM>ms
+    {
+      if (setGPIO == 1)
+        sendAlarm(ALARM_ERROR);
+      DEBUG_MSG("*** SYSINFO: Temperaturdifferenz sehr gering %f\n", diff2);
+    }
+  }
+  else
+  {
+    DEBUG_MSG("*** SYSINFO: Temperatur Alarm %f Temp %f\n", alarmTemperature, temperature);
+  }
+  alarmTemperature = temperature;
 }

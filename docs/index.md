@@ -31,6 +31,8 @@ Die Firmware bietet vier Betriebsmodis:
 2. Karbonisieren (CO2 eingehend in das Keg)
 3. Spundomat: die Kombination aus Spunden und Karbonisieren
 4. Ablaufpläne (u.a. schnelles Zwangskarbonisieren und CO2-Wäsche)
+5. eine Überwachung der CO2 ppm
+6. eine einfache Gärsteuerung
 
 Zur Konfiguration und Verwendung kann ein Display mit Encoder (Dreh-Drück-Knopf) oder das Web Interface verwendet werden.
 
@@ -255,6 +257,12 @@ Um mit diesen Modus die Dichtheit zu überprüfen, müssen die folgenden Vorbere
 * in den Einstellungen wird der "Zielwert Druck" auf einen Wert von 1bar oder höher eingestellt
 
 Nun kann der Modus "Überprüfe Dichtheit" ausgewählt werden. Das Keg wird mit dem konfiguriertem Druck befüllt. Sobald dieser Druck erreicht ist, wartet der Spundomat 2 Minuten ab. Nach 2 Minuten wird der aktuelle Druck (#1) gemessen. Nach einer weiteren Wartezeit von 5 Minuten wird ein zweites Mal der Druck (#2) gemessen. Das Delta, also die Differenz der beiden Druckmessungen (Delta = #2 - #1) wechselt der Spundomat automatisch den Modus auf "Aus" und zeigt im Dashboard das Delta an.
+
+**Der Modus Überprüfe Gärsteuerung:**
+
+Der Spundomat kann auch zur Steuerung der Gärung eingesetzt werden. Die Platine wird für diesen Einsatzzweck ganz normal bestückt. Es werden aber weder die Magentventile noch der Drucksensor benötigt.
+An MV1 wird ein SSR oder ein Relais zur Schaltung einer Kühlung angeschlossen.
+AN MV2 wird ein SSR oder ein Relais zur Schaltung einer Heizung angeschlossen.
 
 ---
 
@@ -518,6 +526,20 @@ Es wurden bewusst 2 Dimensionen und Farben gewählt, um eine Verwechslung der An
 
 Wenn man nur spundet kann man den grauen 6 mm Schlauch direkt ohne Rückschlagventil am Spundomat anschließen.
 Zudem können auch mehrere Kegs bei gewünscht gleicher Karbonisierung durch Parallelschaltung mittels 6 mm T-Stücke angeschlossen werden.
+
+**CO2 Sensor:**
+
+Ein CO2 Sensor kann an den Spundomat angeschlossen werden. Der Sensor MH-Z19b verfügt über eine Autokalibrierung. Diese Kalibrierung benötigt ca. 24h und sollte im Freien oder einem nicht genutzten Raum stattfinden.
+
+Verkabelung CO2 Sensors MH-Z19b an Wemos D1 mini
+MH-Z19b       Wemos D1 mini
+3 TX sw       D2 SDA
+2 RX gelb     D1 SDL
+6 VIN grün    5V
+7 GND blau    GND
+
+Optional kann der GPIO D7 für ein Ventilator eingesetzt werden. Dafür muss der GPIO D7 mit GND an ein SSR oder Relais geführt werden. Wird in den Einstellung die Option Ventilator ausgewählt, schaltet der GPIO ab 1000ppm CO2 auf High. Unter 1000ppm CO2 wird der Pegel auf low gezogen.
+Es ist nicht möglich, einen Piezo Buzzer und zeitgleich einen Ventilator zu nutzen.
 
 **3D Druck Gehäuse:**
 

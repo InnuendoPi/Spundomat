@@ -6,8 +6,11 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.12
+Version 2.15
 
+- Added:    einfache Gärsteuerung (Kühlung/Heizung) implementiert
+- Changed:  Konfiguration Visualisierung wird nun gespeichert (bierdrohne)
+- Changed:  Visualisierung persistent (bierdrohne)
 - Added:    MH-Z19b CO2 Sensor
 - Changed:  GPIO D7 Optionen: Aus, Piezo Buzzer oder Ventilator (an Relais/SSR)
 - Fixed:    WLAN reconnect

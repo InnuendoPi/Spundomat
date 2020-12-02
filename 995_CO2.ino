@@ -7,24 +7,36 @@ void initCO2()
   // myMHZ19.calibrateZero();
   myMHZ19.setSpan(2000);
   myMHZ19.autoCalibration(true, 24);
-  if(myMHZ19.getABC()) 
-    DEBUG_MSG("ABC Status: %s\n", "ON"); 
+  if (myMHZ19.getABC())
+  {
+    DEBUG_MSG("ABC Status: %s\n", "ON");
+  }
   else
+  {
     DEBUG_MSG("ABC Status: %s\n", "OFF");
+  }
+
+  // Auto Calibration: 
+  // The MH-Z19 is a sensor that is designed to be powered on and rarely turned off. 
+  // The sensor calibrates over time (if autocalibration is on) tuning the Zero at the end of each "ABC" (auto calibration) 
+  // period (0 - 24hrs currently). After 3 weeks, a value is stored to represent it's accuracy, 
+  // this can be requested using getAccuracy(). ABC must be disabled by sending the appropriate command 
+  // before the end of the ABC period to ensure it remains off - this is handled by the library.
 
   // myMHZ19.getABC() ? Serial.println("ON") : Serial.println("OFF");
   // myMHZ19.printCommunication(true, true);
 
   char myVersion[4];
   myMHZ19.getVersion(myVersion);
-  DEBUG_MSG("%s", "CO2 Sensor Firmware Version: ");
+  
+  String firm = "";
   for (byte i = 0; i < 4; i++)
   {
-    DEBUG_MSG("%c", myVersion[i]);
+    firm += myVersion[i];
     if (i == 1)
-      DEBUG_MSG("%s", ".");
+      firm += ".";
   }
-  DEBUG_MSG("%s", " \n");
+  DEBUG_MSG("CO2 Sensor Firmware Version: %s\n", firm.c_str());
   DEBUG_MSG("CO2 Sensor Range: %d\n", myMHZ19.getRange());
   DEBUG_MSG("CO2 Sensor Background CO2: %d\n", myMHZ19.getBackgroundCO2());
 

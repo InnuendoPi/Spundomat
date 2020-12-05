@@ -34,9 +34,6 @@ void setup()
   else
     Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
 
-  Serial.print("*** SYSINFO: Verbunden mit WLAN SSID: ");
-  Serial.println(WiFi.SSID());
-
   // Erstelle Ticker
   setTicker();
   
@@ -53,8 +50,7 @@ void setup()
     setMDNS();
   else
   {
-    Serial.print("*** SYSINFO: ESP8266 IP Addresse: ");
-    Serial.println(WiFi.localIP().toString());
+    Serial.printf("*** SYSINFO: ESP8266 IP Addresse: %s Time: %s RSSI: %d\n", WiFi.localIP().toString().c_str(), timeClient.getFormattedTime().c_str(), WiFi.RSSI());
   }
 
   // Starte I2C
@@ -106,6 +102,14 @@ void setup()
   {
     TickerSteuerung.start();
     TickerAlarmierung.start();
+    steuerung();
+  }
+  if (setMode == CON1 || setMode == CON2)
+  {
+    TickerCon.start();
+    TickerSteuerung.start();
+    TickerAlarmierung.start();
+    startCon();
     steuerung();
   }
 

@@ -6,8 +6,9 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.15
+Version 2.20
 
+- Added:    Steuerpläne für eine Gärführung
 - Added:    einfache Gärsteuerung (Kühlung/Heizung) implementiert
 - Changed:  Konfiguration Visualisierung wird nun gespeichert (bierdrohne)
 - Changed:  Visualisierung persistent (bierdrohne)

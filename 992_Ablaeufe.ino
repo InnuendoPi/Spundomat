@@ -1,4 +1,4 @@
-void readLine(File &f)
+void readAblaufplan(File &f)
 {
     if (file)
     {
@@ -105,7 +105,7 @@ void readLine(File &f)
     return;
 }
 
-void initPlan()
+void initAblaufplan()
 {
     struct Ablaufplan structPlan[maxSchritte] = {
         {0.0, 0, 0, 0.0, 0, 0},

@@ -5,7 +5,7 @@ void tickerTempCallback() // Timer Objekt Temperatur
 
 void tickerInfluxDBCallback() // Timer Objekt Influx Datenbank
 {
-  if (wlanState && checkDBConnect())  // if checkDBConnect is successful it sets visState to 0
+  if (wlanState && checkDBConnect()) // if checkDBConnect is successful it sets visState to 0
     sendDBData();
   else
     DEBUG_MSG("*** SYSINFO: sending Influx data skipped: WLAN not connected\n");
@@ -88,10 +88,21 @@ void tickerSteuerungCallback()
   steuerung();
 }
 
+void tickerConCallback()
+{
+  if (counterCon < maxCon - 1)
+  {
+    counterCon++;
+    checkTemp = false;
+    //DEBUG_MSG("Callback: TickerCon Update zieltemp %f timer %d counter %d\n", targetTemp, structCon[counterCon].timer, counterCon);
+    startCon();
+  }
+}
+
 void tickerAlarmierungCallback()
 {
   float diff = targetTemp - temperature;
-  if (abs(diff) > 0.5)    // Differenz zur Zieltemperatur
+  if (abs(diff) > 0.5) // Differenz zur Zieltemperatur
   {
     float diff2 = alarmTemperature - temperature;
     if (abs(diff2) < 0.02) // Differenz Änderung zur Temperatur vor <ZUSATZALARM>ms

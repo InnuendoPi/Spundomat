@@ -437,6 +437,12 @@
           miscRender += data.targettemp + " °C";
           miscRender += "</span></li>";
         }
+		else if (data.mode > 10) {
+          miscRender += "Steuerplan ";
+          miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zieltemperatur<span class='badge badge-info'>";
+          miscRender += data.targettemp + " °C";
+          miscRender += "</span></li>";
+        }
         else {
           miscRender += "Ablaufplan #" + data.ablauf;
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
@@ -501,7 +507,7 @@
           miscRender += " badge-dark'>CO2 Sensor deaktiviert";
         }
 		miscRender += "</span><span class='badge ";
-        if (data.mode != 10)
+        if (data.mode < 10)
 		{
 			if (data.mv1) 
 			{
@@ -522,7 +528,7 @@
 			}
 		
 		}
-		else if (data.mode == 10)
+		else if (data.mode >= 10)
 		{
 			if (data.controller == 1)
 			{

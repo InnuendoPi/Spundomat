@@ -76,6 +76,15 @@ void loop()
     TickerSteuerung.update();
     TickerAlarmierung.update();
     break;
+  case CON1:
+  case CON2:
+    TickerSteuerung.update();
+    TickerAlarmierung.update();
+    if (TickerCon.state() == RUNNING)
+    {
+      TickerCon.update();
+    }
+    break;
   }
   up = false;
   down = false;

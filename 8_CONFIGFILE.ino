@@ -49,16 +49,14 @@ bool loadConfig()
   if (spundObj.containsKey("TARGET"))
     targetTemp = spundObj["TARGET"];
 
-  Serial.printf("setPressure: %f\n", setPressure);
-  Serial.printf("setCarbonation: %f\n", setCarbonation);
+  Serial.printf("setPressure: %2.2f\n", setPressure);
+  Serial.printf("setCarbonation: %2.2f\n", setCarbonation);
   Serial.printf("setMode: %d\n", setMode);
   Serial.printf("verzKombi: %f\n", verzKombi);
   Serial.printf("setEinheit: %d\n", setEinheit);
-  Serial.printf("targetTemp: %f\n", targetTemp);
-  Serial.println("--------");
-  // Berechne Verzögerung Karbonisierung im Kombi-Modus
-  calcVerzSpundomat();
-  Serial.printf("Verzögerung: %d minCarb: %f\n", verzKarbonisierung, minKarbonisierung);
+  Serial.printf("targetTemp: %3.2f\n", targetTemp);
+  calcVerzSpundomat(); // Berechne Verzögerung Karbonisierung im Kombi-Modus
+  Serial.printf("Verzögerung: %d minCarb: %2.2f\n", verzKarbonisierung, minKarbonisierung);
   Serial.println("--------");
 
   // InfluxDB Einstellungen
@@ -121,20 +119,20 @@ bool loadConfig()
     upTemp = miscObj["UPTEMP"];
   if (miscObj.containsKey("UPTARGET"))
     upTarget = miscObj["UPTARGET"];
-  Serial.printf("Intervall Drucksensor: %d\n", upPressure);
-  Serial.printf("Intervall Temperatursensor: %d\n", upTemp);
-  Serial.printf("Intervall Gärsteuerung: %d\n", upTarget);
-  if (miscObj.containsKey("NAMEMDNS"))
-    strlcpy(nameMDNS, miscObj["NAMEMDNS"], sizeof(nameMDNS));
-
   if (miscObj.containsKey("MDNS"))
     startMDNS = miscObj["MDNS"];
   if (miscObj.containsKey("TESTMODE"))
     testModus = miscObj["TESTMODE"];
+  if (miscObj.containsKey("NAMEMDNS"))
+    strlcpy(nameMDNS, miscObj["NAMEMDNS"], sizeof(nameMDNS));
 
+  Serial.printf("Intervall Drucksensor: %d\n", upPressure);
+  Serial.printf("Intervall Temperatursensor: %d\n", upTemp);
+  Serial.printf("Intervall Gärsteuerung: %d\n", upTarget);
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
   Serial.printf("Testmodus: %d\n", testModus);
+  Serial.println("--------");
 
   // Visualisierungs Einstellungen
   JsonArray visArray = doc["VISUALISIERUNG"];
@@ -144,7 +142,7 @@ bool loadConfig()
   if (visObj.containsKey("SUDID"))
     strlcpy(dbVisTag, visObj["SUDID"], sizeof(dbVisTag));
 
-  Serial.printf("Visualisierung gestartet: %d\n", startVis);
+  Serial.printf("Visualisierung: %d\n", startVis);
   Serial.printf("Sud-Id: %s\n", dbVisTag);
 
   Serial.println("------ loadConfig finished ------");
@@ -160,11 +158,18 @@ bool loadConfig()
   mv2.switchOff();
 
   // Ablaufpläne
-  initPlan();                           // Initialisiere Strukturen
+  initAblaufplan();                     // Initialisiere Strukturen
   if (SPIFFS.exists("/ablaufplan.txt")) // Lade Ablaufpläne
   {
     file = SPIFFS.open("/ablaufplan.txt", "r");
-    readLine(file);
+    readAblaufplan(file);
+    file.close();
+  }
+  initSteuerplan();
+  if (SPIFFS.exists("/steuerplan.txt")) // Lade Ablaufpläne
+  {
+    file = SPIFFS.open("/steuerplan.txt", "r");
+    readSteuerplan(file);
     file.close();
   }
 
@@ -194,15 +199,13 @@ bool saveConfig()
   spundObj["VERZKOMBI"] = verzKombi;
   spundObj["EINHEIT"] = setEinheit;
   spundObj["TARGET"] = targetTemp;
-  DEBUG_MSG("setPressure: %f\n", setPressure);
-  DEBUG_MSG("setCarbonation: %f\n", setCarbonation);
+  DEBUG_MSG("setPressure: %2.2f\n", setPressure);
+  DEBUG_MSG("setCarbonation: %2.2f\n", setCarbonation);
   DEBUG_MSG("verzKombi: %d\n", verzKombi);
   DEBUG_MSG("Einheit: %d\n", setEinheit);
-  DEBUG_MSG("Target: %f\n", targetTemp);
-  DEBUG_MSG("%s\n", "--------");
-  // Berechne Verzögerung Karbonisierung im Kombi-Modus
-  calcVerzSpundomat();
-  DEBUG_MSG("Verzögerung: %d minCarb: %f\n", verzKarbonisierung, minKarbonisierung);
+  DEBUG_MSG("Target: %3.2f\n", targetTemp);
+  calcVerzSpundomat(); // Berechne Verzögerung Karbonisierung im Kombi-Modus
+  DEBUG_MSG("Verzögerung: %d minCarb: %2.2f\n", verzKarbonisierung, minKarbonisierung);
   DEBUG_MSG("%s\n", "--------");
 
   // Hardware Einstellungen
@@ -256,12 +259,13 @@ bool saveConfig()
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
+  DEBUG_MSG("%s\n", "--------");
 
   JsonArray visArray = doc.createNestedArray("VISUALISIERUNG");
   JsonObject visObj = visArray.createNestedObject();
   visObj["VISSTARTED"] = startVis;
   visObj["SUDID"] = dbVisTag;
-  DEBUG_MSG("Visualisierung gestartet: %d\n", startVis);
+  DEBUG_MSG("Visualisierung: %d\n", startVis);
   DEBUG_MSG("Sud-Id: %s\n", dbVisTag);
 
   size_t len = measureJson(doc);
@@ -315,10 +319,9 @@ bool saveConfig()
     TickerSteuerung.stop();
     TickerAlarmierung.stop();
   }
-  else if (setMode == STEUERUNG)
+  else if (setMode != CON1 || setMode != CON2)
   {
-    TickerSteuerung.start();
-    TickerAlarmierung.start();
+    TickerCon.stop();
   }
 
   switch (setMode)
@@ -352,11 +355,11 @@ bool saveConfig()
     // {
     //   DEBUG_MSG("Line %d: x1: %f y1: %d z1: %d x2: %f y2: %d z2: %d\n", test, structPlan1[test].zieldruckMV1, structPlan1[test].intervallMV1Open, structPlan1[test].intervallMV1Close, structPlan1[test].zieldruckMV2, structPlan1[test].intervallMV2Open, structPlan1[test].intervallMV2Close);
     // }
-    initPlan();
+    initAblaufplan();
     if (SPIFFS.exists("/ablaufplan.txt"))
     {
       file = SPIFFS.open("/ablaufplan.txt", "r");
-      readLine(file);
+      readAblaufplan(file);
       file.close();
     }
     counterPlan = -1;
@@ -370,7 +373,28 @@ bool saveConfig()
     lastTimeSpundomat = 0.0;
     break;
   case STEUERUNG:
+    if (TickerSteuerung.state() != RUNNING)
+      TickerSteuerung.start();
+    if (TickerAlarmierung.state() != RUNNING)
+      TickerAlarmierung.start();
     steuerung();
+    break;
+  case CON1:
+  case CON2:
+    counterCon = 0;
+    initSteuerplan();
+    if (SPIFFS.exists("/steuerplan.txt")) // Lade Ablaufpläne
+    {
+      file = SPIFFS.open("/steuerplan.txt", "r");
+      readSteuerplan(file);
+      file.close();
+    }
+    targetTemp = structCon[counterCon].zieltemp;
+    TickerCon.interval(structCon[counterCon].timer); // setze Zeitintervall aus Steuerplan
+    if (TickerCon.state() != RUNNING)
+      TickerCon.start();
+    checkTemp = false;
+    startCon();
     break;
   default:
     mv1.switchOff();

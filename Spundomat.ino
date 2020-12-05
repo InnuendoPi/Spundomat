@@ -63,7 +63,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.15";
+const char Version[7] = "2.20";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -83,7 +83,7 @@ const char Version[7] = "2.15";
 #define DB_UPDATE 60000
 #define WLAN_UPDATE 30000
 #define CO2_UPDATE 60000
-#define TARGET_UPDATE 60000
+#define TARGET_UPDATE 5000 //60000
 
 #define AUS 0
 #define SPUNDOMAT 1
@@ -96,6 +96,8 @@ const char Version[7] = "2.15";
 #define PLAN3 8
 #define DICHTHEIT 9
 #define STEUERUNG 10
+#define CON1 11
+#define CON2 12
 #define DEFAULT_OPEN 200
 #define DEFAULT_CLOSE 10000
 #define ALARM_ON 1
@@ -132,6 +134,7 @@ int setMode = AUS;                  // Startposition 0 = AUS
 int newMode = AUS;
 bool startMDNS = true;    // mDNS Dienst
 bool testModus = false;   // testModus - ignorieren!
+float oldTemp = 9.0;
 bool startMV1 = false;    // Aktiviere MV1 an D8
 bool startMV2 = false;    // Aktiviere MV2 an D0
 bool alertState = false;
@@ -181,6 +184,7 @@ InnuTicker TickerWLAN;
 InnuTicker TickerCO2;
 InnuTicker TickerSteuerung;
 InnuTicker TickerAlarmierung;
+InnuTicker TickerCon;
 
 // Deklariere Variablen
 float temperature;
@@ -214,9 +218,9 @@ String Menu3[2]; // Kalibrierung
 String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
-#define sizeOfModes 11
-String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3", "Dichtheit", "Gaersteuerung"};                            // ModusNamen im Display
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3", "Überprüfe Dichtheit", "Gärsteuerung"}; // Modus-Namen für WebIf
+#define sizeOfModes 13
+String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3", "Dichtheit", "Gaersteuerung", "Steuerung 1", "Steuerung 2"};                            // ModusNamen im Display
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3", "Überprüfe Dichtheit", "Gärsteuerung", "Steuerung 1", "Steuerung 2"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat";    // http://spundomat/index.html
 
 // Verzögerung Spundomat
@@ -254,6 +258,19 @@ struct Ablaufplan structPlan[maxSchritte];
 int counterPlan = 0; // Aktueller Schritt im Ablaufplan
 bool stepA = false;  // Step MV1 je Schritt
 bool stepB = false;  // Step MV2 je Schritt
+
+// Gärsteuerung
+// Datei Objekt steuerplan.txt
+#define maxCon 5
+struct Steuerplan
+{
+    float zieltemp;
+    long timer;
+    float delta24;
+};
+struct Steuerplan structCon[maxCon];
+int counterCon = 0; // Aktueller Schritt im Steuerplan
+bool checkTemp = false;
 
 // Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)

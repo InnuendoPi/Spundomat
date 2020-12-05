@@ -62,6 +62,13 @@ void InnuTicker::updateNow()
 		callback();
 }
 
+void InnuTicker::reset()
+{
+	lastTime = millis();
+	diffTime = 0;
+	counts = 0;
+}
+
 bool InnuTicker::getUp()
 {
 	if ((millis() - lastTime) >= timer)

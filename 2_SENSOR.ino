@@ -5,7 +5,8 @@ void readTemparature()
 	temperature = sensors.getTempCByIndex(0);
 
 	if (testModus)
-		temperature = 20.0;
+		checkTestMode();
+	// temperature = 20.0;
 
 	if (temperature == 85.0 || temperature == -127.00)
 	{
@@ -216,6 +217,16 @@ void checkTestMode()
 	case DICHTHEIT:
 		if (pressure < setPressure)
 			pressure = oldPressDisp + 0.1;
+		break;
+	case STEUERUNG:
+	case CON1:
+	case CON2:
+		if (targetTemp <= oldTemp)
+			oldTemp -= 0.2;
+		else
+			oldTemp += 0.2;
+		temperature = oldTemp;
+		DEBUG_MSG("TestMode Temp %3.2f Target %3.2f\n", temperature, targetTemp);
 		break;
 	}
 }

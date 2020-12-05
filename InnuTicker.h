@@ -49,6 +49,9 @@ public:
 	// Stoppe den Ticker
 	void stop();
 
+	// Tikcer zurücksetzen
+	void reset();
+
 	// Die Funktion Update muss in der loop aufgerufen werden. Update prüft den Ticker und ruft wenn erforderlich die Callback Funktion auf
 	void update();
 	void updateNow();

@@ -264,6 +264,39 @@ Der Spundomat kann auch zur Steuerung der Gärung eingesetzt werden. Die Platine
 An MV1 wird ein SSR oder ein Relais zur Schaltung einer Kühlung angeschlossen.
 AN MV2 wird ein SSR oder ein Relais zur Schaltung einer Heizung angeschlossen.
 
+**Steuerpläne Gärfühurng:**
+
+Der Steuerplan funktioniert genauso wie die Ablaufpläne. Nur eben zur Gärsteuerung oder besser gesagt zur geführten Gärung. Um eine Gärung nach einem individuellem Schema ablaufen zu lassen, müssen die einzelnen Schritte in die Datei steuerplan.txt hinterlegt werden. Der Ablauf findet dann Top Down statt. Wichtige Randbedingungen:
+
+* aktuell kann die Gärführung maximal aus 5 Schritten bestehen
+* aktuell können zwei verschiedene Gärführungen hinterlegt werden
+* die Gärführung bleibt im letzten Schritt bis zum manuellen Abschalten aktiv
+* Aufbau vom Steuerplan (Datei steuerplan.txt)
+
+#S1 UG;Steuerung UG
+8.0;86400000;0.0
+10.0;172800000;0.0
+12.0;86400000;0.0
+16.5;86400000;0.0
+2.0;172800000;0.0
+
+Mit dem Kennzeichen # wird die Überschrift für das LCD und für das WebInterface hinterlegt. Das sind einfach zwei Namen. Auf dem LCD steht im o.a. Beispiel S1 UG und im WebIf Steuerung UG. In den drauffolgenden 5 Zeilen folgen 5 Schritte für eine geführte Gärung. Die Zeile 8.0;86400000;0.0 hat dabei folgende Bedeutung:
+
+Zieltemperatur: 8.0 °C
+Rastdauer: 86400000ms -> das entspricht 24 Stunden
+Steigung: 0.0 (aktuell unbenutzt)
+
+Diese drei Werte sind der 1. Schritt in der geführten Gärung. Als Trennzeichen zwischen den 3 Parametern wird das Semikolon verwendet. Als Dezimalzeichen wird ein Punkt verwendet.
+Der Spundomat misst in regelmäßigen Abständen (meist alle 60s) die aktuelle Temperatur am/im Gebinde und stellt entweder durch Kühlung (MV1) oder durch Heizen (MV2) die Zieltemperatur von 8°C her. Sobald diese Zieltemperatur erreicht wurde, startet die "Rastdauer" von 86400000ms (24h).
+
+Nach 24 Stunden nimmt der Spundomat die Werte aus der zweiten Zeile als Parameter: 
+10.0;172800000;0.0
+In Worten: stelle 10°C im Gebinde her und halte diese Temperatur für 48 Stunden.
+
+Im 4. Schritt ist mit einer Temperatur von 16.5°C eine Diacetylrast für 24h hinterlegt. Nach dieser Diacetylrast wird auf Coldcrash 2.0°C abgekühlt. Im 5. und letzten Schritt verbleibt der Spundomat endlos. Er wiederholt die 48h immer und immer wieder, bis das Gerät ausgeschaltet wird.
+
+Die einzelnen Schritte (also die 5 Zeilen mit den Parametern) muss jeder für sich und seine Vorstellung von geführter Gärung anpassen. Das kann im WebInterface direkt über den Button Dateiexplorer gemacht werden. Einfach die Werte überschreiben, die Syntax beibehalten und am Ende STRG + S zum Speichern drücken. Die Rastdauer muss leider in Millisekunden eingetragen werden.
+
 ---
 
 ## Ablaufpläne

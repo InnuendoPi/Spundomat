@@ -6,6 +6,10 @@ void setInfluxDB()
 
 bool checkDBConnect()
 {
+    // Test
+    visState = "0";
+    return true;
+
     if (dbClient.validateConnection())
     {
         if (!connected2DB)

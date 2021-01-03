@@ -6,8 +6,9 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.20
+Version 2.22
 
+- Fixed:    Update Grafana/InfluxDB (validateConnection)
 - Added:    Steuerpläne für eine Gärführung
 - Added:    einfache Gärsteuerung (Kühlung/Heizung) implementiert
 - Changed:  Konfiguration Visualisierung wird nun gespeichert (bierdrohne)
@@ -57,7 +58,7 @@ Bibliotheken: (Stand ab Version 2.12, 12.2020)
 - Arduino IDE 1.8.13
 - Visual Code 1.48.2
 - ArduinoJSON 6.17
-- InfluxDB 3.6
+- InfluxDB 3.7
 - WiFiManager 2.0
 - MH-Z19 1.5
 

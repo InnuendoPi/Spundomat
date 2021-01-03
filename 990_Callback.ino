@@ -5,10 +5,8 @@ void tickerTempCallback() // Timer Objekt Temperatur
 
 void tickerInfluxDBCallback() // Timer Objekt Influx Datenbank
 {
-  if (wlanState && checkDBConnect()) // if checkDBConnect is successful it sets visState to 0
+  if (checkDBConnect()) // if checkDBConnect is successful it sets visState to 0
     sendDBData();
-  else
-    DEBUG_MSG("*** SYSINFO: sending Influx data skipped: WLAN not connected\n");
 }
 
 void tickerPressureCallback() // Timer Objekt Druck

@@ -63,7 +63,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.21";
+const char Version[7] = "2.22";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -83,7 +83,7 @@ const char Version[7] = "2.21";
 #define DB_UPDATE 60000
 #define WLAN_UPDATE 30000
 #define CO2_UPDATE 60000
-#define TARGET_UPDATE 5000 //60000
+#define TARGET_UPDATE 60000
 
 #define AUS 0
 #define SPUNDOMAT 1

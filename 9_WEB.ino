@@ -342,6 +342,11 @@ void handleRequestMisc()
         message = (upInflux / 1000);
         goto SendMessage;
     }
+    if (request == "vistag")
+    {
+        message = dbVisTag;
+        goto SendMessage;
+    }
     if (request == "rssi")
     {
         message = WiFi.RSSI();
@@ -650,22 +655,14 @@ void visualisieren()
         {
             if (server.arg(i) == "1")
             {
-                if (checkDBConnect())
-                {
-                    startVis = true;
-                    TickerInfluxDB.interval(upInflux);
-                    TickerInfluxDB.start();
-                }
-                else
-                {
-                    startVis = false;
-                    TickerInfluxDB.stop();
-                }
+                startVis = true;
+                TickerInfluxDB.interval(upInflux);
+                TickerInfluxDB.start();
             }
             else
             {
                 startVis = false;
-                visState = "0";
+                // visState = "0";
                 TickerInfluxDB.stop();
             }
         }

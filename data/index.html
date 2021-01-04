@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
 <head>
   <meta charset="utf-8">
@@ -597,10 +597,22 @@
 
     var modalConfirmVis = function (callback) {
       $("#btn_visual").on("click", function () {
-        $("#mi-modal-vis").modal('show');
+		  var vistag;
+		  $.ajax({
+			url: '/reqMisc?req=vistag',
+			type: 'get',
+			dataType: 'html',
+			async: false,
+			cache: false,
+			success: function (data) {
+			  vistag = data;
+			}
+		  });
+		  $("#mi-modal-vis").modal('show');
+		  $('#modal_misc_vis_tag').val(vistag);
       });
 
-      $("#modal-btn-start").on("click", function () {
+    $("#modal-btn-start").on("click", function () {
         callback(true);
         $("#mi-modal-vis").modal('hide');
       });
@@ -610,7 +622,25 @@
         $("#mi-modal-vis").modal('hide');
       });
     };
-
+	
+	$('#mi-modal-vis').on('show', function (event) {
+	  
+	  var vistag;
+	  $.ajax({
+        url: '/reqMisc?req=vistag',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          vistag = data;
+        }
+      });
+	  alert("Device says: " + vistag + "\n Page will be reloaded now!");
+	  //document.getElementById("#modal_misc_vis_tag").innerHTML = vistag;
+ 	  modal.find('#modal_misc_vis_tag').val(vistag);
+	});
+	
     modalConfirmVis(function (confirm) {
       if (confirm) {
         // start
@@ -622,7 +652,7 @@
           cache: false
         }).done(function (msg) {
           window.location.reload(true);
-        });;
+        });
       }
       else {
         // stop
@@ -634,7 +664,7 @@
           cache: false
         }).done(function (msg) {
           window.location.reload(true);
-        });;
+        });
       }
     });
 
@@ -753,6 +783,7 @@
 	  var gpio;
 	  var targettemp;
 	  var uptarget;
+	  var vistag;
 
       $.ajax({
         url: '/reqMisc?req=mdns',
@@ -1054,6 +1085,16 @@
           visstate = data;
         }
       });
+	  $.ajax({
+        url: '/reqMisc?req=vistag',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function (data) {
+          vistag = data;
+        }
+      });
       $.ajax({
         url: '/reqMisc?req=dbdatabase',
         type: 'get',
@@ -1214,6 +1255,8 @@
       modal.find('#modal_misc_rssi').val(rssi);
 	  modal.find('#modal_misc_interval_con').val(uptarget);
 	  modal.find('#modal_misc_con').val(targettemp);
+	  modal.find('#modal_misc_vis_tag').val(vistag);
+	  	  
       var modal = $(this);
     });
 

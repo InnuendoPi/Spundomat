@@ -6,8 +6,9 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Changelog
 
-Version 2.22
+Version 2.23
 
+- Fixed:    Start Grafana/InfluxDB (validateConnection)
 - Fixed:    Update Grafana/InfluxDB (validateConnection)
 - Added:    Steuerpläne für eine Gärführung
 - Added:    einfache Gärsteuerung (Kühlung/Heizung) implementiert

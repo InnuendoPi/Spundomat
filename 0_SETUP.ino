@@ -120,6 +120,9 @@ void setup()
   if (startDB)
     setInfluxDB();
 
+  if (startDB && startVis)
+    TickerInfluxDB.start();
+  
   if (startCO2)
   {
     co2Serial.begin(9600);

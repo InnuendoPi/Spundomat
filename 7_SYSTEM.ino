@@ -197,6 +197,14 @@ void calcVerzSpundomat()
   }
 }
 
+bool checkBool(const String &value)
+{
+  if (value == "true")
+    return true;
+  else
+    return false;
+}
+
 void setTicker() // Ticker Objekte deklarieren
 {
   TickerTemp.config(tickerTempCallback, upTemp, 0);

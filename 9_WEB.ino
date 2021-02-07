@@ -6,7 +6,7 @@ void handleRoot()
 
 void handleWebRequests()
 {
-    if (loadFromSpiffs(server.uri()))
+    if (loadFromLittleFS(server.uri()))
     {
         return;
     }
@@ -25,7 +25,7 @@ void handleWebRequests()
     server.send(404, "text/plain", message);
 }
 
-bool loadFromSpiffs(String path)
+bool loadFromLittleFS(String path)
 {
     String dataType = "text/plain";
     if (path.endsWith("/"))
@@ -56,11 +56,11 @@ bool loadFromSpiffs(String path)
     else if (path.endsWith(".zip"))
         dataType = "application/zip";
 
-    if (!SPIFFS.exists(path.c_str()))
+    if (!LittleFS.exists(path.c_str()))
     {
         return false;
     }
-    File dataFile = SPIFFS.open(path.c_str(), "r");
+    File dataFile = LittleFS.open(path.c_str(), "r");
     if (server.hasArg("download"))
         dataType = "application/octet-stream";
     if (server.streamFile(dataFile, dataType) != dataFile.size())
@@ -190,113 +190,46 @@ void handleRequestMiscSet()
 
 void handleRequestMisc()
 {
+    StaticJsonDocument<512> doc;
+    doc["mdns"] = startMDNS;
+    doc["mdns_name"] = nameMDNS;
+    doc["pressure"] = setPressure;
+    doc["carbonation"] = setCarbonation;
+    doc["mv1"] = startMV1;
+    doc["mv2"] = startMV2;
+    doc["mv1open"] = mv1Open;
+    doc["mv1close"] = mv1Close;
+    doc["mv2open"] = mv2Open;
+    doc["mv2close"] = mv2Close;
+    doc["testmode"] = testModus;
+    doc["uppressure"] = upPressure;
+    doc["uptemp"] = upTemp;
+    if (setEinheit == 0 || setEinheit == 1)
+        doc["verzkombi"] = (int)verzKombi;
+    else
+        doc["verzkombi"] = verzKombi;
+    doc["offset"] = offset0;
+    doc["offset2"] = offset2;
+    doc["dbserver"] = dbServer;
+    doc["startdb"] = startDB;
+    doc["dbdatabase"] = dbDatabase;
+    doc["dbuser"] = dbUser;
+    doc["dbuser"] = dbPass;
+    doc["dbup"] = upInflux / 1000;
+    doc["vistag"] = dbVisTag;
+    doc["co2sen"] = startCO2;
+    doc["rssi"] = WiFi.RSSI();
+    doc["uptarget"] = upTarget;
+    doc["targettemp"] = targetTemp;
+    String response;
+    serializeJson(doc, response);
+    server.send(200, "application/json", response);
+}
+
+void handleRequestFirm()
+{
     String request = server.arg(0);
     String message;
-    if (request == "mdns_name")
-    {
-        message = nameMDNS;
-        goto SendMessage;
-    }
-    if (request == "mdns")
-    {
-        if (startMDNS)
-            message = "1";
-        else
-            message = "0";
-        goto SendMessage;
-    }
-    if (request == "pressure")
-    {
-        message = setPressure;
-        goto SendMessage;
-    }
-    if (request == "carbonation")
-    {
-        message = setCarbonation;
-        goto SendMessage;
-    }
-    if (request == "mode")
-    {
-        message = setMode;
-        goto SendMessage;
-    }
-    if (request == "mv1")
-    {
-        if (startMV1)
-            message = "1";
-        else
-            message = "0";
-        goto SendMessage;
-    }
-    if (request == "mv1open")
-    {
-        message = mv1Open;
-        goto SendMessage;
-    }
-    if (request == "mv1close")
-    {
-        message = mv1Close;
-        goto SendMessage;
-    }
-    if (request == "mv2")
-    {
-        if (startMV2)
-            message = "1";
-        else
-            message = "0";
-        goto SendMessage;
-    }
-    if (request == "mv2open")
-    {
-        message = mv2Open;
-        goto SendMessage;
-    }
-    if (request == "mv2close")
-    {
-        message = mv2Close;
-        goto SendMessage;
-    }
-    if (request == "testmode")
-    {
-        if (testModus)
-            message = "1";
-        else
-            message = "0";
-        goto SendMessage;
-    }
-    if (request == "uppressure")
-    {
-        message = upPressure;
-        goto SendMessage;
-    }
-    if (request == "uptemp")
-    {
-        message = upTemp;
-        goto SendMessage;
-    }
-    if (request == "verzkombi")
-    {
-        if (setEinheit == 0 || setEinheit == 1)
-            message = (int)verzKombi;
-        else
-            message = verzKombi;
-        goto SendMessage;
-    }
-    if (request == "einheit")
-    {
-        message = setEinheit;
-        goto SendMessage;
-    }
-    if (request == "offset")
-    {
-        message = offset0;
-        goto SendMessage;
-    }
-    if (request == "offset2")
-    {
-        message = offset2;
-        goto SendMessage;
-    }
     if (request == "firmware")
     {
         if (startMDNS)
@@ -307,72 +240,6 @@ void handleRequestMisc()
         else
             message = "Spundomat V ";
         message += Version;
-        goto SendMessage;
-    }
-    if (request == "dbserver")
-    {
-        message = dbServer;
-        goto SendMessage;
-    }
-    if (request == "startdb")
-    {
-        if (startDB)
-            message = "1";
-        else
-            message = "0";
-        goto SendMessage;
-    }
-    if (request == "dbdatabase")
-    {
-        message = dbDatabase;
-        goto SendMessage;
-    }
-    if (request == "dbuser")
-    {
-        message = dbUser;
-        goto SendMessage;
-    }
-    if (request == "dbpass")
-    {
-        message = dbPass;
-        goto SendMessage;
-    }
-    if (request == "dbup")
-    {
-        message = (upInflux / 1000);
-        goto SendMessage;
-    }
-    if (request == "vistag")
-    {
-        message = dbVisTag;
-        goto SendMessage;
-    }
-    if (request == "rssi")
-    {
-        message = WiFi.RSSI();
-        goto SendMessage;
-    }
-    if (request == "co2sen")
-    {
-        if (startCO2)
-            message = "1";
-        else
-            message = "0";
-        goto SendMessage;
-    }
-    if (request == "gpio")
-    {
-        message = setGPIO;
-        goto SendMessage;
-    }
-    if (request == "uptarget")
-    {
-        message = upTarget;
-        goto SendMessage;
-    }
-    if (request == "targettemp")
-    {
-        message = targetTemp;
         goto SendMessage;
     }
 
@@ -386,14 +253,14 @@ void handleSetMisc()
     {
         if (server.argName(i) == "eeprom")
         {
-            if (server.arg(i) == "1")
+            if (server.arg(i) == "true")
             {
                 eraseEeprom();
             }
         }
         if (server.argName(i) == "reset")
         {
-            if (server.arg(i) == "1")
+            if (server.arg(i) == "true")
             {
                 WiFi.disconnect();
                 wifiManager.resetSettings();
@@ -404,9 +271,9 @@ void handleSetMisc()
         }
         if (server.argName(i) == "clear")
         {
-            if (server.arg(i) == "1")
+            if (server.arg(i) == "true")
             {
-                SPIFFS.remove("/config.txt");
+                LittleFS.remove("/config.txt");
                 eraseEeprom();
                 WiFi.disconnect();
                 wifiManager.resetSettings();
@@ -423,10 +290,7 @@ void handleSetMisc()
         }
         if (server.argName(i) == "mdns")
         {
-            if (server.arg(i) == "1")
-                startMDNS = true;
-            else
-                startMDNS = false;
+            startMDNS = checkBool(server.arg(i));
         }
         if (server.argName(i) == "pressure")
         {
@@ -446,13 +310,10 @@ void handleSetMisc()
         }
         if (server.argName(i) == "mv1")
         {
-            if (server.arg(i) == "1")
-            {
-                startMV1 = true;
+
+            startMV1 = checkBool(server.arg(i));
+            if (startMV1)
                 pinMode(PIN_MV1, OUTPUT);
-            }
-            else
-                startMV1 = false;
         }
         if (server.argName(i) == "mv1open")
         {
@@ -472,13 +333,10 @@ void handleSetMisc()
         }
         if (server.argName(i) == "mv2")
         {
-            if (server.arg(i) == "1")
-            {
-                startMV2 = true;
+
+            startMV2 = checkBool(server.arg(i));
+            if (startMV2)
                 pinMode(PIN_MV2, OUTPUT);
-            }
-            else
-                startMV2 = false;
         }
         if (server.argName(i) == "mv2open")
         {
@@ -498,11 +356,7 @@ void handleSetMisc()
         }
         if (server.argName(i) == "testmode")
         {
-            if (server.arg(i) == "1")
-                testModus = true;
-
-            else
-                testModus = false;
+            testModus = checkBool(server.arg(i));
         }
         if (server.argName(i) == "uppressure")
         {
@@ -565,10 +419,7 @@ void handleSetMisc()
         }
         if (server.argName(i) == "startdb")
         {
-            if (server.arg(i) == "1")
-                startDB = true;
-            else
-                startDB = false;
+            startDB = checkBool(server.arg(i));
         }
         if (server.argName(i) == "dbdatabase")
         {
@@ -601,10 +452,8 @@ void handleSetMisc()
         }
         if (server.argName(i) == "co2sen")
         {
-            if (server.arg(i) == "1")
-                startCO2 = true;
-            else
-                startCO2 = false;
+
+            startCO2 = checkBool(server.arg(i));
         }
         if (server.argName(i) == "gpio")
         {
@@ -626,6 +475,7 @@ void handleSetMisc()
         }
         yield();
     }
+    server.send(201, "text/plain", "created");
     saveConfig();
     reflashLCD = true;
 }
@@ -639,6 +489,7 @@ void eraseEeprom()
         EEPROM.write(i, 0);
         EEPROM.commit();
     }
+    server.send(201, "text/plain", "erased");
     saveConfig();
 }
 
@@ -653,7 +504,7 @@ void visualisieren()
         }
         if (server.argName(i) == "startvis")
         {
-            if (server.arg(i) == "1")
+            if (server.arg(i) == "true")
             {
                 startVis = true;
                 TickerInfluxDB.interval(upInflux);
@@ -662,7 +513,6 @@ void visualisieren()
             else
             {
                 startVis = false;
-                // visState = "0";
                 TickerInfluxDB.stop();
             }
         }
@@ -675,6 +525,8 @@ void visualisieren()
     }
     else
         TickerInfluxDB.pause();
+
+    server.send(201, "text/plain", "created");
 }
 
 void kalibrieren()
@@ -771,8 +623,8 @@ void handlereqGPIO()
 
 void rebootDevice()
 {
-    server.send(200, "text/plain", "rebooting...");
-    SPIFFS.end(); // unmount SPIFFS
+    server.send(205, "text/plain", "rebooting...");
+    LittleFS.end(); // unmount LittleFS
     ESP.restart();
 }
 

@@ -37,11 +37,11 @@ bool handleFileRead(String path) {
   }
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
-  if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)) {
-    if (SPIFFS.exists(pathWithGz)) {
+  if (LittleFS.exists(pathWithGz) || LittleFS.exists(path)) {
+    if (LittleFS.exists(pathWithGz)) {
       path += ".gz";
     }
-    File file = SPIFFS.open(path, "r");
+    File file = LittleFS.open(path, "r");
     server.streamFile(file, contentType);
     file.close();
     return true;
@@ -60,7 +60,7 @@ void handleFileUpload() {
       filename = "/" + filename;
     }
     DEBUG_MSG("handleFileUpload Name: %s\n", filename.c_str());
-    fsUploadFile = SPIFFS.open(filename, "w");
+    fsUploadFile = LittleFS.open(filename, "w");
     filename = String();
   } else if (upload.status == UPLOAD_FILE_WRITE) {
     DEBUG_MSG("handleFileUpload Data: %d\n", upload.currentSize);
@@ -85,10 +85,10 @@ void handleFileDelete() {
   if (path == "/") {
     return server.send(500, "text/plain", "BAD PATH");
   }
-  if (!SPIFFS.exists(path)) {
+  if (!LittleFS.exists(path)) {
     return server.send(404, "text/plain", "FileNotFound");
   }
-  SPIFFS.remove(path);
+  LittleFS.remove(path);
   server.send(200, "text/plain", "");
   path = String();
 }
@@ -102,10 +102,10 @@ void handleFileCreate() {
   if (path == "/") {
     return server.send(500, "text/plain", "BAD PATH");
   }
-  if (SPIFFS.exists(path)) {
+  if (LittleFS.exists(path)) {
     return server.send(500, "text/plain", "FILE EXISTS");
   }
-  File file = SPIFFS.open(path, "w");
+  File file = LittleFS.open(path, "w");
   if (file) {
     file.close();
   } else {
@@ -121,7 +121,7 @@ void handleFileList() {
     return;
   }
   String path = server.arg("dir");
-  Dir dir = SPIFFS.openDir(path);
+  Dir dir = LittleFS.openDir(path);
   path = String();
 
   String output = "[";
@@ -134,7 +134,8 @@ void handleFileList() {
     output += "{\"type\":\"";
     output += (isDir) ? "dir" : "file";
     output += "\",\"name\":\"";
-    output += String(entry.name()).substring(1);
+    // output += String(entry.name()).substring(1); //SPIFFS
+    output += String(entry.name()).substring(0); // Änderung für LittleFS
     output += "\"}";
     entry.close();
   }

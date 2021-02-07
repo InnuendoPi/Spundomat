@@ -4,10 +4,20 @@
 
 Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
+## Update Hinweis Version 2.50
+
+Beim Update auf Version 2.5 von 2.30 oder älter muss das Dateisystem ersetzt werden.
+Die Firmware und das Filesystem LittleFS müssen neu geflasht werden. Ein WebUpdate von 2.3x auf 2.50 oder neuer ist nicht möglich.
+
 ## Changelog
 
-Version 2.23
+Version 2.50
 
+- Changed:  Dateisystem LittleFS
+- Optimize: Web Interface
+- Optimize: Speicherverbrauch
+- Update:   Bootstrap und JQuery
+- Update:   Bibliotheken
 - Fixed:    Start Grafana/InfluxDB (validateConnection)
 - Fixed:    Update Grafana/InfluxDB (validateConnection)
 - Added:    Steuerpläne für eine Gärführung
@@ -53,13 +63,13 @@ Version 2.23
 - Fixed:    Fehler Anzeige Druck WebIf während Ablaufpläne behoben
 - Cleanup
 
-Bibliotheken: (Stand ab Version 2.12, 12.2020)
+Bibliotheken: (Stand ab Version 2.50, 02.2021)
 
-- ESP8266 2.7.4 (SPIFFS)
+- ESP8266 2.7.4 (LittleFS)
 - Arduino IDE 1.8.13
-- Visual Code 1.48.2
+- Visual Code 1.51.2 mit modifiziertem ESP8266FS Plugin für LittleFS
 - ArduinoJSON 6.17
-- InfluxDB 3.7
+- InfluxDB 3.6
 - WiFiManager 2.0
 - MH-Z19 1.5
 

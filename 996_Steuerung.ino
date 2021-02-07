@@ -105,17 +105,15 @@ void readSteuerplan(File &f)
                 }
                 line[cIndex] = c;
                 line[cIndex + 1] = '\0';
-                cIndex++;
-                if (!file.available())
-                    break;
                 c = file.read();
+                cIndex++;
             }
-            if (headerStruktur) // Planname
+            if (headerStruktur) // Name Steuerung
             {
                 shortName = strtok(line, &startDeliHeader); // Das erste Zeichen muss ein # sein
                 shortName = strtok(shortName, &delimiter);
-                longName = strtok(NULL, &endDelimiter);
-                // DEBUG_MSG("Line# %d shortName: %s longName: %s\n", lineCounter, shortName, longName);
+                longName = strtok(NULL, &delimiter);
+                DEBUG_MSG("Line# %d shortName: %s longName: %s\n", lineCounter, shortName, longName);
                 if (headerCounter == 1)
                 {
                     modes[CON1] = shortName;   // ModusNamen im Display

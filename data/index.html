@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <title>Spundomat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="theme.css" type="text/css">
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="styles.min.css">
 </head>
 
 <body onload="setInterval(refresh, 1000)">
@@ -42,8 +42,8 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="misc_modal">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade" id="misc_modal" tabindex="-1">
+    <div class="modal-dialog modal-lg" data-keyboard="true" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Einstellungen</h5> <button type="button" class="close"
@@ -95,7 +95,8 @@
               </div>
               <div class="border-top my-3"></div>
               <div class="form-group row">
-                <label for="modal_misc_kombi" class="col-sm col-form-label">Verzögerung Karbonisieren im Spundomat-Modus</label>
+                <label for="modal_misc_kombi" class="col-sm col-form-label">Verzögerung Karbonisieren im
+                  Spundomat-Modus</label>
                 <div class="col-sm-auto">
                   <input type="text" class="text-right" placeholder="" id="modal_misc_kombi" />
                 </div>
@@ -106,7 +107,7 @@
                   <select class="form-control" id="modal_misc_kombi_auswahl"></select>
                 </div>
               </div>
-			  <div class="border-top my-3"></div>
+              <div class="border-top my-3"></div>
               <div class="form-group row">
                 <label for="modal_misc_con" class="col-sm col-form-label">Zieltemperatur Gärsteuerung</label>
                 <div class="col-sm-auto">
@@ -150,13 +151,13 @@
                 </div>
               </div>
               <div class="border-top my-3"></div>
-			  <div class="form-group row">
+              <div class="form-group row">
                 <label for="modal_misc_modus_gpio" class="col-sm col-form-label">Modus GPIO</label>
                 <div class="col-sm-auto">
                   <select class="form-control" id="modal_misc_modus_gpio"></select>
                 </div>
               </div>
-			  <div class="form-check">
+              <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_co2sen" />
                 <label class="form-check-label" for="modal_misc_co2sen">Aktiviere CO2 Sensor</label>
               </div>
@@ -177,7 +178,7 @@
                   <input type="text" class="text-right" placeholder="" id="modal_misc_interval_temp" />
                 </div>
               </div>
-			  <div class="form-group row">
+              <div class="form-group row">
                 <label for="modal_misc_intervall_con" class="col-sm col-form-label">Intervall Gärsteuerung
                   [ms]</label>
                 <div class="col-sm-auto">
@@ -258,8 +259,8 @@
                   <input type="text" readonly class="form-control-plaintext" id="modal_misc_offset2">
                 </div>
               </div>
-			  <div class="border-top my-3"></div>
-			  <div class="form-check">
+              <div class="border-top my-3"></div>
+              <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_testmode" />
                 <label class="form-check-label" for="modal_misc_testmode">Testmodus (nicht aktivieren!)</label>
               </div>
@@ -276,22 +277,23 @@
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_clear" />
-                <label class="form-check-label" for="modal_misc_clear">Lösche alle Einstellungen (Reset to defaults)</label>
+                <label class="form-check-label" for="modal_misc_clear">Lösche alle Einstellungen (Reset to
+                  defaults)</label>
               </div>
               <br />
             </div>
           </div>
         </div>
-        <div class="modal-footer"> <button type="button" class="btn btn-primary"
+        <div class="modal-footer"> <button type="button" class="btn btn-outline-success"
             id="modal_misc_btn_save">Speichern</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Schließen</button>
         </div>
       </div>
     </div>
   </div>
   <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     id="mi-modal-upd">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog" data-keyboard="true">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="myModalLabelUpd">Firmware Update</h4>
@@ -303,16 +305,16 @@
           <p>Spundomat startet automatisch neu!</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" id="modal-btn-file">Upload</button>
-          <button type="button" class="btn btn-secondary" id="modal-btn-web">WebUpdate</button>
-          <button type="button" class="btn btn-primary" id="modal-btn-abbruch">Zurück</button>
+          <button type="button" class="btn btn-outline-warning" id="modal-btn-file">Upload</button>
+          <button type="button" class="btn btn-outline-primary" id="modal-btn-web">WebUpdate</button>
+          <button type="button" class="btn btn-outline-secondary" id="modal-btn-abbruch">Zurück</button>
         </div>
       </div>
     </div>
   </div>
   <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabelVis" aria-hidden="true"
     id="mi-modal-vis">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog" data-keyboard="true">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="myModalLabelVis">Visualisierung</h4>
@@ -326,15 +328,15 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" id="modal-btn-start">Starten</button>
-          <button type="button" class="btn btn-primary" id="modal-btn-stop">Stoppen</button>
+          <button type="button" class="btn btn-outline-warning" id="modal-btn-start">Starten</button>
+          <button type="button" class="btn btn-outline-secondary" id="modal-btn-stop">Stoppen</button>
         </div>
       </div>
     </div>
   </div>
   <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabelKal" aria-hidden="true"
     id="mi-modal-kal">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog" data-keyboard="true">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="myModalLabelKal">Kalibrierung</h4>
@@ -346,14 +348,14 @@
           <p>Vorh. Daten werden überschrieben!</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" id="modal-btn-kal">Starten</button>
-          <button type="button" class="btn btn-primary" id="modal-btn-abb">Abbruch</button>
+          <button type="button" class="btn btn-outline-warning" id="modal-btn-kal">Starten</button>
+          <button type="button" class="btn btn-outline-secondary" id="modal-btn-abb">Abbruch</button>
         </div>
       </div>
     </div>
   </div>
-  <script src="./jquery-3.4.1.min.js"></script>
-  <script src="./bootstrap.bundle.js"></script>
+  <script src="./jquery.min.js"></script>
+  <script src="./bootstrap.bundle.min.js"></script>
   <script type="text/javascript">
 
 
@@ -431,13 +433,13 @@
           miscRender += data.pressure + " bar";
           miscRender += "</span></li>";
         }
-		else if (data.mode == 10) {
+        else if (data.mode == 10) {
           miscRender += "Gärsteuerung ";
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zieltemperatur<span class='badge badge-info'>";
           miscRender += data.targettemp + " °C";
           miscRender += "</span></li>";
         }
-		else if (data.mode > 10) {
+        else if (data.mode > 10) {
           miscRender += "Steuerplan ";
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zieltemperatur<span class='badge badge-info'>";
           miscRender += data.targettemp + " °C";
@@ -483,70 +485,59 @@
         if (data.gpio == 1) {
           miscRender += " badge-success'>Alarm aktiviert";
         }
-		else if (data.gpio == 2) {
+        else if (data.gpio == 2) {
           miscRender += " badge-success'>Ventilator aktiviert";
         }
         else {
           miscRender += " badge-dark'>GPIO deaktiviert";
         }
-		miscRender += "</span><span class='badge ";
-		if (data.co2sen) {
-          if (data.wertco2 < 1000)
-		  {
-			miscRender += " badge-success'>";
-		  }
-		  else if (data.wertco2 < 2000) {
-			miscRender += " badge-warning'>";
-		  }
-		  else {
-			miscRender += " badge-danger'>";
-		  }
-		  miscRender += "CO2: "  + data.wertco2 + "ppm"
+        miscRender += "</span><span class='badge ";
+        if (data.co2sen) {
+          if (data.wertco2 < 1000) {
+            miscRender += " badge-success'>";
+          }
+          else if (data.wertco2 < 2000) {
+            miscRender += " badge-warning'>";
+          }
+          else {
+            miscRender += " badge-danger'>";
+          }
+          miscRender += "CO2: " + data.wertco2 + "ppm"
         }
         else {
           miscRender += " badge-dark'>CO2 Sensor deaktiviert";
         }
-		miscRender += "</span><span class='badge ";
-        if (data.mode < 10)
-		{
-			if (data.mv1) 
-			{
-				miscRender += " badge-success'>MV1: " + data.mv1opendisp + " / " + data.mv1closedisp;
-			}
-			else
-			{
-				miscRender += " badge-dark'>MV1 deaktiviert";
-			}
-			miscRender += "</span><span class='badge ";
-			if (data.mv2) 
-			{
-				miscRender += " badge-success'>MV2: " + data.mv2opendisp + " / " + data.mv2closedisp;
-			}
-			else
-			{
-				miscRender += " badge-dark'>MV2 deaktiviert";
-			}
-		
-		}
-		else if (data.mode >= 10)
-		{
-			if (data.controller == 1)
-			{
-				miscRender += " badge-success'>Kühlung aktiv";
-			}
-			else
-			{
-				miscRender += " badge-dark'>Kühlung aus";
-			}
-			miscRender += "</span><span class='badge ";
-			if (data.controller == 2)
-			{
-				miscRender += " badge-success'>Heizung aktiv";
-			}
-			else
-			{
-				miscRender += " badge-dark'>Heizung aus";
-			}
+        miscRender += "</span><span class='badge ";
+        if (data.mode < 10) {
+          if (data.mv1) {
+            miscRender += " badge-success'>MV1: " + data.mv1opendisp + " / " + data.mv1closedisp;
+          }
+          else {
+            miscRender += " badge-dark'>MV1 deaktiviert";
+          }
+          miscRender += "</span><span class='badge ";
+          if (data.mv2) {
+            miscRender += " badge-success'>MV2: " + data.mv2opendisp + " / " + data.mv2closedisp;
+          }
+          else {
+            miscRender += " badge-dark'>MV2 deaktiviert";
+          }
+
+        }
+        else if (data.mode >= 10) {
+          if (data.controller == 1) {
+            miscRender += " badge-success'>Kühlung aktiv";
+          }
+          else {
+            miscRender += " badge-dark'>Kühlung aus";
+          }
+          miscRender += "</span><span class='badge ";
+          if (data.controller == 2) {
+            miscRender += " badge-success'>Heizung aktiv";
+          }
+          else {
+            miscRender += " badge-dark'>Heizung aus";
+          }
         }
         miscRender += "</span> </li>";
         miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Dienste<span class='badge ";
@@ -597,22 +588,22 @@
 
     var modalConfirmVis = function (callback) {
       $("#btn_visual").on("click", function () {
-		  var vistag;
-		  $.ajax({
-			url: '/reqMisc?req=vistag',
-			type: 'get',
-			dataType: 'html',
-			async: false,
-			cache: false,
-			success: function (data) {
-			  vistag = data;
-			}
-		  });
-		  $("#mi-modal-vis").modal('show');
-		  $('#modal_misc_vis_tag').val(vistag);
+        var vistag;
+        $.ajax({
+          url: '/reqMisc?req=vistag',
+          type: 'get',
+          dataType: 'html',
+          async: false,
+          cache: false,
+          success: function (data) {
+            vistag = data;
+          }
+        });
+        $("#mi-modal-vis").modal('show');
+        $('#modal_misc_vis_tag').val(vistag);
       });
 
-    $("#modal-btn-start").on("click", function () {
+      $("#modal-btn-start").on("click", function () {
         callback(true);
         $("#mi-modal-vis").modal('hide');
       });
@@ -622,11 +613,11 @@
         $("#mi-modal-vis").modal('hide');
       });
     };
-	
-	$('#mi-modal-vis').on('show', function (event) {
-	  
-	  var vistag;
-	  $.ajax({
+
+    $('#mi-modal-vis').on('show', function (event) {
+
+      var vistag;
+      $.ajax({
         url: '/reqMisc?req=vistag',
         type: 'get',
         dataType: 'html',
@@ -636,11 +627,9 @@
           vistag = data;
         }
       });
-	  alert("Device says: " + vistag + "\n Page will be reloaded now!");
-	  //document.getElementById("#modal_misc_vis_tag").innerHTML = vistag;
- 	  modal.find('#modal_misc_vis_tag').val(vistag);
-	});
-	
+      modal.find('#modal_misc_vis_tag').val(vistag);
+    });
+
     modalConfirmVis(function (confirm) {
       if (confirm) {
         // start
@@ -738,526 +727,42 @@
 
     $('#misc_modal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget);
-      var mdns;
-      var mdns_name;
-      var reset;
-      var clear;
-      var eeprom;
-      var pressure;
-      var carbonation;
-      var mode;
-      var delayspund;
-      var delayspunddisp;
-      var einheit;
-      var druck;
-      var voltage;
-      var temperatur;
-      var co2;
-      var offset;
-      var mv1;
-      var mv1open;
-      var mv1close;
-      var mv2;
-      var mv2open;
-      var mv2close;
-      var mv1opendisp;
-      var mv1closedisp;
-      var mv2opendisp;
-      var mv2closedisp;
-      var uppressure;
-      var uptemp;
-      var testmode;
-      var offset2;
-      var startdb;
-      var startvis;
-      var visstate;
-      var dbserver;
-      var dbdatabase;
-      var dbuser;
-      var dbpass;
-      var dbup;
-      var ablauf;
-      var alertstate;
-      var rssi;
-	  var co2sen;
-	  var gpio;
-	  var targettemp;
-	  var uptarget;
-	  var vistag;
-
-      $.ajax({
-        url: '/reqMisc?req=mdns',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mdns = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mdns_name',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mdns_name = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=pressure',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          pressure = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=carbonation',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          carbonation = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mode',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mode = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=verzkombi',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          delayspund = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=einheit',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          einheit = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=co2',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          co2 = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=voltage',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          voltage = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=temperatur',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          temperatur = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=druck',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          druck = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=offset',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          offset = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=offset2',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          offset2 = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv1',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv1 = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv1open',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv1open = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv1close',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv1close = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv2',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv2 = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv2open',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv2open = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv2close',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv2close = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv1opendisp',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv1opendisp = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv1closedisp',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv1closedisp = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv2opendisp',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv2opendisp = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=mv2closedisp',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          mv2closedisp = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=uppressure',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          uppressure = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=uptemp',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          uptemp = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=testmode',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          testmode = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=dbserver',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          dbserver = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=startdb',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          startdb = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=startvis',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          startvis = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=visstate',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          visstate = data;
-        }
-      });
-	  $.ajax({
-        url: '/reqMisc?req=vistag',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          vistag = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=dbdatabase',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          dbdatabase = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=dbuser',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          dbuser = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=dbpass',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          dbpass = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=dbup',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          dbup = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=ablauf',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          ablauf = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=alertstate',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          alertstate = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=alertmessage',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          alertmessage = data;
-        }
-      });
-      $.ajax({
-        url: '/reqMisc?req=rssi',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          rssi = data;
-        }
-      });
-	  $.ajax({
-        url: '/reqMisc?req=co2sen',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          co2sen = data;
-        }
-      });
-	  $.ajax({
-        url: '/reqMisc?req=gpio',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          gpio = data;
-        }
-      });
-	  $.ajax({
-        url: '/reqMisc?req=targettemp',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          targettemp = data;
-        }
-      });
-	  $.ajax({
-        url: '/reqMisc?req=uptarget',
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function (data) {
-          uptarget = data;
-        }
-      });
-
-      var modal = $(this);
       $('#modal_misc_modus').load('/reqMode');
       $('#modal_misc_kombi_auswahl').load('/reqEinheit');
-	  $('#modal_misc_modus_gpio').load('/reqGPIO');
-      modal.find('#modal_misc_mdns_name').val(mdns_name);
-      if (mdns == "1") { modal.find('#modal_misc_mdns').prop("checked", true); }
-      else { modal.find('#modal_misc_mdns').prop("checked", false); }
-      if (mv1 == "1") { modal.find('#modal_misc_mv1').prop("checked", true); }
-      else { modal.find('#modal_misc_mv1').prop("checked", false); }
-      if (mv2 == "1") { modal.find('#modal_misc_mv2').prop("checked", true); }
-      else { modal.find('#modal_misc_mv2').prop("checked", false); }
-      if (testmode == "1") { modal.find('#modal_misc_testmode').prop("checked", true); }
-      else { modal.find('#modal_misc_testmode').prop("checked", false); }
-      if (startdb == "1") { modal.find('#modal_misc_db_enable').prop("checked", true); }
-      else { modal.find('#modal_misc_db_enable').prop("checked", false); }
-	  if (co2sen == "1") { modal.find('#modal_misc_co2sen').prop("checked", true); }
-      else { modal.find('#modal_misc_co2sen').prop("checked", false); }
+      $('#modal_misc_modus_gpio').load('/reqGPIO');
+      var modal = $(this);
       modal.find('#modal_misc_reset').prop("checked", false);
       modal.find('#modal_misc_clear').prop("checked", false);
       modal.find('#modal_misc_eeprom').prop("checked", false);
-      modal.find('#modal_misc_pressure').val(pressure);
-      modal.find('#modal_misc_carbonation').val(carbonation);
-      modal.find('#modal_misc_mv1open').val(mv1open);
-      modal.find('#modal_misc_mv1close').val(mv1close);
-      modal.find('#modal_misc_mv2open').val(mv2open);
-      modal.find('#modal_misc_mv2close').val(mv2close);
-      modal.find('#modal_misc_interval_pressure').val(uppressure);
-      modal.find('#modal_misc_interval_temp').val(uptemp);
-      modal.find('#modal_misc_kombi').val(delayspund);
-      modal.find('#modal_misc_offset').val(offset);
-      modal.find('#modal_misc_offset2').val(offset2);
-      modal.find('#modal_misc_db_server').val(dbserver);
-      modal.find('#modal_misc_db_database').val(dbdatabase);
-      modal.find('#modal_misc_db_user').val(dbuser);
-      modal.find('#modal_misc_db_pass').val(dbpass);
-      modal.find('#modal_misc_db_up').val(dbup);
-      modal.find('#modal_misc_rssi').val(rssi);
-	  modal.find('#modal_misc_interval_con').val(uptarget);
-	  modal.find('#modal_misc_con').val(targettemp);
-	  modal.find('#modal_misc_vis_tag').val(vistag);
-	  	  
-      var modal = $(this);
+      $.get("/reqMisc", function (data) {
+        modal.find('#modal_misc_mdns_name').val(data.mdns_name);
+        modal.find('#modal_misc_mdns').prop("checked", Boolean(Number(data.mdns)));
+        modal.find('#modal_misc_mv1').prop("checked", Boolean(Number(data.mv1)));
+        modal.find('#modal_misc_mv2').prop("checked", Boolean(Number(data.mv2)));
+        modal.find('#modal_misc_testmode').prop("checked", Boolean(Number(data.testmode)));
+        modal.find('#modal_misc_db_enable').prop("checked", Boolean(Number(data.startdb)));
+        modal.find('#modal_misc_co2sen').prop("checked", Boolean(Number(data.co2sen)));
+        modal.find('#modal_misc_pressure').val(data.pressure);
+        modal.find('#modal_misc_carbonation').val(data.carbonation);
+        modal.find('#modal_misc_mv1open').val(data.mv1open);
+        modal.find('#modal_misc_mv1close').val(data.mv1close);
+        modal.find('#modal_misc_mv2open').val(data.mv2open);
+        modal.find('#modal_misc_mv2close').val(data.mv2close);
+        modal.find('#modal_misc_interval_pressure').val(data.uppressure);
+        modal.find('#modal_misc_interval_temp').val(data.uptemp);
+        modal.find('#modal_misc_kombi').val(data.verzkombi);
+        modal.find('#modal_misc_offset').val(data.offset);
+        modal.find('#modal_misc_offset2').val(data.offset2);
+        modal.find('#modal_misc_db_server').val(data.dbserver);
+        modal.find('#modal_misc_db_database').val(data.dbdatabase);
+        modal.find('#modal_misc_db_user').val(data.dbuser);
+        modal.find('#modal_misc_db_pass').val(data.dbpass);
+        modal.find('#modal_misc_db_up').val(data.dbup);
+        modal.find('#modal_misc_rssi').val(data.rssi);
+        modal.find('#modal_misc_interval_con').val(data.uptarget);
+        modal.find('#modal_misc_con').val(data.targettemp);
+        modal.find('#modal_misc_vis_tag').val(data.vistag);
+      });
     });
 
     $("#modal_misc_btn_save").click(function () {
@@ -1268,7 +773,7 @@
       // var mode = $('#modal_misc_modus option:selected').text();
       var mode = $('#modal_misc_modus').val();
       var einheit = $('#modal_misc_kombi_auswahl').val();
-	  var gpio = $('#modal_misc_modus_gpio').val();
+      var gpio = $('#modal_misc_modus_gpio').val();
       var delayspund = modal.find('#modal_misc_kombi').val();
       var mv1open = modal.find('#modal_misc_mv1open').val();
       var mv1close = modal.find('#modal_misc_mv1close').val();
@@ -1281,64 +786,17 @@
       var dbuser = modal.find('#modal_misc_db_user').val();
       var dbpass = modal.find('#modal_misc_db_pass').val();
       var dbup = modal.find('#modal_misc_db_up').val();
-	  var targettemp = modal.find('#modal_misc_con').val();
-	  var uptarget = modal.find('#modal_misc_intervall_con').val();
-	  
-      if (modal.find('#modal_misc_mdns').prop("checked") == true) {
-        var mdns = "1";
-      }
-      else {
-        var mdns = "0";
-      }
-      if (modal.find('#modal_misc_eeprom').prop("checked") == true) {
-        var eeprom = "1";
-      }
-      else {
-        var eeprom = "0";
-      }
-      if (modal.find('#modal_misc_reset').prop("checked") == true) {
-        var reset = "1";
-      }
-      else {
-        var reset = "0";
-      }
-      if (modal.find('#modal_misc_clear').prop("checked") == true) {
-        var clear = "1";
-      }
-      else {
-        var clear = "0";
-      }
-      if (modal.find('#modal_misc_mv1').prop("checked") == true) {
-        var mv1 = "1";
-      }
-      else {
-        var mv1 = "0";
-      }
-      if (modal.find('#modal_misc_mv2').prop("checked") == true) {
-        var mv2 = "1";
-      }
-      else {
-        var mv2 = "0";
-      }
-      if (modal.find('#modal_misc_testmode').prop("checked") == true) {
-        var testmode = "1";
-      }
-      else {
-        var testmode = "0";
-      }
-      if (modal.find('#modal_misc_db_enable').prop("checked") == true) {
-        var startdb = "1";
-      }
-      else {
-        var startdb = "0";
-      }
-	  if (modal.find('#modal_misc_co2sen').prop("checked") == true) {
-        var co2sen = "1";
-      }
-      else {
-        var co2sen = "0";
-      }
-
+      var targettemp = modal.find('#modal_misc_con').val();
+      var uptarget = modal.find('#modal_misc_intervall_con').val();
+      var mdns = modal.find('#modal_misc_mdns').prop("checked");
+      var eeprom = modal.find('#modal_misc_eeprom').prop("checked");
+      var reset = modal.find('#modal_misc_reset').prop("checked");
+      var clear = modal.find('#modal_misc_clear').prop("checked");
+      var mv1 = modal.find('#modal_misc_mv1').prop("checked");
+      var mv2 = modal.find('#modal_misc_mv2').prop("checked");
+      var testmode = modal.find('#modal_misc_testmode').prop("checked");
+      var startdb = modal.find('#modal_misc_db_enable').prop("checked");
+      var co2sen = modal.find('#modal_misc_co2sen').prop("checked");
       $.ajax({
         url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup + '&co2sen=' + co2sen + '&gpio=' + gpio + '&targettemp=' + targettemp + '&uptarget=' + uptarget,
         type: 'POST',
@@ -1356,7 +814,6 @@
         async: false,
         cache: false
       }).done(function (msg) {
-        //alert("Device says: " + msg + "\n Page will be reloaded now!");
         window.location.reload(true);
       });;
     });
@@ -1364,7 +821,7 @@
     $(function () {
       var firmware;
       $.ajax({
-        url: '/reqMisc?req=firmware',
+        url: '/reqFirm?req=firmware',
         type: 'get',
         dataType: 'html',
         async: false,
@@ -1375,7 +832,6 @@
       });
       document.getElementById("firmware").innerHTML = firmware;
     });
-
   </script>
 </body>
 

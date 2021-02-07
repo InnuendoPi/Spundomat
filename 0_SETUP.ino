@@ -23,16 +23,16 @@ void setup()
   WiFi.setAutoReconnect(true);
 
   // Load filesystem
-  if (SPIFFS.begin())
+  if (LittleFS.begin())
   {
     updateSys();                      // WebUpdate
-    if (SPIFFS.exists("/config.txt")) // Load configuration
+    if (LittleFS.exists("/config.txt")) // Load configuration
       loadConfig();
     else
       Serial.println("*** SYSINFO: Konfigurationsdatei config.txt nicht vorhanden. Setze Standardwerte ...");
   }
   else
-    Serial.println("*** SYSINFO: Fehler - Dateisystem SPIFFS konnte nicht eingebunden werden!");
+    Serial.println("*** SYSINFO: Fehler - Dateisystem LittleFS konnte nicht eingebunden werden!");
 
   // Erstelle Ticker
   setTicker();
@@ -142,7 +142,7 @@ void setupServer()
   server.on("/reboot", rebootDevice);         // Spundomat reboot
   server.on("/kalibrieren", kalibrieren);     // Spundomat Kalibrierung
   server.on("/visualisieren", visualisieren); // Spundomat Visualisierung
-
+  server.on("/reqFirm", handleRequestFirm); // System Infos für WebConfig
   server.on("/reqMisc", handleRequestMisc); // System Infos für WebConfig
   server.on("/setMisc", handleSetMisc);     // Einstellungen ändern
   server.on("/reqMiscSet", handleRequestMiscSet);

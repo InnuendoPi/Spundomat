@@ -33,7 +33,7 @@ Dieser Quellcode baut auf einem Snippet von Janick 2017 auf.
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>      // https://github.com/tzapu/WiFiManager
 #include <ArduinoJson.h>      // Lesen und schreiben von JSON Dateien
-#include <FS.h>               // SPIFFS Zugriff
+#include "LittleFS.h"     // LittleFS Zugriff -> ESP 2.7.4
 #include <ESP8266WebServer.h> // Unterstützung Webserver
 #include <ESP8266HTTPUpdateServer.h>
 #include <ESP8266mDNS.h>
@@ -63,7 +63,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.23";
+const char Version[7] = "2.50";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -153,7 +153,7 @@ OneButton button(PIN_ENCODER_BUTTON, true);          // Encoder drücken
 RotaryEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B); // Encoder drehen
 WiFiManager wifiManager;
 ESP8266WebServer server(80);
-ESP8266HTTPUpdateServer httpUpdate; // Version mit SPIFFS Update
+ESP8266HTTPUpdateServer httpUpdate; // Version mit LittleFS Update
 
 // Zeitserver Einstellungen
 #define NTP_OFFSET 60 * 60                // Offset Winterzeit in Sekunden

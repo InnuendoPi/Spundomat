@@ -1,7 +1,7 @@
 bool loadConfig()
 {
   Serial.println("------ loadConfig started -------");
-  File configFile = SPIFFS.open("/config.txt", "r");
+  File configFile = LittleFS.open("/config.txt", "r");
   if (!configFile)
   {
     Serial.println("*** SYSINFO: Fehler beim Laden der Konfiguration");
@@ -62,8 +62,12 @@ bool loadConfig()
   // InfluxDB Einstellungen
   JsonArray databaseArray = doc["DATABASE"];
   JsonObject databaseObj = databaseArray[0];
-  if (databaseObj.containsKey("STARTDB"))
-    startDB = databaseObj["STARTDB"];
+
+  if (databaseObj["STARTDB"] || databaseObj["STARTDB"] == "1")
+    startDB = true;
+  else
+    startDB = false;
+
   if (databaseObj.containsKey("DBSERVER"))
     strlcpy(dbServer, databaseObj["DBSERVER"], sizeof(dbServer));
   if (databaseObj.containsKey("DB"))
@@ -86,10 +90,15 @@ bool loadConfig()
   // Hardware Einstellungen
   JsonArray hwArray = doc["HARDWARE"];
   JsonObject hwObj = hwArray[0];
-  if (hwObj.containsKey("MV1"))
-    startMV1 = hwObj["MV1"];
-  if (hwObj.containsKey("MV2"))
-    startMV2 = hwObj["MV2"];
+
+  if (hwObj["MV1"] || hwObj["MV1"] == "1")
+    startMV1 = true;
+  else
+    startMV1 = false;
+  if (hwObj["MV2"] || hwObj["MV2"] == "1")
+    startMV2 = true;
+  else
+    startMV2 = false;
   if (hwObj.containsKey("GPIO"))
     setGPIO = hwObj["GPIO"];
   if (hwObj.containsKey("MV1OPEN"))
@@ -100,8 +109,10 @@ bool loadConfig()
     mv2Open = hwObj["MV2OPEN"];
   if (hwObj.containsKey("MV2CLOSE"))
     mv2Close = hwObj["MV2CLOSE"];
-  if (hwObj.containsKey("CO2SEN"))
-    startCO2 = hwObj["CO2SEN"];
+  if (hwObj["CO2SEN"] || hwObj["CO2SEN"] == "1")
+    startCO2 = true;
+  else
+    startCO2 = false;
 
   Serial.printf("MV1: %d Open: %d Close: %d\n", startMV1, mv1Open, mv1Close);
   Serial.printf("MV2: %d Open: %d Close: %d\n", startMV2, mv2Open, mv2Close);
@@ -119,10 +130,15 @@ bool loadConfig()
     upTemp = miscObj["UPTEMP"];
   if (miscObj.containsKey("UPTARGET"))
     upTarget = miscObj["UPTARGET"];
-  if (miscObj.containsKey("MDNS"))
-    startMDNS = miscObj["MDNS"];
-  if (miscObj.containsKey("TESTMODE"))
-    testModus = miscObj["TESTMODE"];
+  if (miscObj["MDNS"] || miscObj["MDNS"] =="1")
+    startMDNS = true;
+  else
+    startMDNS = false;
+
+  if (miscObj["TESTMODE"] || miscObj["TESTMODE"] == "1")
+    testModus = true;
+  else
+    testModus = false;
   if (miscObj.containsKey("NAMEMDNS"))
     strlcpy(nameMDNS, miscObj["NAMEMDNS"], sizeof(nameMDNS));
 
@@ -137,8 +153,11 @@ bool loadConfig()
   // Visualisierungs Einstellungen
   JsonArray visArray = doc["VISUALISIERUNG"];
   JsonObject visObj = visArray[0];
-  if (visObj.containsKey("VISSTARTED"))
-    startVis = visObj["VISSTARTED"];
+
+  if (visObj["VISSTARTED"] || visObj["VISSTARTED"] == "1")
+    startVis = true;
+  else
+    startVis = false;
   if (visObj.containsKey("SUDID"))
     strlcpy(dbVisTag, visObj["SUDID"], sizeof(dbVisTag));
 
@@ -158,17 +177,17 @@ bool loadConfig()
   mv2.switchOff();
 
   // Ablaufpläne
-  initAblaufplan();                     // Initialisiere Strukturen
-  if (SPIFFS.exists("/ablaufplan.txt")) // Lade Ablaufpläne
+  initAblaufplan();                       // Initialisiere Strukturen
+  if (LittleFS.exists("/ablaufplan.txt")) // Lade Ablaufpläne
   {
-    file = SPIFFS.open("/ablaufplan.txt", "r");
+    file = LittleFS.open("/ablaufplan.txt", "r");
     readAblaufplan(file);
     file.close();
   }
   initSteuerplan();
-  if (SPIFFS.exists("/steuerplan.txt")) // Lade Ablaufpläne
+  if (LittleFS.exists("/steuerplan.txt")) // Lade Ablaufpläne
   {
-    file = SPIFFS.open("/steuerplan.txt", "r");
+    file = LittleFS.open("/steuerplan.txt", "r");
     readSteuerplan(file);
     file.close();
   }
@@ -211,13 +230,13 @@ bool saveConfig()
   // Hardware Einstellungen
   JsonArray hwArray = doc.createNestedArray("HARDWARE");
   JsonObject hwObj = hwArray.createNestedObject();
-  hwObj["MV1"] = startMV1;
+  hwObj["MV1"] = (int)startMV1;
+  hwObj["MV2"] = (int)startMV2;
   hwObj["MV1OPEN"] = mv1Open;
   hwObj["MV1CLOSE"] = mv1Close;
-  hwObj["MV2"] = startMV2;
   hwObj["MV2OPEN"] = mv2Open;
   hwObj["MV2CLOSE"] = mv2Close;
-  hwObj["CO2SEN"] = startCO2;
+  hwObj["CO2SEN"] = (int)startCO2;
   hwObj["GPIO"] = setGPIO;
   DEBUG_MSG("MV1: %d Open: %d Close %d\n", startMV1, mv1Open, mv1Close);
   DEBUG_MSG("MV2: %d Open: %d Close %d\n", startMV2, mv2Open, mv2Close);
@@ -228,7 +247,8 @@ bool saveConfig()
   // Datenbank Einstellungen
   JsonArray databaseArray = doc.createNestedArray("DATABASE");
   JsonObject databaseObj = databaseArray.createNestedObject();
-  databaseObj["STARTDB"] = startDB;
+  
+  databaseObj["STARTDB"] = (int)startDB;
   databaseObj["DBSERVER"] = dbServer;
   databaseObj["DB"] = dbDatabase;
   databaseObj["DBUSER"] = dbUser;
@@ -247,11 +267,11 @@ bool saveConfig()
   JsonObject miscObj = miscArray.createNestedObject();
 
   miscObj["NAMEMDNS"] = nameMDNS;
-  miscObj["MDNS"] = startMDNS;
+  miscObj["MDNS"] = (int)startMDNS;
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
   miscObj["UPTARGET"] = upTarget;
-  miscObj["TESTMODE"] = testModus;
+  miscObj["TESTMODE"] = (int)testModus;
 
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
@@ -263,7 +283,7 @@ bool saveConfig()
 
   JsonArray visArray = doc.createNestedArray("VISUALISIERUNG");
   JsonObject visObj = visArray.createNestedObject();
-  visObj["VISSTARTED"] = startVis;
+  visObj["VISSTARTED"] = (int)startVis;
   visObj["SUDID"] = dbVisTag;
   DEBUG_MSG("Visualisierung: %d\n", startVis);
   DEBUG_MSG("Sud-Id: %s\n", dbVisTag);
@@ -281,7 +301,7 @@ bool saveConfig()
     return false;
   }
 
-  File configFile = SPIFFS.open("/config.txt", "w");
+  File configFile = LittleFS.open("/config.txt", "w");
   if (!configFile)
   {
     DEBUG_MSG("%s\n", "Failed to open config file for writing");
@@ -356,9 +376,9 @@ bool saveConfig()
     //   DEBUG_MSG("Line %d: x1: %f y1: %d z1: %d x2: %f y2: %d z2: %d\n", test, structPlan1[test].zieldruckMV1, structPlan1[test].intervallMV1Open, structPlan1[test].intervallMV1Close, structPlan1[test].zieldruckMV2, structPlan1[test].intervallMV2Open, structPlan1[test].intervallMV2Close);
     // }
     initAblaufplan();
-    if (SPIFFS.exists("/ablaufplan.txt"))
+    if (LittleFS.exists("/ablaufplan.txt"))
     {
-      file = SPIFFS.open("/ablaufplan.txt", "r");
+      file = LittleFS.open("/ablaufplan.txt", "r");
       readAblaufplan(file);
       file.close();
     }
@@ -383,9 +403,9 @@ bool saveConfig()
   case CON2:
     counterCon = 0;
     initSteuerplan();
-    if (SPIFFS.exists("/steuerplan.txt")) // Lade Ablaufpläne
+    if (LittleFS.exists("/steuerplan.txt")) // Lade Ablaufpläne
     {
-      file = SPIFFS.open("/steuerplan.txt", "r");
+      file = LittleFS.open("/steuerplan.txt", "r");
       readSteuerplan(file);
       file.close();
     }

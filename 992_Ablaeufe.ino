@@ -36,17 +36,18 @@ void readAblaufplan(File &f)
                 }
                 line[cIndex] = c;
                 line[cIndex + 1] = '\0';
-                cIndex++;
-                if (!file.available())
-                    break;
+                // if (!file.available())
+                //     break;
                 c = file.read();
+                cIndex++;
             }
+            // DEBUG_MSG("Line: %s\n", line);
             if (headerStruktur) // Planname
             {
                 shortName = strtok(line, &startDeliHeader); // Das erste Zeichen muss ein # sein
                 shortName = strtok(shortName, &delimiter);
                 longName = strtok(NULL, &endDelimiter);
-                // DEBUG_MSG("Line# %d shortName: %s longName: %s\n", lineCounter, shortName, longName);
+                DEBUG_MSG("Line# %d shortName: %s longName: %s\n", lineCounter, shortName, longName);
                 if (headerCounter == 1)
                 {
                     modes[PLAN1] = shortName;   // ModusNamen im Display
@@ -73,7 +74,7 @@ void readAblaufplan(File &f)
                 strMV2Open = checkChars(strtok(NULL, &delimiter));
                 strMV2Close = checkChars(strtok(NULL, &endDelimiter));
 
-                if (setMode - PLAN1 + 1 == headerCounter) // 5-5+1 = 1 | 6-5+1 = 2 | 7-5+1 = 3  
+                if (setMode - PLAN1 + 1 == headerCounter) // 5-5+1 = 1 | 6-5+1 = 2 | 7-5+1 = 3
                 {
                     if (isValidDigit(strMV1Druck))
                         structPlan[lineStruktur].zieldruckMV1 = atof(strMV1Druck);

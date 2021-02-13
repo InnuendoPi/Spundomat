@@ -10,9 +10,10 @@ void showLCD()
     Menu1[0] += "g/l ";
     if (setMode == AUS)
     {
-      Menu1[3] = getDayOfWeek(timeClient.getDay());
+       Menu1[3] = getDayOfWeek(timeClient.getDay());
       Menu1[3] += " ";
       Menu1[3] += timeClient.getFormattedTime().c_str();
+      Menu1[3] += " ";
     }
     else if (setMode == SPUNDOMAT)
     {

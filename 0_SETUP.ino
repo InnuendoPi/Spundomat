@@ -90,6 +90,8 @@ void setup()
 
   // EEPROM
   EEPROM.begin(512);
+  // writeFloat(0, 121.0);
+  // writeFloat(4, 362.0);
   offset0 = readFloat(0); // Lese Offset (Kalibrierung)
   offset2 = readFloat(4); // Lese Offset (Kalibrierung)
 

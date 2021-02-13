@@ -11,8 +11,10 @@ Die Firmware und das Filesystem LittleFS müssen neu geflasht werden. Ein WebUpd
 
 ## Changelog
 
-Version 2.50
+Version 2.51
 
+- Downgrade Lib LiquidCrystal_PCF8574 1.2
+- Fixed:    LCD Anzeige (QuickFix Downgrade LiquidCrystal_PCF8574 1.3)
 - Changed:  Dateisystem LittleFS
 - Optimize: Web Interface
 - Optimize: Speicherverbrauch
@@ -72,6 +74,7 @@ Bibliotheken: (Stand ab Version 2.50, 02.2021)
 - InfluxDB 3.6
 - WiFiManager 2.0
 - MH-Z19 1.5
+- LiquidCrystal_PCF8574 1.2
 
 Flash size 4MB (FS:2MB OTA:~1019kB)
 SSL support all SSL ciphers (most comp)

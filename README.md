@@ -11,8 +11,9 @@ Die Firmware und das Filesystem LittleFS müssen neu geflasht werden. Ein WebUpd
 
 ## Changelog
 
-Version 2.51
+Version 2.52
 
+- Fixed:    Fehler im Parsing Ablaufplan und Steuerplan behoben
 - Fixed:    Minor fixes WebIf
 - Downgrade Lib LiquidCrystal_PCF8574 1.2
 - Fixed:    LCD Anzeige (QuickFix Downgrade LiquidCrystal_PCF8574 1.3)

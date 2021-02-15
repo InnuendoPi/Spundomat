@@ -6,7 +6,7 @@ void steuerung()
     // diff ist der absolute Abstand zw IST und Zieltemperatur
     // Erreichen der Zieltemperatur +/- 0.5 Grad - in diesem Bereich sind MV1/MV2 aus
 
-    float diff = ((int) ((targetTemp - temperature) * 10)) / 10.0;
+    float diff = ((int)((targetTemp - temperature) * 10)) / 10.0;
     if (abs(diff) < ABWEICHUNG) // Temperaturdifferenz kleiner 0,5?
         diff = 0.0;
 
@@ -23,7 +23,7 @@ void steuerung()
             TickerCon.pause();
             // DEBUG_MSG("TickerCon 2 Pause Heizung Status %d\n", TickerCon.state());
         }
-        DEBUG_MSG("Steuerplan Heizung MV1 %d MV2 %d Temp %3.2f Target %3.2f\n", mv1.getState(), mv2.getState(), temperature, targetTemp );
+        DEBUG_MSG("Steuerplan Heizung MV1 %d MV2 %d Temp %3.2f Target %3.2f\n", mv1.getState(), mv2.getState(), temperature, targetTemp);
     }
     else if (diff < 0.0)
     {
@@ -42,7 +42,7 @@ void steuerung()
     }
     else
     {
-        // do nothing
+        // Starte Time für Rastdauer
         if (!checkTemp)
         {
             checkTemp = true; // Differenz zur Zieltemp kleiner 0,5 -> setze checkTemp true
@@ -56,7 +56,7 @@ void steuerung()
             mv2.switchOff();
         if (mv1.getState())
             mv1.switchOff();
-        DEBUG_MSG("Steuerplan MV1 %d MV2 %d Temp %3.2f Target %3.2f\n", mv1.getState(), mv2.getState(), temperature, targetTemp );
+        DEBUG_MSG("Steuerplan MV1 %d MV2 %d Temp %3.2f Target %3.2f\n", mv1.getState(), mv2.getState(), temperature, targetTemp);
         // DEBUG_MSG("TickerCon Status %d\n", TickerCon.state());
     }
 }
@@ -81,22 +81,20 @@ void readSteuerplan(File &f)
         {
             char line[128];
             char c = file.read();
-            char cIndex = 0;
+            int cIndex = 0;
 
             // Header Zeile - Namen für Steuerplan
             bool headerStruktur = false;
-            char *shortName;
-            char *longName;
-            char startDeliHeader = '#';
-            char endDelimiter = '\n';
+            char *lcdName;
+            char *webName;
 
             // Struktur Steuerplan
             char *strTemp;    // Zieltemperatur
             char *strTimer;   // Dauer Rast auf Zieltemperatur
             char *strDelta24; // Temperaturänderung innerhalb 24h (def. 0.0)
-            char delimiter = ';';
+            char delimiter[] = "#;";
 
-            while (c != '\n' && cIndex < 128)
+            while (c != '\n' && cIndex < 128) // Newline oder Array End
             {
                 if (c == '#' && cIndex == 0)
                 {
@@ -104,33 +102,35 @@ void readSteuerplan(File &f)
                     headerCounter++;
                 }
                 line[cIndex] = c;
-                line[cIndex + 1] = '\0';
-                c = file.read();
                 cIndex++;
+                line[cIndex] = '\0';
+                if (!file.available())
+                    break;
+                c = file.read();
             }
+            // DEBUG_MSG("Steuerung Line POST Index: %d Line: %s\n", cIndex, line);
             if (headerStruktur) // Name Steuerung
             {
-                shortName = strtok(line, &startDeliHeader); // Das erste Zeichen muss ein # sein
-                shortName = strtok(shortName, &delimiter);
-                longName = strtok(NULL, &delimiter);
-                DEBUG_MSG("Line# %d shortName: %s longName: %s\n", lineCounter, shortName, longName);
+                lcdName = strtok(line, delimiter); // Das erste Zeichen muss ein # sein
+                webName = strtok(NULL, delimiter);
+                DEBUG_MSG("headerStruktur Line# %d lcdName: %s webName: %s\n", lineCounter, lcdName, webName);
                 if (headerCounter == 1)
                 {
-                    modes[CON1] = shortName;   // ModusNamen im Display
-                    modesWeb[CON1] = longName; // Modusname WebIf
+                    modes[CON1] = lcdName;   // ModusNamen im Display
+                    modesWeb[CON1] = webName; // Modusname WebIf
                 }
                 else if (headerCounter == 2)
                 {
-                    modes[CON2] = shortName;
-                    modesWeb[CON2] = longName;
+                    modes[CON2] = lcdName;
+                    modesWeb[CON2] = webName;
                 }
                 lineStruktur = 0;
             }
             else if (lineStruktur < maxCon) // Planstruktur
             {
-                strTemp = checkChars(strtok(line, &delimiter));
-                strTimer = checkChars(strtok(NULL, &delimiter));
-                strDelta24 = checkChars(strtok(NULL, &delimiter));
+                strTemp = checkChars(strtok(line, delimiter));
+                strTimer = checkChars(strtok(NULL, delimiter));
+                strDelta24 = checkChars(strtok(NULL, delimiter));
 
                 if (setMode - CON1 + 1 == headerCounter) // 5-5+1 = 1 | 6-5+1 = 2 | 7-5+1 = 3
                 {
@@ -141,12 +141,12 @@ void readSteuerplan(File &f)
                     if (isValidInt(strDelta24))
                         structCon[lineStruktur].delta24 = atoi(strDelta24);
 
-                    DEBUG_MSG("Con %d Zeile %d: Temp: %f Timer: %d Delta24: %f\n",
+                    DEBUG_MSG("lineStruktur Con %d Zeile %d: Temp: %f Timer: %d Delta24: %f\n",
                               headerCounter, lineStruktur,
                               structCon[lineStruktur].zieltemp, structCon[lineStruktur].timer,
                               structCon[lineStruktur].delta24);
                 }
-
+                DEBUG_MSG("Line %d: strTemp: %s strTimer: %s strDelta24: %s\n", lineStruktur, strTemp, strTimer, strDelta24);
                 lineStruktur++;
             }
             headerStruktur = false;

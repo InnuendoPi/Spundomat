@@ -63,7 +63,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.51";
+const char Version[7] = "2.52";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -84,6 +84,7 @@ const char Version[7] = "2.51";
 #define WLAN_UPDATE 30000
 #define CO2_UPDATE 60000
 #define TARGET_UPDATE 60000
+#define CON_UPDATE 60000
 
 #define AUS 0
 #define SPUNDOMAT 1
@@ -219,8 +220,8 @@ String Menu4[2]; // Einstellunen speichern
 
 File fsUploadFile; // Datei Object
 #define sizeOfModes 13
-String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN 1", "Plan 2", "Plan 3", "Dichtheit", "Gaersteuerung", "Steuerung 1", "Steuerung 2"};                            // ModusNamen im Display
-String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan 1", "Plan 2", "Plan 3", "Überprüfe Dichtheit", "Gärsteuerung", "Steuerung 1", "Steuerung 2"}; // Modus-Namen für WebIf
+String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN_1", "Plan_2", "Plan_3", "Dichtheit", "Gaersteuerung", "Steuerung 1", "Steuerung 2"};                            // ModusNamen im Display
+String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan_1", "Plan_2", "Plan_3", "Überprüfe Dichtheit", "Gärsteuerung", "Steuerung 1", "Steuerung 2"}; // Modus-Namen für WebIf
 char nameMDNS[16] = "spundomat";    // http://spundomat/index.html
 
 // Verzögerung Spundomat
@@ -240,6 +241,7 @@ int setGPIO = 0;
 // Gärsteuerung
 float targetTemp = DEF_TARGET_TEMP;
 int upTarget = TARGET_UPDATE;
+int upCon = CON_UPDATE;
 int controller = 0;
 
 // Ablaufplan

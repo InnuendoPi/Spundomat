@@ -130,6 +130,8 @@ bool loadConfig()
     upTemp = miscObj["UPTEMP"];
   if (miscObj.containsKey("UPTARGET"))
     upTarget = miscObj["UPTARGET"];
+  if (miscObj.containsKey("UPCON"))
+    upCon = miscObj["UPCON"];
   if (miscObj["MDNS"] || miscObj["MDNS"] =="1")
     startMDNS = true;
   else
@@ -145,6 +147,7 @@ bool loadConfig()
   Serial.printf("Intervall Drucksensor: %d\n", upPressure);
   Serial.printf("Intervall Temperatursensor: %d\n", upTemp);
   Serial.printf("Intervall Gärsteuerung: %d\n", upTarget);
+  Serial.printf("Intervall Gär Controller: %d\n", upCon);
   Serial.printf("nameMDNS: %s\n", nameMDNS);
   Serial.printf("startMDNS: %d\n", startMDNS);
   Serial.printf("Testmodus: %d\n", testModus);
@@ -197,6 +200,7 @@ bool loadConfig()
   TickerInfluxDB.interval(upInflux);
   TickerTemp.interval(upTemp);
   TickerSteuerung.interval(upTarget);
+  TickerCon.interval(upCon);
   TickerAlarmierung.interval(ZUSATZALARM);
 
   if (setGPIO == 1 && setMode == AUS)
@@ -271,11 +275,13 @@ bool saveConfig()
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
   miscObj["UPTARGET"] = upTarget;
+  miscObj["UPCON"] = upCon;
   miscObj["TESTMODE"] = (int)testModus;
 
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);
   DEBUG_MSG("Interval Gärsteuerung: %d\n", upTarget);
+  DEBUG_MSG("Interval Gär Controller: %d\n", upCon);
   DEBUG_MSG("nameMDNS: %s\n", nameMDNS);
   DEBUG_MSG("startMDNS: %d\n", startMDNS);
   DEBUG_MSG("setMode: %d\n", setMode);
@@ -326,6 +332,7 @@ bool saveConfig()
 
   // Setze Intervall Gärsteuerung Ticker
   TickerSteuerung.interval(upTarget);
+  TickerCon.interval(upCon);
   TickerAlarmierung.interval(ZUSATZALARM);
 
   // Setze Open/Close Standard für MV1/MV2

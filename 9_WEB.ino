@@ -81,7 +81,6 @@ void handleRequestMiscSet()
     doc["co2"] = ((int)(calcCarbonation(pressure, temperature) * 100)) / 100.0;
     doc["druck"] = ((int)(pressure * 100)) / 100.0;
     doc["temperatur"] = ((int)(temperature * 10)) / 10.0;
-    doc["targettemp"] = ((int)(targetTemp * 10)) / 10.0;
     doc["offset"] = offset0;
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;
@@ -89,6 +88,7 @@ void handleRequestMiscSet()
     doc["co2sen"] = startCO2;
     doc["wertco2"] = wertCO2;
     doc["controller"] = controller;
+    doc["targettemp"] = targetTemp;
     if (setMode < PLAN1 || setMode > PLAN3)
     {
         doc["mv1opendisp"] = mv1Open;
@@ -220,6 +220,7 @@ void handleRequestMisc()
     doc["co2sen"] = startCO2;
     doc["rssi"] = WiFi.RSSI();
     doc["uptarget"] = upTarget;
+    doc["upcon"] = upCon;
     doc["targettemp"] = targetTemp;
     String response;
     serializeJson(doc, response);
@@ -466,6 +467,14 @@ void handleSetMisc()
             {
                 if (checkRange(server.arg(i)))
                     upTarget = server.arg(i).toInt();
+            }
+        }
+        if (server.argName(i) == "upcon")
+        {
+            if (isValidInt(server.arg(i)))
+            {
+                if (checkRange(server.arg(i)))
+                    upCon = server.arg(i).toInt();
             }
         }
         if (server.argName(i) == "targettemp")

@@ -13,6 +13,7 @@ Die Firmware und das Filesystem LittleFS müssen neu geflasht werden. Ein WebUpd
 
 Version 2.51
 
+- Fixed:    Minor fixes WebIf
 - Downgrade Lib LiquidCrystal_PCF8574 1.2
 - Fixed:    LCD Anzeige (QuickFix Downgrade LiquidCrystal_PCF8574 1.3)
 - Changed:  Dateisystem LittleFS

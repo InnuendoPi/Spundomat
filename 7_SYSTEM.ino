@@ -215,7 +215,7 @@ void setTicker() // Ticker Objekte deklarieren
   TickerCO2.config(tickerCO2Callback, CO2_UPDATE, 0);
   TickerSteuerung.config(tickerSteuerungCallback, TARGET_UPDATE, 0);
   TickerAlarmierung.config(tickerAlarmierungCallback, ZUSATZALARM, 0);
-  TickerCon.config(tickerConCallback, 60000, 0);
+  TickerCon.config(tickerConCallback, CON_UPDATE, 0);
 }
 
 void checkSummerTime()

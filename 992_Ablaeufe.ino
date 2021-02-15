@@ -9,14 +9,12 @@ void readAblaufplan(File &f)
         {
             char line[128];
             char c = file.read();
-            char cIndex = 0;
+            int cIndex = 0;
 
             // Header Zeile - Namen für Ablaufplan
             bool headerStruktur = false;
-            char *shortName;
-            char *longName;
-            char startDeliHeader = '#';
-            char endDelimiter = '\n';
+            char *lcdName;
+            char *webName;
 
             // Struktur Ablaufplan
             char *strMV1Druck;
@@ -25,9 +23,9 @@ void readAblaufplan(File &f)
             char *strMV2Druck;
             char *strMV2Open;
             char *strMV2Close;
-            char delimiter = ';';
+            char delimiter[] = "#;";
 
-            while (c != '\n' && cIndex < 128)
+            while (c != '\n' && cIndex < 128) // Newline oder Array End
             {
                 if (c == '#' && cIndex == 0)
                 {
@@ -35,44 +33,42 @@ void readAblaufplan(File &f)
                     headerCounter++;
                 }
                 line[cIndex] = c;
-                line[cIndex + 1] = '\0';
-                // if (!file.available())
-                //     break;
-                c = file.read();
                 cIndex++;
+                line[cIndex] = '\0';
+                if (!file.available())
+                    break;
+                c = file.read();
             }
-            // DEBUG_MSG("Line: %s\n", line);
+            // DEBUG_MSG("Ablauf Line POST Index: %d Line: %s\n", cIndex, line);
             if (headerStruktur) // Planname
             {
-                shortName = strtok(line, &startDeliHeader); // Das erste Zeichen muss ein # sein
-                shortName = strtok(shortName, &delimiter);
-                longName = strtok(NULL, &endDelimiter);
-                DEBUG_MSG("Line# %d shortName: %s longName: %s\n", lineCounter, shortName, longName);
+                lcdName = strtok(line, delimiter); // Das erste Zeichen muss ein # sein
+                webName = strtok(NULL, delimiter);
                 if (headerCounter == 1)
                 {
-                    modes[PLAN1] = shortName;   // ModusNamen im Display
-                    modesWeb[PLAN1] = longName; // Modusname WebIf
+                    modes[PLAN1] = lcdName;    // ModusNamen im Display
+                    modesWeb[PLAN1] = webName; // Modusname WebIf
                 }
                 else if (headerCounter == 2)
                 {
-                    modes[PLAN2] = shortName;
-                    modesWeb[PLAN2] = longName;
+                    modes[PLAN2] = lcdName;
+                    modesWeb[PLAN2] = webName;
                 }
                 else if (headerCounter == 3)
                 {
-                    modes[PLAN3] = shortName;
-                    modesWeb[PLAN3] = longName;
+                    modes[PLAN3] = lcdName;
+                    modesWeb[PLAN3] = webName;
                 }
                 lineStruktur = 0;
             }
             else if (lineStruktur < maxSchritte) // Planstruktur
             {
-                strMV1Druck = checkChars(strtok(line, &delimiter));
-                strMV1Open = checkChars(strtok(NULL, &delimiter));
-                strMV1Close = checkChars(strtok(NULL, &delimiter));
-                strMV2Druck = checkChars(strtok(NULL, &delimiter));
-                strMV2Open = checkChars(strtok(NULL, &delimiter));
-                strMV2Close = checkChars(strtok(NULL, &endDelimiter));
+                strMV1Druck = checkChars(strtok(line, delimiter));
+                strMV1Open = checkChars(strtok(NULL, delimiter));
+                strMV1Close = checkChars(strtok(NULL, delimiter));
+                strMV2Druck = checkChars(strtok(NULL, delimiter));
+                strMV2Open = checkChars(strtok(NULL, delimiter));
+                strMV2Close = checkChars(strtok(NULL, delimiter));
 
                 if (setMode - PLAN1 + 1 == headerCounter) // 5-5+1 = 1 | 6-5+1 = 2 | 7-5+1 = 3
                 {
@@ -93,7 +89,7 @@ void readAblaufplan(File &f)
                               structPlan[lineStruktur].zieldruckMV1, structPlan[lineStruktur].intervallMV1Open, structPlan[lineStruktur].intervallMV1Close,
                               structPlan[lineStruktur].zieldruckMV2, structPlan[lineStruktur].intervallMV2Open, structPlan[lineStruktur].intervallMV2Close);
                 }
-                // DEBUG_MSG("Line %d: strMV1Druck: %s strMV1Open: %s strMV1Close: %s strMV2Druck: %s strMV2Open: %s strMV2Close: %s\n", lineStruktur, strMV1Druck, strMV1Open, strMV1Close, strMV2Druck, strMV2Open, strMV2Close);
+                DEBUG_MSG("Line %d: strMV1Druck: %s strMV1Open: %s strMV1Close: %s strMV2Druck: %s strMV2Open: %s strMV2Close: %s\n", lineStruktur, strMV1Druck, strMV1Open, strMV1Close, strMV2Druck, strMV2Open, strMV2Close);
                 lineStruktur++;
             }
             headerStruktur = false;

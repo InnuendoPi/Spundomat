@@ -35,7 +35,7 @@ void tickerWLANCallback() // Timer Objekt Druck
     sendAlarm(ALARM_ERROR);
   }
 }
-
+/*
 void tickerCO2Callback()
 {
   leseCO2();
@@ -90,8 +90,19 @@ void tickerConCallback()
 {
   if (counterCon < maxCon - 1)
   {
-    counterCon++;
-    checkTemp = false;
+    if (setMode == CON1 && structOG[counterCon+1].Dauer > 0)
+    {
+          counterCon++;
+          checkTemp = false;
+    }
+    else if (setMode == CON2 && structUG[counterCon+1].Dauer > 0)
+    {
+          counterCon++;
+          checkTemp = false;
+    }
+    else
+      lastTimeSteuerung = millis();
+    
     //DEBUG_MSG("Callback: TickerCon Update zieltemp %f timer %d counter %d\n", targetTemp, structCon[counterCon].timer, counterCon);
     startCon();
   }
@@ -116,3 +127,4 @@ void tickerAlarmierungCallback()
   }
   alarmTemperature = temperature;
 }
+*/

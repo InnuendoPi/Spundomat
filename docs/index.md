@@ -1,6 +1,6 @@
 # Spundomat
 
-Stand: 03.2020
+Stand: 01.2022
 
 **Spunden & Karbonisieren:**
 
@@ -19,7 +19,7 @@ Zwangskarbonisieren: Das in einem druckfesten Behälter (Fass, Keg) befindliche 
 
 **Was ist Spundomat?**
 
-Der Spundomat automatisiert das Spunden und das Karbonisieren. Zur Automatisierung werden ein Druck- und ein Temperatursensor und zwei Magnetventile eingesetzt. Die Firmware öffnet bzw. schließt die Magnetventile automatisch anhand der Daten vom Druck- und Temperatursensor. Der Spundomat bietet eine Kombination aus Spunden und Karbonisieren.
+Der Spundomat automatisiert das Spunden und das Karbonisieren. Zur Automatisierung werden ein Druck- und ein Temperatursensor sowie zwei Magnetventile eingesetzt. Die Firmware öffnet bzw. schließt die Magnetventile automatisch anhand der Daten vom Druck- und Temperatursensor. Der Spundomat bietet eine Kombination aus Spunden und Karbonisieren.
 
 **Was bietet diese Firmware?**
 
@@ -30,9 +30,7 @@ Die Firmware bietet vier Betriebsmodis:
 1. Spunden (Druck ausgehend vom Keg)
 2. Karbonisieren (CO2 eingehend in das Keg)
 3. Spundomat: die Kombination aus Spunden und Karbonisieren
-4. Ablaufpläne (u.a. schnelles Zwangskarbonisieren und CO2-Wäsche)
-5. eine Überwachung der CO2 ppm
-6. eine einfache Gärsteuerung
+4. Ablaufpläne (bspw. schnelles Zwangskarbonisieren und CO2-Wäsche)
 
 Zur Konfiguration und Verwendung kann ein Display mit Encoder (Dreh-Drück-Knopf) oder das Web Interface verwendet werden.
 
@@ -42,13 +40,13 @@ Zur Konfiguration und Verwendung kann ein Display mit Encoder (Dreh-Drück-Knopf
 * Sensoren
   * Temperatursensoren DS18B20
   * Drucksensor
-* Magnetventil ausgehend (Spunden)
-* Magnetventil eingehend (Karbonisieren)
+* Magnetventil MV1 ausgehend (Spunden)
+* Magnetventil MV2 eingehend (Karbonisieren)
 * Drucksensor Kalibrierung
 * mDNS Support
 * Backup / Restore der Konfiguration (config.json) über Dateiexplorer
 * Firmware WebUpdate
-* Firmware Datei Update über WebIf (Firmware und SPIFFS)
+* Firmware Datei Update über WebIf (Firmware und LittleFS)
 
 Dieses Projekt wurde im Hobbybrauer Forum gestartet und dient dem Informationsaustausch.
 
@@ -125,31 +123,30 @@ Auch auf dem LCD Dispaly werden alle benötigten Informationen abhängig vom Bet
 
 ## Grundeinrichtung
 
-Über das Web Interface ist eine Grundeinrichtung vorzunehmen. Hierunter fällt das Aktivieren der verwendeten Magnetventile und die Kalibrierung.
-
-**Kalibrierung:**
-
-Der Drucksensor vom Spundomat muss vor seiner ersten Verwendung kalibriert werden. Weil es unterschiedliche Drucksensoren und geringfügige Abweichungen bei der Spannungsversorgung gibt, ist eine Kalibrierung notwendig.
-Der Spundomat funktioniert bereits mit nur einer Kalibrierung bei 0bar. Es wird eine 2-Punkte Kalibrierung empfohlen.
-
-Vorgehensweise Kalibrierung:
-
-Das komplette System muss drucklos sein. Eine CO2 Flasche, ein Keg oder Rückschlagventile sind vom Drucksensor zu trennen. Die Kalibrierung misst die Spannung am analogen Port des Wemos D1 mini bei 0bar. Diese Spannung (Offset) wird im Eeprom des Wemos gespeichert und wird bei der Berechung Druck verwendet.
-
-Eine 2. Kalibrierung bei 2bar vorgenommen. Hierfür wird ein leeres Keg mit 2bar befüllt. Wenn das Keg relativ genau mit 2bar befüllt ist wird der Spundomat angeschlossen. Zu beachten ist, dass der Druck von 2bar mit einem Manometer gemessen werden muss. Wenn die Funktion "Kalibrierung" nun erneut ausgeführt wird, speichert die Firmware den 2. Offset-Wert für 2bar im Eeprom des Wemos ab.
-
-Die Kalibrierung kann jederzeit über die Grundeinstellungen -> Restore - > Kalibrierung löschen entfernt werden.
+Über das Web Interface ist eine Grundeinrichtung vorzunehmen. Hierunter fällt das Aktivieren der verwendeten Magnetventile und die Kalibrierung. Über den Button "Einstellungen" können die Grundeinstellungen von Spundomat konfiguriert werden.
 
 **Aktivieren der Magnetventile:**
 
-Über den Button "Bearbeiten" können die Grundeinstellungen von Spundomat konfiguriert werden.
-Im Tab Hardware können das Magnetventil 1 (Spunden) und das Magnetventil 2 (Karbonisieren) aktiviert werden. Zu beiden Magnetventilen können die Standardzeiten für das Öffnen und Schließen in Millisekunden konfiguriert werden. In der Grundeinstellung sind 300ms für das Öffnen und 2000ms für das Schließen der Magnetventile vorgegeben.
+Im Tab Hardware können das Magnetventil 1 (Spunden) und das Magnetventil 2 (Karbonisieren) aktiviert werden. Zu beiden Magnetventilen können die Standardzeiten für das Öffnen und Schließen in Millisekunden konfiguriert werden. In der Grundeinstellung sind 200ms für das Öffnen und 10000ms für das Schließen der Magnetventile vorgegeben.
 
-Der Spundomat kann mit nur einem Magnetventil betrieben werden, wahlweise nur zum Spunden oder nur zum Karbonisieren. Alle Funktionen der Firmware sind nur mit zwei Magnetventilen nutzbar. Der Modus Spundomat und die Ablaufpläne können nur genutzt werden, wenn zwei Magnetventile angeschlossen und aktiviert sind.
+Beispiel:
+der Spundomat wird im Modus "Spunden CO2 Gehalt" betrieben. In den Einstellungen ist das Magnetventil MV1 aktiviert. Der Parameter "Öffne MV1" ist mit 200ms und "Schließe MV1" mit 10000ms konfiguriert. Dieser Modus wird bevorzugt eingesetzt, wenn mit Speise oder Zucker im Jungbier natürliches CO2 gebunden werden soll. Steigt der Druck im Keg über den vorgegebenen CO2 Gehalt, öffnet das Magnetventil 1 zum Spunden für 200ms. Druck entweicht aus dem Keg. Anschließend bleibt das Magnetventil 1 für 10000ms oder 10 Sekunden geschlossen.
+
+**Kalibrierung:**
+
+Der Drucksensor vom Spundomat muss vor seiner ersten Verwendung kalibriert werden. Weil es unterschiedliche Drucksensoren und geringfügige Abweichungen bei der Spannungsversorgung gibt, ist eine Kalibrierung notwendig. Der Spundomat funktioniert bereits mit nur einer Kalibrierung bei 0bar. Es wird eine 2-Punkte Kalibrierung empfohlen.
+
+Vorgehensweise Kalibrierung:
+
+Das komplette System muss drucklos sein. Eine CO2 Flasche, ein Keg oder Rückschlagventile sind vom Drucksensor zu trennen. Die Kalibrierung misst die Spannung am analogen Port des Wemos D1 mini bei 0.0bar. Diese Spannung (Offset) wird im Eeprom des Wemos gespeichert und wird bei der Berechung Druck verwendet.
+
+Eine 2. Kalibrierung bei 2.0bar vorgenommen. Hierfür wird ein leeres Keg mit 2.0bar befüllt. Wenn das Keg möglichst genau mit 2.0bar befüllt ist, wird der Spundomat angeschlossen. Zu beachten ist, dass der Druck von 2.0bar mit einem Manometer gemessen werden muss und nicht über den Spundomat! Wenn die Funktion "Kalibrierung" nun erneut ausgeführt wird, speichert die Firmware den 2. Offset-Wert für 2.0bar im Eeprom des Wemos ab.
+
+Die Kalibrierung kann jederzeit über die Grundeinstellungen -> Restore - > Kalibrierung löschen entfernt werden.
 
 **Piezo Buzzer:**
 
-Optional kann ein Piezzo Buzzer aktiviert werden. Die Firmware bietet verschiedene Signaltöne. Mit Version 2.0 zum Zeitpunkt 03.2020 sind die Signaltöne implementiert, jedoch noch nicht an allen möglichen Stellen für ein Warnsignal aktiviert.
+Optional kann ein Piezzo Buzzer aktiviert werden. Die Firmware bietet verschiedene Signaltöne.
 
 **mDNS aktivieren:**
 
@@ -157,13 +154,13 @@ mDNS ist eine einfache Möglichkeit, um den Spundomat mit einem beliebigen Namen
 
 **Zeitintervalle für Sensoren:**
 
-Ebenfalls in den Grundeinstellungen im Tab System können die Zeitintervall zum Datenabruf der Sensoren Druck und Temperatur konfiguriert werden. Der Abruf vom Temperatursensor ist als kontinuierlicher Task (Ticker) in der Firmware implementiert. Standardwert ist alle 30 Sekunden.
+Ebenfalls in den Grundeinstellungen im Tab System können die Zeitintervall zum Datenabruf der Sensoren Druck und Temperatur konfiguriert werden. Der Abruf vom Temperatursensor ist als kontinuierlicher Task (Ticker) in der Firmware implementiert. Standardwert ist alle 30 Sekunden. Bitte beachten: die Eingabe ist in ms.
 
-Das Zeitintervall für das Lesen vom Drucksensor ist lediglich eine Grundeinstellung. Je nach Anforderung und Betriebsmodus werden Daten bei Bedarf und nicht nach Ablauf eines Zeitintervalls abgefragt. In Ablaufplänen wird das Abfrageintervall für den Durcksensor deaktiviert und nach den konfigurierten Zeiten für das Öffenen und Schließen der Magnetventile der Durcksensor abgefragt. Der Standardwert lautet 1000ms.
+Das Zeitintervall für das Lesen vom Drucksensor ist lediglich eine Grundeinstellung. Je nach Anforderung und Betriebsmodus werden Daten bei Bedarf und nicht nach Ablauf eines Zeitintervalls abgefragt. In Ablaufplänen wird das Abfrageintervall für den Durcksensor deaktiviert und nach den konfigurierten Zeiten für das Öffenen und Schließen der Magnetventile der Durcksensor abgefragt. Der Standardwert lautet 1000ms. Bitte beachten: die Eingabe ist in ms.
 
 **Grafana:**
 
-Der Spundomat unterstützt die Visualisierung mit der OpenSource Software Grafana. Der Spundomat schreibt direkt in die Datenbank InfluxDB. Es wird aktuell nur die lokale Installation unterstützt. Folgende Parameter sind erforderlich:
+Der Spundomat unterstützt die Visualisierung mit der OpenSource Software Grafana. Die Visualisierung ist optional und für den normalen Betrieb nicht erforderlich. Der Spundomat schreibt direkt in die Datenbank InfluxDB. Es wird aktuell nur die lokale Installation unterstützt. Folgende Parameter sind erforderlich:
 
 * Influx Datenbank Server: <http://raspberrypi_IP:8086>
 
@@ -201,7 +198,7 @@ Ein eher seltener genutzer Modus ist das Spunden auf Basis Druck in bar. Der Pro
 
 **Karbonisieren:**
 
-Der Betriebsmodus Karbonisieren ist für Brauer geeignet, die ein endvergorenes Jungbier ins Keg schlauchen und das Keg mit CO2 auf einen gewünschten CO2-Gehalt zur Reifung einstellen. Ohne den Spundomat wird der benötigte Druck aus einer Tabelle in Abhängigkeit von der Temperatur ermittelt. Der Spundomat ermittelt den benötigten Druck automatisch und führt CO2 in das Keg. Ändert sich die Temperatur während der Bierreifung ermittelt der Spundomat automatisch den korrekten Druck.
+Der Betriebsmodus Karbonisieren ist für Brauer geeignet, die ein endvergorenes Jungbier ins Keg schlauchen und das Keg mit CO2 auf einen gewünschten CO2-Gehalt beaufschlagen. Ohne den Spundomat wird der benötigte Druck aus einer Tabelle in Abhängigkeit von der Temperatur ermittelt. Der Spundomat ermittelt den benötigten Druck automatisch und führt CO2 in das Keg. Ändert sich die Temperatur während der Lagerung oder Reifung ermittelt der Spundomat automatisch den korrekten Druck.
 
 Ebenfalls ein eher seltener genutzer Modus ist das Karbonisieren auf Basis Druck in bar. Der Prozess Karbonisieren basiert in diesem Modus auf dem gemessenen Wert vom Drucksensor.
 
@@ -217,21 +214,13 @@ Zusätzlich bietet die Firmware eine Verzögerung für die Karbonisierung. In ei
 
 Für eine Verzögerung der Karbonisierung kann als Parameter die Zeit (in Minuten oder Stunden) oder ein Mindest-CO2 Gehalt gennutzt werden. Beide Verzögerungen für die Karbonisierung bieten der Hefe Zeit für die Nachgärung. Die Verzögerung wird meist dann angewendet, wenn sehr früh im Gärungsprozess geschlaucht werden soll.
 
-Beispiel Modus Spundomat mit Verzögerung:
-
-Wenn ein Jungbier aus dem Gärtank mit Restextrakt oder der Zugabe von Speise für die Nachgärung in ein Keg geschlaucht wird, sollte eine Verzögerung für die Karbonisierung eingestellt werden. Bevorzugt wird in diesem Anwendungsfall ein Mindest CO2-Gehalt angegeben. Wird bspw. ein Mindest-CO2 Gehalt von 3gr/l als Verzögerung eingestellt, dann wird im Modus Spundomat eine Karbonisierung so lange verzögert, bis durch die natürliche Nachgärung im Keg ein Druck aufgebaut ist, der einen CO2-Gehalt von 3gr/l bewirkt.
-
-Beispiel Modus Spundomat ohne Verzögerung:
-
-Wenn ein nahezu vollständig endvergorenes Jungbier aus dem Gärtank ins Keg geschlaucht wird, bewirkt der Modus Spundomat ohne Verzögerung eine direkte Zwangskarbonisierung auf den eingestellten CO2-Gehalt. Weil während der Reifung durch geringe Nachgärung CO2 entsteht, wird in diesem Modus nach der direkte Zwangskarbonisierung das Magnetventil Spunden überschüssigen Druck ablassen. Temperaturänderungen während der Reifung erkennt der Spundomat und spundet entsprechend überschüssiges CO2 bzw. karbonisiert, wenn CO2 fehlt.
-
 **Zeitintervalle für die Magnetventile:**
 
 Alle Betriebsmodis haben gemeinsam, dass die einstellbaren Zeitintervalle darüber entscheiden, ob der Spundomat sehr schnell oder sehr träge auf Druckänderung reagiert. Grundsätzlich ist der Prozess Nachgärung und Reifung ein über viele Tage laufender Prozess. Eine Druckänderung im Keg wird sich ebenfalls über viele Stunden und Tage herstellen und nicht binnen Sekunden oder Minuten. Dementsprechend ist ein permantes schnelles Öffnen und Schließen der Ventile nicht notwendig.
 
 Für jedes Magnetventil wird ein Zeitintervall Öffnen und ein Zeitintervall Schließen konfiguriert. Die Zeitangabe ist in Millisekunden. Während der Nachgärung und Reifung sind beispielhaft folgende Zeitintervalle geeignet:
 
-* Öffne Magnetventil 1 (Spunden) für 300ms, wenn der vorhandene Druck über dem Zieldruck liegt
+* Öffne Magnetventil 1 (Spunden) für 200ms, wenn der vorhandene Druck über dem Zieldruck liegt
 * Schließe nach dem Öffnen Magnetventil 1 für 360000ms (1 Minute)
 
 Diese Zeitintervalle bewirken nun, dass bei überschüssigen Druck im Keg 1x pro Minute für 300ms Druck abgelassen wird. Während das Ventil geschlossen ist, wird der aktuelle Druck am Sensor abgelesen. Ist weiterhin überschüssiger Druck vorhanden, wiederholt sich das Öffnen für 300ms und das Schließen für 1 Minute. Ist der Druck geringer oder gleich dem Zielwert, öffnet sich Ventil 1 nicht.
@@ -258,45 +247,6 @@ Um mit diesen Modus die Dichtheit zu überprüfen, müssen die folgenden Vorbere
 
 Nun kann der Modus "Überprüfe Dichtheit" ausgewählt werden. Das Keg wird mit dem konfiguriertem Druck befüllt. Sobald dieser Druck erreicht ist, wartet der Spundomat 2 Minuten ab. Nach 2 Minuten wird der aktuelle Druck (#1) gemessen. Nach einer weiteren Wartezeit von 5 Minuten wird ein zweites Mal der Druck (#2) gemessen. Das Delta, also die Differenz der beiden Druckmessungen (Delta = #2 - #1) wechselt der Spundomat automatisch den Modus auf "Aus" und zeigt im Dashboard das Delta an.
 
-**Der Modus Überprüfe Gärsteuerung:**
-
-Der Spundomat kann auch zur Steuerung der Gärung eingesetzt werden. Die Platine wird für diesen Einsatzzweck ganz normal bestückt. Es werden aber weder die Magentventile noch der Drucksensor benötigt.
-An MV1 wird ein SSR oder ein Relais zur Schaltung einer Kühlung angeschlossen.
-AN MV2 wird ein SSR oder ein Relais zur Schaltung einer Heizung angeschlossen.
-
-**Steuerpläne Gärfühurng:**
-
-Der Steuerplan funktioniert genauso wie die Ablaufpläne. Nur eben zur Gärsteuerung oder besser gesagt zur geführten Gärung. Um eine Gärung nach einem individuellem Schema ablaufen zu lassen, müssen die einzelnen Schritte in die Datei steuerplan.txt hinterlegt werden. Der Ablauf findet dann Top Down statt. Wichtige Randbedingungen:
-
-* aktuell kann die Gärführung maximal aus 5 Schritten bestehen
-* aktuell können zwei verschiedene Gärführungen hinterlegt werden
-* die Gärführung bleibt im letzten Schritt bis zum manuellen Abschalten aktiv
-* Aufbau vom Steuerplan (Datei steuerplan.txt)
-
-#S1 UG;Steuerung UG
-8.0;86400000;0.0
-10.0;172800000;0.0
-12.0;86400000;0.0
-16.5;86400000;0.0
-2.0;172800000;0.0
-
-Mit dem Kennzeichen # wird die Überschrift für das LCD und für das WebInterface hinterlegt. Das sind einfach zwei Namen. Auf dem LCD steht im o.a. Beispiel S1 UG und im WebIf Steuerung UG. In den drauffolgenden 5 Zeilen folgen 5 Schritte für eine geführte Gärung. Die Zeile 8.0;86400000;0.0 hat dabei folgende Bedeutung:
-
-Zieltemperatur: 8.0 °C
-Rastdauer: 86400000ms -> das entspricht 24 Stunden
-Steigung: 0.0 (aktuell unbenutzt)
-
-Diese drei Werte sind der 1. Schritt in der geführten Gärung. Als Trennzeichen zwischen den 3 Parametern wird das Semikolon verwendet. Als Dezimalzeichen wird ein Punkt verwendet.
-Der Spundomat misst in regelmäßigen Abständen (meist alle 60s) die aktuelle Temperatur am/im Gebinde und stellt entweder durch Kühlung (MV1) oder durch Heizen (MV2) die Zieltemperatur von 8°C her. Sobald diese Zieltemperatur erreicht wurde, startet die "Rastdauer" von 86400000ms (24h).
-
-Nach 24 Stunden nimmt der Spundomat die Werte aus der zweiten Zeile als Parameter: 
-10.0;172800000;0.0
-In Worten: stelle 10°C im Gebinde her und halte diese Temperatur für 48 Stunden.
-
-Im 4. Schritt ist mit einer Temperatur von 16.5°C eine Diacetylrast für 24h hinterlegt. Nach dieser Diacetylrast wird auf Coldcrash 2.0°C abgekühlt. Im 5. und letzten Schritt verbleibt der Spundomat endlos. Er wiederholt die 48h immer und immer wieder, bis das Gerät ausgeschaltet wird.
-
-Die einzelnen Schritte (also die 5 Zeilen mit den Parametern) muss jeder für sich und seine Vorstellung von geführter Gärung anpassen. Das kann im WebInterface direkt über den Button Dateiexplorer gemacht werden. Einfach die Werte überschreiben, die Syntax beibehalten und am Ende STRG + S zum Speichern drücken. Die Rastdauer muss leider in Millisekunden eingetragen werden.
-
 ---
 
 ## Ablaufpläne
@@ -305,17 +255,17 @@ Die Firmware bietet die Möglichkeit drei unterschiedliche Ablaufpläne zu nutze
 
 **Was sind Ablaufpläne?**
 
-Ein Ablaufplan ist eine automatisierte zeitliche Abfolge von Öffnen und Schließen der zwei Magnetventile. Zum Zeitpunkt 03.2020 wurden beispielhaft die Ablaufpläne
+Ein Ablaufplan ist eine automatisierte zeitliche Abfolge von Öffnen und Schließen der zwei Magnetventile. Beispielhaft sind die Ablaufpläne beigefügt
 
-* Schnelles Zwangskarbonisieren
-* CO2 Wäsche
-* KEG Entlüften
+* P1 QuickCarb
+* P2 CO2Wäsche
+* P3 Keg Entlüften
 
-der Firmware beigefügt. Alle Ablaufpläne müssen auf die individuelle Umgebung und Anforderungen angepasst werden.
+Alle Ablaufpläne müssen auf die individuelle Umgebung und Anforderungen angepasst werden!
 
 *Wichtiger Hinweis:*
 
-In den Ablaufplänen können Intervalle für das Öffnen und Schließen der Magnetventile frei definiert werden. Wenn bei hohem Druck im Keg das Magnetventil 1 (Spunden) für längere Zeit (über 300ms) geöffnet UND anschließend nur kurz (unter 3000ms) geschlossen wird, entsteht zwangsläufig Schaum im Keg. Dies hat zur Folge, dass Flüssigkeit in die Leitungen eintreten kann. Hohen Druck aus dem Keg Spunden benötigt Zeit und Ruhephasen! Anderfalls kann Bierschaum in den Spundomat eintreten. Auch der freie Kopfraum im Keg hat großen Einfluss.
+In den Ablaufplänen können Intervalle für das Öffnen und Schließen der Magnetventile frei definiert werden. Wenn bei hohem Druck im Keg das Magnetventil 1 (Spunden) für längere Zeit (über 300ms) geöffnet UND anschließend nur kurz (unter 3000ms) geschlossen wird, entsteht zwangsläufig Schaum im Keg. Dies kann zur Folge haben, dass Flüssigkeit in die Leitungen eintreten kann. Hohen Druck aus dem Keg Spunden benötigt Zeit und Ruhephasen. Anderfalls kann Bierschaum in den Spundomat eintreten.
 
 **Unterschied Betriebmodis vs. Ablaufplan:**
 
@@ -326,81 +276,17 @@ Ablaufpläne sollen definierte Aufgaben durchführen. Betriebmodis sollen über 
 
 **Aufbau der Ablaufpläne:**
 
-Ablaufpläne werden in der Textdatei ablaufplan.txt definiert. Über den Dateiexplorer im Web Interface kann die Textdatei direkt editiert werden. Zum Speichern wird im Dateiexplorer die Tastenkombination CTRL + S verwendet.
+Ablaufpläne werden über das WebIf definiert.
 
-Ein Ablaufplan beginnt mit einer Namensgebung. Die Namensgebung beginnt mit dem Kennzeichner "#" (ohne "). Jeder Ablaufplan hat einen Namen für das LCD Display und einen (meist längeren Namen) für das Web Interface. Als Trennzeichen zwischen diesen zwei Namen wird das Semikolon verwendet:
+Ein Ablaufplan beginnt mit einer Namensgebung. Im Bild hat der Ablaufplan den Namen "P1 QuickCarb"
 
-Beispiel: #P1 QuickCarb;Plan 1 schnelles Zwangskarbonisieren
+![Einstellungen](img/Ablaufplan.jpg)
 
-Diese Zeile kennzeichnet durch das #-Zeichen einen Namen für einen Ablaufplan. Der Ablaufplan wird im LCD Display mit dem Namen "P1 QuickCarb" angezeigt. Im Web Interface mit dem Namen "Plan 1 schnelles Zwangskarbonisieren".
-Auf die Namensgebung für einen Ablaufplan folgt der zeitlichen Ablauf für das Öffnen und Schließen der zwei Magnetventile. Als Trennzeichen wird wieder das Semikolon verwendet. Es wird folgendes Format verwendet: (MV1 = Magnetventil 1 Spunden, MV2 = Magnetventil 2 Karbonisieren).
-
-Zieldruck MV1 ; Öffne MV1 ; Schließe MV1 ; Zieldruck MV2 ; Öffne MV2 ; Schließe MV2
-
-Dabei verstehen sich die Angaben Öffne und Schließe als Zeit in Millisekunden.
-
-Beispiel: 0.2;400;2000;1.0;300;4000
-
-Zieldruck MV1: 0.2 bar
-Öffne MV1: 400ms
-Schließe MV1: 2000ms
-
-Um den Zieldruck von 0.2bar zu erreichen, öffne das Magnetventil 1 für 400ms. Danach schließe es für 2000ms. Diese Abfolge Spunden wird wiederholt, bis der Zieldruck 0.2bar erreicht ist. Dann folgt das Magnetventil 2.
-
-Zieldruck MV2: 1.0bar
-Öffne MV2: 300ms
-Schließe MV1: 4000ms
-
-Um den Zieldruck von 1.0bar zu erreichen, öffne das Magnetventil 2 für 300ms. Danach schließe es für 4000ms. Diese Abfolge Karbonisieren wird wiederholt, bis der Zieldruck 1.0bar erreicht ist. Dann folgt der nächste Schritt. Der nächste Schritt ist in der nächsten Zeile der Datei ablaufplan.txt definiert.
-
+In den darauffolgenden Zeilen und Spalten werden nun der Druck und die Zeitintervalle für das Öffnen und Schließen der zwei Magnetventile festgelegt.
 Ein Ablaufplan kann bis zu 20 Schritte enthalten. Jeder Schritt ist ein Sequenz aus
 
 * Lasse über Magnetventil 1 Druck aus dem Keg ab
 * Fülle CO2 über das Megnetventil 2 in das Keg
-
-**Ablaufplan "schnelles Zwangskarbonisieren" in Worten:**
-
-Beim Zwangskarbonisieren wird versucht, den gelösten CO2-Gehalt im Bier schnellstmöglich auf einen gewünschten Zielwert herzustellen. Eine gängige Methode ist das Befüllen des Kegs mit CO2 mit anschließendem "Rollen & Rütteln".
-Mit dem Spundomat kann nun ein automatisierter Prozess gestartet werden. Bei einer Bier Temperatur von 7°C und einem gewünschten CO2-Gehalt von 5gr/l müsste ein Druck im Keg von ca. 1.0bar hergestellt werden. Um diesen CO2-Gehalt schnellstmöglich herzustellen, kann folgende Vorgehensweise helfen:
-
-* Leite CO2 über den Getränkeanschluss durch das Bier in das Keg
-* Lasse Druck über den CO2-Anschluss aus dem Keg heraus
-
-Mit dem Ablaufplan "Schnelles Zwangskarbonisieren" und dem oben skizzierten Anschluss Keg kann nun die CO2-Zuführung durch den Getränkeanschluss sehr genau getaktet werden: (zur Verbesserung der Lesbarkeit wurden Leerzeichen eingefügt!)
-
-0.0 ; 0; 0 ; 1.0 ; 200 ; 10000
-
-0.2 ; 200 ; 30000 ; 1.0 ; 200 ; 10000
-
-0.2 ; 200 ; 30000 ; 1.0 ; 200 ; 10000
-
-Diese Sequenzen bewirken:
-Ein Druck von 0.0bar wird übersprungen. Das bedeutet: Magnetventil 1 macht im ersten Schritt nichts und der Ablaufplan springt direkt zu Magnetventil 2.
-Magnetventil 2 soll einen Zieldruck von 1.0bar herstellen. Um diesen Druck im Keg zu erreichen wird das Ventil 200ms geöffnet und danach für 10000ms (10 Sekunden) geschlossen. Bis der Zieldruck von 1.0bar erreicht ist, wird also das Magnetventil 2 immer wieder für 200ms geöffnet und danach für 10 Sekunden geschlossen.
-Mit dieser Taktung kann gezielt CO2 in das Keg gedrückt werden. Die kurze Öffnungszeit von nur 200ms gegenüber der langen Zeit Ventil geschlossen vermindert ein starkes Schäumen im Keg. Das Ziel beim schnellen Zwangskarbonisieren ist ein "feines durchblubbern" um CO2 im Bier zu binden.
-In Schritt 2 kommt Magnetventil 1 zum Einsatz. Der vorhandene Druck von 1.0bar soll auf 0.2bar abgebaut werden. Wieder kommt die Sequenz Öffnen und Schließen zum Einsatz: lasse Druck ab durch öffnen von MV1 für 200ms. Warte dann mit einem geschlossenen MV1 30000ms (30 Sekunden) ab, bevor der Vorgang wiederholt wird.
-Diese Schritte lassen sich nun bis zu 20x wiederholen. Ein Ablaufplan kann von nur wenigen Sekunden bis hin zu mehreren Stunden andauern. Die Parameter Öffnen und Schließen sind individuell für jede Umgebung anzupassen. Der vorgefertigte Ablaufplan ist nur als Hilfe gedacht!
-
-Visualisierung einer schnellen Zwangskarbonisierung (Ausschnitt mit 4 Wiederholungen)
-
-![QuickCarb](img/quickcarb.jpg)
-
-Die rote Drucklinie zeigt den Verlauf. Kennzeichnet ist der Druckunterschied zwischen Min und Max, sowie der flache Druckabfall.
-
-Während beim "schnellen Zwangskarbonisieren" das Binden von CO2 im Bier im Vordergrund steht, ist bei der CO2-Wäsche das Austreiben von Fehlarmonen die Hauptaufgabe. Eine Nebenwirkung der CO2-Wäsche ist sogar, dass der CO2-Gehalt am Ende der Wäsche niedriger ist. Hierfür wird das Bier stark mit einem Druck von 3 oder sogar höher durchströmt. Mit kräftigen Sequenzen CO2 durch das Bier sollen Fehlaromen wie bspw. Schwefelgerüche ausgetrieben werden. Zu beachten ist das Schäumen! Das Schließen der Magnetventile sind (immer) wie Pausenzeiten zu verstehen. Wenn durch ein Bier CO2 mit 3bar "durchgeschossen" wird, ist Schaumbildung unvermeidlich. Je geringer der freie Kopfraum im Keg, desto höher ist die Gefahr, dass Schaum oder ganz allgemein Flüssigkeit über die Druckschläuche zu den Magnetventilen gelangen kann.
-
-Visualisierung einer CO2 Wäsche (Ausschnitt mit 2 Wiederholungen)
-
-![CO2Wäsche](img/co2waesche.jpg)
-
-Wieder zeigt die rote Drucklinie den Verlauf. Kennzeichnet ist der größere Druckunterschied zwischen Min und Max, der sehr schnell ansteigende Druck aufgrund des "starken durchbubberns" und dem sehr flachen langsamen Druckabfall.
-
-Sowohl Ablaufplan-Name als auch die Sequenzen Öffnen und Schließen für beide Magnetventile können individuell angepasst werden. Die drei Ablaufpläne im Repository sind als Starthilfe gedacht und sollen vom Endanwender überschrieben werden. Es wird empfohlen, das Editieren der Datei ablaufplan.txt über den Dateiexplorer im Web Interface der Firmware durchzuführen, weil das Formatkennzeichen für Zeilenende und Zeilenvorschub unterschiedlich abgespeichert wird.
-
-![Ablaufplan](img/Ablaufplan1.jpg)
-
-* Hinweis: rechte Maustaste auf die Datei ablaufplan.txt -> Edit auswählen
-* Hinweis: Speichern der Änderung mit der Tastenkombination CTRL + S
 
 ---
 

@@ -1,3 +1,14 @@
+// Verkabelung CO2 Sensors MH-Z19b an Wemos D1 mini
+// MH-Z19b       Wemos D1 mini
+// 3 TX sw       D2 SDA
+// 2 RX gelb     D1 SDL
+// 6 VIN grün    5V
+// 7 GND blau    GND
+
+/*
+
+Deaktiviert
+
 void initCO2()
 {
   DEBUG_MSG("%s", "Starte CO2 Sensor\n");
@@ -5,7 +16,8 @@ void initCO2()
   myMHZ19.begin(co2Serial);
   myMHZ19.setRange(2000);
   // myMHZ19.calibrateZero();
-  myMHZ19.setSpan(2000);
+  // myMHZ19.setSpan(2000);
+  myMHZ19.zeroSpan(2000);
   myMHZ19.autoCalibration(true, 24);
   if (myMHZ19.getABC())
   {
@@ -72,12 +84,4 @@ void leseCO2()
     }
   }
 }
-
-/*
-Verkabelung CO2 Sensors MH-Z19b an Wemos D1 mini
-MH-Z19b       Wemos D1 mini
-3 TX sw       D2 SDA
-2 RX gelb     D1 SDL
-6 VIN grün    5V
-7 GND blau    GND
 */

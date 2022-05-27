@@ -4,15 +4,27 @@
 
 Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
-## Update Hinweis Version 2.50
+## Update Hinweis Version 2.5x oder neuer
 
 Beim Update auf Version 2.5 von 2.30 oder älter muss das Dateisystem ersetzt werden.
 Die Firmware und das Filesystem LittleFS müssen neu geflasht werden. Ein WebUpdate von 2.3x auf 2.50 oder neuer ist nicht möglich.
 
 ## Changelog
 
-Version 2.52
+Version 2.61
 
+- Update:   ESP8266 3.0.2
+- Update:   Bibliotheken aktualisiert
+- Update:   VSCode 1.67.2
+- Update:   Arduino plugin 0.4.12
+
+- Reverted: ESP8266 2.7.4 (LittleFS)
+- Removed:  CO2 Sensor
+- Removed:  Gärsteuerung
+- Update:   ESP8266 3.0.1
+- Update:   ESP8266 3.0.0
+- Update:   Bibliotheken aktualisiert
+- Fixed:    Gärsteuerung
 - Fixed:    Fehler im Parsing Ablaufplan und Steuerplan behoben
 - Fixed:    Minor fixes WebIf
 - Downgrade Lib LiquidCrystal_PCF8574 1.2
@@ -67,20 +79,21 @@ Version 2.52
 - Fixed:    Fehler Anzeige Druck WebIf während Ablaufpläne behoben
 - Cleanup
 
-Bibliotheken: (Stand ab Version 2.50, 02.2021)
+Bibliotheken: (Stand ab Version 2.61, 05.2022)
 
-- ESP8266 2.7.4 (LittleFS)
-- Arduino IDE 1.8.13
-- Visual Code 1.51.2 mit modifiziertem ESP8266FS Plugin für LittleFS
-- ArduinoJSON 6.17
-- InfluxDB 3.6
+- ESP8266 3.0.2 (LittleFS)
+- Arduino IDE 1.8.19
+- Visual Code + modified ESP8266FS Plugin (VSCode 1.67.2 Arduino 4.20)
+- ArduinoJSON 6.19
+- InfluxDB 3.8
 - WiFiManager 2.0
-- MH-Z19 1.5
-- LiquidCrystal_PCF8574 1.2
+- LiquidCrystal_PCF8574 1.2 (Version 1.3+ not working!)
+- RotaryEncoder 1.5.1
 
 Flash size 4MB (FS:2MB OTA:~1019kB)
 SSL support all SSL ciphers (most comp)
-Exceptions Lagacy
+Exceptions disabled
 IwIP variant v2 lower mem
 
+Debug Ausgabe:
 Für Debug Ausgaben muss der Debug Port auf Serial eingestellt werden. Für spezielle Debug Ausgaben entsprechend den Debug Level einstellen (default none).

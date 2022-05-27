@@ -25,7 +25,7 @@ void setup()
   // Load filesystem
   if (LittleFS.begin())
   {
-    updateSys();                      // WebUpdate
+    updateSys();                        // WebUpdate
     if (LittleFS.exists("/config.txt")) // Load configuration
       loadConfig();
     else
@@ -36,7 +36,7 @@ void setup()
 
   // Erstelle Ticker
   setTicker();
-  
+
   // Zeitserver via NTP
   timeClient.begin();
   timeClient.forceUpdate();
@@ -90,8 +90,6 @@ void setup()
 
   // EEPROM
   EEPROM.begin(512);
-  // writeFloat(0, 121.0);
-  // writeFloat(4, 362.0);
   offset0 = readFloat(0); // Lese Offset (Kalibrierung)
   offset2 = readFloat(4); // Lese Offset (Kalibrierung)
 
@@ -100,20 +98,18 @@ void setup()
   // Starte Display
   TickerDisplay.start();
 
-  if (setMode == STEUERUNG)
-  {
-    TickerSteuerung.start();
-    TickerAlarmierung.start();
-    steuerung();
-  }
-  if (setMode == CON1 || setMode == CON2)
-  {
-    TickerCon.start();
-    TickerSteuerung.start();
-    TickerAlarmierung.start();
-    startCon();
-    steuerung();
-  }
+  // if (setMode == STEUERUNG)
+  // {
+  //   steuerung();
+  //   TickerSteuerung.start();
+  //   // TickerAlarmierung.start();
+  // }
+  // else if (setMode == CON1 || setMode == CON2)
+  // {
+  //   startCon();
+  //   TickerSteuerung.start();
+  //   // TickerAlarmierung.start();
+  // }
 
   // LCD
   startLCD();
@@ -124,14 +120,14 @@ void setup()
 
   if (startDB && startVis)
     TickerInfluxDB.start();
-  
-  if (startCO2)
-  {
-    co2Serial.begin(9600);
-    myMHZ19.begin(co2Serial);
-    initCO2();
-    TickerCO2.start();
-  }
+
+  // if (startCO2)
+  // {
+  //   co2Serial.begin(9600);
+  //   myMHZ19.begin(co2Serial);
+  //   initCO2();
+  //   TickerCO2.start();
+  // }
 
   // Check Update logs
   checkLog();
@@ -141,35 +137,42 @@ void setup()
 void setupServer()
 {
   server.on("/", handleRoot);
+  server.on("/index.htm", handleRoot);
   server.on("/reboot", rebootDevice);         // Spundomat reboot
   server.on("/kalibrieren", kalibrieren);     // Spundomat Kalibrierung
   server.on("/visualisieren", visualisieren); // Spundomat Visualisierung
-  server.on("/reqFirm", handleRequestFirm); // System Infos für WebConfig
-  server.on("/reqMisc", handleRequestMisc); // System Infos für WebConfig
-  server.on("/setMisc", handleSetMisc);     // Einstellungen ändern
+  server.on("/reqFirm", handleRequestFirm);   // System Infos für WebConfig
+  server.on("/reqMisc", handleRequestMisc);   // System Infos für WebConfig
+  server.on("/setMisc", handleSetMisc);       // Einstellungen ändern
   server.on("/reqMiscSet", handleRequestMiscSet);
   server.on("/reqMode", handlereqMode);           // WebIf Abfrage Modus
   server.on("/reqEinheit", handlereqEinheit);     // WebIf Abfrage Einheit Zeiteingabe
   server.on("/reqGPIO", handlereqGPIO);           // WebIf Abfrage Modus GPIO D7
+  server.on("/reqPlan1", handleRequestPlan1);
+  server.on("/reqPlan2", handleRequestPlan2);
+  server.on("/reqPlan3", handleRequestPlan3);
+  server.on("/setPlan1", handleSetPlan1);
+  server.on("/setPlan2", handleSetPlan2);
+  server.on("/setPlan3", handleSetPlan3);
+  server.on("/reqName", handleRequestName);
+  // Steuerung
+  // server.on("/reqOG", handleRequestOG);
+  // server.on("/reqUG", handleRequestUG);
+  // server.on("/setOG", SetOG);
+  // server.on("/setUG", SetUG);
+  // server.on("/BtnRew", BtnRew);
+  // server.on("/BtnPause", BtnPause);
+  // server.on("/BtnFor", BtnFor);
   server.on("/startHTTPUpdate", startHTTPUpdate); // Firmware WebUpdate
-  // FSBrowser initialisieren
-  server.on("/list", HTTP_GET, handleFileList); // list directory
-  server.on("/edit", HTTP_GET, []() {           // load editor
-    if (!handleFileRead("/edit.htm"))
-    {
-      server.send(404, "text/plain", "FileNotFound");
-    }
-  });
-  server.on("/edit", HTTP_PUT, handleFileCreate);    // create file
-  server.on("/edit", HTTP_DELETE, handleFileDelete); // delete file
-  server.on(
-      "/edit", HTTP_POST, []() {
-        server.send(200, "text/plain", "");
-      },
-      handleFileUpload);
-
-  server.onNotFound(handleWebRequests); // Sonstiges
-
-  httpUpdate.setup(&server); // ESP8266HTTPUpdateServer
+    // FSBrowser initialisieren
+  server.on("/edit", HTTP_GET, handleGetEdit);
+  server.on("/status", HTTP_GET, handleStatus);
+  server.on("/list", HTTP_GET, handleFileList);
+  server.on("/edit", HTTP_PUT, handleFileCreate);
+  // server.on("/favicon.ico", HTTP_GET, replyOK);
+  server.on("/edit", HTTP_DELETE, handleFileDelete);
+  server.on("/edit", HTTP_POST, []() { server.send(200, "text/plain", ""); loadConfig(); }, handleFileUpload);
+  server.onNotFound(handleWebRequests);
+  httpUpdate.setup(&server);
   server.begin();
 }

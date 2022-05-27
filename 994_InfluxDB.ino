@@ -36,7 +36,7 @@ void sendDBData()
     dbData.addField("Pressure", pressure);
     dbData.addField("ZielCO2", setCarbonation);
     dbData.addField("IstCO2", calcCarbonation(pressure, temperature));
-    DEBUG_MSG("Sende an InfluxDB: %s\n", dbData.toLineProtocol().c_str());
+    //DEBUG_MSG("Sende an InfluxDB: %s\n", dbData.toLineProtocol().c_str());
     visState = "0";
     if (!dbClient.writePoint(dbData))
     {

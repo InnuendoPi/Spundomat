@@ -212,10 +212,11 @@ void setTicker() // Ticker Objekte deklarieren
   TickerInfluxDB.config(tickerInfluxDBCallback, upInflux, 0);
   TickerDisplay.config(tickerDisplayCallback, DISPLAY_UPDATE, 0);
   TickerWLAN.config(tickerWLANCallback, WLAN_UPDATE, 0);
-  TickerCO2.config(tickerCO2Callback, CO2_UPDATE, 0);
-  TickerSteuerung.config(tickerSteuerungCallback, TARGET_UPDATE, 0);
-  TickerAlarmierung.config(tickerAlarmierungCallback, ZUSATZALARM, 0);
-  TickerCon.config(tickerConCallback, CON_UPDATE, 0);
+  
+  // TickerCO2.config(tickerCO2Callback, CO2_UPDATE, 0);
+  // TickerSteuerung.config(tickerSteuerungCallback, TARGET_UPDATE, 0);
+  // TickerAlarmierung.config(tickerAlarmierungCallback, ZUSATZALARM, 0);
+  // TickerCon.config(tickerConCallback, CON_UPDATE, 0);
 }
 
 void checkSummerTime()

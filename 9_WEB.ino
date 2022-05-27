@@ -1,73 +1,75 @@
 void handleRoot()
 {
-    server.sendHeader("Location", "/index.html", true); //Redirect to our html web page
-    server.send(302, "text/plain", "");
+  server.sendHeader("Location", "/index.html", true); //Redirect to our html web page
+  server.send(302, "text/plain", "");
+  // server.sendHeader(PSTR("Content-Encoding"), "gzip");
+  // server.send(200, "text/html", index_htm_gz, sizeof(index_htm_gz));
 }
 
 void handleWebRequests()
 {
-    if (loadFromLittleFS(server.uri()))
-    {
-        return;
-    }
-    String message = "File Not Detected\n\n";
-    message += "URI: ";
-    message += server.uri();
-    message += "\nMethod: ";
-    message += (server.method() == HTTP_GET) ? "GET" : "POST";
-    message += "\nArguments: ";
-    message += server.args();
-    message += "\n";
-    for (uint8_t i = 0; i < server.args(); i++)
-    {
-        message += " NAME:" + server.argName(i) + "\n VALUE:" + server.arg(i) + "\n";
-    }
-    server.send(404, "text/plain", message);
+  if (loadFromLittlefs(server.uri()))
+  {
+    return;
+  }
+  String message = "File Not Detected\n\n";
+  message += "URI: ";
+  message += server.uri();
+  message += "\nMethod: ";
+  message += (server.method() == HTTP_GET) ? "GET" : "POST";
+  message += "\nArguments: ";
+  message += server.args();
+  message += "\n";
+  for (uint8_t i = 0; i < server.args(); i++)
+  {
+    message += " NAME:" + server.argName(i) + "\n VALUE:" + server.arg(i) + "\n";
+  }
+  server.send(404, "text/plain", message);
 }
 
-bool loadFromLittleFS(String path)
+bool loadFromLittlefs(String path)
 {
-    String dataType = "text/plain";
-    if (path.endsWith("/"))
-        path += "index.html";
+  String dataType = "text/plain";
+  if (path.endsWith("/"))
+    path += "index.html";
 
-    if (path.endsWith(".src"))
-        path = path.substring(0, path.lastIndexOf("."));
-    else if (path.endsWith(".html"))
-        dataType = "text/html";
-    else if (path.endsWith(".htm"))
-        dataType = "text/html";
-    else if (path.endsWith(".css"))
-        dataType = "text/css";
-    else if (path.endsWith(".js"))
-        dataType = "application/javascript";
-    else if (path.endsWith(".png"))
-        dataType = "image/png";
-    else if (path.endsWith(".gif"))
-        dataType = "image/gif";
-    else if (path.endsWith(".jpg"))
-        dataType = "image/jpeg";
-    else if (path.endsWith(".ico"))
-        dataType = "image/x-icon";
-    else if (path.endsWith(".xml"))
-        dataType = "text/xml";
-    else if (path.endsWith(".pdf"))
-        dataType = "application/pdf";
-    else if (path.endsWith(".zip"))
-        dataType = "application/zip";
+  if (path.endsWith(".src"))
+    path = path.substring(0, path.lastIndexOf("."));
+  else if (path.endsWith(".html"))
+    dataType = "text/html";
+  else if (path.endsWith(".htm"))
+    dataType = "text/html";
+  else if (path.endsWith(".css"))
+    dataType = "text/css";
+  else if (path.endsWith(".js"))
+    dataType = "application/javascript";
+  else if (path.endsWith(".png"))
+    dataType = "image/png";
+  else if (path.endsWith(".gif"))
+    dataType = "image/gif";
+  else if (path.endsWith(".jpg"))
+    dataType = "image/jpeg";
+  else if (path.endsWith(".ico"))
+    dataType = "image/x-icon";
+  else if (path.endsWith(".xml"))
+    dataType = "text/xml";
+  else if (path.endsWith(".pdf"))
+    dataType = "application/pdf";
+  else if (path.endsWith(".zip"))
+    dataType = "application/zip";
 
-    if (!LittleFS.exists(path.c_str()))
-    {
-        return false;
-    }
-    File dataFile = LittleFS.open(path.c_str(), "r");
-    if (server.hasArg("download"))
-        dataType = "application/octet-stream";
-    if (server.streamFile(dataFile, dataType) != dataFile.size())
-    {
-    }
-    dataFile.close();
-    return true;
+  if (!LittleFS.exists(path.c_str()))
+  {
+    return false;
+  }
+  File dataFile = LittleFS.open(path.c_str(), "r");
+  if (server.hasArg("download"))
+    dataType = "application/octet-stream";
+  if (server.streamFile(dataFile, dataType) != dataFile.size())
+  {
+  }
+  dataFile.close();
+  return true;
 }
 
 void handleRequestMiscSet()
@@ -75,20 +77,70 @@ void handleRequestMiscSet()
     StaticJsonDocument<512> doc;
     doc["mdns"] = startMDNS;
     doc["mdns_name"] = nameMDNS;
-    doc["pressure"] = ((int)(setPressure * 100)) / 100.0;
-    doc["carbonation"] = ((int)(setCarbonation * 100)) / 100.0;
+    // doc["pressure"] = ((int)(setPressure * 100)) / 100.0;
+    doc["pressure"] = setPressure;
+    doc["carbonation"] = setCarbonation;
     doc["mode"] = setMode;
     doc["co2"] = ((int)(calcCarbonation(pressure, temperature) * 100)) / 100.0;
-    doc["druck"] = ((int)(pressure * 100)) / 100.0;
-    doc["temperatur"] = ((int)(temperature * 10)) / 10.0;
+    doc["druck"] = pressure;
+    doc["temperatur"] = temperature;
     doc["offset"] = offset0;
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
-    doc["co2sen"] = startCO2;
-    doc["wertco2"] = wertCO2;
-    doc["controller"] = controller;
-    doc["targettemp"] = targetTemp;
+    // doc["co2sen"] = startCO2;
+    // doc["wertco2"] = wertCO2;
+    // doc["controller"] = controller;
+    // doc["targettemp"] = ((int)(targetTemp * 10)) / 10.0;
+    doc["dichtheit"] = ((int)(ergDichtheit * 1000)) / 1000.0;
+
+    // Steuerung
+    // if (setMode == CON1)
+    // {
+    //     if (TickerCon.state() == RUNNING)
+    //     {
+    //         long restzeit = (structOG[counterCon].Dauer * 60 * 1000 + lastTimeSteuerung - millis()) / 1000;
+    //         if (restzeit < 0)
+    //             doc["dauer"] = "Stopp";
+    //         int resth = restzeit / 60 / 60;
+    //         int restm = restzeit / 60;
+    //         int rests = restzeit;
+    //         resth % 24 > 0 ? resth = resth % 24 : resth = 0;
+    //         restm % 60 > 0 ? restm = restm % 60 : restm = 0;
+    //         rests % 60 > 0 ? rests = rests % 60 : rests = 0;
+    //         char countdown[9]{'\0'};
+    //         int x = snprintf(countdown, sizeof(countdown), "%02d:%02d:%02d", resth, restm, rests);
+    //         if (x > 0)
+    //             doc["dauer"] = countdown;
+    //         else
+    //             doc["dauer"] = "Stopp";
+    //         // doc["dauer"] = structOG[counterCon].Dauer / 60 / 1000;
+    //     }
+    //     else if (TickerCon.state() == STOPPED)
+    //         doc["dauer"] = "Stopp";
+    //     else if (TickerCon.state() == PAUSED)
+    //         doc["dauer"] = "Pause";
+    // }
+    // if (setMode == CON2)
+    // {
+    //     long restzeit = (structUG[counterCon].Dauer * 60 * 1000 + lastTimeSteuerung - millis()) / 1000;
+    //     if (restzeit < 0)
+    //         doc["dauer"] = "0";
+    //     int resth = restzeit / 60 / 60;
+    //     int restm = restzeit / 60;
+    //     int rests = restzeit;
+    //     resth % 24 > 0 ? resth = resth % 24 : resth = 0;
+    //     restm % 60 > 0 ? restm = restm % 60 : restm = 0;
+    //     rests % 60 > 0 ? rests = rests % 60 : rests = 0;
+    //     char countdown[9]{'\0'};
+    //     int x = snprintf(countdown, sizeof(countdown), "%02d:%02d:%02d", resth, restm, rests);
+    //     if (x > 0)
+    //         doc["dauer"] = countdown;
+    //     else
+    //         doc["dauer"] = "0";
+    //     // doc["dauer"] = structUG[counterCon].Dauer / 60 / 1000;
+    // }
+
     if (setMode < PLAN1 || setMode > PLAN3)
     {
         doc["mv1opendisp"] = mv1Open;
@@ -160,8 +212,10 @@ void handleRequestMiscSet()
         }
     }
     else
+    {
         doc["delayspund"] = minKarbonisierung;
-    doc["dichtheit"] = ((int)(ergDichtheit * 1000)) / 1000.0;
+    }
+
     if (setMode == DICHTHEIT)
     {
         long restzeit = (lastTimeSpundomat + PAUSE5MIN + PAUSE2MIN - millis()) / 1000;
@@ -217,14 +271,60 @@ void handleRequestMisc()
     doc["dbuser"] = dbPass;
     doc["dbup"] = upInflux / 1000;
     doc["vistag"] = dbVisTag;
-    doc["co2sen"] = startCO2;
+    // doc["co2sen"] = startCO2;
     doc["rssi"] = WiFi.RSSI();
-    doc["uptarget"] = upTarget;
-    doc["upcon"] = upCon;
-    doc["targettemp"] = targetTemp;
+    // doc["uptarget"] = upTarget;
+    // doc["upcon"] = upCon;
+    // doc["targettemp"] = ((int)(targetTemp * 10)) / 10.0;
+    doc["dichtheit"] = ((int)(ergDichtheit * 1000)) / 1000.0;
     String response;
     serializeJson(doc, response);
     server.send(200, "application/json", response);
+}
+
+void handleRequestName()
+{
+    String request = server.arg(0);
+    String message;
+    if (request == "planname1")
+    {
+        message = modesWeb[PLAN1];
+        // DEBUG_MSG("Web: Plan1 message %s\n", message.c_str());
+        goto SendMessage;
+    }
+    if (request == "planname1short")
+    {
+        message = modes[PLAN1];
+        // DEBUG_MSG("Web: Plan1s message %s\n", message.c_str());
+        goto SendMessage;
+    }
+    if (request == "planname2")
+    {
+        message = modesWeb[PLAN2];
+        // DEBUG_MSG("Web: Plan2 message %s\n", message.c_str());
+        goto SendMessage;
+    }
+    if (request == "planname2short")
+    {
+        message = modes[PLAN2];
+        // DEBUG_MSG("Web: Plan2s message %s\n", message.c_str());
+        goto SendMessage;
+    }
+    if (request == "planname3")
+    {
+        message = modesWeb[PLAN3];
+        // DEBUG_MSG("Web: Plan3 message %s\n", message.c_str());
+        goto SendMessage;
+    }
+    if (request == "planname3short")
+    {
+        message = modes[PLAN3];
+        // DEBUG_MSG("Web: Plan3s message %s\n", message.c_str());
+        goto SendMessage;
+    }
+
+SendMessage:
+    server.send(200, "text/plain", message);
 }
 
 void handleRequestFirm()
@@ -451,37 +551,47 @@ void handleSetMisc()
         {
             alertState = false;
         }
-        if (server.argName(i) == "co2sen")
-        {
-
-            startCO2 = checkBool(server.arg(i));
-        }
         if (server.argName(i) == "gpio")
         {
             if (isValidInt(server.arg(i)))
                 setGPIO = server.arg(i).toInt();
         }
-        if (server.argName(i) == "uptarget")
+        if (server.argName(i) == "planname1s")
         {
-            if (isValidInt(server.arg(i)))
-            {
-                if (checkRange(server.arg(i)))
-                    upTarget = server.arg(i).toInt();
-            }
+            modes[PLAN1] = server.arg(i);
+            modesWeb[PLAN1] = server.arg(i);
         }
-        if (server.argName(i) == "upcon")
+        if (server.argName(i) == "planname2s")
         {
-            if (isValidInt(server.arg(i)))
-            {
-                if (checkRange(server.arg(i)))
-                    upCon = server.arg(i).toInt();
-            }
+            modes[PLAN2] = server.arg(i);
+            modesWeb[PLAN2] = server.arg(i);
         }
-        if (server.argName(i) == "targettemp")
+        if (server.argName(i) == "planname3s")
         {
-            if (checkRange(server.arg(i)))
-                targetTemp = formatDOT(server.arg(i));
+            modes[PLAN3] = server.arg(i);
+            modesWeb[PLAN3] = server.arg(i);
         }
+        // if (server.argName(i) == "uptarget")
+        // {
+        //     if (isValidInt(server.arg(i)))
+        //     {
+        //         if (checkRange(server.arg(i)))
+        //             upTarget = server.arg(i).toInt();
+        //     }
+        // }
+        // if (server.argName(i) == "upcon")
+        // {
+        //     if (isValidInt(server.arg(i)))
+        //     {
+        //         if (checkRange(server.arg(i)))
+        //             upCon = server.arg(i).toInt();
+        //     }
+        // }
+        // if (server.argName(i) == "targettemp")
+        // {
+        //     if (checkRange(server.arg(i)))
+        //         targetTemp = formatDOT(server.arg(i));
+        // }
         yield();
     }
     server.send(201, "text/plain", "created");
@@ -655,3 +765,383 @@ void startDichtheit()
     lastTimeSpundomat = millis();
     dichtPressure = pressure;
 }
+
+void handleRequestPlan1()
+{
+    File planfile = LittleFS.open("/ablaufplan1.json", "r");
+    if (planfile)
+    {
+        DynamicJsonDocument docIn(3072);
+        DynamicJsonDocument docOut(3072);
+        DeserializationError error = deserializeJson(docIn, planfile);
+        JsonArray ablaufArray = docIn.as<JsonArray>();
+        // JsonArray responseArray = docOut.to<JsonArray>();
+        int anzahlSchritte = ablaufArray.size();
+        if (anzahlSchritte > maxSchritte)
+            anzahlSchritte = maxSchritte;
+
+        // DEBUG_MSG("Read Plan1 Anzahl Schritte: %d\n", anzahlSchritte);
+        int i = 0;
+        for (JsonObject ablaufObj : ablaufArray)
+        {
+            if (i < anzahlSchritte)
+            {
+                JsonObject responseObj = docOut.createNestedObject();
+                responseObj["mv1druck"] = ablaufObj["MV1 Druck"].as<float>();
+                responseObj["mv1dauer"] = ablaufObj["MV1 Dauer"].as<unsigned long>();
+                responseObj["mv1pause"] = ablaufObj["MV1 Pause"].as<unsigned long>();
+                responseObj["mv2druck"] = ablaufObj["MV2 Druck"].as<float>();
+                responseObj["mv2dauer"] = ablaufObj["MV2 Dauer"].as<unsigned long>();
+                responseObj["mv2pause"] = ablaufObj["MV2 Pause"].as<unsigned long>();
+
+                // DEBUG_MSG("readablaufPlan1 Schritt #%d DruckMV1: %f MV1Open: %lu MV1Close: %lu\n", i, structPlan1[i].zieldruckMV1, structPlan1[i].intervallMV1Open, structPlan1[i].intervallMV1Close);
+                // DEBUG_MSG("readablaufPlan1 Schritt #%d DruckMV2: %f MV2Open: %lu MV2Close: %lu\n", i, structPlan1[i].zieldruckMV2, structPlan1[i].intervallMV2Open, structPlan1[i].intervallMV2Close);
+                i++;
+            }
+        }
+
+        planResponse = "";
+        serializeJson(docOut, planResponse);
+        planfile.close();
+    } // read file
+    // DEBUG_MSG("Web: reqPlan1 %s\n", plan1Response.c_str());
+    server.send(200, "application/json", planResponse);
+    return;
+}
+void handleRequestPlan2()
+{
+    File planfile = LittleFS.open("/ablaufplan2.json", "r");
+    if (planfile)
+    {
+        DynamicJsonDocument docIn(3072);
+        DynamicJsonDocument docOut(3072);
+        DeserializationError error = deserializeJson(docIn, planfile);
+        JsonArray ablaufArray = docIn.as<JsonArray>();
+        JsonArray responseArray = docOut.to<JsonArray>();
+        int anzahlSchritte = ablaufArray.size();
+        if (anzahlSchritte > maxSchritte)
+            anzahlSchritte = maxSchritte;
+
+        // DEBUG_MSG("Read Plan2 Anzahl Schritte: %d\n", anzahlSchritte);
+        int i = 0;
+        for (JsonObject ablaufObj : ablaufArray)
+        {
+            if (i < anzahlSchritte)
+            {
+                JsonObject responseObj = docOut.createNestedObject();
+                responseObj["mv1druck"] = ablaufObj["MV1 Druck"].as<float>();
+                responseObj["mv1dauer"] = ablaufObj["MV1 Dauer"].as<unsigned long>();
+                responseObj["mv1pause"] = ablaufObj["MV1 Pause"].as<unsigned long>();
+                responseObj["mv2druck"] = ablaufObj["MV2 Druck"].as<float>();
+                responseObj["mv2dauer"] = ablaufObj["MV2 Dauer"].as<unsigned long>();
+                responseObj["mv2pause"] = ablaufObj["MV2 Pause"].as<unsigned long>();
+
+                // DEBUG_MSG("readablaufPlan1 Schritt #%d DruckMV1: %f MV1Open: %lu MV1Close: %lu\n", i, structPlan1[i].zieldruckMV1, structPlan1[i].intervallMV1Open, structPlan1[i].intervallMV1Close);
+                // DEBUG_MSG("readablaufPlan1 Schritt #%d DruckMV2: %f MV2Open: %lu MV2Close: %lu\n", i, structPlan1[i].zieldruckMV2, structPlan1[i].intervallMV2Open, structPlan1[i].intervallMV2Close);
+                i++;
+            }
+        }
+        planResponse = "";
+        serializeJson(docOut, planResponse);
+        planfile.close();
+    } // read file
+    // DEBUG_MSG("Web: reqPlan2 %s\n", planResponse.c_str());
+    server.send(200, "application/json", planResponse);
+}
+void handleRequestPlan3()
+{
+    File planfile = LittleFS.open("/ablaufplan3.json", "r");
+    
+    if (planfile)
+    {
+        DynamicJsonDocument docIn(3072);
+        DynamicJsonDocument docOut(3072);
+        DeserializationError error = deserializeJson(docIn, planfile);
+        JsonArray ablaufArray = docIn.as<JsonArray>();
+        JsonArray responseArray = docOut.to<JsonArray>();
+        int anzahlSchritte = ablaufArray.size();
+        if (anzahlSchritte > maxSchritte)
+            anzahlSchritte = maxSchritte;
+
+        // DEBUG_MSG("Read Plan1 Anzahl Schritte: %d\n", anzahlSchritte);
+        int i = 0;
+        for (JsonObject ablaufObj : ablaufArray)
+        {
+            if (i < anzahlSchritte)
+            {
+                JsonObject responseObj = docOut.createNestedObject();
+                responseObj["mv1druck"] = ablaufObj["MV1 Druck"].as<float>();
+                responseObj["mv1dauer"] = ablaufObj["MV1 Dauer"].as<unsigned long>();
+                responseObj["mv1pause"] = ablaufObj["MV1 Pause"].as<unsigned long>();
+                responseObj["mv2druck"] = ablaufObj["MV2 Druck"].as<float>();
+                responseObj["mv2dauer"] = ablaufObj["MV2 Dauer"].as<unsigned long>();
+                responseObj["mv2pause"] = ablaufObj["MV2 Pause"].as<unsigned long>();
+
+                // DEBUG_MSG("readablaufPlan1 Schritt #%d DruckMV1: %f MV1Open: %lu MV1Close: %lu\n", i, structPlan1[i].zieldruckMV1, structPlan1[i].intervallMV1Open, structPlan1[i].intervallMV1Close);
+                // DEBUG_MSG("readablaufPlan1 Schritt #%d DruckMV2: %f MV2Open: %lu MV2Close: %lu\n", i, structPlan1[i].zieldruckMV2, structPlan1[i].intervallMV2Open, structPlan1[i].intervallMV2Close);
+                i++;
+            }
+        }
+        planResponse = "";
+        serializeJson(docOut, planResponse);
+        planfile.close();
+    } // read file
+    // DEBUG_MSG("Web: reqPlan3 %s\n", plan3Response.c_str());
+    server.send(200, "application/json", planResponse);
+}
+
+void handleSetPlan1()
+{
+    DynamicJsonDocument doc(3072);
+    DeserializationError error = deserializeJson(doc, server.arg(0));
+    if (error)
+    {
+        DEBUG_MSG("Plan1: deserialize Json error %s\n", error.c_str());
+        return;
+    }
+    File planfile = LittleFS.open("/ablaufplan1.json", "w");
+    if (planfile)
+    {
+        serializeJson(doc, planfile);
+        planfile.close();
+        server.send(201, "text/plain", "JSON successful");
+    }
+    else
+        server.send(500, "text/plain", "Server error");
+}
+
+void handleSetPlan2()
+{
+    DynamicJsonDocument doc(3072);
+    DeserializationError error = deserializeJson(doc, server.arg(0));
+     if (error)
+    {
+        DEBUG_MSG("Plan2: deserialize Json error %s\n", error.c_str());
+        return;
+    }
+    File planfile = LittleFS.open("/ablaufplan2.json", "w");
+    if (planfile)
+    {
+        serializeJson(doc, planfile);
+        planfile.close();
+        server.send(201, "text/plain", "JSON successful");
+    }
+    else
+        server.send(500, "text/plain", "Server error");
+}
+void handleSetPlan3()
+{
+    DynamicJsonDocument doc(3072);
+    DeserializationError error = deserializeJson(doc, server.arg(0));
+    if (error)
+    {
+        DEBUG_MSG("Plan3: deserialize Json error %s\n", error.c_str());
+        server.send(500, "text/plain", error.c_str());
+        return;
+    }
+    File planfile = LittleFS.open("/ablaufplan3.json", "w");
+    if (planfile)
+    {
+        serializeJson(doc, planfile);
+        planfile.close();
+        server.send(201, "text/plain", "JSON successful");
+    }
+    else
+        server.send(500, "text/plain", "Server error");
+}
+
+// void handleRequestOG()
+// {
+//     server.send(200, "application/json", ogResponse);
+// }
+// void handleRequestUG()
+// {
+//     server.send(200, "application/json", ugResponse);
+// }
+
+// void SetOG()
+// {
+//     DynamicJsonDocument doc(1024);
+//     DeserializationError error = deserializeJson(doc, server.arg(0));
+//     if (error)
+//     {
+//         DEBUG_MSG("Steuerung OG: Error Json %s\n", error.c_str());
+//         if (setGPIO == 1)
+//             sendAlarm(ALARM_ERROR);
+//         return;
+//     }
+//     initSteuerplan();
+//     DynamicJsonDocument docOut(1024);
+
+//     JsonArray ogArray = doc.as<JsonArray>();
+//     int anzahlRampen = ogArray.size();
+//     if (anzahlRampen > maxCon)
+//         anzahlRampen = maxCon;
+//     DEBUG_MSG("Read Anzahl Rampen: %d\n", anzahlRampen);
+//     int i = 0;
+//     for (JsonObject ogObj : ogArray)
+//     {
+//         if (i < anzahlRampen)
+//         {
+//             float tmpTemp = ogObj["Temperatur"];
+//             long tmpDauer = ogObj["Dauer"];
+
+//             structOG[i].Temperatur = tmpTemp;
+//             structOG[i].Dauer = tmpDauer;
+
+//             JsonObject outObj = docOut.createNestedObject();
+//             outObj["Temperatur"] = tmpTemp;
+//             outObj["Dauer"] = tmpDauer;
+//             DEBUG_MSG("SetOG Rampe #%d Temp: %f Dauer: %d\n", i, structOG[i].Temperatur, structOG[i].Dauer);
+//             i++;
+//         }
+//     }
+//     server.send(201, "text/plain", "JSON successful");
+
+//     if (LittleFS.exists("/steuerplanOG.txt"))
+//         LittleFS.remove("/steuerplanOG.txt");
+
+//     File steuerplanOG = LittleFS.open("/steuerplanOG.txt", "w");
+//     if (!steuerplanOG)
+//     {
+//         DEBUG_MSG("%s\n", "Failed steuerplanOG file for writing");
+//         DEBUG_MSG("%s\n", "------ save steuerplanOG aborted ------");
+//     }
+//     else
+//     {
+//         ogResponse = "";
+//         serializeJson(docOut, ogResponse);
+//         serializeJson(docOut, steuerplanOG);
+//         steuerplanOG.close();
+//     }
+// }
+
+// void SetUG()
+// {
+//     DynamicJsonDocument doc(1024);
+//     DeserializationError error = deserializeJson(doc, server.arg(0));
+//     if (error)
+//     {
+//         DEBUG_MSG("Steuerung UG: Error Json %s\n", error.c_str());
+//         if (setGPIO == 1)
+//             sendAlarm(ALARM_ERROR);
+//         return;
+//     }
+//     initSteuerplan();
+//     DynamicJsonDocument docOut(1024);
+
+//     JsonArray ugArray = doc.as<JsonArray>();
+//     int anzahlRampen = ugArray.size();
+//     if (anzahlRampen > maxCon)
+//         anzahlRampen = maxCon;
+//     DEBUG_MSG("Read Anzahl Rampen: %d\n", anzahlRampen);
+//     int i = 0;
+//     for (JsonObject ugObj : ugArray)
+//     {
+//         if (i < anzahlRampen)
+//         {
+//             float tmpTemp = ugObj["Temperatur"];
+//             long tmpDauer = ugObj["Dauer"];
+
+//             structUG[i].Temperatur = tmpTemp;
+//             structUG[i].Dauer = tmpDauer;
+//             JsonObject outObj = docOut.createNestedObject();
+//             outObj["Temperatur"] = tmpTemp;
+//             outObj["Dauer"] = tmpDauer;
+//             DEBUG_MSG("SetUG Rampe #%d Temp: %f Dauer: %d\n", i, structUG[i].Temperatur, structUG[i].Dauer);
+//             i++;
+//         }
+//     }
+//     server.send(201, "text/plain", "JSON successful");
+
+//     if (LittleFS.exists("/steuerplanUG.txt"))
+//         LittleFS.remove("/steuerplanUG.txt");
+
+//     File steuerplanUG = LittleFS.open("/steuerplanUG.txt", "w");
+//     if (!steuerplanUG)
+//     {
+//         DEBUG_MSG("%s\n", "Failed steuerplanUG file for writing");
+//         DEBUG_MSG("%s\n", "------ save steuerplanUG aborted ------");
+//     }
+//     else
+//     {
+//         ugResponse = "";
+//         serializeJson(docOut, ugResponse);
+//         serializeJson(docOut, steuerplanUG);
+//         steuerplanUG.close();
+//     }
+// }
+
+// void BtnRew()
+// {
+//     lastTimeSteuerung = millis();
+//     if (TickerCon.state() == RUNNING) // Für Ticker Reset muss der Ticker laufen
+//     {
+//         TickerCon.stop();
+//         TickerCon.reset();
+//         TickerCon.start();
+//     }
+//     DEBUG_MSG("%s\n", "Button Rewind");
+//     server.send(201, "text/plain", "rewind successful");
+// }
+
+// void BtnPause()
+// {
+//     if (TickerCon.state() == PAUSED)
+//     {
+//         lastTimeSteuerung += (millis() - lastTimePause);
+//         TickerCon.resume();
+//         DEBUG_MSG("%s\n", "Button Play resume TickerCon");
+//     }
+//     else if (TickerCon.state() == RUNNING)
+//     {
+//         TickerCon.pause();
+//         lastTimePause = millis();
+//         DEBUG_MSG("%s\n", "Button Pause paused TickerCon");
+//     }
+//     else if (TickerCon.state() == STOPPED)
+//     {
+//         // Starte den Ticker egal welche Temperatur vorliegt
+//         TickerCon.reset();
+//         TickerCon.resume();
+//         TickerCon.update();
+//         lastTimeSteuerung = millis(); // Zeitstempel
+//         DEBUG_MSG("%s\n", "Button Play reset and start TickerCon");
+//     }
+//     server.send(201, "text/plain", "pause successful");
+// }
+
+// void BtnFor()
+// {
+//     if (TickerCon.state() == RUNNING)
+//     {
+//         TickerCon.stop();
+//         checkTemp = false;
+//     }
+//     if (counterCon < maxCon - 1)
+//     {
+//         if (setMode == CON1)
+//         {
+//             if (structOG[counterCon + 1].Dauer > 0)
+//             {
+//                 counterCon++;
+//                 lastTimeSteuerung = millis();
+//             }
+//         }
+//         else if (setMode == CON2)
+//         {
+//             if (structUG[counterCon + 1].Dauer > 0)
+//             {
+//                 counterCon++;
+//                 lastTimeSteuerung = millis();
+//             }
+//         }
+//         else
+//         {
+//             lastTimeSteuerung = 0;
+//         }
+//         startCon();
+//     }
+//     DEBUG_MSG("%s\n", "Button Forwind");
+//     server.send(201, "text/plain", "forwind successful");
+//

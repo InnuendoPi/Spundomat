@@ -33,8 +33,8 @@ void loop()
   readEncoder();
 
   // Check CO2 Sensor
-  if (startCO2)
-    TickerCO2.update();
+  // if (startCO2)
+  //   TickerCO2.update();
 
   // InfluxDB Ticker
   if (startDB && startVis)
@@ -72,19 +72,19 @@ void loop()
   case DICHTHEIT:
     checkDichtheit();
     break;
-  case STEUERUNG:
-    TickerSteuerung.update();
-    TickerAlarmierung.update();
-    break;
-  case CON1:
-  case CON2:
-    TickerSteuerung.update();
-    TickerAlarmierung.update();
-    if (TickerCon.state() == RUNNING)
-    {
-      TickerCon.update();
-    }
-    break;
+  // case STEUERUNG:
+  //   TickerSteuerung.update();
+  //   // TickerAlarmierung.update();
+  //   break;
+  // case CON1:
+  // case CON2:
+  //   TickerSteuerung.update();
+  //   // TickerAlarmierung.update();
+  //   if (TickerCon.state() == RUNNING)
+  //   {
+  //     TickerCon.update();
+  //   }
+  //   break;
   }
   up = false;
   down = false;

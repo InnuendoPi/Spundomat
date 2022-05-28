@@ -18,7 +18,6 @@ Version 2.61
 - Update:   VSCode 1.67.2
 - Update:   Arduino plugin 0.4.12
 
-- Reverted: ESP8266 2.7.4 (LittleFS)
 - Removed:  CO2 Sensor
 - Removed:  Gärsteuerung
 - Update:   ESP8266 3.0.1
@@ -48,7 +47,6 @@ Version 2.61
 - Fixed:    Umstellung Sommer/Winterzeit
 - Added:    WebIf, Abfrage Kalibrieren Start-Abbruch
 - Reworked: WebIf, Menü Einstellungen überarbeitet, Anzeige Volt entfernt
-- Cleanup:  2.0
 - Update:   Libs InfluxDB, ArduinoJson
 - Update:   Influx CheckDBConnect: bei einem Verbindungsfehler wird der Task Vis gestoppt
 - Update:   LCD Display

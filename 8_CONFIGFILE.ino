@@ -98,11 +98,10 @@ bool loadConfig()
   // if (miscObj.containsKey("UPCON"))
   //   upCon = miscObj["UPCON"];
   startMDNS = miscObj["MDNS"] | true;
-
-  if (miscObj["TESTMODE"] == "1")
+  testModus = miscObj["TESTMODE"] | 0;
+  if (testModus)
   {
-    testModus = true;
-    // EEPROM.begin(512);
+    EEPROM.begin(512);
     // writeFloat(0, 121.0);
     // writeFloat(4, 362.0);
     if (offset0 == 0.0)
@@ -111,9 +110,7 @@ bool loadConfig()
       offset2 = 362.0; // readFloat(4); // Lese Offset (Kalibrierung)
     ergDichtheit = 0.0;
   }
-  else
-    testModus = false;
-
+  
   strlcpy(nameMDNS, miscObj["NAMEMDNS"] | "spundomat", maxHostSign);
 
   Serial.printf("Intervall Drucksensor: %d\n", upPressure);

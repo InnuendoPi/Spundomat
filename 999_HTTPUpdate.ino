@@ -60,7 +60,7 @@ void upIn()
                 Serial.println("*** SYSINFO: Index Update abgeschlossen.");
                 // Close LittleFS file
                 fsUploadFile.close();
-                LittleFS.remove("/update.txt");
+                bool check = LittleFS.remove("/update.txt");
                 fsUploadFile = LittleFS.open("/update1.txt", "w");
                 int bytesWritten = fsUploadFile.print("0");
                 fsUploadFile.close();
@@ -125,7 +125,7 @@ void upCSS()
 
                 Serial.println("*** SYSINFO: Update css finished");
                 fsUploadFile.close();
-                LittleFS.remove("/update1.txt");
+                bool check = LittleFS.remove("/update1.txt");
                 fsUploadFile = LittleFS.open("/update11.txt", "w");
                 int bytesWritten = fsUploadFile.print("0");
                 fsUploadFile.close();
@@ -189,7 +189,7 @@ void upJS()
 
                 Serial.println("*** SYSINFO: Update js finished");
                 fsUploadFile.close();
-                LittleFS.remove("/update11.txt");
+                bool check = LittleFS.remove("/update11.txt");
                 fsUploadFile = LittleFS.open("/update111.txt", "w");
                 int bytesWritten = fsUploadFile.print("0");
                 fsUploadFile.close();
@@ -254,11 +254,11 @@ void upJQ()
 
                 Serial.println("*** SYSINFO: Update JQuery finished");
                 fsUploadFile.close();
-                LittleFS.remove("/update111.txt");
+                bool check = LittleFS.remove("/update111.txt");
                 fsUploadFile = LittleFS.open("/update2.txt", "w");
                 int bytesWritten = fsUploadFile.print("0");
                 fsUploadFile.close();
-                bool check = LittleFS.remove("/bootstrap.bundle.min.js");
+                check = LittleFS.remove("/bootstrap.bundle.min.js");
                 check = LittleFS.remove("/bootstrap.bundle.min.js.map");
                 check = LittleFS.remove("/bootstrap.min.css.map");
             }
@@ -324,7 +324,7 @@ void upCerts()
                 Serial.println("*** SYSINFO: Certs Update abgeschlossen.");
                 // Close LittleFS file
                 fsUploadFile.close();
-                LittleFS.remove("/update2.txt");
+                bool check = LittleFS.remove("/update2.txt");
                 fsUploadFile = LittleFS.open("/update3.txt", "w");
                 int bytesWritten = fsUploadFile.print("0");
                 fsUploadFile.close();
@@ -403,7 +403,7 @@ void updateSys()
         int i = line.toInt();
         if (i > 3)
         {
-            LittleFS.remove("/update.txt");
+            bool check = LittleFS.remove("/update.txt");
             Serial.println("*** SYSINFO: ERROR Index Update");
             return;
         }
@@ -430,7 +430,7 @@ void updateSys()
         int i = line.toInt();
         if (i > 3)
         {
-            LittleFS.remove("/update1.txt");
+            bool check = LittleFS.remove("/update1.txt");
             Serial.println("*** SYSINFO: ERROR update css");
             return;
         }
@@ -457,7 +457,7 @@ void updateSys()
         int i = line.toInt();
         if (i > 3)
         {
-            LittleFS.remove("/update11.txt");
+            bool check = LittleFS.remove("/update11.txt");
             Serial.println("*** SYSINFO: ERROR update js");
             return;
         }
@@ -484,7 +484,7 @@ void updateSys()
         int i = line.toInt();
         if (i > 3)
         {
-            LittleFS.remove("/update111.txt");
+            bool check = LittleFS.remove("/update111.txt");
             Serial.println("*** SYSINFO: ERROR update JQuery");
             return;
         }
@@ -511,7 +511,7 @@ void updateSys()
         int i = line.toInt();
         if (i > 3)
         {
-            LittleFS.remove("/update2.txt");
+            bool check = LittleFS.remove("/update2.txt");
             Serial.println("*** SYSINFO: ERROR Cert Update");
             return;
         }
@@ -538,7 +538,7 @@ void updateSys()
         int i = line.toInt();
         if (i > 3)
         {
-            LittleFS.remove("/update3.txt");
+            bool check = LittleFS.remove("/update3.txt");
             return;
         }
         fsUploadFile = LittleFS.open("/update3.txt", "w");
@@ -586,7 +586,7 @@ void checkLog()
         }
         fsUploadFile.close();
         Serial.printf("*** SYSINFO: Update Index Anzahl Versuche %s\n", line.c_str());
-        LittleFS.remove("/log1.txt");
+        bool check = LittleFS.remove("/log1.txt");
     }
     if (LittleFS.exists("/log2.txt"))
     {
@@ -598,7 +598,7 @@ void checkLog()
         }
         fsUploadFile.close();
         Serial.printf("*** SYSINFO: Update Cert Anzahl Versuche %s\n", line.c_str());
-        LittleFS.remove("/log2.txt");
+        bool check = LittleFS.remove("/log2.txt");
     }
     if (LittleFS.exists("/log3.txt"))
     {
@@ -610,7 +610,7 @@ void checkLog()
         }
         fsUploadFile.close();
         Serial.printf("*** SYSINFO: Update Firmware Anzahl Versuche %s\n", line.c_str());
-        LittleFS.remove("/log3.txt");
+        bool check = LittleFS.remove("/log3.txt");
         alertState = true;
     }
 }
@@ -628,7 +628,7 @@ void update_started()
 void update_finished()
 {
     Serial.println("*** SYSINFO: Firmware Update beendet");
-    LittleFS.remove("/update3.txt");
+    bool check = LittleFS.remove("/update3.txt");
 }
 
 void update_error(int err)

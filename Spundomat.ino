@@ -140,7 +140,6 @@ int setMode = AUS;                  // Startposition 0 = AUS
 int newMode = AUS;
 bool startMDNS = true;    // mDNS Dienst
 bool testModus = false;   // testModus - ignorieren!
-// float oldTemp = 9.0;
 bool startMV1 = false;    // Aktiviere MV1 an D8
 bool startMV2 = false;    // Aktiviere MV2 an D0
 bool alertState = false;

@@ -130,11 +130,13 @@ String PinToString(unsigned char &pinbyte)
 
 void sendAlarm(const uint8_t &setAlarm)
 {
+  DEBUG_MSG("SYS: setGPIO: %d\n", setGPIO);
   if (setGPIO != 1)
     return;
   switch (setAlarm)
   {
   case ALARM_ON:
+    DEBUG_MSG("SYS: sendAlarm ON: %d\n", setAlarm);
     tone(PIN_BUZZER, 440, 50);
     delay(150);
     tone(PIN_BUZZER, 660, 50);
@@ -142,6 +144,7 @@ void sendAlarm(const uint8_t &setAlarm)
     tone(PIN_BUZZER, 880, 50);
     break;
   case ALARM_OFF:
+    DEBUG_MSG("SYS: sendAlarm OFF: %d\n", setAlarm);
     tone(PIN_BUZZER, 880, 50);
     delay(150);
     tone(PIN_BUZZER, 660, 50);
@@ -149,11 +152,13 @@ void sendAlarm(const uint8_t &setAlarm)
     tone(PIN_BUZZER, 440, 50);
     break;
   case ALARM_OK:
+    DEBUG_MSG("SYS: sendAlarm OK: %d\n", setAlarm);
     digitalWrite(PIN_BUZZER, HIGH);
     delay(200);
     digitalWrite(PIN_BUZZER, LOW);
     break;
   case ALARM_WARNING:
+    DEBUG_MSG("SYS: sendAlarm WARN: %d\n", setAlarm);
     for (int i = 0; i < 3; i++)
     {
       tone(PIN_BUZZER, 880, 50);
@@ -164,6 +169,7 @@ void sendAlarm(const uint8_t &setAlarm)
     }
     break;
   case ALARM_ERROR:
+    DEBUG_MSG("SYS: sendAlarm ERR: %d\n", setAlarm);
     for (int i = 0; i < 20; i++)
     {
       tone(PIN_BUZZER, 880, 50);
@@ -174,6 +180,7 @@ void sendAlarm(const uint8_t &setAlarm)
     millis2wait(PAUSE1SEC);
     break;
   default:
+    DEBUG_MSG("SYS: sendAlarm DEF: %d\n", setAlarm);
     break;
   }
 }

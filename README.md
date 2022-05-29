@@ -33,6 +33,7 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 Version 2.61
 
+- Fixed:    WebUpdate erweitert
 - Update:   ESP8266 3.0.2
 - Update:   Bibliotheken aktualisiert
 - Update:   VSCode 1.67.2

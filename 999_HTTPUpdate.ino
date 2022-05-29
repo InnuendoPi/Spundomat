@@ -61,6 +61,91 @@ void upIn()
                 // Close LittleFS file
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update.txt");
+                fsUploadFile = LittleFS.open("/update0.txt", "w");
+                int bytesWritten = fsUploadFile.print("0");
+                fsUploadFile.close();
+            }
+            else
+                return;
+        }
+        else
+        {
+            Serial.println("Abbruch!");
+            Serial.printf("*** SYSINFO: Update index.html Fehler: %s\n", https.errorToString(httpCode).c_str());
+            https.end();
+            LittleFS.end(); // unmount LittleFS
+            ESP.restart();
+
+            return;
+        }
+        https.end();
+        return;
+    }
+    return;
+}
+void upAb()
+{
+    std::unique_ptr<BearSSL::WiFiClientSecure> clientup(new BearSSL::WiFiClientSecure);
+    clientup->setInsecure();
+
+    HTTPClient https;
+
+    if (https.begin(*clientup, "https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/ablaufplan.html"))
+    {
+        int httpCode = https.GET();
+        if (httpCode > 0)
+        {
+            // HTTP header has been send and Server response header has been handled
+            // Serial.printf("*** SYSINFO: [HTTPS] GET index.html Antwort: %d\n", httpCode);
+
+            // file found at server
+            if (httpCode == HTTP_CODE_OK)
+            {
+
+                // get lenght of document (is -1 when Server sends no Content-Length header)
+                int len = https.getSize();
+
+                // create buffer for read
+                static uint8_t buff[128] = {0};
+
+                // Open file for write
+                fsUploadFile = LittleFS.open("/ablaufplan.html", "w");
+                if (!fsUploadFile)
+                {
+                    //Serial.printf( F("file open failed"));
+                    Serial.println("Abbruch!");
+                    Serial.println("*** SYSINFO: Fehler beim Speichern ablaufplan.html");
+                    https.end();
+                    return;
+                }
+
+                // read all data from server
+                while (https.connected() && (len > 0 || len == -1))
+                {
+                    // get available data size
+                    size_t size = clientup->available();
+                    //Serial.printf("*** SYSINFO: [HTTPS] index size avail: %d\n", size);
+
+                    if (size)
+                    {
+                        //read up to 128 byte
+                        int c = clientup->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
+
+                        // write it to file
+                        fsUploadFile.write(buff, c);
+
+                        if (len > 0)
+                        {
+                            len -= c;
+                        }
+                    }
+                    delay(1);
+                }
+
+                Serial.println("*** SYSINFO: Ablaufplan Update abgeschlossen.");
+                // Close LittleFS file
+                fsUploadFile.close();
+                bool check = LittleFS.remove("/update0.txt");
                 fsUploadFile = LittleFS.open("/update1.txt", "w");
                 int bytesWritten = fsUploadFile.print("0");
                 fsUploadFile.close();
@@ -148,7 +233,7 @@ void upCSS()
     return;
 }
 
-void upJS()
+void upJS1()
 {
     std::unique_ptr<BearSSL::WiFiClientSecure> clientup(new BearSSL::WiFiClientSecure);
     clientup->setInsecure();
@@ -168,7 +253,7 @@ void upJS()
                 if (!fsUploadFile)
                 {
                     Serial.println("Abbruch!");
-                    Serial.println("*** SYSINFO: error save js");
+                    Serial.println("*** SYSINFO: error save js1");
                     https.end();
                     return;
                 }
@@ -187,7 +272,7 @@ void upJS()
                     delay(1);
                 }
 
-                Serial.println("*** SYSINFO: Update js finished");
+                Serial.println("*** SYSINFO: Update js1 finished");
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update11.txt");
                 fsUploadFile = LittleFS.open("/update111.txt", "w");
@@ -200,7 +285,71 @@ void upJS()
         else
         {
             Serial.println("Cancel update!");
-            Serial.printf("*** SYSINFO: error update js: %s\n", https.errorToString(httpCode).c_str());
+            Serial.printf("*** SYSINFO: error update js1: %s\n", https.errorToString(httpCode).c_str());
+            https.end();
+            LittleFS.end(); // unmount LittleFS
+            ESP.restart();
+            return;
+        }
+        https.end();
+        return;
+    }
+    return;
+}
+
+void upJS2()
+{
+    std::unique_ptr<BearSSL::WiFiClientSecure> clientup(new BearSSL::WiFiClientSecure);
+    clientup->setInsecure();
+    HTTPClient https;
+    String indexURL;
+    indexURL = "https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/jquery.tabletojson.min.js";
+    if (https.begin(*clientup, indexURL))
+    {
+        int httpCode = https.GET();
+        if (httpCode > 0)
+        {
+            if (httpCode == HTTP_CODE_OK)
+            {
+                int len = https.getSize();
+                static uint8_t buff[128] = {0};
+                fsUploadFile = LittleFS.open("/jquery.tabletojson.min.js", "w");
+                if (!fsUploadFile)
+                {
+                    Serial.println("Abbruch!");
+                    Serial.println("*** SYSINFO: error save js2");
+                    https.end();
+                    return;
+                }
+                while (https.connected() && (len > 0 || len == -1))
+                {
+                    size_t size = clientup->available();
+                    if (size)
+                    {
+                        int c = clientup->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
+                        fsUploadFile.write(buff, c);
+                        if (len > 0)
+                        {
+                            len -= c;
+                        }
+                    }
+                    delay(1);
+                }
+
+                Serial.println("*** SYSINFO: Update js2 finished");
+                fsUploadFile.close();
+                bool check = LittleFS.remove("/update1111.txt");
+                fsUploadFile = LittleFS.open("/update2.txt", "w");
+                int bytesWritten = fsUploadFile.print("0");
+                fsUploadFile.close();
+            }
+            else
+                return;
+        }
+        else
+        {
+            Serial.println("Cancel update!");
+            Serial.printf("*** SYSINFO: error update js2: %s\n", https.errorToString(httpCode).c_str());
             https.end();
             LittleFS.end(); // unmount LittleFS
             ESP.restart();
@@ -255,7 +404,7 @@ void upJQ()
                 Serial.println("*** SYSINFO: Update JQuery finished");
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update111.txt");
-                fsUploadFile = LittleFS.open("/update2.txt", "w");
+                fsUploadFile = LittleFS.open("/update1111.txt", "w");
                 int bytesWritten = fsUploadFile.print("0");
                 fsUploadFile.close();
                 check = LittleFS.remove("/bootstrap.bundle.min.js");
@@ -410,13 +559,40 @@ void updateSys()
         fsUploadFile = LittleFS.open("/update.txt", "w");
         int bytesWritten = fsUploadFile.print((i++));
         fsUploadFile.close();
-        fsUploadFile = LittleFS.open("/log1.txt", "w");
+        fsUploadFile = LittleFS.open("/log.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upSSLLCD();
-        Serial.print("*** SYSINFO: Start Index update Free Heap: ");
+        Serial.print("*** SYSINFO: Start Index update - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upIn();
+    }
+    if (LittleFS.exists("/update0.txt"))
+    {
+        fsUploadFile = LittleFS.open("/update0.txt", "r");
+        String line;
+        while (fsUploadFile.available())
+        {
+            line = char(fsUploadFile.read());
+        }
+        fsUploadFile.close();
+        int i = line.toInt();
+        if (i > 3)
+        {
+            bool check = LittleFS.remove("/update0.txt");
+            Serial.println("*** SYSINFO: ERROR Ablaufplan Update");
+            return;
+        }
+        fsUploadFile = LittleFS.open("/update0.txt", "w");
+        int bytesWritten = fsUploadFile.print((i++));
+        fsUploadFile.close();
+        fsUploadFile = LittleFS.open("/log0.txt", "w");
+        bytesWritten = fsUploadFile.print((i));
+        fsUploadFile.close();
+        upSSLLCD();
+        Serial.print("*** SYSINFO: Start Ablaufplan update - free heap: ");
+        Serial.println(ESP.getFreeHeap());
+        upAb();
     }
     if (LittleFS.exists("/update1.txt"))
     {
@@ -431,7 +607,7 @@ void updateSys()
         if (i > 3)
         {
             bool check = LittleFS.remove("/update1.txt");
-            Serial.println("*** SYSINFO: ERROR update css");
+            Serial.println("*** SYSINFO: ERROR update bootstrap css");
             return;
         }
         fsUploadFile = LittleFS.open("/update1.txt", "w");
@@ -441,7 +617,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log1.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        Serial.print("*** SYSINFO: Update css started- free heap: ");
+        Serial.print("*** SYSINFO: Update bootstrap css started - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upCSS();
     }
@@ -458,7 +634,7 @@ void updateSys()
         if (i > 3)
         {
             bool check = LittleFS.remove("/update11.txt");
-            Serial.println("*** SYSINFO: ERROR update js");
+            Serial.println("*** SYSINFO: ERROR update bootstrap js");
             return;
         }
         fsUploadFile = LittleFS.open("/update11.txt", "w");
@@ -468,9 +644,9 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log11.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        Serial.print("*** SYSINFO: Update js started - free heap: ");
+        Serial.print("*** SYSINFO: Update bootstrap js started - free heap: ");
         Serial.println(ESP.getFreeHeap());
-        upJS();
+        upJS1();
     }
     if (LittleFS.exists("/update111.txt"))
     {
@@ -499,6 +675,33 @@ void updateSys()
         Serial.println(ESP.getFreeHeap());
         upJQ();
     }
+    if (LittleFS.exists("/update1111.txt"))
+    {
+        fsUploadFile = LittleFS.open("/update1111.txt", "r");
+        String line;
+        while (fsUploadFile.available())
+        {
+            line = char(fsUploadFile.read());
+        }
+        fsUploadFile.close();
+        int i = line.toInt();
+        if (i > 3)
+        {
+            bool check = LittleFS.remove("/update1111.txt");
+            Serial.println("*** SYSINFO: ERROR update tablejson js");
+            return;
+        }
+        fsUploadFile = LittleFS.open("/update1111.txt", "w");
+        i++;
+        int bytesWritten = fsUploadFile.print(i);
+        fsUploadFile.close();
+        fsUploadFile = LittleFS.open("/log1111.txt", "w");
+        bytesWritten = fsUploadFile.print((i));
+        fsUploadFile.close();
+        Serial.print("*** SYSINFO: Update tablejson js started - free heap: ");
+        Serial.println(ESP.getFreeHeap());
+        upJS2();
+    }
     if (LittleFS.exists("/update2.txt"))
     {
         fsUploadFile = LittleFS.open("/update2.txt", "r");
@@ -522,7 +725,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upIndexLCD();
-        Serial.print("*** SYSINFO: Start Cert update Free Heap: ");
+        Serial.print("*** SYSINFO: Start Cert update - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upCerts();
     }
@@ -548,7 +751,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upFirmLCD();
-        Serial.print("*** SYSINFO: Start Firmware update Free Heap: ");
+        Serial.print("*** SYSINFO: Start Firmware update - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upFirm();
     }
@@ -576,6 +779,67 @@ void startHTTPUpdate()
 
 void checkLog()
 {
+    bool check = false;
+    if (LittleFS.exists("/log.txt"))
+    {
+        fsUploadFile = LittleFS.open("/log.txt", "r");
+        String line;
+        while (fsUploadFile.available())
+        {
+            line = char(fsUploadFile.read());
+        }
+        fsUploadFile.close();
+        check = LittleFS.remove("/log.txt");
+        Serial.printf("*** SYSINFO: Update Index Anzahl Versuche %s del: %d\n", line.c_str(), check);
+    }
+    if (LittleFS.exists("/log0.txt"))
+    {
+        fsUploadFile = LittleFS.open("/log0.txt", "r");
+        String line;
+        while (fsUploadFile.available())
+        {
+            line = char(fsUploadFile.read());
+        }
+        fsUploadFile.close();
+        check = LittleFS.remove("/log0.txt");
+        Serial.printf("*** SYSINFO: Update Ablaufplan Anzahl Versuche %s del: %d\n", line.c_str(), check);
+    }
+    if (LittleFS.exists("/log11.txt"))
+    {
+        fsUploadFile = LittleFS.open("/log11.txt", "r");
+        String line;
+        while (fsUploadFile.available())
+        {
+            line = char(fsUploadFile.read());
+        }
+        fsUploadFile.close();
+        check = LittleFS.remove("/log11.txt");
+        Serial.printf("*** SYSINFO: Update JS Anzahl Versuche %s del: %d\n", line.c_str(), check);
+    }
+    if (LittleFS.exists("/log111.txt"))
+    {
+        fsUploadFile = LittleFS.open("/log111.txt", "r");
+        String line;
+        while (fsUploadFile.available())
+        {
+            line = char(fsUploadFile.read());
+        }
+        fsUploadFile.close();
+        check = LittleFS.remove("/log111.txt");
+        Serial.printf("*** SYSINFO: Update JQuery Anzahl Versuche %s del: %d\n", line.c_str(), check);
+    }
+    if (LittleFS.exists("/log1111.txt"))
+    {
+        fsUploadFile = LittleFS.open("/log1111.txt", "r");
+        String line;
+        while (fsUploadFile.available())
+        {
+            line = char(fsUploadFile.read());
+        }
+        fsUploadFile.close();
+        check = LittleFS.remove("/log1111.txt");
+        Serial.printf("*** SYSINFO: Update JS2 Anzahl Versuche %s del: %d\n", line.c_str(), check);
+    }
     if (LittleFS.exists("/log1.txt"))
     {
         fsUploadFile = LittleFS.open("/log1.txt", "r");
@@ -585,8 +849,8 @@ void checkLog()
             line = char(fsUploadFile.read());
         }
         fsUploadFile.close();
-        Serial.printf("*** SYSINFO: Update Index Anzahl Versuche %s\n", line.c_str());
-        bool check = LittleFS.remove("/log1.txt");
+        check = LittleFS.remove("/log1.txt");
+        Serial.printf("*** SYSINFO: Update CSS Anzahl Versuche %s del: %d\n", line.c_str(), check);
     }
     if (LittleFS.exists("/log2.txt"))
     {
@@ -597,8 +861,8 @@ void checkLog()
             line = char(fsUploadFile.read());
         }
         fsUploadFile.close();
-        Serial.printf("*** SYSINFO: Update Cert Anzahl Versuche %s\n", line.c_str());
-        bool check = LittleFS.remove("/log2.txt");
+        check = LittleFS.remove("/log2.txt");
+        Serial.printf("*** SYSINFO: Update Cert Anzahl Versuche %s del: %d\n", line.c_str(), check);
     }
     if (LittleFS.exists("/log3.txt"))
     {
@@ -609,8 +873,9 @@ void checkLog()
             line = char(fsUploadFile.read());
         }
         fsUploadFile.close();
-        Serial.printf("*** SYSINFO: Update Firmware Anzahl Versuche %s\n", line.c_str());
-        bool check = LittleFS.remove("/log3.txt");
+        check = LittleFS.remove("/log3.txt");
+        Serial.printf("*** SYSINFO: Update Firmware Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        check = LittleFS.remove("/update3.txt");
         alertState = true;
     }
 }

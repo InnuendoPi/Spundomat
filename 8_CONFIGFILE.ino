@@ -110,7 +110,7 @@ bool loadConfig()
       offset2 = 362.0; // readFloat(4); // Lese Offset (Kalibrierung)
     ergDichtheit = 0.0;
   }
-  
+
   strlcpy(nameMDNS, miscObj["NAMEMDNS"] | "spundomat", maxHostSign);
 
   Serial.printf("Intervall Drucksensor: %d\n", upPressure);
@@ -122,9 +122,15 @@ bool loadConfig()
   Serial.printf("Testmodus: %d\n", testModus);
   if (testModus)
   {
-    Serial.printf("Testmodus offset0: %f\n", offset0);
-    Serial.printf("Testmodus offset2: %f\n", offset2);
+    Serial.printf("Testmodus Offset 0bar: %f\n", offset0);
+    Serial.printf("Testmodus Offset 2bar: %f\n", offset2);
     Serial.printf("Testmodus Dichtheit: %f\n", ergDichtheit);
+  }
+  else
+  {
+    Serial.printf("Eeprom Offset 0bar: %f\n", offset0);
+    Serial.printf("Eeprom Offset 2bar: %f\n", offset2);
+    Serial.printf("Dichtheit: %f\n", ergDichtheit);
   }
   Serial.println("--------");
 
@@ -150,7 +156,7 @@ bool loadConfig()
   DEBUG_MSG("P1S %s\n", modesWeb[PLAN1].c_str());
   DEBUG_MSG("P2S %s\n", modesWeb[PLAN2].c_str());
   DEBUG_MSG("P3S %s\n", modesWeb[PLAN3].c_str());
-  
+
   Serial.println("------ loadConfig finished ------");
   configFile.close();
   size_t len = measureJson(doc);
@@ -288,15 +294,15 @@ bool saveConfig()
   ablaufObj["P1S"] = modes[PLAN1];
   ablaufObj["P2S"] = modes[PLAN2];
   ablaufObj["P3S"] = modes[PLAN3];
-  DEBUG_MSG("P1S: %s\n", modes[PLAN1].c_str() );
-  DEBUG_MSG("P2S: %s\n", modes[PLAN2].c_str() );
-  DEBUG_MSG("P3S: %s\n", modes[PLAN3].c_str() );
+  DEBUG_MSG("P1S: %s\n", modes[PLAN1].c_str());
+  DEBUG_MSG("P2S: %s\n", modes[PLAN2].c_str());
+  DEBUG_MSG("P3S: %s\n", modes[PLAN3].c_str());
 
   size_t len = measureJson(doc);
   int memoryUsed = doc.memoryUsage();
   DEBUG_MSG("JSON config length: %d\n", len);
   DEBUG_MSG("JSON memory usage: %d\n", memoryUsed);
-  
+
   if (len > 2048 || memoryUsed > 2500)
   {
     // DEBUG_MSG("JSON config length: %d\n", len);
@@ -310,7 +316,7 @@ bool saveConfig()
   }
 
   File configFile = LittleFS.open("/config.txt", "w");
-  
+
   if (!configFile)
   {
     DEBUG_MSG("%s\n", "Failed to open config file for writing");
@@ -319,7 +325,6 @@ bool saveConfig()
       sendAlarm(ALARM_ERROR);
     return false;
   }
-  
 
   serializeJson(doc, configFile);
   configFile.close();
@@ -343,8 +348,7 @@ bool saveConfig()
   mv1.change(mv1Open, mv1Close, startMV1);
   mv2.change(mv2Open, mv2Close, startMV2);
   DEBUG_MSG("%s\n", "------------");
-  if (setMode != AUS && setGPIO == 1)
-    sendAlarm(ALARM_ON);
+
   // Steuerung
   // if (setMode != STEUERUNG || setMode != CON1 || setMode != CON2)
   // {
@@ -352,7 +356,10 @@ bool saveConfig()
   //     TickerSteuerung.stop();
   //   // TickerAlarmierung.stop();
   // }
-
+  if (setMode != AUS && setGPIO == 1)
+  {
+    sendAlarm(ALARM_ON);
+  }
   switch (setMode)
   {
   case AUS: // aus

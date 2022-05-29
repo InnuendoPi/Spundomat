@@ -462,7 +462,7 @@ void updateLCD()
   lcd.setCursor(0, 2);
   lcd.print("Starte WebUpdate ...");
 }
-void upSSLLCD()
+void upCertLCD()
 {
   lcd.clear();
   lcd.begin(16, 2);
@@ -471,7 +471,7 @@ void upSSLLCD()
   lcd.print(" Spundomat V");
   lcd.print(Version);
   lcd.setCursor(0, 2);
-  lcd.print(" Update SSL");
+  lcd.print(" Update Cert");
 }
 void upIndexLCD()
 {

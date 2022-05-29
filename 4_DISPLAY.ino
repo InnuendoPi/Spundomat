@@ -484,6 +484,61 @@ void upIndexLCD()
   lcd.setCursor(0, 2);
   lcd.print(" Update Index");
 }
+void upAblaufLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(" Update Ablaufplan");
+}
+void upBootstrapCSSLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(" Update bootstrap css");
+}
+void upBootstrapJSLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(" Update bootstrap js");
+}
+void upTableJSLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(" Update tablejson js");
+}
+void upJQueryLCD()
+{
+  lcd.clear();
+  lcd.begin(16, 2);
+  lcd.setBacklight(255);
+  lcd.setCursor(0, 0);
+  lcd.print(" Spundomat V");
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(" Update JQuery");
+}
 void upFirmLCD()
 {
   lcd.clear();

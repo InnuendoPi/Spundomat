@@ -562,7 +562,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        upSSLLCD();
+        upIndexLCD();
         Serial.print("*** SYSINFO: Start Index update - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upIn();
@@ -589,7 +589,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log0.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        upSSLLCD();
+        upAblaufLCD();
         Serial.print("*** SYSINFO: Start Ablaufplan update - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upAb();
@@ -617,6 +617,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log1.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
+        upBootstrapCSSLCD();
         Serial.print("*** SYSINFO: Update bootstrap css gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upCSS();
@@ -644,6 +645,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log11.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
+        upBootstrapJSLCD();
         Serial.print("*** SYSINFO: Update bootstrap js gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upJS1();
@@ -671,6 +673,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log111.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
+        upJQueryLCD();
         Serial.print("*** SYSINFO: Update JQuery gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upJQ();
@@ -698,6 +701,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log1111.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
+        upTableJS();
         Serial.print("*** SYSINFO: Update tablejson js gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upJS2();
@@ -724,7 +728,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log2.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        upIndexLCD();
+        upSSLLCD();
         Serial.print("*** SYSINFO: Start Cert update - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upCerts();

@@ -617,7 +617,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log1.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        Serial.print("*** SYSINFO: Update bootstrap css started - free heap: ");
+        Serial.print("*** SYSINFO: Update bootstrap css gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upCSS();
     }
@@ -644,7 +644,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log11.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        Serial.print("*** SYSINFO: Update bootstrap js started - free heap: ");
+        Serial.print("*** SYSINFO: Update bootstrap js gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upJS1();
     }
@@ -671,7 +671,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log111.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        Serial.print("*** SYSINFO: Update JQuery started - free heap: ");
+        Serial.print("*** SYSINFO: Update JQuery gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upJQ();
     }
@@ -698,7 +698,7 @@ void updateSys()
         fsUploadFile = LittleFS.open("/log1111.txt", "w");
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
-        Serial.print("*** SYSINFO: Update tablejson js started - free heap: ");
+        Serial.print("*** SYSINFO: Update tablejson js gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upJS2();
     }
@@ -814,7 +814,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log11.txt");
-        Serial.printf("*** SYSINFO: Update JS Anzahl Versuche %s\n", line.c_str());
+        Serial.printf("*** SYSINFO: Update bootstrap js Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log111.txt"))
     {
@@ -838,7 +838,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log1111.txt");
-        Serial.printf("*** SYSINFO: Update JS2 Anzahl Versuche %s\n", line.c_str());
+        Serial.printf("*** SYSINFO: Update tablejson js Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log1.txt"))
     {
@@ -850,7 +850,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log1.txt");
-        Serial.printf("*** SYSINFO: Update CSS Anzahl Versuche %s\n", line.c_str());
+        Serial.printf("*** SYSINFO: Update bootstrap css Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log2.txt"))
     {

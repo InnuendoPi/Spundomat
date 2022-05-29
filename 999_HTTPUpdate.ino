@@ -189,7 +189,7 @@ void upCSS()
                 if (!fsUploadFile)
                 {
                     Serial.println("Abbruch!");
-                    Serial.println("*** SYSINFO: error save css");
+                    Serial.println("*** SYSINFO: Fehler beim Speichern bootstrap css");
                     https.end();
                     return;
                 }
@@ -208,7 +208,7 @@ void upCSS()
                     delay(1);
                 }
 
-                Serial.println("*** SYSINFO: Update css finished");
+                Serial.println("*** SYSINFO: Update bootstrap css abgeschlossen");
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update1.txt");
                 fsUploadFile = LittleFS.open("/update11.txt", "w");
@@ -221,7 +221,7 @@ void upCSS()
         else
         {
             Serial.println("Cancel update!");
-            Serial.printf("*** SYSINFO: error update css: %s\n", https.errorToString(httpCode).c_str());
+            Serial.printf("*** SYSINFO: Update bootstrap css Fehler: %s\n", https.errorToString(httpCode).c_str());
             https.end();
             LittleFS.end(); // unmount LittleFS
             ESP.restart();
@@ -253,7 +253,7 @@ void upJS1()
                 if (!fsUploadFile)
                 {
                     Serial.println("Abbruch!");
-                    Serial.println("*** SYSINFO: error save js1");
+                    Serial.println("*** SYSINFO: Fehler beim Speichern bootstrap js");
                     https.end();
                     return;
                 }
@@ -272,7 +272,7 @@ void upJS1()
                     delay(1);
                 }
 
-                Serial.println("*** SYSINFO: Update js1 finished");
+                Serial.println("*** SYSINFO: Update bootstrap js abgeschlossen");
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update11.txt");
                 fsUploadFile = LittleFS.open("/update111.txt", "w");
@@ -285,7 +285,7 @@ void upJS1()
         else
         {
             Serial.println("Cancel update!");
-            Serial.printf("*** SYSINFO: error update js1: %s\n", https.errorToString(httpCode).c_str());
+            Serial.printf("*** SYSINFO: Update bootstrap js Fehler: %s\n", https.errorToString(httpCode).c_str());
             https.end();
             LittleFS.end(); // unmount LittleFS
             ESP.restart();
@@ -317,7 +317,7 @@ void upJS2()
                 if (!fsUploadFile)
                 {
                     Serial.println("Abbruch!");
-                    Serial.println("*** SYSINFO: error save js2");
+                    Serial.println("*** SYSINFO: Fehler beim Speichern tablejson js");
                     https.end();
                     return;
                 }
@@ -336,7 +336,7 @@ void upJS2()
                     delay(1);
                 }
 
-                Serial.println("*** SYSINFO: Update js2 finished");
+                Serial.println("*** SYSINFO: Update tablejson js abgeschlossen");
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update1111.txt");
                 fsUploadFile = LittleFS.open("/update2.txt", "w");
@@ -349,7 +349,7 @@ void upJS2()
         else
         {
             Serial.println("Cancel update!");
-            Serial.printf("*** SYSINFO: error update js2: %s\n", https.errorToString(httpCode).c_str());
+            Serial.printf("*** SYSINFO: Update tablejson js Fehler: %s\n", https.errorToString(httpCode).c_str());
             https.end();
             LittleFS.end(); // unmount LittleFS
             ESP.restart();
@@ -382,7 +382,7 @@ void upJQ()
                 if (!fsUploadFile)
                 {
                     Serial.println("Abbruch!");
-                    Serial.println("*** SYSINFO: error save JQuery");
+                    Serial.println("*** SYSINFO: Fehler beim Speichern JQuery");
                     https.end();
                     return;
                 }
@@ -401,7 +401,7 @@ void upJQ()
                     delay(1);
                 }
 
-                Serial.println("*** SYSINFO: Update JQuery finished");
+                Serial.println("*** SYSINFO: Update JQuery abgeschlossen");
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update111.txt");
                 fsUploadFile = LittleFS.open("/update1111.txt", "w");
@@ -417,7 +417,7 @@ void upJQ()
         else
         {
             Serial.println("Cancel update!");
-            Serial.printf("*** SYSINFO: error update JQuery: %s\n", https.errorToString(httpCode).c_str());
+            Serial.printf("*** SYSINFO: pdate JQuery Fehler: %s\n", https.errorToString(httpCode).c_str());
             https.end();
             LittleFS.end(); // unmount LittleFS
             ESP.restart();
@@ -790,7 +790,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log.txt");
-        Serial.printf("*** SYSINFO: Update Index Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        Serial.printf("*** SYSINFO: Update Index Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log0.txt"))
     {
@@ -802,7 +802,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log0.txt");
-        Serial.printf("*** SYSINFO: Update Ablaufplan Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        Serial.printf("*** SYSINFO: Update Ablaufplan Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log11.txt"))
     {
@@ -814,7 +814,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log11.txt");
-        Serial.printf("*** SYSINFO: Update JS Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        Serial.printf("*** SYSINFO: Update JS Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log111.txt"))
     {
@@ -826,7 +826,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log111.txt");
-        Serial.printf("*** SYSINFO: Update JQuery Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        Serial.printf("*** SYSINFO: Update JQuery Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log1111.txt"))
     {
@@ -838,7 +838,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log1111.txt");
-        Serial.printf("*** SYSINFO: Update JS2 Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        Serial.printf("*** SYSINFO: Update JS2 Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log1.txt"))
     {
@@ -850,7 +850,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log1.txt");
-        Serial.printf("*** SYSINFO: Update CSS Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        Serial.printf("*** SYSINFO: Update CSS Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log2.txt"))
     {
@@ -862,7 +862,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log2.txt");
-        Serial.printf("*** SYSINFO: Update Cert Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        Serial.printf("*** SYSINFO: Update Cert Anzahl Versuche %s\n", line.c_str());
     }
     if (LittleFS.exists("/log3.txt"))
     {
@@ -874,7 +874,7 @@ void checkLog()
         }
         fsUploadFile.close();
         check = LittleFS.remove("/log3.txt");
-        Serial.printf("*** SYSINFO: Update Firmware Anzahl Versuche %s del: %d\n", line.c_str(), check);
+        Serial.printf("*** SYSINFO: Update Firmware Anzahl Versuche %s\n", line.c_str());
         check = LittleFS.remove("/update3.txt");
         alertState = true;
     }

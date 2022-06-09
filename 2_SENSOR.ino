@@ -36,6 +36,10 @@ void readTemparature()
 			}
 		}
 	}
+	else
+	{
+		temperature += senOffset;
+	}
 
 	//dtostrf(temperature, 5, 1, sTemperature);
 

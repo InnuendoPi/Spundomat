@@ -25,7 +25,7 @@ void setup()
   // Load filesystem
   if (LittleFS.begin())
   {
-    Serial.printf("*** SYSINFO: setup LittleFS free heap: %d\n", ESP.getFreeHeap());
+    Serial.printf("*** SYSINFO: Setup LittleFS free heap: %d\n", ESP.getFreeHeap());
     updateSys();                        // WebUpdate
     if (LittleFS.exists("/config.txt")) // Load configuration
       loadConfig();

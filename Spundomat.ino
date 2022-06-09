@@ -65,7 +65,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.62";
+const char Version[7] = "2.63";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -217,6 +217,7 @@ long mv1Open = DEFAULT_OPEN;      // Default Öffne Magnetventil 1 in ms (min 20
 long mv1Close = DEFAULT_CLOSE;    // Default Schließe Magnetventil 1 in ms (min 20ms)
 long mv2Open = DEFAULT_OPEN;      // Default Öffne Magnetventil 2 in ms (min 20ms)
 long mv2Close = DEFAULT_CLOSE;    // Default Schließe Magnetventil 2 in ms (min 20ms)
+float senOffset = 0.0;
 int upTemp = TEMPERATUR_UPDATE;   // Default Update temperatur
 int upPressure = PRESSURE_UPDATE; // Default Update Drucksensor
 

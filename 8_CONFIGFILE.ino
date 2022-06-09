@@ -79,10 +79,11 @@ bool loadConfig()
   mv1Close = hwObj["MV1CLOSE"] | DEFAULT_CLOSE;
   mv2Open = hwObj["MV2OPEN"] | DEFAULT_OPEN;
   mv2Close = hwObj["MV2CLOSE"] | DEFAULT_CLOSE;
-
+  senOffset = hwObj["SENOFFSET"] | 0.0;
   Serial.printf("MV1: %d Open: %d Close: %d\n", startMV1, mv1Open, mv1Close);
   Serial.printf("MV2: %d Open: %d Close: %d\n", startMV2, mv2Open, mv2Close);
   // Serial.printf("startCO2: %d\n", startCO2);
+  Serial.printf("Sensor offset: %f\n", senOffset);
   Serial.printf("GPIO: %d\n", setGPIO);
   Serial.println("--------");
 
@@ -234,12 +235,15 @@ bool saveConfig()
   hwObj["MV1CLOSE"] = mv1Close;
   hwObj["MV2OPEN"] = mv2Open;
   hwObj["MV2CLOSE"] = mv2Close;
+  hwObj["SENOFFSET"] = (int(senOffset * 100)) / 100.0;
+
   // hwObj["CO2SEN"] = (int)startCO2;
   hwObj["GPIO"] = setGPIO;
   DEBUG_MSG("MV1: %d Open: %d Close %d\n", startMV1, mv1Open, mv1Close);
   DEBUG_MSG("MV2: %d Open: %d Close %d\n", startMV2, mv2Open, mv2Close);
   // DEBUG_MSG("startCO2: %d\n", startCO2);
   DEBUG_MSG("GPIO: %d\n", setGPIO);
+  DEBUG_MSG("Sensor offset: %f\n", senOffset);
   DEBUG_MSG("%s\n", "--------");
 
   // Datenbank Einstellungen

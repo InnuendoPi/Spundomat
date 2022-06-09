@@ -68,7 +68,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" id="misc5-tab" data-toggle="tab" href="#misc5" role="tab" aria-controls="misc5"
-                aria-selected="true">Grafana</a>
+                aria-selected="true">Visualisierung</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" id="misc4-tab" data-toggle="tab" href="#misc4" role="tab" aria-controls="misc4"
@@ -122,16 +122,16 @@
               <br />
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_mv1" />
-                <label class="form-check-label" for="modal_misc_mv1">Aktiviere MV1 [Spunden]</label>
+                <label class="form-check-label" for="modal_misc_mv1">Aktiviere Magnetventil 1 [MV1 Spunden]</label>
               </div>
               <div class="form-group row">
-                <label for="modal_misc_mv1open" class="col-sm col-form-label">Öffne MV1 [ms]</label>
+                <label for="modal_misc_mv1open" class="col-sm col-form-label">1. Intervall MV1 geöffnet [ms]</label>
                 <div class="col-sm-auto">
                   <input type="text" class="text-right" placeholder="" id="modal_misc_mv1open" />
                 </div>
               </div>
               <div class="form-group row">
-                <label for="modal_misc_mv1close" class="col-sm col-form-label">Schließe MV1 [ms]</label>
+                <label for="modal_misc_mv1close" class="col-sm col-form-label">2. Intervall MV1 geschlossen [ms]</label>
                 <div class="col-sm-auto">
                   <input type="text" class="text-right" placeholder="" id="modal_misc_mv1close" />
                 </div>
@@ -139,16 +139,16 @@
               <div class="border-top my-3"></div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_mv2" />
-                <label class="form-check-label" for="modal_misc_mv2">Aktiviere MV2 [Karbonisieren]</label>
+                <label class="form-check-label" for="modal_misc_mv2">Aktiviere Magnetventil 2 [MV2 Karbonisieren]</label>
               </div>
               <div class="form-group row">
-                <label for="modal_misc_mv2open" class="col-sm col-form-label">Öffne MV2 [ms]</label>
+                <label for="modal_misc_mv2open" class="col-sm col-form-label">1. Intervall MV2 geöffnet [ms]</label>
                 <div class="col-sm-auto">
                   <input type="text" class="text-right" placeholder="" id="modal_misc_mv2open" />
                 </div>
               </div>
               <div class="form-group row">
-                <label for="modal_misc_mv2close" class="col-sm col-form-label">Schließe MV2 [ms]</label>
+                <label for="modal_misc_mv2close" class="col-sm col-form-label">2. Intervall MV2 geschlossen [ms]</label>
                 <div class="col-sm-auto">
                   <input type="text" class="text-right" placeholder="" id="modal_misc_mv2close" />
                 </div>
@@ -158,6 +158,13 @@
                 <label for="modal_misc_modus_gpio" class="col-sm col-form-label">Modus GPIO</label>
                 <div class="col-sm-auto">
                   <select class="form-control" id="modal_misc_modus_gpio"></select>
+                </div>
+              </div>
+              <div class="border-top my-3"></div>
+              <div class="form-group row">
+                <label for="modal_misc_senoffset" class="col-sm col-form-label">Temperatursensor Offset [°C]</label>
+                <div class="col-sm-auto">
+                  <input type="text" class="text-right" placeholder="" id="modal_misc_senoffset" />
                 </div>
               </div>
               <!-- <div class="form-check">
@@ -210,11 +217,11 @@
             </div>
             <div class="tab-pane fade" id="misc5" role="tabpanel" aria-labelledby="misc5-tab">
               <br />
-              <label class="form-check-label">Visualisierung Spundomat Daten</label>
+              <label class="form-check-label">Visualisierung der Spundomat Daten (optional)</label>
               <br />
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_db_enable" />
-                <label class="form-check-label" for="modal_misc_db_enable">Aktiviere Grafana (Neustart
+                <label class="form-check-label" for="modal_misc_db_enable">Aktiviere Visualisierung über Grafana (Neustart
                   erforderlich!)</label>
               </div>
               <div class="form-group row">
@@ -797,6 +804,12 @@
         modal.find('#modal_misc_mv1close').val(data.mv1close);
         modal.find('#modal_misc_mv2open').val(data.mv2open);
         modal.find('#modal_misc_mv2close').val(data.mv2close);
+        if (isNaN(data.senoffset)) {
+          modal.find('#modal_misc_senoffset').val(0.00);
+        }
+        else {
+          modal.find('#modal_misc_senoffset').val(parseFloat(data.senoffset).toFixed(2));
+        }
         modal.find('#modal_misc_interval_pressure').val(data.uppressure);
         modal.find('#modal_misc_interval_temp').val(data.uptemp);
         modal.find('#modal_misc_kombi').val(data.verzkombi);
@@ -829,6 +842,7 @@
       var mv1close = modal.find('#modal_misc_mv1close').val();
       var mv2open = modal.find('#modal_misc_mv2open').val();
       var mv2close = modal.find('#modal_misc_mv2close').val();
+      var senoffset = modal.find('#modal_misc_senoffset').val();
       var uppressure = modal.find('#modal_misc_interval_pressure').val();
       var uptemp = modal.find('#modal_misc_interval_temp').val();
       var dbserver = modal.find('#modal_misc_db_server').val();
@@ -849,7 +863,7 @@
       var startdb = modal.find('#modal_misc_db_enable').prop("checked");
       // var co2sen = modal.find('#modal_misc_co2sen').prop("checked");
       $.ajax({
-        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup + '&gpio=' + gpio, // + '&co2sen=' + co2sen + '&targettemp=' + targettemp + '&uptarget=' + uptarget + '&upcon=' + upcon,
+        url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&senoffset=' + senoffset + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup + '&gpio=' + gpio, // + '&co2sen=' + co2sen + '&targettemp=' + targettemp + '&uptarget=' + uptarget + '&upcon=' + upcon,
         type: 'POST',
         dataType: 'html',
         // async: false,

@@ -471,7 +471,7 @@ void upCertLCD()
   lcd.print(" Spundomat V");
   lcd.print(Version);
   lcd.setCursor(0, 2);
-  lcd.print(" Update cert");
+  lcd.print(" Update certs");
 }
 void upIndexLCD()
 {

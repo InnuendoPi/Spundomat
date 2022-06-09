@@ -6,7 +6,7 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.61, 05.2022)
+Bibliotheken: (Stand ab Version 2.63, 06.2022)
 
 - ESP8266 3.0.2 (LittleFS)
 - Arduino IDE 1.8.19
@@ -31,8 +31,9 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 ## Changelog
 
-Version 2.61
+Version 2.63
 
+- Added:    Temperatursensor Offset
 - Fixed:    WebUpdate erweitert
 - Update:   ESP8266 3.0.2
 - Update:   Bibliotheken aktualisiert

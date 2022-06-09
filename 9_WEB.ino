@@ -88,6 +88,7 @@ void handleRequestMiscSet()
     doc["offset2"] = offset2;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
+    doc["senoffset"] = senOffset;
     // doc["co2sen"] = startCO2;
     // doc["wertco2"] = wertCO2;
     // doc["controller"] = controller;
@@ -251,6 +252,7 @@ void handleRequestMisc()
     doc["carbonation"] = setCarbonation;
     doc["mv1"] = startMV1;
     doc["mv2"] = startMV2;
+    doc["senoffset"] = senOffset;
     doc["mv1open"] = mv1Open;
     doc["mv1close"] = mv1Close;
     doc["mv2open"] = mv2Open;
@@ -454,6 +456,10 @@ void handleSetMisc()
                 if (checkRange(server.arg(i)))
                     mv2Close = server.arg(i).toInt();
             }
+        }
+        if (server.argName(i) == "senoffset")
+        {
+            senOffset = formatFLOAT(server.arg(i));           
         }
         if (server.argName(i) == "testmode")
         {

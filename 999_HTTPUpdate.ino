@@ -57,7 +57,7 @@ void upIn()
                     delay(1);
                 }
 
-                Serial.println("*** SYSINFO: Index Update abgeschlossen.");
+                Serial.println("*** SYSINFO: Update Index abgeschlossen.");
                 // Close LittleFS file
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update.txt");
@@ -142,7 +142,7 @@ void upAb()
                     delay(1);
                 }
 
-                Serial.println("*** SYSINFO: Ablaufplan Update abgeschlossen.");
+                Serial.println("*** SYSINFO: Update Ablaufplan abgeschlossen.");
                 // Close LittleFS file
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update0.txt");
@@ -470,7 +470,7 @@ void upCerts()
                     }
                     delay(1);
                 }
-                Serial.println("*** SYSINFO: Certs Update abgeschlossen.");
+                Serial.println("*** SYSINFO: Update Certs abgeschlossen.");
                 // Close LittleFS file
                 fsUploadFile.close();
                 bool check = LittleFS.remove("/update2.txt");
@@ -563,7 +563,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upIndexLCD();
-        Serial.print("*** SYSINFO: Start Index update - free heap: ");
+        Serial.print("*** SYSINFO: Update Index gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upIn();
     }
@@ -590,7 +590,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upAblaufLCD();
-        Serial.print("*** SYSINFO: Start Ablaufplan update - free heap: ");
+        Serial.print("*** SYSINFO: Update Ablaufplan gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upAb();
     }
@@ -729,7 +729,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upCertLCD();
-        Serial.print("*** SYSINFO: Start Cert update - free heap: ");
+        Serial.print("*** SYSINFO: Update Certs gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upCerts();
     }
@@ -755,7 +755,7 @@ void updateSys()
         bytesWritten = fsUploadFile.print((i));
         fsUploadFile.close();
         upFirmLCD();
-        Serial.print("*** SYSINFO: Start Firmware update - free heap: ");
+        Serial.print("*** SYSINFO: Update Firmware gestartet - free heap: ");
         Serial.println(ESP.getFreeHeap());
         upFirm();
     }

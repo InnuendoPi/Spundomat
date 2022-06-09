@@ -17,7 +17,34 @@ float formatDOT(String str)
     return 0;
 }
 
+float formatFLOAT(String str)
+{
+  str.replace(',', '.');
+  if (isValidFloat(str))
+    return str.toFloat();
+  else
+    return 0;
+}
+
 // Prüfe WebIf Eingaben
+bool isValidFloat(const String &str)
+{
+  for (int i = 0; i < str.length(); i++)
+  {
+    if (i == 0)
+    {
+      if (str.charAt(i) == '-')
+        continue;
+    }
+    if (str.charAt(i) == '.')
+      continue;
+    if (isdigit(str.charAt(i)))
+      continue;
+    return false;
+  }
+  return true;
+}
+
 bool isValidDigit(const String &str)
 {
   for (int i = 0; i < str.length(); i++)

@@ -1,6 +1,6 @@
 bool loadConfig()
 {
-  DEBUG_MSG("%s\n", "------ loadConfig started ------");
+  Serial.println("------ loadConfig started ------");
   File configFile = LittleFS.open("/config.txt", "r");
   if (!configFile)
   {
@@ -39,39 +39,19 @@ bool loadConfig()
   verzKombi = spundObj["VERZKOMBI"] | 0.0;
   setEinheit = spundObj["EINHEIT"] | 0;
 
-  Serial.printf("setPressure: %2.2f\n", setPressure);
-  Serial.printf("setCarbonation: %2.2f\n", setCarbonation);
-  Serial.printf("setMode: %d\n", setMode);
-  Serial.printf("verzKombi: %f\n", verzKombi);
-  Serial.printf("setEinheit: %d\n", setEinheit);
+  Serial.printf("Modus: %d\n", setMode);
+  Serial.printf("Zielwert Druck: %2.2f\n", setPressure);
+  Serial.printf("Zielwert CO2 Gehalt: %2.2f\n", setCarbonation);
+  Serial.printf("Verzögerung Karbonisierung: %.2f\n", verzKombi);
+  Serial.printf("Einheit Verzögerung: %d\n", setEinheit);
 
   calcVerzSpundomat(); // Berechne Verzögerung Karbonisierung im Kombi-Modus
   Serial.printf("Verzögerung: %d minCarb: %2.2f\n", verzKarbonisierung, minKarbonisierung);
   Serial.println("--------");
-
-  // InfluxDB Einstellungen
-  JsonArray databaseArray = doc["DATABASE"];
-  JsonObject databaseObj = databaseArray[0];
-
-  startDB = databaseObj["STARTDB"] | 0;
-  strlcpy(dbServer, databaseObj["DBSERVER"] | "", MAXHOSTSIGN);
-  strlcpy(dbDatabase, databaseObj["DB"] | "", MAXDBSSIGN);
-  strlcpy(dbUser, databaseObj["DBUSER"] | "", MAXDBSSIGN);
-  strlcpy(dbPass, databaseObj["DBPASS"] | "", MAXDBSSIGN);
-  upInflux = databaseObj["DBUP"] | DB_UPDATE;
-
-  Serial.printf("Database aktiviert: %d\n", startDB);
-  Serial.printf("DB Server: %s\n", dbServer);
-  Serial.printf("DB: %s\n", dbDatabase);
-  Serial.printf("DB User: %s\n", dbUser);
-  Serial.printf("DB Pass: %s\n", dbPass);
-  Serial.printf("DB Update: %d\n", upInflux); // in Minuten
-  Serial.println("--------");
-
+  
   // Hardware Einstellungen
   JsonArray hwArray = doc["HARDWARE"];
   JsonObject hwObj = hwArray[0];
-
   startMV1 = hwObj["MV1"] | 0;
   startMV2 = hwObj["MV2"] | 0;
   setGPIO = hwObj["GPIO"] | 0;
@@ -80,17 +60,16 @@ bool loadConfig()
   mv2Open = hwObj["MV2OPEN"] | DEFAULT_OPEN;
   mv2Close = hwObj["MV2CLOSE"] | DEFAULT_CLOSE;
   senOffset = hwObj["SENOFFSET"] | 0.0;
-  Serial.printf("MV1: %d Open: %d Close: %d\n", startMV1, mv1Open, mv1Close);
-  Serial.printf("MV2: %d Open: %d Close: %d\n", startMV2, mv2Open, mv2Close);
+  Serial.printf("MV1 Spunden:        %d Open: %d Close: %d\n", startMV1, mv1Open, mv1Close);
+  Serial.printf("MV2 Karbonisieren:  %d Open: %d Close: %d\n", startMV2, mv2Open, mv2Close);
   // Serial.printf("startCO2: %d\n", startCO2);
-  Serial.printf("Sensor offset: %f\n", senOffset);
-  Serial.printf("GPIO: %d\n", setGPIO);
+  Serial.printf("Modus GPIO: %d\n", setGPIO);
+  Serial.printf("Sensor Offset: %.2f\n", senOffset);
   Serial.println("--------");
 
   // System Einstellungen
   JsonArray miscArray = doc["MISC"];
   JsonObject miscObj = miscArray[0];
-
   upPressure = miscObj["UPPRESSURE"] | PRESSURE_UPDATE;
   upTemp = miscObj["UPTEMP"] | TEMPERATUR_UPDATE;
   // Steuerung
@@ -98,7 +77,7 @@ bool loadConfig()
   //   upTarget = miscObj["UPTARGET"];
   // if (miscObj.containsKey("UPCON"))
   //   upCon = miscObj["UPCON"];
-  startMDNS = miscObj["MDNS"] | true;
+  startMDNS = miscObj["MDNS"] | 0;
   testModus = miscObj["TESTMODE"] | 0;
   if (testModus)
   {
@@ -118,34 +97,51 @@ bool loadConfig()
   Serial.printf("Intervall Temperatursensor: %d\n", upTemp);
   // Serial.printf("Intervall Gärsteuerung: %d\n", upTarget);
   // Serial.printf("Intervall Gär Controller: %d\n", upCon);
-  Serial.printf("nameMDNS: %s\n", nameMDNS);
-  Serial.printf("startMDNS: %d\n", startMDNS);
+  Serial.printf("Aktiviere mDNS: %d\n", startMDNS);
+  Serial.printf("mDNS Name: %s\n", nameMDNS);
   Serial.printf("Testmodus: %d\n", testModus);
   if (testModus)
   {
-    Serial.printf("Testmodus Offset 0bar: %f\n", offset0);
-    Serial.printf("Testmodus Offset 2bar: %f\n", offset2);
-    Serial.printf("Testmodus Dichtheit: %f\n", ergDichtheit);
+    Serial.printf("Testmodus Offset 0bar: %.2f\n", offset0);
+    Serial.printf("Testmodus Offset 2bar: %.2f\n", offset2);
+    Serial.printf("Testmodus Dichtheit: %.2f\n", ergDichtheit);
   }
   else
   {
-    Serial.printf("Eeprom Offset 0bar: %f\n", offset0);
-    Serial.printf("Eeprom Offset 2bar: %f\n", offset2);
-    Serial.printf("Dichtheit: %f\n", ergDichtheit);
+    Serial.printf("Eeprom Offset 0bar: %.2f\n", offset0);
+    Serial.printf("Eeprom Offset 2bar: %.2f\n", offset2);
+    Serial.printf("Dichtheit: %.2f\n", ergDichtheit);
   }
   Serial.println("--------");
 
-  // Visualisierungs Einstellungen
+  // InfluxDB Einstellungen
+  JsonArray databaseArray = doc["DATABASE"];
+  JsonObject databaseObj = databaseArray[0];
+  startDB = databaseObj["STARTDB"] | 0;
+  strlcpy(dbServer, databaseObj["DBSERVER"] | "", MAXHOSTSIGN);
+  strlcpy(dbDatabase, databaseObj["DB"] | "", MAXDBSSIGN);
+  strlcpy(dbUser, databaseObj["DBUSER"] | "", MAXDBSSIGN);
+  strlcpy(dbPass, databaseObj["DBPASS"] | "", MAXDBSSIGN);
+  upInflux = databaseObj["DBUP"] | DB_UPDATE;
+
+  Serial.printf("Visualisierung aktiviert: %d\n", startDB);
+  Serial.printf("DB Server: %s\n", dbServer);
+  Serial.printf("DB Name: %s\n", dbDatabase);
+  Serial.printf("DB Benutzer: %s\n", dbUser);
+  Serial.printf("DB Password: %s\n", dbPass);
+  Serial.printf("Update Interval DB: %d\n", upInflux); // in Minuten
+  Serial.println("--------");
+
   JsonArray visArray = doc["VISUALISIERUNG"];
   JsonObject visObj = visArray[0];
 
   startVis = visObj["VISSTARTED"] | 0;
   strlcpy(dbVisTag, visObj["SUDID"] | "", MAXDBSSIGN);
 
-  Serial.printf("Visualisierung: %d\n", startVis);
+  Serial.printf("Visualisierung gestartet: %d ", startVis);
   Serial.printf("Sud-Id: %s\n", dbVisTag);
-  DEBUG_MSG("%s\n", "--------------------");
 
+  DEBUG_MSG("%s\n", "--------");
   JsonArray ablaufArray = doc["ABLAUF"];
   JsonObject ablaufObj = ablaufArray[0];
   modesWeb[PLAN1] = ablaufObj["P1S"] | "Plan #1";
@@ -243,7 +239,7 @@ bool saveConfig()
   DEBUG_MSG("MV2: %d Open: %d Close %d\n", startMV2, mv2Open, mv2Close);
   // DEBUG_MSG("startCO2: %d\n", startCO2);
   DEBUG_MSG("GPIO: %d\n", setGPIO);
-  DEBUG_MSG("Sensor offset: %f\n", senOffset);
+  DEBUG_MSG("Sensor Offset: %.2f\n", senOffset);
   DEBUG_MSG("%s\n", "--------");
 
   // Datenbank Einstellungen

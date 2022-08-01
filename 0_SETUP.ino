@@ -25,7 +25,7 @@ void setup()
   // Load filesystem
   if (LittleFS.begin())
   {
-    Serial.printf("*** SYSINFO: Setup LittleFS free heap: %d\n", ESP.getFreeHeap());
+    Serial.printf("*** SYSINFO: Setup LittleFS, free heap mem: %d\n", ESP.getFreeHeap());
     updateSys();                        // WebUpdate
     if (LittleFS.exists("/config.txt")) // Load configuration
       loadConfig();
@@ -42,7 +42,7 @@ void setup()
   timeClient.begin();
   timeClient.forceUpdate();
   checkSummerTime();
-
+  
   // Starte Webserver
   setupServer();
 

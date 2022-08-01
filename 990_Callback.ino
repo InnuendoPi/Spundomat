@@ -35,6 +35,8 @@ void tickerWLANCallback() // Timer Objekt Druck
     sendAlarm(ALARM_ERROR);
   }
 }
+
+
 /*
 void tickerCO2Callback()
 {

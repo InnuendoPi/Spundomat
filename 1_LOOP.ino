@@ -20,8 +20,9 @@ void loop()
 
   // Check mDNS
   if (startMDNS)
+  {
     MDNS.update();
-
+  }
   // Check NTP
   timeClient.update();
 
@@ -38,10 +39,14 @@ void loop()
 
   // InfluxDB Ticker
   if (startDB && startVis)
+  {
     TickerInfluxDB.update();
+  }
 
   if (reflashLCD || TickerDisplay.getUp())
+  {
     TickerDisplay.updateNow();
+  }
 
   // Betriebsmodi
   switch (setMode)
@@ -72,19 +77,19 @@ void loop()
   case DICHTHEIT:
     checkDichtheit();
     break;
-  // case STEUERUNG:
-  //   TickerSteuerung.update();
-  //   // TickerAlarmierung.update();
-  //   break;
-  // case CON1:
-  // case CON2:
-  //   TickerSteuerung.update();
-  //   // TickerAlarmierung.update();
-  //   if (TickerCon.state() == RUNNING)
-  //   {
-  //     TickerCon.update();
-  //   }
-  //   break;
+    // case STEUERUNG:
+    //   TickerSteuerung.update();
+    //   // TickerAlarmierung.update();
+    //   break;
+    // case CON1:
+    // case CON2:
+    //   TickerSteuerung.update();
+    //   // TickerAlarmierung.update();
+    //   if (TickerCon.state() == RUNNING)
+    //   {
+    //     TickerCon.update();
+    //   }
+    //   break;
   }
   up = false;
   down = false;

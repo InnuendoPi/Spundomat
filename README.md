@@ -31,15 +31,16 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 ## Changelog
 
-Version 2.63
+Version 2.64
 
+- Update:   VSCode 1.69.2
+- Update:   Bibliotheken aktualisiert
 - Added:    Temperatursensor Offset
 - Fixed:    WebUpdate erweitert
 - Update:   ESP8266 3.0.2
 - Update:   Bibliotheken aktualisiert
 - Update:   VSCode 1.67.2
 - Update:   Arduino plugin 0.4.12
-
 - Removed:  CO2 Sensor
 - Removed:  Gärsteuerung
 - Update:   ESP8266 3.0.1

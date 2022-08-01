@@ -758,7 +758,7 @@ void setMDNS()
     if (startMDNS && nameMDNS[0] != '\0' && WiFi.status() == WL_CONNECTED)
     {
         if (MDNS.begin(nameMDNS))
-            Serial.printf("*** SYSINFO: mDNS gestartet als %s verbunden an %s Time: %s RSSI: %d\n", nameMDNS, WiFi.localIP().toString().c_str(), timeClient.getFormattedTime().c_str(), WiFi.RSSI());
+            Serial.printf("*** SYSINFO: http://%s mit IP Adresse %s - Uhrzeit: %s WLAN Signal: %ddBm\n", nameMDNS, WiFi.localIP().toString().c_str(), timeClient.getFormattedTime().c_str(), WiFi.RSSI());
     }
     else
         Serial.printf("*** SYSINFO: Fehler Start mDNS! IP Adresse: %s Time: %s RSSI: %d\n", WiFi.localIP().toString().c_str(), timeClient.getFormattedTime().c_str(), WiFi.RSSI());

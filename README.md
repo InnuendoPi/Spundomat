@@ -33,7 +33,8 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 Version 2.66
 
-- Update:   LCD Bibliothek
+- Update:   LiquidCrystal_PCF8574 (LCD)
+- Update:   VSCode 1.70
 - Fixed:    Fehler LCD Kommunikation
 - Removed:  Quellcode CO2 Sensor
 - Removed:  Quellcode Gärsteuerung

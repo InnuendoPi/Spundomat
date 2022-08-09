@@ -6,16 +6,16 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.63, 06.2022)
+Bibliotheken: (Stand ab Version 2.66, 08.2022)
 
 - ESP8266 3.0.2 (LittleFS)
 - Arduino IDE 1.8.19
-- Visual Code + modified ESP8266FS Plugin (VSCode 1.67.2 Arduino 4.20)
+- Visual Code + modified ESP8266FS Plugin (VSCode 1.70 Arduino 4.12)
 - ArduinoJSON 6.19
-- InfluxDB 3.8
+- InfluxDB 3.12
 - WiFiManager 2.0
-- LiquidCrystal_PCF8574 1.2 (Version 1.3+ not working!)
-- RotaryEncoder 1.5.1
+- LiquidCrystal_PCF8574 2.0
+- RotaryEncoder 1.5.3
 
 Flash size 4MB (FS:2MB OTA:~1019kB)
 SSL support all SSL ciphers (most comp)
@@ -31,8 +31,11 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 ## Changelog
 
-Version 2.64
+Version 2.65
 
+- Removed:  Quellcode CO2 Sensor
+- Removed:  Quellcode Gärsteuerung
+- Fixed:    Reset im Testmodus
 - Update:   VSCode 1.69.2
 - Update:   Bibliotheken aktualisiert
 - Added:    Temperatursensor Offset

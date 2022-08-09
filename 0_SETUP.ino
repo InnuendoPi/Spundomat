@@ -27,8 +27,11 @@ void setup()
   {
     Serial.printf("*** SYSINFO: Setup LittleFS, free heap mem: %d\n", ESP.getFreeHeap());
     updateSys();                        // WebUpdate
+    EEPROM.begin(512);                  // EEProm Zugriff
     if (LittleFS.exists("/config.txt")) // Load configuration
+    {
       loadConfig();
+    }
     else
       Serial.println("*** SYSINFO: Konfigurationsdatei config.txt nicht vorhanden. Setze Standardwerte ...");
   }
@@ -42,11 +45,11 @@ void setup()
   timeClient.begin();
   timeClient.forceUpdate();
   checkSummerTime();
-  
+
   // Starte Webserver
   setupServer();
 
-  //Starte mDNS Dienst
+  // Starte mDNS Dienst
   if (startMDNS)
     setMDNS();
   else
@@ -57,7 +60,7 @@ void setup()
   // Starte I2C
   Wire.begin();
   Wire.beginTransmission(0x27);
-
+  lcd.begin(20, 4);
   // Starte Temperatursensor
   sensors.begin();
   readTemparature();
@@ -89,29 +92,10 @@ void setup()
 
   button.attachClick(click);
 
-  // EEPROM
-  EEPROM.begin(512);
-  offset0 = readFloat(0); // Lese Offset (Kalibrierung)
-  offset2 = readFloat(4); // Lese Offset (Kalibrierung)
-
   // Starte Drucksensor
   TickerPressure.start();
   // Starte Display
   TickerDisplay.start();
-
-  // if (setMode == STEUERUNG)
-  // {
-  //   steuerung();
-  //   TickerSteuerung.start();
-  //   // TickerAlarmierung.start();
-  // }
-  // else if (setMode == CON1 || setMode == CON2)
-  // {
-  //   startCon();
-  //   TickerSteuerung.start();
-  //   // TickerAlarmierung.start();
-  // }
-
   // LCD
   startLCD();
 
@@ -121,14 +105,6 @@ void setup()
 
   if (startDB && startVis)
     TickerInfluxDB.start();
-
-  // if (startCO2)
-  // {
-  //   co2Serial.begin(9600);
-  //   myMHZ19.begin(co2Serial);
-  //   initCO2();
-  //   TickerCO2.start();
-  // }
 
   // Check Update logs
   checkLog();
@@ -146,9 +122,9 @@ void setupServer()
   server.on("/reqMisc", handleRequestMisc);   // System Infos für WebConfig
   server.on("/setMisc", handleSetMisc);       // Einstellungen ändern
   server.on("/reqMiscSet", handleRequestMiscSet);
-  server.on("/reqMode", handlereqMode);           // WebIf Abfrage Modus
-  server.on("/reqEinheit", handlereqEinheit);     // WebIf Abfrage Einheit Zeiteingabe
-  server.on("/reqGPIO", handlereqGPIO);           // WebIf Abfrage Modus GPIO D7
+  server.on("/reqMode", handlereqMode);       // WebIf Abfrage Modus
+  server.on("/reqEinheit", handlereqEinheit); // WebIf Abfrage Einheit Zeiteingabe
+  server.on("/reqGPIO", handlereqGPIO);       // WebIf Abfrage Modus GPIO D7
   server.on("/reqPlan1", handleRequestPlan1);
   server.on("/reqPlan2", handleRequestPlan2);
   server.on("/reqPlan3", handleRequestPlan3);
@@ -156,23 +132,18 @@ void setupServer()
   server.on("/setPlan2", handleSetPlan2);
   server.on("/setPlan3", handleSetPlan3);
   server.on("/reqName", handleRequestName);
-  // Steuerung
-  // server.on("/reqOG", handleRequestOG);
-  // server.on("/reqUG", handleRequestUG);
-  // server.on("/setOG", SetOG);
-  // server.on("/setUG", SetUG);
-  // server.on("/BtnRew", BtnRew);
-  // server.on("/BtnPause", BtnPause);
-  // server.on("/BtnFor", BtnFor);
   server.on("/startHTTPUpdate", startHTTPUpdate); // Firmware WebUpdate
-    // FSBrowser initialisieren
+                                                  // FSBrowser initialisieren
   server.on("/edit", HTTP_GET, handleGetEdit);
   server.on("/status", HTTP_GET, handleStatus);
   server.on("/list", HTTP_GET, handleFileList);
   server.on("/edit", HTTP_PUT, handleFileCreate);
   // server.on("/favicon.ico", HTTP_GET, replyOK);
   server.on("/edit", HTTP_DELETE, handleFileDelete);
-  server.on("/edit", HTTP_POST, []() { server.send(200, "text/plain", ""); loadConfig(); }, handleFileUpload);
+  server.on(
+      "/edit", HTTP_POST, []()
+      { server.send(200, "text/plain", ""); loadConfig(); },
+      handleFileUpload);
   server.onNotFound(handleWebRequests);
   httpUpdate.setup(&server);
   server.begin();

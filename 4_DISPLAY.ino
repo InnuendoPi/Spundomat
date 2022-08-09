@@ -10,7 +10,7 @@ void showLCD()
     Menu1[0] += "g/l ";
     if (setMode == AUS)
     {
-       Menu1[3] = getDayOfWeek(timeClient.getDay());
+      Menu1[3] = getDayOfWeek(timeClient.getDay());
       Menu1[3] += " ";
       Menu1[3] += timeClient.getFormattedTime().c_str();
       Menu1[3] += " ";
@@ -113,6 +113,7 @@ void showLCD()
     // Ausgabe
     if (menuitem == 0)
     {
+      lcd.home();
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print(Menu1[menuitem]);
@@ -125,20 +126,25 @@ void showLCD()
     }
     else
     {
+      lcd.home();
       lcd.clear();
       lcd.setCursor(0, 0);
-      lcd.print("IP   ");
+      lcd.print("IP");
+      lcd.setCursor(5, 0);
       lcd.print(WiFi.localIP().toString());
       lcd.setCursor(0, 1);
-      lcd.print("SSID ");
+      lcd.print("SSID");
+      lcd.setCursor(5, 1);
       lcd.print(WiFi.SSID());
       lcd.setCursor(0, 2);
-      lcd.print("RSSI ");
+      lcd.print("RSSI");
+      lcd.setCursor(5, 2);
       lcd.print(WiFi.RSSI());
       lcd.setCursor(0, 3);
       if (startMDNS)
       {
-        lcd.print("mDNS ");
+        lcd.print("mDNS");
+        lcd.setCursor(5, 3);
         lcd.print(nameMDNS);
       }
     }
@@ -222,7 +228,7 @@ void showLCD()
         break;
       }
     }
-
+    lcd.home();
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(">");
@@ -305,6 +311,7 @@ void showLCD()
     Menu3[0] = "Kalibrieren?";
     Menu3[1] = "Nein          Ja";
 
+    lcd.home();
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(Menu3[0]);
@@ -376,6 +383,7 @@ void showLCD()
     Menu4[0] = "Speichern?";
     Menu4[1] = "Nein          Ja";
 
+    lcd.home();
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(Menu4[0]);
@@ -430,22 +438,28 @@ void showLCD()
 
 void startLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
+
+  lcd.home();
+  lcd.noAutoscroll();
   lcd.setBacklight(255);
+  lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Spundomat V");
+  lcd.setCursor(11, 0);
   lcd.print(Version);
   lcd.setCursor(0, 1);
-  lcd.print("IP   ");
+  lcd.print("IP");
+  lcd.setCursor(5, 1);
   lcd.print(WiFi.localIP().toString());
   lcd.setCursor(0, 2);
-  lcd.print("WLAN ");
+  lcd.print("WLAN");
+  lcd.setCursor(5, 2);
   lcd.print(WiFi.SSID());
   if (startMDNS)
   {
     lcd.setCursor(0, 3);
-    lcd.print("mDNS ");
+    lcd.print("mDNS");
+    lcd.setCursor(5, 3);
     lcd.print(nameMDNS);
   }
   millis2wait(PAUSE5SEC);
@@ -453,100 +467,109 @@ void startLCD()
 
 void updateLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
   lcd.setCursor(0, 2);
   lcd.print("Starte WebUpdate ...");
 }
 void upCertLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(0, 2);
-  lcd.print(" Update certs");
+  lcd.setCursor(1, 2);
+  lcd.print("Update certs");
 }
 void upIndexLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(0, 2);
-  lcd.print(" Update Index");
+  lcd.setCursor(1, 2);
+  lcd.print("Update Index");
 }
 void upAblaufLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(0, 2);
-  lcd.print(" Update Ablaufplan");
+  lcd.setCursor(1, 2);
+  lcd.print("Update Ablaufplan");
 }
 void upBootstrapCSSLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(0, 2);
-  lcd.print(" Update bootstrap cs");
+  lcd.setCursor(1, 2);
+  lcd.print("Update bootstrap cs");
 }
 void upBootstrapJSLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(0, 2);
-  lcd.print(" Update bootstrap js");
+  lcd.setCursor(1, 2);
+  lcd.print("Update bootstrap js");
 }
 void upTableJSLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(0, 2);
-  lcd.print(" Update tablejson js");
+  lcd.setCursor(1, 2);
+  lcd.print("Update tablejson js");
 }
 void upJQueryLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(0, 2);
-  lcd.print(" Update JQuery");
+  lcd.setCursor(1, 2);
+  lcd.print("Update JQuery");
 }
 void upFirmLCD()
 {
-  lcd.clear();
-  lcd.begin(16, 2);
   lcd.setBacklight(255);
-  lcd.setCursor(0, 0);
-  lcd.print(" Spundomat V");
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(0, 2);
-  lcd.print(" Update Firmware");
+  lcd.setCursor(1, 2);
+  lcd.print("Update Firmware");
 }

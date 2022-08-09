@@ -5,17 +5,17 @@ Author:	    Innuendo
 
 
 Spunden https://hobbybrauer.de/forum/wiki/doku.php/lagern:spunden
-Unter dem Spunden versteht man Bier in einem druckdicht abgeschlossenen Faß oder Gärbehälter 
-kontrolliert zu Carbonisieren damit Kohlendioxid im Bier gelöst wird. 
-Um eine Explosion des Druckfasses zu vermeiden und einen erwünschten Kohlensäuregehalt des Bieres 
-laut Spundungstabelle zu erreichen muss ein einstellbares Druckbegrenzungsventil, 
-das Spundventil (Spunddruckregler) am Fass angebracht werden. 
-Bei der Spundung muss keine genaue Menge an Zucker oder Würze zugegeben und berechnet werden, 
+Unter dem Spunden versteht man Bier in einem druckdicht abgeschlossenen Faß oder Gärbehälter
+kontrolliert zu Carbonisieren damit Kohlendioxid im Bier gelöst wird.
+Um eine Explosion des Druckfasses zu vermeiden und einen erwünschten Kohlensäuregehalt des Bieres
+laut Spundungstabelle zu erreichen muss ein einstellbares Druckbegrenzungsventil,
+das Spundventil (Spunddruckregler) am Fass angebracht werden.
+Bei der Spundung muss keine genaue Menge an Zucker oder Würze zugegeben und berechnet werden,
 weil das Spundventil überschüssiges CO2 automatisch ablässt.
-Am einfachsten schlaucht man nach 5-7 Tagen in die Drucktanks oder Kegs und hängt das nach 
+Am einfachsten schlaucht man nach 5-7 Tagen in die Drucktanks oder Kegs und hängt das nach
 Tanktemperatur (bzw. Raumtemperatur wenn nicht temperaturreguliert) richtig eingestellte Spundventil an.
 
-Zum Anschließen, Umkonfigurieren, Carbonisieren und leichten Reinigen der CO2-Schläuche eignen 
+Zum Anschließen, Umkonfigurieren, Carbonisieren und leichten Reinigen der CO2-Schläuche eignen
 sich pneumatische Schnellkupplungen hervorragend.
 */
 
@@ -31,7 +31,7 @@ sich pneumatische Schnellkupplungen hervorragend.
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
 #include <ArduinoJson.h>
-#include "LittleFS.h"     // LittleFS Zugriff -> ESP 2.7.4
+#include "LittleFS.h" // LittleFS Zugriff -> ESP 2.7.4
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPUpdateServer.h>
 #include <ESP8266mDNS.h>
@@ -49,12 +49,10 @@ sich pneumatische Schnellkupplungen hervorragend.
 #include "edit_htm.h"
 #include <FS.h>
 
-// CO2 Sensor
-// #include <MHZ19.h>
-// #include <SoftwareSerial.h> // Serielle Kommunikation mit CO2 Sensor
-
 #ifdef DEBUG_ESP_PORT
-#define DEBUG_MSG(...) DEBUG_ESP_PORT.printf("%s ", timeClient.getFormattedTime().c_str());DEBUG_ESP_PORT.printf(__VA_ARGS__)
+#define DEBUG_MSG(...)                                                   \
+    DEBUG_ESP_PORT.printf("%s ", timeClient.getFormattedTime().c_str()); \
+    DEBUG_ESP_PORT.printf(__VA_ARGS__)
 #else
 #define DEBUG_MSG(...)
 #endif
@@ -65,7 +63,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.64";
+const char Version[7] = "2.66";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000
@@ -110,14 +108,7 @@ const char Version[7] = "2.64";
 #define PRESSURE_OFFSET0 0.0
 #define PRESSURE_OFFSET2 2.0
 #define ABWEICHUNG 0.50
-#define ZUSATZALARM 1200000        // 20min
-
-// Steuerung
-// #define STEUERUNG 10
-// #define CON1 11
-// #define CON2 12
-// #define DEF_TARGET_TEMP 18.0
-
+#define ZUSATZALARM 1200000 // 20min
 
 // Definiere Pinbelegung
 const int PIN_PRESSURE = A0;       // Drucksensor
@@ -133,28 +124,23 @@ const int PIN_MV2 = D0;            // Magnetventi2 eingehend MV2 (Karbonisieren)
 const double E = exp(1);
 
 // Voreinstellungen
-float setPressure = DEF_PRESSURE;   // Vorgabe bei Neustart von 2,0 bar
-float setCarbonation = DEF_CARB;    // Vorgabe bei Neustart von 5,0 gr/L
-float dichtPressure = 0.0;          // Überprüfung Dichtheit
-int setMode = AUS;                  // Startposition 0 = AUS
+float setPressure = DEF_PRESSURE; // Vorgabe bei Neustart von 2,0 bar
+float setCarbonation = DEF_CARB;  // Vorgabe bei Neustart von 5,0 gr/L
+float dichtPressure = 0.0;        // Überprüfung Dichtheit
+int setMode = AUS;                // Startposition 0 = AUS
 int newMode = AUS;
-bool startMDNS = true;    // mDNS Dienst
-bool testModus = false;   // testModus - ignorieren!
-bool startMV1 = false;    // Aktiviere MV1 an D8
-bool startMV2 = false;    // Aktiviere MV2 an D0
+bool startMDNS = true;  // mDNS Dienst
+bool testModus = false; // testModus - ignorieren!
+bool startMV1 = false;  // Aktiviere MV1 an D8
+bool startMV2 = false;  // Aktiviere MV2 an D0
 bool alertState = false;
 float ergDichtheit = -127.0;
 bool wlanState = true;
-// CO2 Sensor
-// bool startCO2 = false;
-// int wertCO2 = 0;                // CO2 Wert in ppm
-// Klassen Initialisierungen
-// MHZ19 myMHZ19;                      // CO2 Sensor MH-Z19b
-// SoftwareSerial co2Serial(D2, D1);   // RX, TX Pins festlegen
 
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display
-#define RESOLUTION 12 // 12bit resolution == 750ms update rate
-OneWire oneWire(PIN_TEMP);       // DS18B20
+
+#define RESOLUTION 12      // 12bit resolution == 750ms update rate
+OneWire oneWire(PIN_TEMP); // DS18B20
 DallasTemperature sensors(&oneWire);
 OneButton button(PIN_ENCODER_BUTTON, true);          // Encoder drücken
 RotaryEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B); // Encoder drehen
@@ -172,10 +158,10 @@ NTPClient timeClient(ntpUDP, NTP_ADDRESS, NTP_OFFSET, NTP_INTERVAL);
 
 // Influx Server (optional)
 InfluxDBClient dbClient;
-bool startDB = false;       // Visualisierung aktiviert
-bool startVis = false;      // Visualisierung gestartet
-bool connected2DB = false;  // Datenbankverbindung hergestellt
-String visState = "0";    // Status Schreiben in Datenbank
+bool startDB = false;      // Visualisierung aktiviert
+bool startVis = false;     // Visualisierung gestartet
+bool connected2DB = false; // Datenbankverbindung hergestellt
+String visState = "0";     // Status Schreiben in Datenbank
 #define MAXHOSTSIGN 30
 #define MAXDBSSIGN 15
 
@@ -193,11 +179,6 @@ InnuTicker TickerInfluxDB;
 InnuTicker TickerDisplay;
 InnuTicker TickerWLAN;
 
-// InnuTicker TickerCO2;
-// InnuTicker TickerSteuerung;
-// InnuTicker TickerAlarmierung;
-// InnuTicker TickerCon;
-
 // Deklariere Variablen
 float temperature;
 float oldTemperature = 0.0;
@@ -213,10 +194,10 @@ int encoderOldPos;
 boolean up = false;
 boolean down = false;
 boolean buttonPressed;
-long mv1Open = DEFAULT_OPEN;      // Default Öffne Magnetventil 1 in ms (min 20ms)
-long mv1Close = DEFAULT_CLOSE;    // Default Schließe Magnetventil 1 in ms (min 20ms)
-long mv2Open = DEFAULT_OPEN;      // Default Öffne Magnetventil 2 in ms (min 20ms)
-long mv2Close = DEFAULT_CLOSE;    // Default Schließe Magnetventil 2 in ms (min 20ms)
+long mv1Open = DEFAULT_OPEN;   // Default Öffne Magnetventil 1 in ms (min 20ms)
+long mv1Close = DEFAULT_CLOSE; // Default Schließe Magnetventil 1 in ms (min 20ms)
+long mv2Open = DEFAULT_OPEN;   // Default Öffne Magnetventil 2 in ms (min 20ms)
+long mv2Close = DEFAULT_CLOSE; // Default Schließe Magnetventil 2 in ms (min 20ms)
 float senOffset = 0.0;
 int upTemp = TEMPERATUR_UPDATE;   // Default Update temperatur
 int upPressure = PRESSURE_UPDATE; // Default Update Drucksensor
@@ -232,22 +213,24 @@ String Menu4[2]; // Einstellunen speichern
 
 // FSBrowser
 File fsUploadFile; // a File object to temporarily store the received file
-enum { MSG_OK, CUSTOM, NOT_FOUND, BAD_REQUEST, ERROR };
+enum
+{
+    MSG_OK,
+    CUSTOM,
+    NOT_FOUND,
+    BAD_REQUEST,
+    ERROR
+};
 #define TEXT_PLAIN "text/plain"
 #define FS_INIT_ERROR "FS INIT ERROR"
 #define FILE_NOT_FOUND "FileNotFound"
 
-
-// Steuerung
-// #define sizeOfModes 13
-// String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN_1", "Plan_2", "Plan_3", "Dichtheit", "Gaersteuerung", "Steuerung OG", "Steuerung UG"};                            // ModusNamen im Display
-// String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan_1", "Plan_2", "Plan_3", "Überprüfe Dichtheit", "Gärsteuerung", "Steuerung OG", "Steuerung UG"}; // Modus-Namen für WebIf
 #define sizeOfModes 10
-String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN #1", "Plan #2", "Plan #3", "Dichtheit"};                            // ModusNamen im Display
+String modes[sizeOfModes] = {"Aus", "Spundomat", "CO2 Spund", "Druck Spund", "CO2 Karb", "Druck Karb", "PLAN #1", "Plan #2", "Plan #3", "Dichtheit"};                                                  // ModusNamen im Display
 String modesWeb[sizeOfModes] = {"Aus", "Spundomat", "Spunden CO2 Gehalt", "Spunden Druck", "Karbonisieren CO2 Gehalt", "Karbonisieren Druck", "Plan #1", "Plan #2", "Plan #3", "Überprüfe Dichtheit"}; // Modus-Namen für WebIf
 #define sizeOfModes 10
 #define maxHostSign 16
-char nameMDNS[maxHostSign] = "spundomat";    // http://spundomat/index.html
+char nameMDNS[maxHostSign] = "spundomat"; // http://spundomat/index.html
 
 // Verzögerung Spundomat
 #define anzAuswahl 3
@@ -262,12 +245,6 @@ unsigned long lastTimeSpundomat;
 #define sizeOfGPIO 3
 String modesGPIO[sizeOfGPIO] = {"Aus", "Piezo Buzzer", "Ventilator"};
 int setGPIO = 0;
-
-// Gärsteuerung
-// float targetTemp = DEF_TARGET_TEMP;
-// int upTarget = TARGET_UPDATE;
-// int upCon = CON_UPDATE;
-// int controller = 0;
 
 // Ablaufplan
 #define maxSchritte 20
@@ -285,22 +262,6 @@ struct Ablaufplan structPlan[maxSchritte];
 int counterPlan = 0; // Aktueller Schritt im Ablaufplan
 bool stepA = false;  // Step MV1 je Schritt
 bool stepB = false;  // Step MV2 je Schritt
-
-// Gärsteuerung
-// Datei Objekt steuerplan.txt
-// #define maxCon 5
-// struct Steuerplan
-// {
-//     float Temperatur;
-//     unsigned long Dauer;
-// };
-// struct Steuerplan structOG[maxCon];
-// struct Steuerplan structUG[maxCon];
-// int counterCon = 0; // Aktueller Schritt im Steuerplan
-// bool checkTemp = false;
-// String ogResponse, ugResponse;
-// unsigned long lastTimeSteuerung;
-// unsigned long lastTimePause = 0;
 
 // Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)

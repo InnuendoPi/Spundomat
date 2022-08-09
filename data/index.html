@@ -110,13 +110,6 @@
                   <select class="form-control" id="modal_misc_kombi_auswahl"></select>
                 </div>
               </div>
-              <!-- <div class="border-top my-3"></div> -->
-              <!-- <div class="form-group row">
-                <label for="modal_misc_con" class="col-sm col-form-label">Zieltemperatur Gärsteuerung</label>
-                <div class="col-sm-auto">
-                  <input type="text" class="text-right" placeholder="" id="modal_misc_con" />
-                </div>
-              </div> -->
             </div>
             <div class="tab-pane fade" id="misc2" role="tabpanel" aria-labelledby="misc2-tab">
               <br />
@@ -167,10 +160,6 @@
                   <input type="text" class="text-right" placeholder="" id="modal_misc_senoffset" />
                 </div>
               </div>
-              <!-- <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_co2sen" />
-                <label class="form-check-label" for="modal_misc_co2sen">Aktiviere CO2 Sensor</label>
-              </div> -->
             </div>
             <div class="tab-pane fade" id="misc3" role="tabpanel" aria-labelledby="misc3-tab">
               <br />
@@ -188,20 +177,6 @@
                   <input type="text" class="text-right" placeholder="" id="modal_misc_interval_temp" />
                 </div>
               </div>
-              <!-- <div class="form-group row">
-                <label for="modal_misc_intervall_target" class="col-sm col-form-label">Intervall Gärsteuerung
-                  [ms]</label>
-                <div class="col-sm-auto">
-                  <input type="text" class="text-right" placeholder="" id="modal_misc_interval_target" />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="modal_misc_intervall_con" class="col-sm col-form-label">Intervall Gär Controller
-                  [ms]</label>
-                <div class="col-sm-auto">
-                  <input type="text" class="text-right" placeholder="" id="modal_misc_interval_con" />
-                </div>
-              </div> -->
               <div class="border-top my-3"></div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="modal_misc_mdns" />
@@ -277,11 +252,6 @@
                 </div>
               </div>
               <div class="border-top my-3"></div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="modal_misc_testmode" />
-                <label class="form-check-label" for="modal_misc_testmode">Testmodus (nicht aktivieren!)</label>
-              </div>
-              <div class="border-top my-3"></div>
               <label class="form-check-label">Reset Spundomat</label>
               <br />
               <div class="form-check">
@@ -297,7 +267,11 @@
                 <label class="form-check-label" for="modal_misc_clear">Lösche alle Einstellungen (Reset to
                   defaults)</label>
               </div>
-              <br />
+              <div class="border-top my-3"></div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="modal_misc_testmode" />
+                <label class="form-check-label" for="modal_misc_testmode">Testmodus (nicht aktivieren!)</label>
+              </div>
             </div>
           </div>
         </div>
@@ -450,24 +424,6 @@
           miscRender += data.pressure.toFixed(2) + " bar";
           miscRender += "</span></li>";
         }
-        // else if (data.mode == 10) {
-        //   miscRender += "Gärsteuerung ";
-        //   miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zieltemperatur<span class='badge badge-info'>";
-        //   miscRender += data.targettemp.toFixed(1) + " °C";
-        //   miscRender += "</span></li>";
-        // }
-        // else if (data.mode == 11) {
-        //   miscRender += "Gärsteuerung OG ";
-        //   miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zieltemperatur<span class='badge badge-info'>";
-        //   miscRender += data.targettemp.toFixed(1) + " °C";
-        //   miscRender += "</span></li>";
-        // }
-        // else if (data.mode == 12) {
-        //   miscRender += "Gärsteuerung UG ";
-        //   miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zieltemperatur<span class='badge badge-info'>";
-        //   miscRender += data.targettemp.toFixed(1) + " °C";
-        //   miscRender += "</span></li>";
-        // }
         else {
           miscRender += "Ablaufplan #" + data.ablauf;
           miscRender += "</span></li><li class='list-group-item d-flex justify-content-between align-items-center'>Zielwert Druck<span class='badge badge-info'>";
@@ -475,38 +431,6 @@
           miscRender += "</span></li>";
         }
         miscRender += "<br/>";
-        // if (data.mode >= 10 && data.mode <= 12) // Gärsteuerung
-        // {
-        // if (data.mode > 10) {
-        //   miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Restzeit aktuelle Rampe";
-        //   // <span class='badge badge-light'>";
-        //   // miscRender += data.dauer;  
-        //   // miscRender += "</span></li>";
-        //   // miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'><span class='pull-right'>";
-        //   miscRender += "<button class='btn btn-outline-warning' onclick='BtnRewind()' type='button'> << </button>";
-        //   if (data.dauer == "Pause" || data.dauer == "Stopp")
-        //   {
-        //     miscRender += "<button class='btn btn-outline-success' onclick='BtnPause()' type='button'> |> </button>";
-        //   }
-        //   else
-        //   {
-        //     miscRender += "<button class='btn btn-outline-primary' onclick='BtnPause()' type='button'> || </button>";
-        //   }
-        //   miscRender += "<button class='btn btn-outline-warning' onclick='BtnForwind()' type='button'> >> </button>";
-        //   miscRender += "<span class='badge badge-light'>";
-        //   miscRender += data.dauer;
-        //   miscRender += "</span></li>";
-        // }
-        // miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Aktuelle Temperatur<span class='badge badge-light'>";
-        // if (data.temperatur == -127) {
-        //   miscRender += "kein Temperatursensor angeschlossen";
-        // }
-        // else {
-        //   miscRender += data.temperatur.toFixed(1) + " °C";
-        // }
-        // miscRender += "</span></li><br/>";
-        // }
-        // else {
         miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'> Aktueller Druck<span class='badge badge-light'>";
         if (data.druck == -1) {
           miscRender += "kein Drucksensor angeschlossen";
@@ -548,22 +472,6 @@
           miscRender += " badge-dark'>GPIO deaktiviert";
         }
         miscRender += "</span><span class='badge ";
-        // if (data.co2sen) {
-        //   if (data.wertco2 < 1000) {
-        //     miscRender += " badge-success'>";
-        //   }
-        //   else if (data.wertco2 < 2000) {
-        //     miscRender += " badge-warning'>";
-        //   }
-        //   else {
-        //     miscRender += " badge-danger'>";
-        //   }
-        //   miscRender += "CO2: " + data.wertco2 + "ppm"
-        // }
-        // else {
-        //   miscRender += " badge-dark'>CO2 Sensor deaktiviert";
-        // }
-        //miscRender += "</span><span class='badge ";
         if (data.mode < 10) {
           if (data.mv1) {
             miscRender += " badge-success'>MV1: " + data.mv1opendisp + " / " + data.mv1closedisp;
@@ -580,21 +488,6 @@
           }
 
         }
-        // else if (data.mode >= 10) {
-        //   if (data.controller == 1) {
-        //     miscRender += " badge-success'>Kühlung aktiv";
-        //   }
-        //   else {
-        //     miscRender += " badge-dark'>Kühlung aus";
-        //   }
-        //   miscRender += "</span><span class='badge ";
-        //   if (data.controller == 2) {
-        //     miscRender += " badge-success'>Heizung aktiv";
-        //   }
-        //   else {
-        //     miscRender += " badge-dark'>Heizung aus";
-        //   }
-        // }
         miscRender += "</span> </li>";
         miscRender += "<li class='list-group-item d-flex justify-content-between align-items-center'>Dienste<span class='badge ";
         if (data.dichtheit == -127.0) {
@@ -797,7 +690,6 @@
         modal.find('#modal_misc_mv2').prop("checked", Boolean(Number(data.mv2)));
         modal.find('#modal_misc_testmode').prop("checked", Boolean(Number(data.testmode)));
         modal.find('#modal_misc_db_enable').prop("checked", Boolean(Number(data.startdb)));
-        // modal.find('#modal_misc_co2sen').prop("checked", Boolean(Number(data.co2sen)));
         modal.find('#modal_misc_pressure').val(parseFloat(data.pressure).toFixed(2));
         modal.find('#modal_misc_carbonation').val(parseFloat(data.carbonation).toFixed(2));
         modal.find('#modal_misc_mv1open').val(data.mv1open);
@@ -821,9 +713,6 @@
         modal.find('#modal_misc_db_pass').val(data.dbpass);
         modal.find('#modal_misc_db_up').val(data.dbup);
         modal.find('#modal_misc_rssi').val(data.rssi);
-        // modal.find('#modal_misc_interval_target').val(data.uptarget);
-        // modal.find('#modal_misc_interval_con').val(data.upcon);
-        // modal.find('#modal_misc_con').val(data.targettemp);
         modal.find('#modal_misc_vis_tag').val(data.vistag);
       });
     });
@@ -833,7 +722,6 @@
       var mdns_name = modal.find('#modal_misc_mdns_name').val();
       var pressure = modal.find('#modal_misc_pressure').val();
       var carbonation = modal.find('#modal_misc_carbonation').val();
-      // var mode = $('#modal_misc_modus option:selected').text();
       var mode = $('#modal_misc_modus').val();
       var einheit = $('#modal_misc_kombi_auswahl').val();
       var gpio = $('#modal_misc_modus_gpio').val();
@@ -850,9 +738,6 @@
       var dbuser = modal.find('#modal_misc_db_user').val();
       var dbpass = modal.find('#modal_misc_db_pass').val();
       var dbup = modal.find('#modal_misc_db_up').val();
-      // var targettemp = modal.find('#modal_misc_con').val();
-      // var uptarget = modal.find('#modal_misc_interval_target').val();
-      // var upcon = modal.find('#modal_misc_interval_con').val();
       var mdns = modal.find('#modal_misc_mdns').prop("checked");
       var eeprom = modal.find('#modal_misc_eeprom').prop("checked");
       var reset = modal.find('#modal_misc_reset').prop("checked");
@@ -861,7 +746,6 @@
       var mv2 = modal.find('#modal_misc_mv2').prop("checked");
       var testmode = modal.find('#modal_misc_testmode').prop("checked");
       var startdb = modal.find('#modal_misc_db_enable').prop("checked");
-      // var co2sen = modal.find('#modal_misc_co2sen').prop("checked");
       $.ajax({
         url: '/setMisc?reset=' + reset + '&clear=' + clear + '&eeprom=' + eeprom + '&mdns=' + mdns + '&mdns_name=' + mdns_name + '&pressure=' + pressure + '&carbonation=' + carbonation + '&mode=' + mode + '&verzkombi=' + delayspund + '&einheit=' + einheit + '&mv1=' + mv1 + '&mv1open=' + mv1open + '&mv1close=' + mv1close + '&mv2=' + mv2 + '&mv2open=' + mv2open + '&mv2close=' + mv2close + '&senoffset=' + senoffset + '&uppressure=' + uppressure + '&uptemp=' + uptemp + '&testmode=' + testmode + '&startdb=' + startdb + '&dbserver=' + dbserver + '&dbdatabase=' + dbdatabase + '&dbuser=' + dbuser + '&dbpass=' + dbpass + '&dbup=' + dbup + '&gpio=' + gpio, // + '&co2sen=' + co2sen + '&targettemp=' + targettemp + '&uptarget=' + uptarget + '&upcon=' + upcon,
         type: 'POST',
@@ -871,38 +755,6 @@
       });
       modal.modal('hide')
     });
-
-    // function BtnRewind() {
-    //   $.ajax({
-    //     url: '/BtnRew',
-    //     type: 'POST',
-    //     async: true,
-    //     cache: false
-    //   });
-    // };
-
-    // function BtnPause() {
-    //   //$(this).toggleClass('btn-outline-primary').toggleClass('btn-outline-danger');
-    //   // var status = false;
-    //   // if ($(this).is('.btn-success')) {
-    //   //   status = true;
-    //   // }
-    //   $.ajax({
-    //     url: '/BtnPause',
-    //     type: 'POST',
-    //     async: true,
-    //     cache: false
-    //   });
-    // };
-
-    // function BtnForwind() {
-    //   $.ajax({
-    //     url: '/BtnFor',
-    //     type: 'POST',
-    //     async: true,
-    //     cache: false
-    //   });
-    // };
 
     $("#btn_reboot").click(function () {
       $.ajax({

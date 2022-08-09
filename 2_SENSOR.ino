@@ -222,15 +222,5 @@ void checkTestMode()
 		if (pressure < setPressure)
 			pressure = oldPressDisp + 0.1;
 		break;
-	// case STEUERUNG:
-	// case CON1:
-	// case CON2:
-	// 	if (targetTemp <= oldTemp)
-	// 		oldTemp -= 0.2;
-	// 	else
-	// 		oldTemp += 0.2;
-	// 	temperature = oldTemp;
-	// 	DEBUG_MSG("TestMode Temp %3.2f Target %3.2f\n", temperature, targetTemp);
-	// 	break;
 	}
 }

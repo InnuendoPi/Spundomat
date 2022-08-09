@@ -475,7 +475,7 @@ void updateLCD()
   lcd.setCursor(12, 0);
   lcd.print(Version);
   lcd.setCursor(0, 2);
-  lcd.print("Starte WebUpdate ...");
+  lcd.print(">Update gestartet");
 }
 void upCertLCD()
 {
@@ -486,8 +486,8 @@ void upCertLCD()
   lcd.print("Spundomat V");
   lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(1, 2);
-  lcd.print("Update certs");
+  lcd.setCursor(0, 2);
+  lcd.print(">Update certs");
 }
 void upIndexLCD()
 {
@@ -498,8 +498,8 @@ void upIndexLCD()
   lcd.print("Spundomat V");
   lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(1, 2);
-  lcd.print("Update Index");
+  lcd.setCursor(0, 2);
+  lcd.print(">Update Index");
 }
 void upAblaufLCD()
 {
@@ -510,8 +510,8 @@ void upAblaufLCD()
   lcd.print("Spundomat V");
   lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(1, 2);
-  lcd.print("Update Ablaufplan");
+  lcd.setCursor(0, 2);
+  lcd.print(">Update Ablaufplan");
 }
 void upBootstrapCSSLCD()
 {
@@ -522,8 +522,8 @@ void upBootstrapCSSLCD()
   lcd.print("Spundomat V");
   lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(1, 2);
-  lcd.print("Update bootstrap cs");
+  lcd.setCursor(0, 2);
+  lcd.print(">Update bootstrap cs");
 }
 void upBootstrapJSLCD()
 {
@@ -534,8 +534,8 @@ void upBootstrapJSLCD()
   lcd.print("Spundomat V");
   lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(1, 2);
-  lcd.print("Update bootstrap js");
+  lcd.setCursor(0, 2);
+  lcd.print(">Update bootstrap js");
 }
 void upTableJSLCD()
 {
@@ -546,8 +546,8 @@ void upTableJSLCD()
   lcd.print("Spundomat V");
   lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(1, 2);
-  lcd.print("Update tablejson js");
+  lcd.setCursor(0, 2);
+  lcd.print(">Update tablejson js");
 }
 void upJQueryLCD()
 {
@@ -558,8 +558,8 @@ void upJQueryLCD()
   lcd.print("Spundomat V");
   lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(1, 2);
-  lcd.print("Update JQuery");
+  lcd.setCursor(0, 2);
+  lcd.print(">Update JQuery");
 }
 void upFirmLCD()
 {
@@ -570,6 +570,19 @@ void upFirmLCD()
   lcd.print("Spundomat V");
   lcd.setCursor(12, 0);
   lcd.print(Version);
-  lcd.setCursor(1, 2);
-  lcd.print("Update Firmware");
+  lcd.setCursor(0, 2);
+  lcd.print(">Update Firmware");
+}
+
+void endFirmLCD()
+{
+  lcd.setBacklight(255);
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("Spundomat V");
+  lcd.setCursor(12, 0);
+  lcd.print(Version);
+  lcd.setCursor(0, 2);
+  lcd.print(">Update beendet");
 }

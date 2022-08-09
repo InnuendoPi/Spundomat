@@ -22,6 +22,11 @@ void setup()
   WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
 
+  // Starte I2C
+  Wire.begin();
+  Wire.beginTransmission(0x27);
+  lcd.begin(20, 4);
+
   // Load filesystem
   if (LittleFS.begin())
   {
@@ -57,10 +62,6 @@ void setup()
     Serial.printf("*** SYSINFO: ESP8266 IP Addresse: %s Time: %s RSSI: %d\n", WiFi.localIP().toString().c_str(), timeClient.getFormattedTime().c_str(), WiFi.RSSI());
   }
 
-  // Starte I2C
-  Wire.begin();
-  Wire.beginTransmission(0x27);
-  lcd.begin(20, 4);
   // Starte Temperatursensor
   sensors.begin();
   readTemparature();

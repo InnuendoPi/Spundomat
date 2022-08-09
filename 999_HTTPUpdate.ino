@@ -897,6 +897,7 @@ void update_started()
 void update_finished()
 {
     Serial.println("*** SYSINFO: Firmware Update beendet");
+    endFirmLCD();
     bool check = LittleFS.remove("/update3.txt");
 }
 

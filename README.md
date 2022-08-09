@@ -31,8 +31,10 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 ## Changelog
 
-Version 2.65
+Version 2.66
 
+- Update:   LCD Bibliothek
+- Fixed:    Fehler LCD Kommunikation
 - Removed:  Quellcode CO2 Sensor
 - Removed:  Quellcode Gärsteuerung
 - Fixed:    Reset im Testmodus

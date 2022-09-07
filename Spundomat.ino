@@ -47,6 +47,8 @@ sich pneumatische Schnellkupplungen hervorragend.
 #include <CertStoreBearSSL.h>
 #include <InfluxDbClient.h>
 #include "edit_htm.h"
+#include "index_htm.h"
+#include "ablaufplan_htm.h"
 #include <FS.h>
 
 #ifdef DEBUG_ESP_PORT
@@ -63,7 +65,7 @@ extern "C"
 }
 
 // Definiere Konstanten
-const char Version[7] = "2.66";
+const char Version[7] = "2.67";
 
 #define PAUSE1SEC 1000
 #define PAUSE2SEC 2000

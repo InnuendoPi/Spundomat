@@ -116,6 +116,11 @@ void setupServer()
 {
   server.on("/", handleRoot);
   server.on("/index.htm", handleRoot);
+  server.on("/index", handleRoot);
+  server.on("/index.html", handleRoot);
+  server.on("/mash", HTTP_GET, handleAblauf);
+  server.on("/mash.html", HTTP_GET, handleAblauf);
+  server.on("/mash.htm", HTTP_GET, handleAblauf);
   server.on("/reboot", rebootDevice);         // Spundomat reboot
   server.on("/kalibrieren", kalibrieren);     // Spundomat Kalibrierung
   server.on("/visualisieren", visualisieren); // Spundomat Visualisierung

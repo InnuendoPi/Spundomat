@@ -10,7 +10,7 @@ Bibliotheken: (Stand ab Version 2.66, 08.2022)
 
 - ESP8266 3.0.2 (LittleFS)
 - Arduino IDE 1.8.19
-- Visual Code + modified ESP8266FS Plugin (VSCode 1.70 Arduino 4.12)
+- Visual Code + modified ESP8266FS Plugin (VSCode 1.71 Arduino 4.12)
 - ArduinoJSON 6.19
 - InfluxDB 3.12
 - WiFiManager 2.0
@@ -31,8 +31,11 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 ## Changelog
 
-Version 2.66
+Version 2.67
 
+- Optimze:  WebIf
+- Update:   WebUpdate
+- Update:   VSCode 1.71
 - Update:   LiquidCrystal_PCF8574 (LCD)
 - Update:   VSCode 1.70
 - Fixed:    Fehler LCD Kommunikation

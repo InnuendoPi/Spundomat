@@ -1,75 +1,79 @@
 void handleRoot()
 {
-  server.sendHeader("Location", "/index.html", true); //Redirect to our html web page
-  server.send(302, "text/plain", "");
-  // server.sendHeader(PSTR("Content-Encoding"), "gzip");
-  // server.send(200, "text/html", index_htm_gz, sizeof(index_htm_gz));
+    //   server.sendHeader("Location", "/index.html", true); //Redirect to our html web page
+    //   server.send(302, "text/plain", "");
+    server.sendHeader(PSTR("Content-Encoding"), "gzip");
+    server.send(200, "text/html", index_htm_gz, sizeof(index_htm_gz));
 }
-
+void handleAblauf()
+{
+  server.sendHeader(PSTR("Content-Encoding"), "gzip");
+  server.send_P(200, "text/html", ablaufplan_htm_gz, sizeof(ablaufplan_htm_gz));
+}
 void handleWebRequests()
 {
-  if (loadFromLittlefs(server.uri()))
-  {
-    return;
-  }
-  String message = "File Not Detected\n\n";
-  message += "URI: ";
-  message += server.uri();
-  message += "\nMethod: ";
-  message += (server.method() == HTTP_GET) ? "GET" : "POST";
-  message += "\nArguments: ";
-  message += server.args();
-  message += "\n";
-  for (uint8_t i = 0; i < server.args(); i++)
-  {
-    message += " NAME:" + server.argName(i) + "\n VALUE:" + server.arg(i) + "\n";
-  }
-  server.send(404, "text/plain", message);
+    if (loadFromLittlefs(server.uri()))
+    {
+        return;
+    }
+    String message = "File Not Detected\n\n";
+    message += "URI: ";
+    message += server.uri();
+    message += "\nMethod: ";
+    message += (server.method() == HTTP_GET) ? "GET" : "POST";
+    message += "\nArguments: ";
+    message += server.args();
+    message += "\n";
+    for (uint8_t i = 0; i < server.args(); i++)
+    {
+        message += " NAME:" + server.argName(i) + "\n VALUE:" + server.arg(i) + "\n";
+    }
+    server.send(404, "text/plain", message);
 }
 
 bool loadFromLittlefs(String path)
 {
-  String dataType = "text/plain";
-  if (path.endsWith("/"))
-    path += "index.html";
+    String dataType = "text/plain";
+    if (path.endsWith("/"))
+        path += "index.html";
 
-  if (path.endsWith(".src"))
-    path = path.substring(0, path.lastIndexOf("."));
-  else if (path.endsWith(".html"))
-    dataType = "text/html";
-  else if (path.endsWith(".htm"))
-    dataType = "text/html";
-  else if (path.endsWith(".css"))
-    dataType = "text/css";
-  else if (path.endsWith(".js"))
-    dataType = "application/javascript";
-  else if (path.endsWith(".png"))
-    dataType = "image/png";
-  else if (path.endsWith(".gif"))
-    dataType = "image/gif";
-  else if (path.endsWith(".jpg"))
-    dataType = "image/jpeg";
-  else if (path.endsWith(".ico"))
-    dataType = "image/x-icon";
-  else if (path.endsWith(".xml"))
-    dataType = "text/xml";
-  else if (path.endsWith(".pdf"))
-    dataType = "application/pdf";
-  else if (path.endsWith(".zip"))
-    dataType = "application/zip";
+    if (path.endsWith(".src"))
+        path = path.substring(0, path.lastIndexOf("."));
+    else if (path.endsWith(".html"))
+        dataType = "text/html";
+    else if (path.endsWith(".htm"))
+        dataType = "text/html";
+    else if (path.endsWith(".css"))
+        dataType = "text/css";
+    else if (path.endsWith(".js"))
+        dataType = "application/javascript";
+    else if (path.endsWith(".png"))
+        dataType = "image/png";
+    else if (path.endsWith(".gif"))
+        dataType = "image/gif";
+    else if (path.endsWith(".jpg"))
+        dataType = "image/jpeg";
+    else if (path.endsWith(".ico"))
+        dataType = "image/x-icon";
+    else if (path.endsWith(".xml"))
+        dataType = "text/xml";
+    else if (path.endsWith(".pdf"))
+        dataType = "application/pdf";
+    else if (path.endsWith(".zip"))
+        dataType = "application/zip";
 
-  if (!LittleFS.exists(path.c_str()))
-  {
-    return false;
-  }
-  File dataFile = LittleFS.open(path.c_str(), "r");
-  if (server.hasArg("download"))
-    dataType = "application/octet-stream";
-  if (server.streamFile(dataFile, dataType) != dataFile.size())
-  {
-  }
-  dataFile.close();
-  return true;
+    if (!LittleFS.exists(path.c_str()))
+    {
+        return false;
+    }
+    File dataFile = LittleFS.open(path.c_str(), "r");
+    if (server.hasArg("download"))
+        dataType = "application/octet-stream";
+    if (server.streamFile(dataFile, dataType) != dataFile.size())
+    {
+    }
+    dataFile.close();
+    return true;
 }
 
 void handleRequestMiscSet()
@@ -183,7 +187,7 @@ void handleRequestMiscSet()
             doc["restverz"] = countdown;
         else
             doc["restverz"] = "0";
-        //berechneCountdown(lastTimeSpundomat + PAUSE5MIN + PAUSE2MIN);
+        // berechneCountdown(lastTimeSpundomat + PAUSE5MIN + PAUSE2MIN);
     }
 
     String response;
@@ -403,7 +407,7 @@ void handleSetMisc()
         }
         if (server.argName(i) == "senoffset")
         {
-            senOffset = formatFLOAT(server.arg(i));           
+            senOffset = formatFLOAT(server.arg(i));
         }
         if (server.argName(i) == "testmode")
         {
@@ -780,7 +784,7 @@ void handleRequestPlan2()
 void handleRequestPlan3()
 {
     File planfile = LittleFS.open("/ablaufplan3.json", "r");
-    
+
     if (planfile)
     {
         DynamicJsonDocument docIn(3072);
@@ -843,7 +847,7 @@ void handleSetPlan2()
 {
     DynamicJsonDocument doc(3072);
     DeserializationError error = deserializeJson(doc, server.arg(0));
-     if (error)
+    if (error)
     {
         DEBUG_MSG("Plan2: deserialize Json error %s\n", error.c_str());
         return;

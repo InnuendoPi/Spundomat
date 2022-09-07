@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'spundomatfont';
+  src:  url('./spundomatfont.eot?v7u1py');
+    src:  url('./spundomatfont.eot?v7u1py#iefix') format('embedded-opentype'),
+    url('./spundomatfont.ttf?v7u1py') format('truetype');
+      
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'mqttfont' !important;
+  /* speak: never; */
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-loop:before {
+  content: "\e900";
+}
+.icon-plus:before {
+  content: "\f067";
+}
+.icon-power-off:before {
+  content: "\f011";
+}
+.icon-cog:before {
+  content: "\f013";
+}
+.icon-trash-o:before {
+  content: "\f014";
+}
+.icon-clock-o:before {
+  content: "\f017";
+}
+.icon-download:before {
+  content: "\f019";
+}
+.icon-pencil:before {
+  content: "\f040";
+}
+.icon-play:before {
+  content: "\f04b";
+}
+.icon-pause:before {
+  content: "\f04c";
+}
+.icon-step-forward:before {
+  content: "\f051";
+}
+.icon-fire:before {
+  content: "\f06d";
+}
+.icon-chevron-up:before {
+  content: "\f077";
+}
+.icon-chevron-down:before {
+  content: "\f078";
+}
+.icon-cogs:before {
+  content: "\f085";
+}
+.icon-eraser:before {
+  content: "\f12d";
+}
+.icon-bullseye:before {
+  content: "\f140";
+}
+.icon-database:before {
+  content: "\f1c0";
+}
+.icon-thermometer-three-quarters:before {
+  content: "\f2c8";
+}

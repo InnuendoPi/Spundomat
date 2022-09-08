@@ -501,10 +501,10 @@ void handleSetMisc()
                 upInflux = server.arg(i).toInt() * 1000;
             }
         }
-        if (server.argName(i) == "alertstate")
-        {
-            alertState = false;
-        }
+        // if (server.argName(i) == "alertstate")
+        // {
+        //     alertState = false;
+        // }
         if (server.argName(i) == "gpio")
         {
             if (isValidInt(server.arg(i)))

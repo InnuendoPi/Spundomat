@@ -127,16 +127,12 @@ void updateTools()
         anzahlVersuche++;
         fsUploadFile = LittleFS.open("/updateTools.txt", "w");
         uint8_t bytesWritten = fsUploadFile.print(anzahlVersuche);
-        // bytesWritten = fsUploadFile.print(statusUpdate);
         fsUploadFile.close();
         fsUploadFile = LittleFS.open("/updateTools.log", "w");
         bytesWritten = fsUploadFile.print((anzahlVersuche));
-        // bytesWritten = fsUploadFile.print(statusUpdate);
         fsUploadFile.close();
-        Serial.print("*** SYSINFO: Update tools started - free heap: ");
-        Serial.println(ESP.getFreeHeap());
-        bool test;
-        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "ce.rts");
+        
+        bool test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "ce.rts");
         test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "spundomatfont.ttf");
         test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "spundomatstyle.css");
         test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "bootstrap.min.css");
@@ -145,9 +141,7 @@ void updateTools()
         test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "jquery.tabletojson.min.js");
 
         LittleFS.remove("/updateTools.txt");
-        
         Serial.print("*** SYSINFO: Update tools finished\n");
-        // ESP.restart();
     }
 }
 void updateSys()
@@ -229,20 +223,6 @@ void update_error(int err)
 
 void checkLog()
 {
-    if (LittleFS.exists("/updateSys.log")) // WebUpdate Firmware
-    {
-        fsUploadFile = LittleFS.open("/updateSys.log", "r");
-        int anzahlSys = 0;
-        if (fsUploadFile)
-        {
-            anzahlSys = char(fsUploadFile.read()) - '0';
-        }
-        fsUploadFile.close();
-        bool check = LittleFS.remove("/updateSys.log");
-        Serial.printf("*** SYSINFO: Update firmware retries count %d\n", anzahlSys);
-        alertState = true;
-    }
-
     if (LittleFS.exists("/updateTools.log")) // WebUpdate Firmware
     {
         fsUploadFile = LittleFS.open("/updateTools.log", "r");
@@ -255,6 +235,20 @@ void checkLog()
 
         bool check = LittleFS.remove("/updateTools.log");
         Serial.printf("*** SYSINFO: Update tools retries count %d\n", anzahlTools);
-        alertState = false;
+        
+    }
+
+    if (LittleFS.exists("/updateSys.log")) // WebUpdate Firmware
+    {
+        fsUploadFile = LittleFS.open("/updateSys.log", "r");
+        int anzahlSys = 0;
+        if (fsUploadFile)
+        {
+            anzahlSys = char(fsUploadFile.read()) - '0';
+        }
+        fsUploadFile.close();
+        bool check = LittleFS.remove("/updateSys.log");
+        Serial.printf("*** SYSINFO: Update firmware retries count %d\n", anzahlSys);
+        alertState = true;
     }
 }

@@ -23,24 +23,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.icon-loop:before {
-  content: "\e900";
-}
 .icon-plus:before {
   content: "\f067";
 }
-.icon-power-off:before {
-  content: "\f011";
-}
-.icon-cog:before {
-  content: "\f013";
-}
 .icon-trash-o:before {
   content: "\f014";
-}
-.icon-clock-o:before {
-  content: "\f017";
 }
 .icon-download:before {
   content: "\f019";
@@ -48,36 +35,12 @@
 .icon-pencil:before {
   content: "\f040";
 }
-.icon-play:before {
-  content: "\f04b";
-}
-.icon-pause:before {
-  content: "\f04c";
-}
-.icon-step-forward:before {
-  content: "\f051";
-}
-.icon-fire:before {
-  content: "\f06d";
-}
 .icon-chevron-up:before {
   content: "\f077";
 }
 .icon-chevron-down:before {
   content: "\f078";
 }
-.icon-cogs:before {
-  content: "\f085";
-}
-.icon-eraser:before {
-  content: "\f12d";
-}
-.icon-bullseye:before {
-  content: "\f140";
-}
 .icon-database:before {
   content: "\f1c0";
-}
-.icon-thermometer-three-quarters:before {
-  content: "\f2c8";
 }

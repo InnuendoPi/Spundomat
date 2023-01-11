@@ -6,12 +6,12 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.70, 09.2022)
+Bibliotheken: (Stand ab Version 2.71, 01.2023)
 
-- ESP8266 3.0.2 (LittleFS)
+- ESP8266 3.1.0 (LittleFS)
 - Arduino IDE 1.8.19
-- Visual Code + modified ESP8266FS Plugin (VSCode 1.71 Arduino 4.12)
-- ArduinoJSON 6.19
+- Visual Code + modified ESP8266FS Plugin (VSCode 1.74 Arduino 4.12)
+- ArduinoJSON 6.20
 - InfluxDB 3.12
 - WiFiManager 2.0
 - LiquidCrystal_PCF8574 2.0
@@ -31,8 +31,10 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 ## Changelog
 
-Version 2.70
+Version 2.71
 
+- Update:   ESP8266 Arduino 3.1.0
+- Update:   VSCode 1.74
 - Added:    Hoch / Runter verschieben von Zeilen in den Abläufplänen
 - Optimze:  WebIf - Icons in lokalen Font übertragen (kein Webzugriff mehr)
 - Optimze:  WebIf - bootstrap Dateien komprimiert

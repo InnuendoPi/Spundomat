@@ -36,4 +36,4 @@ Info/steuerplan.txt
 Gehäuse/
 test/
 web/
-
+*.hintrc

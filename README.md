@@ -6,9 +6,9 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.71, 01.2023)
+Bibliotheken: (Stand ab Version 2.72, 01.2023)
 
-- ESP8266 3.1.0 (LittleFS)
+- ESP8266 3.1.1 (LittleFS)
 - Arduino IDE 1.8.19
 - Visual Code + modified ESP8266FS Plugin (VSCode 1.74 Arduino 4.12)
 - ArduinoJSON 6.20

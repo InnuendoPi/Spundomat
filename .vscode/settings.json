@@ -13,7 +13,7 @@
         "editor.formatOnType":true,
         "esp8266fs.mkspiffs.debugLevel": 0,
         "esp8266fs.mklittlefs.debugLevel": 0,
-        "esp8266fs.esptool.executable": "C:/Users/pn010.TEAM/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/3.1.0/tools/esptool/esptool.py",
+        "esp8266fs.esptool.executable": "C:/Users/pn010.TEAM/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/3.1.1/tools/esptool/esptool.py",
         "esp8266fs.spiffsImage": "C:/Arduino/git/Spundomat/build/Spundomat.spiffs.bin",
         "esp8266fs.littlefsImage": "C:/Arduino/git/Spundomat/build/Spundomat.mklittlefs.bin",
         "esp8266fs.dataFiles": "C:/Arduino/git/Spundomat/data",

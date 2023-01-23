@@ -31,13 +31,14 @@ Ein WebUpdate von Version 2.3x auf 2.50 oder neuer ist nicht möglich. Die Firmw
 
 ## Changelog
 
-Version 2.71
+Version 2.72
 
-- Update:   ESP8266 Arduino 3.1.0
+- Update:   ESP8266 Arduino 3.1.1
+- Optimize: Web Interface
 - Update:   VSCode 1.74
 - Added:    Hoch / Runter verschieben von Zeilen in den Abläufplänen
-- Optimze:  WebIf - Icons in lokalen Font übertragen (kein Webzugriff mehr)
-- Optimze:  WebIf - bootstrap Dateien komprimiert
+- Optimize: WebIf - Icons in lokalen Font übertragen (kein Webzugriff mehr)
+- Optimize: WebIf - bootstrap Dateien komprimiert
 - Update:   WebUpdate überarbeitet
 - Update:   VSCode 1.71
 - Update:   LiquidCrystal_PCF8574 (LCD)
@@ -106,7 +107,7 @@ Version 2.71
 - Fixed:    Fehler Anzeige Ziel CO2-Gehalt mit 5 Nachkommastellen behoben
 - Added:    bei einem Sensorfehler Temperatur wird nun ein Alarm ausgegeben und der Spundomat ausgeschaltet
 - Fixed:    Fehler Anzeige Spundomat Verzögerung im Dashboard behoben
-- Optimze:  Handling Magnetventile
+- Optimize:  Handling Magnetventile
 - Reworked: WebIf (Ablaufpläne Deaktiviert, Pausiert, Aktiviert)
 - Reworked: WebIf (Ablaufpläne Anzeige aktueller Schritt)
 - Reworked: WebIf Dashboard Informationen

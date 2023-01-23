@@ -133,12 +133,14 @@ void updateTools()
         fsUploadFile.close();
         
         bool test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "ce.rts");
-        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "spundomatfont.ttf");
-        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "spundomatstyle.css");
-        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "bootstrap.min.css");
-        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "bootstrap.min.js");
-        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "jquery.min.js");
-        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "jquery.tabletojson.min.js");
+        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "spundomat.ttf");
+        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "spundomat.min.css");
+        test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "spundomat.min.js");
+        // test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "spundomatstyle.css");
+        // test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "bootstrap.min.css");
+        // test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "bootstrap.min.js");
+        // test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "jquery.min.js");
+        // test = upTools("https://guest:guest:x-oauth-basic@raw.githubusercontent.com/InnuendoPi/Spundomat/master/data/", "jquery.tabletojson.min.js");
 
         LittleFS.remove("/updateTools.txt");
         Serial.print("*** SYSINFO: Update tools finished\n");

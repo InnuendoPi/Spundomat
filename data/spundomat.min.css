@@ -1,8 +1,8 @@
 @font-face {
-  font-family: 'spundomatfont';
-  src:  url('./spundomatfont.eot?v7u1py');
-    src:  url('./spundomatfont.eot?v7u1py#iefix') format('embedded-opentype'),
-    url('./spundomatfont.ttf?v7u1py') format('truetype');
+  font-family: 'spundomat';
+  src:  url('./spundomat.eot?v7u1py');
+    src:  url('./spundomat.eot?v7u1py#iefix') format('embedded-opentype'),
+    url('./spundomat.ttf?v7u1py') format('truetype');
       
   font-weight: normal;
   font-style: normal;
@@ -11,7 +11,7 @@
 
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'spundomatfont' !important;
+  font-family: 'spundomat' !important;
   /* speak: never; */
   font-style: normal;
   font-weight: normal;

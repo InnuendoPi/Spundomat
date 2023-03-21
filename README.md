@@ -1,6 +1,6 @@
 # Spundomat
 
-![ov1](/Info/Spundomat01.jpg)
+![ov1](/docs/img/Spundomat01.jpg)
 
 Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 

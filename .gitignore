@@ -7,6 +7,8 @@
 *.psd
 *.kopie
 *.ino
+*.h
+*.cpp
 *.hintrc
 /.vscode
 core
@@ -38,6 +40,4 @@ Info/steuerplan.txt
 Gehäuse/
 test/
 web/
-*.old
-*.hcpp
-*.hold
+

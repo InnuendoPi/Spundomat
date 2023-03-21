@@ -129,6 +129,7 @@ void setupServer()
   server.on("/reqMisc", handleRequestMisc);   // System Infos für WebConfig
   server.on("/setMisc", handleSetMisc);       // Einstellungen ändern
   server.on("/reqMiscSet", handleRequestMiscSet);
+  server.on("/reqSud", handleRequestSudID);
   server.on("/reqMode", handlereqMode);       // WebIf Abfrage Modus
   server.on("/reqEinheit", handlereqEinheit); // WebIf Abfrage Einheit Zeiteingabe
   server.on("/reqGPIO", handlereqGPIO);       // WebIf Abfrage Modus GPIO D7
@@ -151,6 +152,10 @@ void setupServer()
       "/edit", HTTP_POST, []()
       { server.send(200, "text/plain", ""); loadConfig(); },
       handleFileUpload);
+  server.on(
+      "/restore", HTTP_POST, []()
+      { server.send(200, "text/plain", ""); },
+      handleRestore);
   server.onNotFound(handleWebRequests);
   httpUpdate.setup(&server);
   server.begin();

@@ -6,6 +6,10 @@
 *.exe
 *.psd
 *.kopie
+*.ino
+
+*.hintrc
+/.vscode
 core
 preproc
 sketch
@@ -32,12 +36,6 @@ Info/splan.html
 Info/config.txt
 Info/ablaufplan.txt
 Info/steuerplan.txt
-996_Steuerung.ino
-995_CO2.ino
-999_HTTPUpdate.ino
-*.ino
 Gehäuse/
 test/
 web/
-.vscode
-*.hintrc

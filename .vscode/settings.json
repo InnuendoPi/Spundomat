@@ -1,7 +1,8 @@
     {
         "telemetry.enableTelemetry": false,
         "arduino.path": "C:/Program Files (x86)/Arduino",
-        "arduino.logLevel": "info",
+        "arduino.useArduinoCli": false,
+        "arduino.logLevel": "verbose",
         "arduino.skipHeaderProvider": false,
         "arduino.additionalUrls": [
             "https://arduino.esp8266.com/stable/package_esp8266com_index.json"
@@ -14,11 +15,10 @@
         "esp8266fs.mkspiffs.debugLevel": 0,
         "esp8266fs.mklittlefs.debugLevel": 0,
         "esp8266fs.esptool.executable": "C:/Users/pn010.TEAM/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/3.1.1/tools/esptool/esptool.py",
-        "esp8266fs.spiffsImage": "C:/Arduino/git/Spundomat/build/Spundomat.spiffs.bin",
         "esp8266fs.littlefsImage": "C:/Arduino/git/Spundomat/build/Spundomat.mklittlefs.bin",
         "esp8266fs.dataFiles": "C:/Arduino/git/Spundomat/data",
         "esp8266fs.preferencesPath": "C:/Users/pn010.TEAM/AppData/Local/Arduino15",
-        "esp8266fs.arduinoUserPath": "C:/Users/pn010.TEAM/Arduino",
+        "esp8266fs.arduinoUserPath": "C:/arduino/libraries",
         "esp8266fs.logLevel": "normal",
         "esp8266fs.mkspiffs.allFiles": false,
         "esp8266fs.mklittlefs.allFiles": false,

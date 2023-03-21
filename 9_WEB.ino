@@ -7,8 +7,8 @@ void handleRoot()
 }
 void handleAblauf()
 {
-  server.sendHeader(PSTR("Content-Encoding"), "gzip");
-  server.send_P(200, "text/html", ablaufplan_htm_gz, sizeof(ablaufplan_htm_gz));
+    server.sendHeader(PSTR("Content-Encoding"), "gzip");
+    server.send_P(200, "text/html", ablaufplan_htm_gz, sizeof(ablaufplan_htm_gz));
 }
 void handleWebRequests()
 {
@@ -230,6 +230,17 @@ void handleRequestMisc()
     String response;
     serializeJson(doc, response);
     server.send(200, "application/json", response);
+}
+
+void handleRequestSudID()
+{
+  String request = server.arg(0);
+  String message;
+  if (request == "vistag")
+  {
+    message = dbVisTag;
+  }
+  server.send(200, "text/plain", message);
 }
 
 void handleRequestName()
@@ -556,19 +567,18 @@ void visualisieren()
         }
         if (server.argName(i) == "startvis")
         {
-            if (server.arg(i) == "true")
+            startVis = server.arg(i).toInt();
+            // Serial.printf("Web: startvis %d - %s\n", startVis, server.arg(i).c_str() );
+            if (startVis)
             {
-                startVis = true;
                 TickerInfluxDB.interval(upInflux);
                 TickerInfluxDB.start();
             }
             else
             {
-                startVis = false;
                 TickerInfluxDB.stop();
             }
         }
-        yield();
     }
     if (startDB && startVis)
     {
@@ -578,6 +588,7 @@ void visualisieren()
     else
         TickerInfluxDB.pause();
 
+    saveConfig();
     server.send(201, "text/plain", "created");
 }
 
@@ -881,4 +892,35 @@ void handleSetPlan3()
     }
     else
         server.send(500, "text/plain", "Server error");
+}
+
+void handleRestore()
+{
+  HTTPUpload &upload = server.upload();
+  if (upload.status == UPLOAD_FILE_START)
+  {
+    String filename = "config.txt"; // upload.filename;
+    if (!filename.startsWith("/"))
+      filename = "/" + filename;
+    DEBUG_MSG("WEB restore config file: %s\n", filename.c_str());
+    fsUploadFile = LittleFS.open(filename, "w"); // Open the file for writing in LittleFS (create if it doesn't exist)
+    filename = String();
+  }
+  else if (upload.status == UPLOAD_FILE_WRITE)
+  {
+    if (fsUploadFile)
+      fsUploadFile.write(upload.buf, upload.currentSize); // Write the received bytes to the file
+  }
+  else if (upload.status == UPLOAD_FILE_END)
+  {
+    if (fsUploadFile)
+    {                       // If the file was successfully created
+      fsUploadFile.close(); // Close the file again
+      DEBUG_MSG("WEB restore configuration Size: %d\n", upload.totalSize);
+      server.sendHeader("Location", "/index"); // Redirect the client to the success page
+      server.send(303);
+      // server.send(201, "ok");
+      rebootDevice();
+    }
+  }
 }

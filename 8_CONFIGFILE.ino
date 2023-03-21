@@ -237,6 +237,7 @@ bool saveConfig()
   miscObj["UPPRESSURE"] = upPressure;
   miscObj["UPTEMP"] = upTemp;
   miscObj["TESTMODE"] = (int)testModus;
+  miscObj["VER"] = Version;
 
   DEBUG_MSG("Interval Drucksensor: %d\n", upPressure);
   DEBUG_MSG("Interval Temperatursensor: %d\n", upTemp);

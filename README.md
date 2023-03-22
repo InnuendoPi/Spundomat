@@ -6,9 +6,9 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.73, 03.2023)
+Bibliotheken: (Stand ab Version 2.74, 03.2023)
 
-- ESP8266 3.1.1 (LittleFS)
+- ESP8266 3.1.2 (LittleFS)
 - Arduino IDE 1.8.19
 - Visual Code + modified ESP8266FS Plugin (VSCode 1.76 Arduino 0.6)
 - ArduinoJSON 6.21
@@ -22,12 +22,14 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
 
-Version 2.73
+Version 2.74
 
 - Fixed:    Fehler WebIf Visualisierung behoben
 - Update:   ESP8266 cores
 - Update:   bootstrap 4.6.2
 - Optimize: Konfiguration Backup und Restore
-- Update:   ESP8266 Arduino 3.1.1
+- Added:    DevBranch
+- Update:   ESP8266 Arduino 3.1.2
 - Optimize: Web Interface
+- Optimize: Framework
 - Update:   VSCode 1.76

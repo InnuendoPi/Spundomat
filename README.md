@@ -22,6 +22,10 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
 
+Version 2.75
+
+- Optimize: Framework: WLAN reconnect, readConfig
+
 Version 2.74
 
 - Fixed:    Fehler WebIf Visualisierung behoben

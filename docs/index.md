@@ -356,16 +356,16 @@ Zusammenstellung: <https://www.reichelt.de/my/1696058>
 
 | Anzahl | Artikel | Link |
 | ------ | ------- | ---- |
-| 1 | Schalldämpfer 1/4" | <https://hydrocontrol.fittingline.com/artikel/de/schalldaempfer-g-14-sinterbronze/SD%2014> |
-| 1 | Rückschlagventil 6mm-1/4" | <https://hydrocontrol.fittingline.com/artikel/de/rueckschlagventil-r-14-6mm-durchfluss-vom-gewinde-zum-schlauch-iqs-standard/HAIQS%20146> |
-| 2 | Steckanschlüsse 6mm -1/8" | <https://hydrocontrol.fittingline.com/artikel/de/gerader-steckanschluss-g-18-6mm-iqs-standard/IQSG%20186%20G> |
-| 3 | Steckanschlüsse 6mm -1/4" | <https://hydrocontrol.fittingline.com/artikel/de/gerader-steckanschluss-g-14-6mm-iqs-standard/IQSG%20146%20G> |
-| 1 | Verteilerblock 2x 1/4" -2x 1/8" | <https://hydrocontrol.fittingline.com/artikel/de/verteilerleiste-2-x-g-14-2-x-g-18-aluminium-eloxiert/RLE2%201418%20A> |
-| 1 | Y-Steckverbinder 8-6mm | <https://hydrocontrol.fittingline.com/artikel/de/y-steckanschluss-8mm-6mm-iqs-standard/IQSY%208060> |
-| 1 | Rückschlagventil 6 mm | <https://hydrocontrol.fittingline.com/artikel/de/steckanschluss-rueckschlagventil-6mm-iqs-standard/HIQS%2060> |
-| 1 | Rückschlagventil 8mm | <https://hydrocontrol.fittingline.com/artikel/de/steckanschluss-rueckschlagventil-8mm-iqs-standard/HIQS%2080> |
-| 1 |  Schlauch 6 mm ca. 2 mt | <https://hydrocontrol.fittingline.com/artikel/de/polyurethan-schlauch-6-x-4-mm-silber/PUN%206X4%20SILBER> |
-| 1 | Schlauch 8 mm ca. 1 mt | <https://hydrocontrol.fittingline.com/artikel/de/polyurethan-schlauch-8-x-5-mm-schwarz/PUN%208X5%20SCHWARZ> |
+| 1 | Schalldämpfer 1/4" | <https://www.landefeld.de/artikel/de/schalldaempfer-g-14-sinterbronze/SD%2014> |
+| 1 | Rückschlagventil 6mm-1/4" | <https://www.landefeld.de/artikel/de/rueckschlagventil-r-14-6mm-durchfluss-vom-gewinde-zum-schlauch-iqs-standard/HAIQS%20146> |
+| 2 | Steckanschlüsse 6mm -1/8" | <https://www.landefeld.de/artikel/de/gerader-steckanschluss-g-18-6mm-iqs-standard/IQSG%20186%20G> |
+| 3 | Steckanschlüsse 6mm -1/4" | <https://www.landefeld.de/artikel/de/gerader-steckanschluss-g-14-6mm-iqs-standard/IQSG%20146%20G> |
+| 1 | Verteilerblock 2x 1/4" -2x 1/8" | <https://www.landefeld.de/artikel/de/verteilerleiste-2-x-g-14-2-x-g-18-aluminium-eloxiert/RLE2%201418%20A> |
+| 1 | Y-Steckverbinder 8-6mm | <https://www.landefeld.de/artikel/de/y-steckanschluss-8mm-6mm-iqs-standard/IQSY%208060> |
+| 1 | Rückschlagventil 6 mm | <https://www.landefeld.de/artikel/de/steckanschluss-rueckschlagventil-6mm-iqs-standard/HIQS%2060> |
+| 1 | Rückschlagventil 8mm | <https://www.landefeld.de/cgi/main.cgi?DISPLAY=suche&filter_suche_artikelmenge=&filter_suche_suchstring=HIQS80> |
+| 1 |  Schlauch 6 mm ca. 2 mt | <https://www.landefeld.de/artikel/de/polyurethan-schlauch-6-x-4-mm-silber/PUN%206X4%20SILBER> |
+| 1 | Schlauch 8 mm ca. 1 mt | <https://www.landefeld.de/artikel/de/polyurethan-schlauch-8-x-5-mm-schwarz/PUN%208X5%20SCHWARZ> |
 
 **Aufbau:**
 

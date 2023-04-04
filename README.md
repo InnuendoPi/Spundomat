@@ -6,7 +6,7 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.74, 03.2023)
+Bibliotheken: (Stand ab Version 2.76, 04.2023)
 
 - ESP8266 3.1.2 (LittleFS)
 - Arduino IDE 1.8.19
@@ -21,6 +21,11 @@ Bibliotheken: (Stand ab Version 2.74, 03.2023)
 Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
+
+Version 2.76
+
+- Optimize: CleanUp, Framework
+- Fixed:    Fehler speichern Ablaufplan
 
 Version 2.75
 

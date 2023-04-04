@@ -311,6 +311,19 @@ Die Platine bietet folgende Vorteile:
 
 ![Platine-hi](img/Layout02.png)
 
+Die Pinbelegung am Wemos D1 mini
+
+* Drucksensor     A0
+* Buzzer          D7
+* DS18B20         D3
+* ENCODER A       D6 CLK Out A
+* ENCODER B       D5 DT Out B
+* ENCODER BUTTON  D4
+* Magnetventil 1  D8 Spunden
+* Magnetventil 2  D0 Karbonisieren
+* Display SCL     D1
+* Display SDA     D2
+
 Beschreibung:
 
 **Elektronikbautteilliste:**

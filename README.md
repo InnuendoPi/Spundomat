@@ -28,6 +28,8 @@ Version 2.77
 - Update:   JQUery 3.7.0
 - Fixed:    cache handling
 - Fixed:    page load unknown length
+- Fixed:    Fehler gpio
+- Changed:  GPIO Modus (Piezo, Ventilator) ersetzt durch Pizeo Buzzer ein/aus
 
 Version 2.76
 

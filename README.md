@@ -25,7 +25,7 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 Version 2.77
 
 - Update:   ESP8266 cores, Arduino Bibliotheken
-- Update:   JQUery 3.7.0
+- Update:   JQuery 3.7.0
 - Fixed:    cache handling
 - Fixed:    page load unknown length
 - Fixed:    Fehler gpio

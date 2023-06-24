@@ -6,21 +6,30 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.77, 05.2023)
+Bibliotheken: (Stand ab Version 2.78, 06.2023)
 
 - ESP8266 3.1.2 (LittleFS)
 - Arduino IDE 1.8.19
-- Visual Code + modified ESP8266FS Plugin (VSCode 1.78 Arduino 0.6)
+- Visual Code + modified ESP8266FS Plugin (VSCode 1.79 Arduino 0.6)
 - ArduinoJSON 6.21
 - InfluxDB 3.13
 - WiFiManager 2.0
 - LiquidCrystal_PCF8574 2.2
 - RotaryEncoder 1.5.3
 - InnuTicker
+- InnuFramework
 
 Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
+
+Version 2.78
+
+- Fixed:      Arduino ESP8266 core: Fix for occasional timeout issues #8944 (net error timeout - WebIf Fehler)
+- Fixed:      Arduino ESP8266 core: Fix for dangerous relocation: j: cannot encode #8925
+- Changed:    Arduino ESP8266 core: Add support WiFiClientSecure TCP KeepAlive #8940
+- Changed:    Cache control WebIf (no-cache, expires 0)
+- Update:     Innuframework
 
 Version 2.77
 
@@ -30,6 +39,7 @@ Version 2.77
 - Fixed:    page load unknown length
 - Fixed:    Fehler gpio
 - Changed:  GPIO Modus (Piezo, Ventilator) ersetzt durch Pizeo Buzzer ein/aus
+- Removed:  alte goto sub statements
 
 Version 2.76
 

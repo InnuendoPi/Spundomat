@@ -23,13 +23,17 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
 
+Version 2.79 Release
+
+- Update:     InnuFramework
+
 Version 2.78
 
 - Fixed:      Arduino ESP8266 core: Fix for occasional timeout issues #8944 (net error timeout - WebIf Fehler)
 - Fixed:      Arduino ESP8266 core: Fix for dangerous relocation: j: cannot encode #8925
 - Changed:    Arduino ESP8266 core: Add support WiFiClientSecure TCP KeepAlive #8940
 - Changed:    Cache control WebIf (no-cache, expires 0)
-- Update:     Innuframework
+- Update:     InnuFramework
 
 Version 2.77
 

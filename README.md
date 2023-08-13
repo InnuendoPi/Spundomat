@@ -10,7 +10,7 @@ Bibliotheken: (Stand ab Version 2.78, 06.2023)
 
 - ESP8266 3.1.2 (LittleFS)
 - Arduino IDE 1.8.19
-- Visual Code + modified ESP8266FS Plugin (VSCode 1.79 Arduino 0.6)
+- Visual Code + modified ESP8266FS Plugin (VSCode 1.81 Arduino 0.6)
 - ArduinoJSON 6.21
 - InfluxDB 3.13
 - WiFiManager 2.0
@@ -22,6 +22,12 @@ Bibliotheken: (Stand ab Version 2.78, 06.2023)
 Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
+
+Version 2.80
+
+- Fix:          github MFLN Verprobung WebUpdate
+- Fix:          WebUpdate
+- Erneuert:     Zertifikate SSL
 
 Version 2.79 Release
 

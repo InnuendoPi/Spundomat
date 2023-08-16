@@ -23,6 +23,13 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
 
+Version 2.81
+
+- Geändert:     WebUpdate Standardverbindung SSL
+- Geändert:     Speicherverbrauch WebUpdate optimiert
+- Geändert:     DateiUpdate
+- Neu:          Log Datei WebUpdate (webUpdateLog.txt)
+
 Version 2.80
 
 - Fix:          github MFLN Verprobung WebUpdate

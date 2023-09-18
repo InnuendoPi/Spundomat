@@ -23,6 +23,8 @@ build.options.json
 Spundomat.ino.elf
 Spundomat.ino.map
 includes.cache
+.last-used
+libraries.cache
 local.eagle.flash.ld
 local.eagle.app.v6.common.ld
 data/config.txt

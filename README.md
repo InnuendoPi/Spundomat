@@ -23,8 +23,10 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
 
-Version 2.83
+Version 2.83b
 
+- Fix:          JSON Influx User Password an WebIf fehlerhaft
+- Geändert:     Parameterlänge Influx User und Password vergrößert (max 30 Zeichen)
 - Fix:          Visualisierung
 
 Version 2.82

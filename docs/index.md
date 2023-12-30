@@ -582,7 +582,7 @@ Vor der Eingabe der Befehle die aktuelle Version [Grafana](https://grafana.com/g
 `wget https://dl.grafana.com/oss/release/grafana_10.2.3_arm64.deb`
 
 `sudo dpkg -i grafana_10.2.3_arm64.deb`
-
+ 
 Falls auf dem raspberry bereits eine Anwendung den port 80 blockiert, dann sollte Grafana umkonfiguriert werden und einen anderen Port benutzen. Dazu das setting `http_port` in der Datei /etc/grafana/grafana.ini finden und aktivieren bzw ändern.
 
 `sudo systemctl enable grafana-server`

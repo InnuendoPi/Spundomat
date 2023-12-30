@@ -165,7 +165,7 @@ Der Spundomat unterstützt die Visualisierung mit der OpenSource Software Grafan
 * Influx Datenbank Server: <http://raspberrypi_IP:8086>
 
   Die URL besteht aus der IP Adresse vom RaspberryPI und dem Port getrennt durch ein Doppelpunkt besteht. Der Standard-Port ist 8086.
-* Datenbank Name: hier muss der Name der Datenbank in Influx eingetragen werden. Standard: spundomat (siehe Installation und Konfiguration Datenbank)
+* Datenbank (Bucket) Name: hier muss der Name der Datenbank in Influx eingetragen werden. Standard: spundomat (siehe Installation und Konfiguration Datenbank)
 * Benutzername und Password (optional - siehe Installation und Konfiguration Datenbank)
 * Update Intervall: Zeitintervall in Minuten. Default: 60 Sekunden
 
@@ -487,7 +487,7 @@ So sollten die Bauteile gedreht werden:
 
 ## Visualisierung
 
-Der Spundomat unterstützt die Visualisierung mit der OpenSource Grafana. Zum aktuellen Zeitpunkt wird die lokalen Installation unterstützt. In dieser Anleitung wird die Installation und Konfiguration auf einem RaspberryPi beschrieben. Als Datenbank wird InfluxDB verwendet.
+Der Spundomat unterstützt die Visualisierung mit der OpenSource Grafana. Zum aktuellen Zeitpunkt wird die lokalen Installation unterstützt. In dieser Anleitung wird die Installation und Konfiguration auf einem RaspberryPi beschrieben. Als Datenbank wird InfluxDB (V1 oder V2) verwendet.
 
 Die Visualisierung ist eine optionale Möglichkeit, den Verlauf der Gärung und Reifung mit einer graphischen Darstellung zu dokumentieren. Die Installation der Datenbank InfluxDB, der Visualisierung Grafana und deren Konfiguration ist für den normalen Betrieb nicht erforderlich.
 
@@ -509,6 +509,8 @@ Unter den Systemeinstellungen im Tab System müssen die folge den Parameter konf
 
     Die Adresse vom Datenbank Server besteht immer aus dem Protokoll (http), der IP-Adresse oder Hostname, gefolgt von einem Doppelpunkt und einem Port.
 
+Falls InfluxDB Version 1 verwendet wird:
+
 2. Datenbank Name
 
     Hier ist der Name der Datenbank in InfluxDB einzutragen
@@ -516,6 +518,14 @@ Unter den Systemeinstellungen im Tab System müssen die folge den Parameter konf
 3. Benutzername und Password
 
     Ist die Authentifizierung aktiviert mussen Benutzername und Password hinterlegt werden
+
+Falls InfluxDB Version 2 verwendet wird:
+
+2. Name der Organisation und des Buckets
+    
+3. Authentication Token
+
+    Das Authentication (auch API Token) muss in der InfluxDB Oberfläche oder per CLI erzeugt werden.
 
 Mit der Checkbox "Aktiviere Visualisierung Grafana" wird die Visualisierung aktiviert.
 
@@ -541,85 +551,61 @@ Beispiel für die URL Dashboard: <http://192.168.178.100:3000/d/xxxxxxx/spundoma
 
 **Installation Datenbank:**
 
-Installation der Datenbank InfluxDB:
+Installation der Datenbank InfluxDB (Versin 2):
 
-Mit shh (bspw. Putty) anmelden und die folgenden Befehle ausführen
+Mit shh (bspw. Putty) anmelden und die folgenden Befehle ausführen ( [Quelle](https://docs.influxdata.com/influxdb/v2/install/?t=Linux) )
 
-`wget -qO- <https://repos.influxdata.com/influxdb.key> | sudo apt-key add -`
-  
-*ENTWEDER*  wenn auf dem RaspberryPi die OS Version "stretch" installiert ist
+`wget -q https://repos.influxdata.com/influxdata-archive_compat.key`
 
-`echo "deb <https://repos.influxdata.com/debian> stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list`
-  
-*ODER*      wenn auf dem RaspberryPi die OS Version "buster" installiert ist
-  
-`echo "deb <https://repos.influxdata.com/debian> buster stable" | sudo tee /etc/apt/sources.list.d/influxdb.list`
+`echo '393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c influxdata-archive_compat.key' | sha256sum -c && cat influxdata-archive_compat.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg > /dev/null`
 
-`sudo apt update`
+`echo 'deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main' | sudo tee /etc/apt/sources.list.d/influxdata.list`
 
-`sudo apt install influxdb`
+`sudo apt-get update && sudo apt-get install influxdb2`
 
-`sudo systemctl unmask influxdb`
+`sudo service influxdb start`
 
-`sudo systemctl enable influxdb`
+Dann im Browser die InfluxDB Adminoberfläche aufrufen unter http://ip_rasberrypi:8086. Es müssen dann ein Benutzername, Password, ein Organisationsname und der Name der ersten Datenbank ("Bucket") eingegeben werden. Du kannst vier mal "spundomat" eintragen, wobei ein eigenes, individuelles Passwort selbstverständlich besser und sicherer wäre.
 
-Die Datenbank InfluxDB ist mit diesen 6 Schritten installiert und startet automatisch bei jedem Neustart vom RaspberryPi
+Danach wird dir das Authentication Token angezeigt. Kopiere und speichere dieses in einer separaten Datei gut ab, es wird für Grafana noch gebraucht.
 
-**Konfiguration Datenbank:**
+Unter dem Menüpunkt "Load Data","Buckets","spundomat","Settings" kannst du optional noch einstellen, wann die Datenbank die spundomat Messwerte wieder vergessen soll. Der Standard ist "nie", aber um die Datenmenge zu begrenzen kann der Wert geändert werden auf Stunden, Tage oder Monate.
 
-Datenbank und Benutzer einrichten:
-
-Mit shh (bspw. Putty) anmelden und den folgenden Befehl ausführen
-
-`influx`
-
-Die folgenden Datenbank Befehle der Reihe nach eingeben. Das Password xxx durch ein eigenes Password ersetzen. Die Anführungstriche müssen bleiben!
-
-`CREATE DATABASE spundomat`
-
-`CREATE USER pi WITH PASSWORD 'xxx' WITH ALL PRIVILEGES`
-
-Zugriff auf die Datenbank einrichten:
-
-`sudo nano /etc/influxdb/influxdb.conf`
-
-  Mit der Tastenkombination Strg+W nach HTTP suchen. In diesem Abschnitt muss mindestens aktiviert werden:
-
-`enabled = true`
-
-`bind-address = ":8086"`
-
-Diese zwei Einträge sind das Minimum. Es wird dringend empfohlen, eine Benutzer und Password Abfrage zu aktivieren.
-Die Änderung wird mit der Tastenkombination Strg+O gespeichert. Den Editor beenden mit Strg+X.
-
-Abschließend muss die Datenbank neu gestartet werden:
-
-`sudo systemctl restart influxdb`
-
-Die Datenbank InfluxDB speichert alle Daten in der Standard Einstellung unendlich lange (autogen retention policy). Es empfiehlt sich, veraltete Daten automatisch zu löschen:
-
-`alter retention policy "autogen" on "spundomat" duration 52w1d replication 1 shard duration 1d default`
-
-Mit dieser Regel (Retention Policy) wird die Standard-Einstellung "behalte die Daten unendlich lange" geändert in "lösche Daten nach 52 Wochen" (52w) und aggregiere Daten nach einem Tag (1d) in einem Shard.
+Der Datenbankserver InfluxDB (Version 2) ist mit diesen Schritten installiert und startet automatisch bei jedem Neustart vom RaspberryPi
 
 **Installation Grafana:**
 
-Vor der Eingabe der Befehle die aktuelle Version Grafana überprüfen und in Schritt 1 und 2 die Versionsnummer 6.6.1 ersetzen.
+Vor der Eingabe der Befehle die aktuelle Version [Grafana](https://grafana.com/grafana/download/10.2.3?pg=oss-graf&platform=arm&plcmt=hero-btn-1&edition=oss) überprüfen und in Schritt 2 und 3 die Versionsnummer 10.2.3 ersetzen.
 
-`wget <https://dl.grafana.com/oss/release/grafana_6.6.1_armhf.deb>`
+`sudo apt-get install -y adduser libfontconfig1 musl`
 
-`sudo dpkg -i grafana_6.6.1_armhf.deb`
+`wget https://dl.grafana.com/oss/release/grafana_10.2.3_arm64.deb`
+
+`sudo dpkg -i grafana_10.2.3_arm64.deb`
+
+Falls auf dem raspberry bereits eine Anwendung den port 80 blockiert, dann sollte Grafana umkonfiguriert werden und einen anderen Port benutzen. Dazu das setting `http_port` in der Datei /etc/grafana/grafana.ini finden und aktivieren bzw ändern.
 
 `sudo systemctl enable grafana-server`
 
 `sudo systemctl start grafana-server`
 
-Im Grafana Web Interface muss nun abschließend nur noch die DataSource InfluxDB hinzugefügt werden.
+Beim ersten Aufruf des Grafana Web Interface (user admin, password admin) sollte man ein neues password wählen. 
 
+Im Grafana Web Interface muss nun abschließend im Tab "Connections"  noch die DataSource InfluxDB hinzugefügt werden.
+
+* Query Language : Flux  
 * URL: <http://ip_rasberrypi:8086>
-* Database: spundomat
-* User: pi
-* Password: xxx
-* HTTP Method: POST
+* In der Gruppe Auth sollte keine Option angewählt sein
+* Organization: spundomat   (oder was in der Influx-UI angegeben wurde)
+* Token: Das Authentication Token aus der Influx-UI
+* Default Bucket: spundomat
 
-Mit "Save & Test" wird die Verbindung gespeichert und überprüft. Nun kann entweder das Beispiel-Dashboard Spundomat (Datei Spundomat Dashboard.json) aus dem Ordner Info in Grafana importiert oder ein eigenes Dashboard erstellt werden.
+
+Mit "Save & Test" wird die Verbindung gespeichert und überprüft.
+
+Achtung: Die aktuelle Grafana Version 10.2.3 hat hier noch einen Fehler; Wenn Save & Test einen  "unauthorized" Fehler meldet, dann muss unter "Custom Http Headers" noch dieser Eintrag gemacht werden:
+
+* Header: "Authorization"
+* Value:  "Token <auth_token>"    (<auth_token> ist das Authentication Token aus der Influx-UI bzw was im Feld Token eingetragen wurde)
+
+ Nun kann entweder das Beispiel-Dashboard Spundomat (Datei Spundomat Dashboard.json) aus dem Ordner Info in Grafana importiert oder ein eigenes Dashboard erstellt werden.

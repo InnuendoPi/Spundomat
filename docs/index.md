@@ -511,21 +511,21 @@ Unter den Systemeinstellungen im Tab System müssen die folge den Parameter konf
 
 Falls InfluxDB Version 1 verwendet wird:
 
-2. Datenbank Name
+    2. Datenbank Name
 
-    Hier ist der Name der Datenbank in InfluxDB einzutragen
+        Hier ist der Name der Datenbank in InfluxDB einzutragen
 
-3. Benutzername und Password
+    3. Benutzername und Password
 
-    Ist die Authentifizierung aktiviert mussen Benutzername und Password hinterlegt werden
+        Ist die Authentifizierung aktiviert mussen Benutzername und Password hinterlegt werden
 
 Falls InfluxDB Version 2 verwendet wird:
 
-2. Name der Organisation und des Buckets
-    
-3. Authentication Token
+    2. Name der Organisation und des Buckets
 
-    Das Authentication (auch API Token) muss in der InfluxDB Oberfläche oder per CLI erzeugt werden.
+    3. Authentication Token
+
+        Das Authentication (auch API Token) muss in der InfluxDB Oberfläche oder per CLI erzeugt werden.
 
 Mit der Checkbox "Aktiviere Visualisierung Grafana" wird die Visualisierung aktiviert.
 
@@ -582,14 +582,14 @@ Vor der Eingabe der Befehle die aktuelle Version [Grafana](https://grafana.com/g
 `wget https://dl.grafana.com/oss/release/grafana_10.2.3_arm64.deb`
 
 `sudo dpkg -i grafana_10.2.3_arm64.deb`
- 
+
 Falls auf dem raspberry bereits eine Anwendung den port 80 blockiert, dann sollte Grafana umkonfiguriert werden und einen anderen Port benutzen. Dazu das setting `http_port` in der Datei /etc/grafana/grafana.ini finden und aktivieren bzw ändern.
 
 `sudo systemctl enable grafana-server`
 
 `sudo systemctl start grafana-server`
 
-Beim ersten Aufruf des Grafana Web Interface (user admin, password admin) sollte man ein neues password wählen. 
+Beim ersten Aufruf des Grafana Web Interface (user admin, password admin) sollte man ein neues password wählen.
 
 Im Grafana Web Interface muss nun abschließend im Tab "Connections"  noch die DataSource InfluxDB hinzugefügt werden.
 
@@ -599,7 +599,6 @@ Im Grafana Web Interface muss nun abschließend im Tab "Connections"  noch die D
 * Organization: spundomat   (oder was in der Influx-UI angegeben wurde)
 * Token: Das Authentication Token aus der Influx-UI
 * Default Bucket: spundomat
-
 
 Mit "Save & Test" wird die Verbindung gespeichert und überprüft.
 

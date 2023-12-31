@@ -23,10 +23,12 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
 
-Version 2.83b
+Version 2.83e
 
+- Neu:          Display Timeout (User Bierdrohne)
+- Fix:          JSON Größe misc
 - Fix:          JSON Influx User Password an WebIf fehlerhaft
-- Geändert:     Parameterlänge Influx User und Password vergrößert (max 30 Zeichen)
+- Geändert:     Parametertyp Influx User/Bucket und Password/Token
 - Fix:          Visualisierung
 
 Version 2.82

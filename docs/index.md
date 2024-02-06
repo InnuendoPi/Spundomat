@@ -58,20 +58,17 @@ Dieses Projekt wurde im Hobbybrauer Forum gestartet und dient dem Informationsau
 
 **Installation ohne den Quellcode zu compilieren:**
 
-Mit Hilfe von esptool.exe (<https://github.com/igrr/esptool-ck/releases>) aus dem Ordner tools kann die Firmware auf das ESP Modul geladen werden. Das ESPTool ist für verschiedene Betriebssysteme verfügbar.
-ESPtool-ck Copyright (C) 2014 Christian Klippel <ck@atelier-klippel.de>. This code is licensed under GPL v2.
+Mit Hilfe von esptool.exe (<https://github.com/espressif/esptool>) aus dem Ordner tools kann die Firmware auf das ESP Modul geladen werden. Das ESPTool ist für verschiedene Betriebssysteme verfügbar. ESPTool is licensed under GPL v2.
 
 Unter Win10 wird der USB Treiber CH341SER benötigt: <http://www.wch.cn/download/CH341SER_ZIP.html>
 
-Beispiel für ein ESP8266 Modul vom Typ Wemos D1 mini mit 4MB Flash verbunden mit COM3:
+Beispiel für ein ESP8266 Modul vom Typ Wemos D1 mini mit 4MB Flash:
 
 * Von github das Archiv Firmware aus dem Ordner Tools herunterladen und irgendeinem Ordner entpacken
 
   * Das Archiv enthält das esptool zum Flashen, das Skript Flashen.cmd und die zwei Firmware Dateien
 
   * Doppelklick auf die Datei Flashen.cmd.
-
-  Sollte COM3 nicht der richtige Anschluss sein, muss im Skript Flashen.cmd an zwei Stellen COM3 durch den richtigen Anschluss ersetzt werden.
 
   * Das ESP8266 Modul resetten
 

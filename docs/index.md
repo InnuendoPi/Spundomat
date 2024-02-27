@@ -354,11 +354,11 @@ Zusammenstellung: <https://www.reichelt.de/my/1696058>
 |1 | XLR Stecker 3- polig | [reichelt](<https://www.reichelt.de/xlr-stecker-3-polig-vernickelte-kontakte-xlr-3st-n-p40793.html?&nbc=1>) |
 |1 | Schalter | [reichelt](<https://www.reichelt.de/wippschalter-1x-aus-schwarz-i-o-wippe-1801-1146-p36770.html?&nbc=1>) |
 |1 | Encoder  KY 040 | [reichelt](<https://www.ebay.de/itm/Potentiometer-Drehregler-KY-040-Rotary-Encoder-Drehgeber-Taster-Poti-Arduino/254138168087?hash=item3b2bd0b317:g:p9oAAOSw94NccoFi>) |
-|1 | Wemos D1 mini |
-|1 | Steckernetzteil 12V / 2A |
+|1 | Wemos D1 mini | |
+|1 | Steckernetzteil 12V / 2A | |
 |1 | Drucksensor  0- 0,5 Mpa /1/4" | [ebay](<https://www.ebay.at/itm/G1-4-OLDRUCKSENSOR-Drucksensor-0-0-5-MPa-Fur-Oil-Fuel-Diesel-Gas-Wasser-Luft/371961467626?hash=item569aa192ea:g:SMEAAOSwlY1ZFbm~>) |
-|1 | DS 18B20 Temperatursensor |
-|1 | LCD Display 2004 |
+|1 | DS 18B20 Temperatursensor | |
+|1 | LCD Display 2004 | |
 |2 | Magnetventile 12 V -1/4" | [ebay](<https://www.ebay.at/itm/1-4-Pneumatik-Magnetventil-12V-DC-Electric-Solenoid-Valve-fur-Wasser-Luft-s0d/123512299808?hash=item1cc1e82120:g:zNEAAOSwMhVb~BfR>) |
 |4 | Distanzhülsen | [ebay](<https://www.reichelt.de/distanzhuelsen-metall-6-kant-m3-15mm-da-15mm-p7018.html?&nbc=1>) |
 

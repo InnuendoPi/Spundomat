@@ -23,8 +23,11 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
 
-Version 2.83e
+Version 2.83f
 
+- Update:       ArduinoJSON API 7
+- Fix:          Free memory for _currentArgs after request has been handled in WebServer. (#9077)
+- Fix:          ESP8266WebServer - fix possible memory leak in request argument handling (#9076)
 - Neu:          Display Timeout (User Bierdrohne)
 - Fix:          JSON Größe misc
 - Fix:          JSON Influx User Password an WebIf fehlerhaft

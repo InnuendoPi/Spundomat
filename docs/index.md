@@ -58,9 +58,9 @@ Dieses Projekt wurde im Hobbybrauer Forum gestartet und dient dem Informationsau
 
 **Installation ohne den Quellcode zu compilieren:**
 
-Mit Hilfe von esptool.exe (<https://github.com/espressif/esptool>) aus dem Ordner tools kann die Firmware auf das ESP Modul geladen werden. Das ESPTool ist für verschiedene Betriebssysteme verfügbar. ESPTool is licensed under GPL v2.
+[![ESP8266 Treiber](https://img.shields.io/static/v1?label=Treiber&message=ESP8266&logo=arduino&logoColor=white&color=green)](https://www.wch-ic.com/search?t=all&q=ch341)
 
-Unter Win10 wird der USB Treiber CH341SER benötigt: <http://www.wch.cn/download/CH341SER_ZIP.html>
+Mit Hilfe von esptool.exe (<https://github.com/espressif/esptool>) aus dem Ordner tools kann die Firmware auf das ESP Modul geladen werden. Das ESPTool ist für verschiedene Betriebssysteme verfügbar. ESPTool is licensed under GPL v2.
 
 Beispiel für ein ESP8266 Modul vom Typ Wemos D1 mini mit 4MB Flash:
 

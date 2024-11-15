@@ -6,9 +6,9 @@
 *.exe
 *.psd
 *.kopie
-*.ino
-*.h
-*.cpp
+# *.ino
+# *.h
+# *.cpp
 *.hintrc
 *.json
 *.old
@@ -44,4 +44,3 @@ Info/steuerplan.txt
 Gehäuse/
 test/
 web/
-

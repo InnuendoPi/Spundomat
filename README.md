@@ -6,12 +6,12 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.83, 12.2023)
+Bibliotheken: (Stand ab Version 2.84, 12.2024)
 
-- ESP8266 3.1.2 (LittleFS)
-- Arduino IDE 1.8.19
-- Visual Code + modified ESP8266FS Plugin (VSCode 1.85 Arduino 0.6)
-- ArduinoJSON 6.21
+- ESP8266 3.2 (LittleFS)
+- VSCode 1.93 Arduino 0.6 Arduino CLI 1.0.4\
+- VSCode plugin ESP8266LittleFS based on ESP8266fs\
+- ArduinoJSON 7.2
 - InfluxDB 3.13
 - WiFiManager 2.0
 - LiquidCrystal_PCF8574 2.2
@@ -22,6 +22,18 @@ Bibliotheken: (Stand ab Version 2.83, 12.2023)
 Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
+
+Version 2.84
+
+- Update:       Arduino cores 3.2
+- Update:       ArduinoJSON 7.2
+- Fix:          Ablaufplan Namen wurden fehlerhaft abgespeichert
+- Geändert:     Lesen und Speichern im eeprom überarbeitet (typedef struct)
+- Geändert:     Änderungen der Konfiguration im WebIf werden nun als JSON übertragen
+- Neu:          Überprüfung aller Eingabe im Web interface (client side validation). Anm.: nicht in den Tabellen Ablaufplan
+- Neu:          Zeitserver integriert
+- Geändert:     InnuFramework aktualisiert
+- Neu:          SerializeJSON jQuery Plugin eingefügt
 
 Version 2.83f
 

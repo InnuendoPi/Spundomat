@@ -25,6 +25,7 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 Version 2.84
 
+- Korrektur:    Gehäuse Spundomat 2
 - Neu:          Gehäuse Spundomat 2
 - Update:       Arduino cores 3.2
 - Update:       ArduinoJSON 7.2

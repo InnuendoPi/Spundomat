@@ -6,10 +6,10 @@ Dokumentation unter: <https://innuendopi.github.io/Spundomat/>
 
 ## Infos zum Quellcode
 
-Bibliotheken: (Stand ab Version 2.84, 12.2024)
+Bibliotheken: (Stand ab Version 2.85, 02.2025)
 
 - ESP8266 3.2 (LittleFS)
-- VSCode 1.93 Arduino 0.6 Arduino CLI 1.0.4\
+- VSCode 1.96 Arduino 0.6 Arduino CLI 1.0.4\
 - VSCode plugin ESP8266LittleFS based on ESP8266fs\
 - ArduinoJSON 7.2
 - InfluxDB 3.13
@@ -23,8 +23,10 @@ Flash size 4MB (FS:2MB OTA:~1019kB)
 
 ## Changelog
 
-Version 2.84
+Version 2.85
 
+- Test:         Modul Steuerung Fermenter reaktiviert
+- Update:       Dallas DS18B20 Bibliothek 4.0.3
 - Korrektur:    Gehäuse Spundomat 2
 - Neu:          Gehäuse Spundomat 2
 - Update:       Arduino cores 3.2

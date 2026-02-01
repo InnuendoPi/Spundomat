@@ -15,6 +15,7 @@
 #define DISPLAY_UPDATE 2000
 #define DB_UPDATE 60000
 #define WLAN_UPDATE 30000
+#define CON_UPDATE 30000
 
 #define AUS 0
 #define SPUNDOMAT 1
@@ -26,6 +27,8 @@
 #define PLAN2 7
 #define PLAN3 8
 #define DICHTHEIT 9
+#define CON1 10
+#define CON2 11
 #define DEFAULT_OPEN 200
 #define DEFAULT_CLOSE 10000
 #define ALARM_ON 1
@@ -46,6 +49,7 @@
 #define maxSchritte 20
 #define RESOLUTION 12      // 12bit resolution == 750ms update rate
 #define EEPROM_SIZE 8
+#define MAXFERM 10
 
 // Zeitserver Einstellungen
 #define TIME_UPDATE 30000
@@ -72,6 +76,9 @@
 #define ABLAUFPLAN1 "/ablaufplan1.json"
 #define ABLAUFPLAN2 "/ablaufplan2.json"
 #define ABLAUFPLAN3 "/ablaufplan3.json"
+#define OGPLAN "/steuerplanOG.txt"
+#define UGPLAN "/steuerplanUG.txt"
+
 
 // Definiere Pinbelegung
 #define PIN_PRESSURE A0       // Drucksensor

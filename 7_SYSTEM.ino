@@ -251,6 +251,7 @@ void setTicker() // Ticker Objekte deklarieren
   TickerWLAN.config(tickerWLANCallback, WLAN_UPDATE, 0);
   TickerDisplayTimer.config(tickerDisplayTimerCallback, DisplayTimerTime, 0);
   TickerTime.config(tickerTimeCallback, TIME_UPDATE, 0);
+  TickerCon.config(tickerConCallback, CON_UPDATE, 0);
 }
 
 void EM_WLAN() // check WLAN and reconnect on error

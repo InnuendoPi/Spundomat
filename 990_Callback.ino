@@ -67,3 +67,8 @@ void tickerTimeCallback()
   getLocalTime(&timeinfo);
   strftime(zeit, sizeof(zeit), "%H:%M:%S", &timeinfo);
 }
+
+void tickerConCallback() // Timer Objekt Druck
+{
+  // nix
+}

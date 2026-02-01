@@ -9,6 +9,7 @@ void handleAblauf()
     server.sendHeader(PSTR("Content-Encoding"), "gzip");
     server.send_P(200, "text/html", ablaufplan_htm_gz, ablaufplan_htm_gz_len);
 }
+
 void handleWebRequests()
 {
     if (loadFromLittlefs(server.uri()))
@@ -300,6 +301,67 @@ void handleRequestFirm()
     server.send_P(200, "application/json", message.c_str());
 }
 
+
+// Mapping helpers for Web-UI <select> lists
+static int mapModeSelectIndexToValue(int selIdx, int currentMode)
+{
+    // handlereqMode(): idx0=current, idx1=separator, idx>=2 = modes without current
+    if (selIdx <= 1) return currentMode;
+    const int wantPos = selIdx - 2; // 0-based position in "other" list
+    int pos = 0;
+    for (int i = 0; i < sizeOfModes; i++)
+    {
+        if (i == currentMode) continue;
+        if (pos == wantPos) return i;
+        pos++;
+    }
+    return currentMode;
+}
+
+static int mapEinheitSelectIndexToValue(int selIdx, int currentEinheit)
+{
+    // handlereqEinheit(): idx0=current, idx1=separator, idx>=2 = einheit without current
+    if (selIdx <= 1) return currentEinheit;
+    const int wantPos = selIdx - 2;
+    int pos = 0;
+    for (int i = 0; i < anzAuswahl; i++)
+    {
+        if (i == currentEinheit) continue;
+        if (pos == wantPos) return i;
+        pos++;
+    }
+    return currentEinheit;
+}
+
+static int mapDbSelectIndexToValue(int selIdx, int currentDb)
+{
+    // handlereqVisual(): idx0=current, idx1=separator, idx2/idx3 are the two remaining options
+    if (selIdx <= 1) return currentDb;
+    const int idx = selIdx;
+    currentDb = (currentDb < 0 || currentDb > 2) ? 0 : currentDb;
+    if (currentDb == 0)
+        return (idx == 2) ? 1 : (idx == 3) ? 2 : 0;
+    if (currentDb == 1)
+        return (idx == 2) ? 0 : (idx == 3) ? 2 : 1;
+    // currentDb == 2
+    return (idx == 2) ? 0 : (idx == 3) ? 1 : 2;
+}
+
+static int parseDbSelection(const JsonVariantConst &v, int currentDb)
+{
+    if (v.isNull()) return currentDb;
+    // New UI: integer selectIndex (current implementation) -> map with currentDb ordering
+    if (v.is<int>() || v.is<long>() || v.is<signed char>() || v.is<short>())
+        return mapDbSelectIndexToValue(v.as<int>(), currentDb);
+
+    // Backwards compatible: string payloads
+    const String s = v.as<String>();
+    if (s.equalsIgnoreCase("Aus") || s == "0") return 0;
+    if (s.equalsIgnoreCase("InfluxDB1") || s == "1") return 1;
+    if (s.equalsIgnoreCase("InfluxDB2") || s == "2") return 2;
+    return currentDb;
+}
+
 void handleSetMisc()
 {
     JsonDocument doc;
@@ -340,14 +402,16 @@ void handleSetMisc()
         eraseFlash();
     }
 
-    String tmpVal = ""; // helper var
-
     strlcpy(nameMDNS, doc["mdns_name"] | "", maxHostSign);
     // checkChars(nameMDNS);
     startMDNS = doc["mdns"];
     strlcpy(ntpServer, doc["ntp"] | NTP_ADDRESS, maxNTPSign);
     strlcpy(ntpZone, doc["zone"] | NTP_ZONE, maxNTPSign);
-    setMode = doc["mode"];
+    const int currentMode = setMode;
+    const int currentEinheit = setEinheit;
+    const int currentDB = startDB;
+
+    setMode = mapModeSelectIndexToValue((int)(doc["mode"] | 0), currentMode);
     newMode = setMode;
     setPressure = doc["pressure"];
     setCarbonation = doc["carbonation"];
@@ -363,7 +427,7 @@ void handleSetMisc()
     upTemp = doc["uptemp"];
     useBacklightTimer = doc["useback"];
     DisplayTimerTime = doc["disptimer"];
-    tmpVal = doc["startdb"].as<String>();
+    startDB = parseDbSelection(doc["startdb"], currentDB);
     dbServer = doc["dbserver"].as<String>();
     dbDatabase = doc["dbdatabase"].as<String>();
     dbUser = doc["dbuser"].as<String>();
@@ -371,7 +435,7 @@ void handleSetMisc()
     upInflux = doc["dbup"];
     testModus = doc["testmode"];
     devBranch = doc["devbranch"];
-    setEinheit = doc["einheit"];
+    setEinheit = mapEinheitSelectIndexToValue((int)(doc["einheit"] | currentEinheit), currentEinheit);
     verzKombi = doc["delayspund"];
 
     if (startMV1)
@@ -405,20 +469,6 @@ void handleSetMisc()
         verzKarbonisierung = 0;
         minKarbonisierung = verzKombi;
     }
-
-    if (tmpVal.equals("InfluxDB1"))
-    {
-        startDB = 1;
-    }
-    else if (tmpVal.equals("InfluxDB2"))
-    {
-        startDB = 2;
-    }
-    else
-    {
-        startDB = 0;
-    }
-
     server.send(200, "text/plain", "ok");
     saveConfig();
     reflashLCD = true;

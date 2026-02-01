@@ -49,6 +49,7 @@ sich pneumatische Schnellkupplungen hervorragend.
 #include "edit_htm.h"
 #include "index_htm.h"
 #include "ablaufplan_htm.h"
+#include "splan_htm.h"
 #include "Spundomat.h"
 
 #ifdef DEBUG_ESP_PORT
@@ -58,7 +59,7 @@ sich pneumatische Schnellkupplungen hervorragend.
 #endif
 
 // Definiere Konstanten
-#define Version "2.84"
+#define Version "2.85"
 
 LiquidCrystal_PCF8574 lcd(0x27); // LCD Display
 
@@ -102,6 +103,7 @@ InnuTicker TickerDisplay;
 InnuTicker TickerWLAN;
 InnuTicker TickerDisplayTimer;
 InnuTicker TickerTime;
+InnuTicker TickerCon;
 
 // Voreinstellungen
 float setPressure = DEF_PRESSURE; // Vorgabe bei Neustart von 2,0 bar
@@ -127,6 +129,11 @@ float pressure = 0.0;
 float oldPressDisp = 0.0;
 float displayPressure = 0.0;
 int encoderOldPos;
+float targetTemp;
+float DEF_TARGET_TEMP;
+bool checkTemp;
+int controller;
+unsigned long lastTimeSteuerung;
 
 typedef struct
 {
@@ -204,6 +211,18 @@ struct Ablaufplan structPlan[maxSchritte];
 int counterPlan = 0; // Aktueller Schritt im Ablaufplan
 bool stepA = false;  // Step MV1 je Schritt
 bool stepB = false;  // Step MV2 je Schritt
+
+struct Steuerplan 
+{
+    String Name;
+    float Stemp;
+    float Etemp;
+    bool Ramp;
+    unsigned long Dauer;
+};
+uint8_t counterCon = 0;
+struct Steuerplan structOG[MAXFERM];
+struct Steuerplan structUG[MAXFERM];
 
 // Callback für Wemos im Access Point Modus
 void configModeCallback(WiFiManager *myWiFiManager)

@@ -118,6 +118,9 @@ void setupServer()
   server.on("/ablaufplan", HTTP_GET, handleAblauf);
   server.on("/ablaufplan.html", HTTP_GET, handleAblauf);
   server.on("/ablaufplan.htm", HTTP_GET, handleAblauf);
+  server.on("/splan", HTTP_GET, handleFermenter);
+  server.on("/splan.html", HTTP_GET, handleFermenter);
+  server.on("/splan.htm", HTTP_GET, handleFermenter);
   server.on("/reboot", rebootDevice);         // Spundomat reboot
   server.on("/kalibrieren", kalibrieren);     // Spundomat Kalibrierung
   server.on("/visualisieren", visualisieren); // Spundomat Visualisierung
@@ -137,6 +140,9 @@ void setupServer()
   // server.on("/setPlan1", handleSetPlan1);
   // server.on("/setPlan2", handleSetPlan2);
   // server.on("/setPlan3", handleSetPlan3);
+  server.on("/reqOG", readSteuerOG);
+  server.on("/reqUG", readSteuerUG);
+  server.on("/setFerm", handleSetFerm);
   server.on("/reqName", handleRequestName);
   server.on("/startHTTPUpdate", startHTTPUpdate); // Firmware WebUpdate
   // FSBrowser initialisieren
